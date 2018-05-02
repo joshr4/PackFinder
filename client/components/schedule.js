@@ -57,7 +57,7 @@ const mapDispatch = (dispatch) => {
   }
 }
 
-export const Schedule = connect(mapSchedule, mapDispatch)(Schedule)
+export default connect(mapSchedule, mapDispatch)(Schedule)
 
 /**
  * PROP TYPES
