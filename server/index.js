@@ -13,7 +13,7 @@ const app = express()
 const socketio = require('socket.io')
 module.exports = app
 
-/**
+/** TESTING!!
  * In your development environment, you can keep all of your
  * app's secret API keys in a file called `secrets.js`, in your project
  * root. This file is included in the .gitignore - it will NOT be tracked
