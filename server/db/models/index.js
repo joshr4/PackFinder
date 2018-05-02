@@ -23,13 +23,9 @@ User.hasMany(Pet, {
   as: 'pets',
   foreignKey: 'userId',  
 });
-User.belongsToMany(Park, {through:Visit
-  // , as: 'Visitors'
-}); 
+User.belongsToMany(Park, {through:Visit}); 
 //User has getParks, setParks, addPark, addParks as magic methods 
-Park.belongsToMany(User, {through:Visit
-  // , as: 'VisitedParks'
-}); 
+Park.belongsToMany(User, {through:Visit}); 
 //Park has getUsers, setUsers, addUser, addUsers as magic methods
   // User has many visits -> MtM to Park
   // Park has many visits -> MtM to User
