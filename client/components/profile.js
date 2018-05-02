@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Segment, Grid, Image, List } from 'semantic-ui-react';
+import { Container, Segment, Grid, Header } from 'semantic-ui-react';
 import { ProfileItem } from '.';
 
 /**
@@ -10,8 +10,14 @@ import { ProfileItem } from '.';
 export const Profile = props => {
   return (
     <Container>
-      <ProfileItem />
-      <ProfileItem />
+      <Grid columns={2} divided>
+        <Header as="h3">Owner:</Header>
+        <ProfileItem />
+        <Header as="h3">Dogs:</Header>
+
+        <ProfileItem />
+        <ProfileItem />
+      </Grid>
     </Container>
   );
 };

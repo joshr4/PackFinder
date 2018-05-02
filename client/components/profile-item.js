@@ -8,7 +8,6 @@ import { Container, Segment, Grid, Image, List } from 'semantic-ui-react';
  */
 export const ProfileItem = props => {
   return (
-      <Grid columns={2} divided stackable>
         <Grid.Row>
           <Grid.Column width="4">
             <Image
@@ -34,7 +33,6 @@ export const ProfileItem = props => {
             </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
   );
 };
 
