@@ -4,25 +4,30 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
 import { Menu, Image } from 'semantic-ui-react';
-// logomakr.com/97ARPB
+// https://logomakr.com/7sbzeB
+
+const styles = {
+  image: {
+    maxWidth: '357px',
+    height: '100px'
+  }
+}
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
-  <Menu>
-    <Image src={'/images/logo.png'} />
+  <Menu stackable>
+    <Image style={styles.image} src={'/images/logo.png'} />
     {isLoggedIn ? (
-      <div>
+      <Menu.Menu position="right">
         {/* The navbar will show these links after you log in */}
-        <Link to="/home">Home</Link>
-        <a href="#" onClick={handleClick}>
-          Logout
-        </a>
-      </div>
+        <Menu.Item as={Link} name="home" to="/home" />
+        <Menu.Item onClick={handleClick} name="logout" to="/home" />
+        </Menu.Menu>
     ) : (
-      <div>
+      <Menu.Menu position="right">
         {/* The navbar will show these links before you log in */}
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Sign Up</Link>
-      </div>
+        <Menu.Item as={Link} name="login" to="/login" />
+        <Menu.Item as={Link} name="signup" to="/signup" />
+      </Menu.Menu>
     )}
   </Menu>
 );
