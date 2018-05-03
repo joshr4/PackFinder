@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { auth } from '../store';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { DayColumn } from './index';
+import ModalModalExample from './schedulemodal';
 
 /**
  * COMPONENT
@@ -60,23 +61,69 @@ const getListStyle = isDraggingOver => ({
 class Schedule extends Component {
   state = {
     column1: [
-      { id: 1, content: 'Walk dog1', start: { hour: 4, minute: 30 }, end: { hour: 5, minute: 30 } },
-      { id: 2, content: 'Walk dog2', start: { hour: 10, minute: 30 }, end: { hour: 11, minute: 30 } }
+      {
+        id: 1,
+        content: 'Walk dog1',
+        start: { hour: 4, minute: 30 },
+        end: { hour: 5, minute: 30 },
+      },
+      {
+        id: 2,
+        content: 'Walk dog2',
+        start: { hour: 10, minute: 30 },
+        end: { hour: 11, minute: 30 },
+      },
     ],
     column2: [
-      { id: 13, content: 'Walk dog4', start: { hour: 14, minute: 30 }, end: { hour: 15, minute: 0 } },
-      { id: 14, content: 'Walk dog5', start: { hour: 12, minute: 30 }, end: { hour: 13, minute: 30 } },
+      {
+        id: 13,
+        content: 'Walk dog4',
+        start: { hour: 14, minute: 30 },
+        end: { hour: 15, minute: 0 },
+      },
+      {
+        id: 14,
+        content: 'Walk dog5',
+        start: { hour: 12, minute: 30 },
+        end: { hour: 13, minute: 30 },
+      },
     ],
     column3: [
-      { id: 16, content: 'Walk dog7', start: { hour: 9, minute: 30 }, end: { hour: 10, minute: 0 } },
-      { id: 17, content: 'Walk dog8', start: { hour: 2, minute: 0 }, end: { hour: 3, minute: 0 } },
+      {
+        id: 16,
+        content: 'Walk dog7',
+        start: { hour: 9, minute: 30 },
+        end: { hour: 10, minute: 0 },
+      },
+      {
+        id: 17,
+        content: 'Walk dog8',
+        start: { hour: 2, minute: 0 },
+        end: { hour: 3, minute: 0 },
+      },
     ],
     column4: [
-      { id: 19, content: 'Walk dog10', start: { hour: 18, minute: 30 }, end: { hour: 19, minute: 30 } },
-      { id: 20, content: 'Walk dog11', start: { hour: 17, minute: 0 }, end: { hour: 18, minute: 0 } },
+      {
+        id: 19,
+        content: 'Walk dog10',
+        start: { hour: 18, minute: 30 },
+        end: { hour: 19, minute: 30 },
+      },
+      {
+        id: 20,
+        content: 'Walk dog11',
+        start: { hour: 17, minute: 0 },
+        end: { hour: 18, minute: 0 },
+      },
     ],
+    modal: false
   };
 
+  modalToggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
   /**
    * A semi-generic way to handle multiple lists. Matches
    * the IDs of the droppable container to the names of the
@@ -147,6 +194,8 @@ class Schedule extends Component {
             </Grid.Column>
           </DragDropContext>
         </Grid.Row>
+        <Button onClick={this.modalToggle}>Tst</Button>
+        <ModalModalExample show={this.state.modal} onClose={this.modalToggle} />
       </Grid>
     );
   }
