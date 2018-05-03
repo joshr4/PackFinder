@@ -56,8 +56,13 @@ async function seed () {
   const user1 = await User.create({email: 'user1@email.com', password:'user1'});
   const user2 = await User.create({email: 'user2@email.com', password:'user2'});
   const user3 = await User.create({email: 'user3@email.com', password:'user3'});
-  const startTime = new Date(2018, 4, 2, 16, 0);
-  const endTime = new Date(2018, 4, 2, 20, 0);
+  // const startTime = new Date(2018, 4, 2, 16, 0);
+  // const endTime = new Date(2018, 4, 2, 20, 0);
+  const startTime = new Date(2015, 3, 12, 10, 30, 0, 0);
+  const endTime = new Date(2015, 3, 12, 12, 30, 0, 0);
+  // start: new Date(2015, 3, 0),
+  // end: new Date(2015, 3, 1),
+
   console.log("Park: ", Park);
   // Adding Users to Park through "visits" MtM relationship 
   await Park1.addUsers([user1, user2], {through: {
@@ -76,8 +81,7 @@ async function seed () {
     start: startTime,
     end: endTime,
   }})
-  await user2.save();
-  
+  await user2.save();  
  
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
