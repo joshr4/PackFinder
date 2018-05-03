@@ -9,6 +9,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
 import { EventModal } from './index';
+import { getVisits, deleteVisit } from '../store';
+import { connect } from 'react-redux';
 
 // import '../../public/calendar.css'
 // Setup the localizer by providing the moment (or globalize) Object
@@ -22,38 +24,29 @@ class Dnd extends React.Component {
     super(props);
     this.state = {
       events: events,
-      selectedEvent: {},
+      selectedEvent: {
+        title:'',
+      },
+      calendar: [],
       showModal: false,
     };
     this.moveEvent = this.moveEvent.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    console.log('realstate',this.state)
   }
 
   componentDidMount() {
-    axios.get('api/visits').then(response => {
-      let visits = response.data;
-      let loadedEvents = [];
-      visits.forEach(visit => {
-        loadedEvents.push({
-          start: new Date(visit.start),
-          end: new Date(visit.end),
-          title: visit.park.name,
-          id: visit.id,
-        });
-      });
-      this.setState({
-        //   events:response.data
-        events: loadedEvents,
-      });
-    });
+    this.props.loadVisits();
+    this.setState({
+      calendar:this.props.events,
+    })
   }
 
   toggleModal(event) {
-    console.log('click event', event);
     this.setState({
       showModal: !this.state.showModal,
-      selectedEvent: event
+      selectedEvent: event,
     });
   }
 
@@ -63,30 +56,24 @@ class Dnd extends React.Component {
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
 
-    const nextEvents = [...events]
-    console.log("updated Event: ", updatedEvent);
-    nextEvents.splice(idx, 1, updatedEvent)
+    const nextEvents = [...events];
+    nextEvents.splice(idx, 1, updatedEvent);
     let newTimes = {
-        start,
-        end
-    }
-    axios.put(`api/visits/${event.id}/change-times`, newTimes).then(response => {
+      start,
+      end,
+    };
+    axios
+      .put(`api/visits/${event.id}/change-times`, newTimes)
+      .then(response => {
         this.setState({
           events: nextEvents,
-        })
-    }) 
+        });
+      });
   }
 
   removeEvent(event) {
-    let removeEventIndex = this.state.events.indexOf(event);
-    let newEvents = this.state.events;
-    newEvents.splice(removeEventIndex, 1);
-    //open modal
-    this.setState({
-      events: newEvents,
-      selectedEvent: event,
-    });
     this.toggleModal();
+    this.props.removeVisit(event)
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
@@ -101,24 +88,21 @@ class Dnd extends React.Component {
     this.setState({
       events: nextEvents,
     });
-
-    //alert(`${event.title} was resized to ${start}-${end}`);
   };
 
   render() {
-    console.log('state', this.state);
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
           show={this.state.showModal}
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
-          event={this.selectedEvent}
+          selEvent={this.state.selectedEvent}
         />
         <DragAndDropCalendar
           selectable
           culture="en-GB"
-          events={this.state.events}
+          events={this.state.calendar}
           onEventDrop={this.moveEvent}
           resizable
           onDoubleClickEvent={event => this.toggleModal(event)}
@@ -131,4 +115,33 @@ class Dnd extends React.Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Dnd);
+const mapState = state => {
+  console.log('state',state)
+  // let loadedEvents = [];
+  // if(state.calendar.length) state.calendar.forEach(visit => {
+  //   loadedEvents.push({
+  //     start: new Date(visit.start),
+  //     end: new Date(visit.end),
+  //     title: visit.title,
+  //     id: visit.id,
+  //   });
+  // });
+
+  return {
+    events: state.calendar,
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    loadVisits() {
+      dispatch(getVisits());
+    },
+    removeVisit(visit) {
+      console.log('delvisits');
+      dispatch(deleteVisit(visit));
+    },
+  };
+};
+
+export default connect(mapState, mapDispatch)(DragDropContext(HTML5Backend)(Dnd));

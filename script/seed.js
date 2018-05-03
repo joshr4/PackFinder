@@ -28,13 +28,13 @@ async function seed () {
     line_1:"450 E Benton Pl",
     city: "Chicago",
     state: "IL",
-    zip: "60601"    
+    zip: "60601"
   });
   const addressOhioPlace = await Address.create({
     line_1:"360 W Ohio St",
     city: "Chicago",
     state: "IL",
-    zip: "60654"    
+    zip: "60654"
   });
   // Creating example parks
   const Park1 = await Park.create({
@@ -64,25 +64,28 @@ async function seed () {
   // end: new Date(2015, 3, 1),
 
   console.log("Park: ", Park);
-  // Adding Users to Park through "visits" MtM relationship 
+  // Adding Users to Park through "visits" MtM relationship
   await Park1.addUsers([user1, user2], {through: {
     start: startTime,
     end: endTime,
+    title: Park1.name
   }})
   await Park1.save();
-  // Adding Parks to Users through "visits" MtM relationship 
+  // Adding Parks to Users through "visits" MtM relationship
   await user3.addParks([Park1, Park2], {through: {
     start: startTime,
     end: endTime,
+    title: Park2.name
   }})
   await user3.save();
   // Adding a single park to a user through a "visit"
   await user2.addParks(Park2, {through: {
     start: startTime,
     end: endTime,
+    title: Park2.name
   }})
-  await user2.save();  
- 
+  await user2.save();
+
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)

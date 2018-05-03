@@ -13,8 +13,8 @@ const Address = db.define('address', {
 const Visit = db.define('visit', {
     id: {
         primaryKey: true,
-        type: Sequelize.INTEGER, 
-        autoIncrement: true,        
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
     },
     start: {
         type: Sequelize.DATE,
@@ -31,6 +31,10 @@ const Visit = db.define('visit', {
         //     let endTime = new Date(this.getDataValue('end'));
         //     return endTime;
         // },
+    },
+    title: {
+        type: Sequelize.TEXT,
+        allowNull: true
     }
 })
 
