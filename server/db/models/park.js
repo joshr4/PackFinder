@@ -11,15 +11,36 @@ const Address = db.define('address', {
 // One to many between park and visits
 // One to many between user and visits
 const Visit = db.define('visit', {
+    id: {
+        primaryKey: true,
+        type: Sequelize.INTEGER, 
+        autoIncrement: true,        
+    },
     start: {
         type: Sequelize.DATE,
         defaultValue: null,
+        // get() {
+        //     let startTime = new Date(this.getDataValue('start'));
+        //     return startTime;
+        // },
     },
     end: {
         type: Sequelize.DATE,
         defaultValue: null,
+        // get() {
+        //     let endTime = new Date(this.getDataValue('end'));
+        //     return endTime;
+        // },
     }
 })
+
+Visit.prototype.startTime = function() {
+    return new Date(this.start);
+}
+Visit.prototype.endTime = function() {
+    return new Date(this.end);
+}
+
 const Park = db.define('park', {
     name: {
         type: Sequelize.STRING,
@@ -40,5 +61,24 @@ const Park = db.define('park', {
         defaultValue: {},
     }
 })
+
+Park.prototype.getVisits = function(startTime, endTime) {
+    Visit.findAll({
+        where: {
+            parkId: this.id
+        }
+        // [Op.lt]: new Date(),
+        // [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+    }).then(visits => {
+        let result = [];
+        visits.forEach(visit => {
+            if (visit.start < endTime || visit.end > startTime) {
+                result.push(visit);
+            }
+        })
+        return result;
+    })
+    // return all visits with time overlap here
+}
 
 module.exports = {Park, Visit, Address}
