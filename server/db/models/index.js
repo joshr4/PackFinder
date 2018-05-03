@@ -31,6 +31,7 @@ Park.belongsToMany(User, {through:Visit});
   // Park has many visits -> MtM to User
 Park.belongsTo(Address); //Park will have address Id
 Visit.belongsTo(Address);
+Visit.belongsTo(Park);
   // Park has one address
   // Visit has one address
 Park.hasMany(Review, {
