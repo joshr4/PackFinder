@@ -70,9 +70,11 @@ class Dnd extends React.Component {
         start,
         end
     }
-    this.setState({
-      events: nextEvents,
-    })
+    axios.put(`api/visits/${event.id}/change-times`, newTimes).then(response => {
+        this.setState({
+          events: nextEvents,
+        })
+    }) 
   }
 
   removeEvent(event) {
