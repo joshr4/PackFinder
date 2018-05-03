@@ -49,9 +49,11 @@ class Dnd extends React.Component {
     });
   }
 
-  toggleModal(){
+  toggleModal(event) {
+    console.log('click event', event);
     this.setState({
       showModal: !this.state.showModal,
+      selectedEvent: event
     });
   }
 
@@ -80,7 +82,7 @@ class Dnd extends React.Component {
       events: newEvents,
       selectedEvent: event,
     });
-    this.toggleModal()
+    this.toggleModal();
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
@@ -100,16 +102,22 @@ class Dnd extends React.Component {
   };
 
   render() {
+    console.log('state', this.state);
     return (
       <div style={{ height: '1000px' }}>
-        <EventModal show={this.state.showModal} onClose={this.toggleModal} onDelete={this.removeEvent} />
+        <EventModal
+          show={this.state.showModal}
+          onClose={this.toggleModal}
+          onDelete={this.removeEvent}
+          event={this.selectedEvent}
+        />
         <DragAndDropCalendar
           selectable
           culture="en-GB"
           events={this.state.events}
           onEventDrop={this.moveEvent}
           resizable
-          onDoubleClickEvent={this.toggleModal}
+          onDoubleClickEvent={event => this.toggleModal(event)}
           onEventResize={this.resizeEvent}
           defaultView="week"
           defaultDate={new Date(2015, 3, 12)}

@@ -7,7 +7,7 @@ const EventModal = props => (
       onClick={() => props.onClose()}>Close</Button>
           <Button
       onClick={() => props.onDelete()}>Delete Event</Button>
-    <Modal.Header>Select a Photo</Modal.Header>
+    <Modal.Header>?????</Modal.Header>
     <Modal.Content image>
       <Image
         wrapped
@@ -15,7 +15,7 @@ const EventModal = props => (
         src="https://images.dog.ceo/breeds/beagle/n02088364_17474.jpg"
       />
       <Modal.Description>
-        <Header>PUPPY photo, this is Fido</Header>
+        <Header>{props.event}</Header>
         <p>
           We've found the following dog image associated with your e-mail
           address.
