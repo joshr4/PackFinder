@@ -58,11 +58,14 @@ class Dnd extends React.Component {
     const nextEvents = [...events]
     console.log("updated Event: ", updatedEvent);
     nextEvents.splice(idx, 1, updatedEvent)
-
+    let newTimes = {
+        start,
+        end
+    }
     this.setState({
       events: nextEvents,
     })
-
+    // let 
     alert(`${event.title} was dropped onto ${event.start}`)
   }
 

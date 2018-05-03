@@ -11,3 +11,15 @@ router.get('/', (req, res, next) => {
     .then(visits => res.json(visits))
     .catch(next)
 })
+
+router.delete('/:id', (req, res, next) => {
+  Visit.findById(req.params.id).then(visit => {
+    visit.destroy().then(() => {
+      res.send(200);
+    })
+  })
+})
+
+router.put('/:id/change-times', (req, res, next) => {
+  
+})
