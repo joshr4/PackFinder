@@ -81,14 +81,14 @@ class DayColumn extends Component {
 
   render() {
     return (
-      <Droppable droppableId={this.props.droppableId}>
+      <div>
+      {(<Droppable droppableId={this.props.droppableId}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {this.props.events.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
+            style={getListStyle(snapshot.isDraggingOver)}>
+            {this.props.events.map((item, index) =>
+            (<Draggable key={item.id} draggableId={item.id} index={index}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
@@ -107,7 +107,8 @@ class DayColumn extends Component {
             {provided.placeholder}
           </div>
         )}
-      </Droppable>
+      </Droppable>)}
+      </div>
     );
   }
 }

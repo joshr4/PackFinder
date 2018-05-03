@@ -4,17 +4,11 @@ import PropTypes from 'prop-types';
 import { auth } from '../store';
 import { Grid } from 'semantic-ui-react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { DayColumn } from './index'
+import { DayColumn } from './index';
 
 /**
  * COMPONENT
  */
-// fake data generator
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k + offset}`,
-    content: `item ${k + offset}`,
-  }));
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -65,10 +59,22 @@ const getListStyle = isDraggingOver => ({
 
 class Schedule extends Component {
   state = {
-    items: [{id: 1, content: 'Walk dog1'}, {id: 2, content: 'Walk dog2'}, {id: 3, content: 'Walk dog3'}],
-    selected: [{id: 4, content: 'Walk dog4'}, {id: 5, content: 'Walk dog5'}, {id: 6, content: 'Walk dog6'}],
-    selected3: [{id: 7, content: 'Walk dog7'}, {id: 8, content: 'Walk dog8'}, {id: 9, content: 'Walk dog9'}],
-    selected4: [{id: 10, content: 'Walk dog10'}, {id: 11, content: 'Walk dog11'}, {id: 12, content: 'Walk dog12'}],
+    column1: [
+      { id: 1, content: 'Walk dog1', start: { hour: 4, minute: 30 }, end: { hour: 5, minute: 30 } },
+      { id: 2, content: 'Walk dog2', start: { hour: 10, minute: 30 }, end: { hour: 11, minute: 30 } }
+    ],
+    column2: [
+      { id: 13, content: 'Walk dog4', start: { hour: 14, minute: 30 }, end: { hour: 15, minute: 0 } },
+      { id: 14, content: 'Walk dog5', start: { hour: 12, minute: 30 }, end: { hour: 13, minute: 30 } },
+    ],
+    column3: [
+      { id: 16, content: 'Walk dog7', start: { hour: 9, minute: 30 }, end: { hour: 10, minute: 0 } },
+      { id: 17, content: 'Walk dog8', start: { hour: 2, minute: 0 }, end: { hour: 3, minute: 0 } },
+    ],
+    column4: [
+      { id: 19, content: 'Walk dog10', start: { hour: 18, minute: 30 }, end: { hour: 19, minute: 30 } },
+      { id: 20, content: 'Walk dog11', start: { hour: 17, minute: 0 }, end: { hour: 18, minute: 0 } },
+    ],
   };
 
   /**
@@ -77,8 +83,10 @@ class Schedule extends Component {
    * source arrays stored in the state.
    */
   id2List = {
-    droppable: 'items',
-    droppable2: 'selected',
+    droppable: 'column1',
+    droppable2: 'column2',
+    droppable3: 'column3',
+    droppable4: 'column4',
   };
 
   getList = id => this.state[this.id2List[id]];
@@ -101,7 +109,7 @@ class Schedule extends Component {
       let state = { items };
 
       if (source.droppableId === 'droppable2') {
-        state = { selected: items };
+        state = { column2: items };
       }
 
       this.setState(state);
@@ -114,30 +122,28 @@ class Schedule extends Component {
       );
 
       this.setState({
-        items: result.droppable,
-        selected: result.droppable2,
+        column1: result.droppable,
+        column2: result.droppable2,
       });
     }
   };
 
   render() {
-
-
     return (
       <Grid columns={4}>
         <Grid.Row>
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Grid.Column>
-              <DayColumn droppableId="droppable" events={this.state.items} />
+              <DayColumn droppableId="droppable" events={this.state.column1} />
             </Grid.Column>
             <Grid.Column>
-              <DayColumn droppableId="droppable2" events={this.state.selected} />
+              <DayColumn droppableId="droppable2" events={this.state.column2} />
             </Grid.Column>
             <Grid.Column>
-              <DayColumn droppableId="droppable3" events={this.state.selected3} />
+              <DayColumn droppableId="droppable3" events={this.state.column3} />
             </Grid.Column>
             <Grid.Column>
-              <DayColumn droppableId="droppable4" events={this.state.selected4} />
+              <DayColumn droppableId="droppable4" events={this.state.column4} />
             </Grid.Column>
           </DragDropContext>
         </Grid.Row>
