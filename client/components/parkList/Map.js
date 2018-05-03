@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
 
 
 class Map extends Component {
@@ -32,7 +32,17 @@ class Map extends Component {
   render() {
 
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
-    const markers = this.props.markers || [];
+    const markers = this.props.markers.map((venue, i) => {
+
+      const marker = {
+        position: {
+          lat: venue.location.lat,
+          lng: venue.location.lng,
+        }
+      }
+
+      return <Marker key={venue.location.lat.toString() + venue.location.lng.toString()} {...marker} />
+    })
 
     // <Marker
     // position={{ lat: -34.397, lng: 150.644 }}
@@ -41,8 +51,6 @@ class Map extends Component {
     // position={{lat:41.895266, lng:-87.6412237}}
     // />
 
-
-
     return (
       <GoogleMap
       ref={this.mapLoaded.bind(this)}
@@ -50,18 +58,9 @@ class Map extends Component {
       onZoomChanged={this.zoomChanged.bind(this)}
       defaultZoom={this.props.zoom}
       defaultCenter={this.props.center} >
+      { markers }
 
-      {markers.map((marker, index) => (
-        <Marker {...marker} />
-      )
-    )}
 
-    <Marker
-    position={{ lat: -34.397, lng: 150.644 }}
-    />
-    <Marker
-    position={{lat:41.895266, lng:-87.6412237}}
-    />
     </GoogleMap>
     );
   }
