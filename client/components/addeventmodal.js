@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Header, Image, Modal } from 'semantic-ui-react';
 
-const EventModal = props => (
+const AddEventModal = props => (
   <Modal open={props.show}>
     <Button onClick={() => props.onClose()}>Close</Button>
-    <Button onClick={() => props.onDelete(props.item)}>Delete Event</Button>
+    <Button onClick={() => props.onAdd(props.item)}>Add Event</Button>
     {/* <Modal.Header>{props.selEvent.title}</Modal.Header> */}
     <Modal.Content image>
       <Image
@@ -29,4 +29,4 @@ const EventModal = props => (
     </Modal.Content>
   </Modal>
 );
-export default EventModal;
+export default AddEventModal;
