@@ -18,10 +18,10 @@ const EventModal = props => (
       <Modal.Description>
         <Header>{props.item.title}</Header>
         {/* <p>
-         {props.selEvent.description}
+         {props.item.description}
         </p>
-        <p>Start: {props.selEvent.start.toString()}</p>
-        <p>End: {props.selEvent.end.toString()}</p> */}
+        <p>Start: {props.item.start}</p>
+        <p>End: {props.item.endgit }</p> */}
       </Modal.Description>
     </Modal.Content>
   </Modal>

@@ -32,7 +32,7 @@ export const getVisits = () => dispatch =>
 export const deleteVisit = visit => dispatch =>
   axios
     .delete(`api/visits/${visit.id}`)
-    .then(res => dispatch(delVisit(res.data || defaultVisits)))
+    .then(() => dispatch(delVisit(visit || defaultVisits)))
     .catch(err => console.log(err));
 
 export const updateVisit = visit => dispatch =>
