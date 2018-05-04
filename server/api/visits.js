@@ -5,7 +5,7 @@ module.exports = router
 router.get('/', (req, res, next) => {
   Visit.findAll({
       include:[
-          {model: Park, required:false}
+          {model: Park, required:false, include:[Address]}
       ]
   })
     .then(visits => res.json(visits))

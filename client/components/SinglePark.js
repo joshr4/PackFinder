@@ -51,8 +51,16 @@ let timeDisplay = function(dateObj, military=false) {
   return outputString;
 }
 
-let dateDisplay = function(date) {
-  
+let dateDisplay = function(dateObj) {
+  let month = dateObj.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }  
+  let day = dateObj.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  return month + "/" + day;
 }
 
 let stringFormat = function(dateObj) {
@@ -114,13 +122,22 @@ export class SinglePark extends Component {
         let d3Elem = {
           // time: intervalStart,
           time: stringFormat(intervalStart),
+          date: dateDisplay(intervalStart),
           // time: timeDisplay(intervalStart, true),
           // time: intervalStart.getTime(),
-          visits: 0
+          visits: 0,
         };
         visits.forEach(visit => {
           let startT = new Date(visit.start);
           let endT = new Date(visit.end);
+          // Setting X-label
+          d3Elem.time = dateDisplay(intervalStart);
+          if (startT.getHours() == 0) {
+            // d3Elem.time = dateDisplay(intervalStart);
+          }
+          else {
+            d3Elem.time = timeDisplay(intervalStart);
+          }
           if ((startT < intervalEnd && endT > intervalStart)) {
             console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
             d3Elem.visits ++;

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Address = db.define('address', {
-    line1: Sequelize.STRING,
+    line_1: Sequelize.STRING,
     // line_2: Sequelize.STRING,
     city: Sequelize.STRING,
     state: Sequelize.STRING,
