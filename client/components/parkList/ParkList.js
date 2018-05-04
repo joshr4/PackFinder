@@ -136,8 +136,6 @@ class ParkList extends Component {
 
 
 
-
-
       <Grid.Column width={5}>
       <Map
         zoom={14}

@@ -226,7 +226,6 @@ function createParks(addresses) {
 
       let tempLocation = await geocode(park)
 
-      // console.log(park.line1, tempLocation)
 
       const address = await Address.create({
         line1: park.line1,
