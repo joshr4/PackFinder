@@ -3,11 +3,11 @@ import { Button, Header, Image, Modal } from 'semantic-ui-react';
 
 const EventModal = props => (
   <Modal open={props.show}>
-  {console.log('modal', props.selEvent)}
+  {console.log('modal', props.item)}
     <Button
       onClick={() => props.onClose()}>Close</Button>
           <Button
-      onClick={() => props.onDelete(props.selEvent)}>Delete Event</Button>
+      onClick={() => props.onDelete(props.item)}>Delete Event</Button>
     {/* <Modal.Header>{props.selEvent.title}</Modal.Header> */}
     <Modal.Content image>
       <Image
@@ -16,7 +16,7 @@ const EventModal = props => (
         src="https://images.dog.ceo/breeds/beagle/n02088364_17474.jpg"
       />
       <Modal.Description>
-        <Header>???</Header>
+        <Header>{props.item.title}</Header>
         {/* <p>
          {props.selEvent.description}
         </p>

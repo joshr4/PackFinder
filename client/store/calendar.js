@@ -10,7 +10,7 @@ const DELETE_VISIT = 'DELETE_VISIT';
 /**
  * INITIAL STATE
  */
-const defaultVisits = {};
+const defaultVisits = [];
 
 /**
  * ACTION CREATORS

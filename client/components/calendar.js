@@ -24,30 +24,32 @@ class Dnd extends React.Component {
     super(props);
     this.state = {
       events: events,
-      selectedEvent: {
-        title:'',
-      },
+      selectedEvent: {},
       calendar: [],
       showModal: false,
     };
-    this.moveEvent = this.moveEvent.bind(this);
-    this.removeEvent = this.removeEvent.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
-    console.log('realstate',this.state)
+  this.moveEvent = this.moveEvent.bind(this);
+  this.removeEvent = this.removeEvent.bind(this);
+  this.toggleModal = this.toggleModal.bind(this);
+  this.openModal = this.openModal.bind(this);
+  console.log('realstate',this.state)
   }
 
   componentDidMount() {
     this.props.loadVisits();
-    this.setState({
-      calendar:this.props.events,
-    })
   }
 
-  toggleModal(event) {
+  toggleModal() {
     this.setState({
       showModal: !this.state.showModal,
-      selectedEvent: event,
     });
+  }
+
+  openModal(event){
+    this.setState({
+      selectedEvent: event,
+    })
+    this.toggleModal()
   }
 
   moveEvent({ event, start, end }) {
@@ -73,7 +75,7 @@ class Dnd extends React.Component {
 
   removeEvent(event) {
     this.toggleModal();
-    this.props.removeVisit(event)
+    this.props.removeVisit(event);
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
@@ -91,57 +93,63 @@ class Dnd extends React.Component {
   };
 
   render() {
+
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
           show={this.state.showModal}
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
-          selEvent={this.state.selectedEvent}
+          item={this.state.selectedEvent}
         />
         <DragAndDropCalendar
           selectable
           culture="en-GB"
-          events={this.state.calendar}
+          events={this.props.events}
           onEventDrop={this.moveEvent}
           resizable
-          onDoubleClickEvent={event => this.toggleModal(event)}
+          onDoubleClickEvent={event => this.openModal(event)}
           onEventResize={this.resizeEvent}
           defaultView="week"
           defaultDate={new Date(2015, 3, 12)}
         />
       </div>
+      // : <div />
     );
   }
 }
 
 const mapState = state => {
-  console.log('state',state)
-  // let loadedEvents = [];
-  // if(state.calendar.length) state.calendar.forEach(visit => {
-  //   loadedEvents.push({
-  //     start: new Date(visit.start),
-  //     end: new Date(visit.end),
-  //     title: visit.title,
-  //     id: visit.id,
-  //   });
-  // });
+  console.log('state', state);
 
+  let calEvents = state.calendar.map(visit => {
+    let newVisit = {
+    id: visit.id,
+    title: visit.title,
+    start: new Date(visit.start),
+    end: new Date(visit.end)
+    }
+    return newVisit
+  })
+  console.log('visit', calEvents)
   return {
-    events: state.calendar,
+    events: calEvents
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     loadVisits() {
+      console.log('loaded visits');
       dispatch(getVisits());
     },
     removeVisit(visit) {
-      console.log('delvisits');
+      console.log('deleted visit', visit);
       dispatch(deleteVisit(visit));
     },
   };
 };
 
-export default connect(mapState, mapDispatch)(DragDropContext(HTML5Backend)(Dnd));
+export default connect(mapState, mapDispatch)(
+  DragDropContext(HTML5Backend)(Dnd)
+);
