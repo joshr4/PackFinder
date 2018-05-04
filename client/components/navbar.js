@@ -11,13 +11,28 @@ const styles = {
     maxWidth: '357px',
     height: '100px',
   },
+  menu: {
+    margin: 0,
+    backgroundColor: 'rgba(0,0,0,0)',
+    position: 'fixed',
+    top: '0px',
+    zIndex: 1,
+    width: '100vw',
+    color: '#54B8BF',
+  },
+  menuItem: {
+    color: '#fff',
+    fontSize: 20,
+    fontFamily: 'Veradana, sans-serif',
+    fontWeight: 500,
+  },
 };
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
-  <Menu stackable style={{ backgroundColor: 'rgba(0,0,0,0)' }} borderless>
+  <Menu stackable style={styles.menu}>
     <Image style={styles.image} src={'/images/logo.png'} />
     {isLoggedIn ? (
-      <Menu.Menu position="right">
+      <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
         {/* The navbar will show these links after you log in */}
         <Menu.Item as={Link} name="home" to="/home" />
         <Menu.Item onClick={handleClick} name="logout" to="/home" />
@@ -25,8 +40,13 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
     ) : (
       <Menu.Menu position="right">
         {/* The navbar will show these links before you log in */}
-        <Menu.Item as={Link} name="login" to="/login" />
-        <Menu.Item as={Link} name="signup" to="/signup" />
+        <Menu.Item style={styles.menuItem} as={Link} name="login" to="/login" />
+        <Menu.Item
+          style={styles.menuItem}
+          as={Link}
+          name="signup"
+          to="/signup"
+        />
       </Menu.Menu>
     )}
   </Menu>
