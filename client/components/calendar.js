@@ -78,7 +78,6 @@ class Dnd extends React.Component {
   };
 
   render() {
-    console.log('render', this.props)
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -105,7 +104,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log('pre map',state)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
