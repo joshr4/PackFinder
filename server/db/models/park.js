@@ -7,14 +7,18 @@ const Address = db.define('address', {
     city: Sequelize.STRING,
     state: Sequelize.STRING,
     zipcode: Sequelize.STRING,
+    location: {
+      type: Sequelize.JSON,
+      defaultValue: {lat: 0, lng: 0},
+    }
 });
 // One to many between park and visits
 // One to many between user and visits
 const Visit = db.define('visit', {
     id: {
         primaryKey: true,
-        type: Sequelize.INTEGER, 
-        autoIncrement: true,        
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
     },
     start: {
         type: Sequelize.DATE,
