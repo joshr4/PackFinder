@@ -27,5 +27,5 @@ router.put('/:id/change-times', (req, res, next) => {
       res.send(visit);
     })
   })
-  
+
 })

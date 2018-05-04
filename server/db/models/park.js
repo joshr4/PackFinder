@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Address = db.define('address', {
-    line_1: Sequelize.STRING,
+    line1: Sequelize.STRING,
     // line_2: Sequelize.STRING,
     city: Sequelize.STRING,
     state: Sequelize.STRING,
@@ -20,8 +20,8 @@ const Address = db.define('address', {
 const Visit = db.define('visit', {
     id: {
         primaryKey: true,
-        type: Sequelize.INTEGER, 
-        autoIncrement: true,        
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
     },
     start: {
         type: Sequelize.DATE,
@@ -38,6 +38,10 @@ const Visit = db.define('visit', {
         //     let endTime = new Date(this.getDataValue('end'));
         //     return endTime;
         // },
+    },
+    title: {
+        type: Sequelize.TEXT,
+        allowNull: true
     }
 })
 
