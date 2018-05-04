@@ -21,6 +21,9 @@ const EventModal = props => (
           <div>
             <p>Start Time :{props.item.start.toString()}</p>
             <p>End Time : {props.item.end.toString()}</p>
+            <div>Address :</div>
+            <div>{props.item.address.line_1}<br />
+            {`${props.item.address.city}, ${props.item.address.state} ${props.item.address.zip}`}</div>
           </div>
         ) : (
           <div />

@@ -112,7 +112,7 @@ console.log('mapstate', state.calendar)
     title: visit.title,
     start: new Date(visit.start),
     end: new Date(visit.end),
-    address: visit.park.addressId
+    address: visit.park.address
     }
     return newVisit
   })
