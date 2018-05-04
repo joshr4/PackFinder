@@ -78,6 +78,7 @@ class Dnd extends React.Component {
   };
 
   render() {
+    console.log('render', this.props)
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -89,7 +90,7 @@ class Dnd extends React.Component {
         <DragAndDropCalendar
           selectable
           culture="en-GB"
-          events={this.props.events}
+          events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           onEventDrop={this.moveEvent}
           resizable
           onDoubleClickEvent={event => this.openModal(event)}
@@ -104,18 +105,21 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
+  console.log('pre map',state)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
     title: visit.title,
     start: new Date(visit.start),
     end: new Date(visit.end),
-    address: visit.park.address
+    address: visit.park.address,
+    userId: visit.userId
     }
     return newVisit
   })
   return {
-    events: calEvents
+    events: calEvents,
+    user: state.user
   };
 };
 
