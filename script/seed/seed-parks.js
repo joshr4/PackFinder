@@ -92,7 +92,7 @@ const parks = [
   },
   {
     name: 'Lake Shore East Dog Friendly Area',
-    line1: '450 E. Benton Place',
+    line1: '450 E Benton Pl',
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
@@ -226,7 +226,6 @@ function createParks(addresses) {
 
       let tempLocation = await geocode(park)
 
-      // console.log("hereeee ", tempLocation)
 
       const address = await Address.create({
         line1: park.line1,

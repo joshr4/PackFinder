@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, Header, Image, Modal } from 'semantic-ui-react';
+import AddVisitForm from './addvisitform';
+
 
 const AddEventModal = props => (
   <Modal open={props.show}>
     <Button onClick={() => props.onClose()}>Close</Button>
-    <Button onClick={() => props.onAdd(props.item)}>Add Event</Button>
     {/* <Modal.Header>{props.selEvent.title}</Modal.Header> */}
     <Modal.Content image>
       <Image
@@ -14,17 +15,10 @@ const AddEventModal = props => (
       />
       <Modal.Description>
         <Header>{props.item.title}</Header>
-        {props.item.start ? (
-          <div>
-            <p>Start Time: {props.item.start.toString()}</p>
-            <p>End Time: {props.item.end.toString()}</p>
-            <div>Address:</div>
-            <div>{props.item.address.line_1}<br />
-            {`${props.item.address.city}, ${props.item.address.state} ${props.item.address.zip}`}</div>
-          </div>
-        ) : (
-          <div />
-        )}
+        <AddVisitForm
+          nowString={'test!!?'}
+          handleSubmit={() => props.onAdd(props.item)}
+        />
       </Modal.Description>
     </Modal.Content>
   </Modal>
