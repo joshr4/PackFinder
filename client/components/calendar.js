@@ -104,6 +104,7 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
+  console.log('mapstate', state.calendar)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
