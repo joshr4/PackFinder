@@ -78,17 +78,19 @@ class Dnd extends React.Component {
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
-    const { events } = this.state;
+    const { events } = this.props;
 
-    const nextEvents = events.map(existingEvent => {
-      return existingEvent.id == event.id
-        ? { ...existingEvent, start, end }
-        : existingEvent;
-    });
+    // const nextEvents = events.map(existingEvent => {
+    //   return existingEvent.id == event.id
+    //     ? { ...existingEvent, start, end }
+    //     : existingEvent;
+    // });
+    const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
 
-    this.setState({
-      events: nextEvents,
-    });
+    updatedEvent[0].start = start
+    updatedEvent[0].end = end
+    updatedEvent[0].id = event.id
+    this.props.updateVisit(updatedEvent[0])
   };
 
   render() {
@@ -111,6 +113,7 @@ class Dnd extends React.Component {
           onEventResize={this.resizeEvent}
           defaultView="week"
           defaultDate={new Date(2018, 3, 12)}
+
         />
       </div>
       // : <div />
@@ -119,7 +122,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log('state', state);
 
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
@@ -130,7 +132,6 @@ const mapState = state => {
     }
     return newVisit
   })
-  console.log('visit', calEvents)
   return {
     events: calEvents
   };
@@ -139,11 +140,9 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getVisits() {
-      console.log('loaded visits');
       dispatch(getVisits());
     },
     removeVisit(visit) {
-      console.log('deleted visit', visit);
       dispatch(deleteVisit(visit));
     },
     updateVisit(visit) {
