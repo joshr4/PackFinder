@@ -24,7 +24,7 @@ export const Splash = props => {
   return (
     <div>
       <h1> This Works!! </h1>
-      <Parallax strength={500}>
+      {/* <Parallax strength={500}>
         <div style={{ height: 500 }}>
           <div style={insideStyles}>HTML inside the parallax</div>
         </div>
@@ -42,7 +42,7 @@ export const Splash = props => {
         </div>
       </Parallax>
       <div style={{ height: 500 }} />
-      <h2>{'\u2728'}</h2>
+      <h2>{'\u2728'}</h2> */}
     </div>
   );
 };
