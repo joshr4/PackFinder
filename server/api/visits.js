@@ -29,17 +29,17 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.put('/:id/change-times', (req, res, next) => {
-  console.log("change-times req.body: ", req.body);
   Visit.findOne({
     where: {
-      id:req.params.id,
+      id: req.params.id
     },
     include:[
-      {model: Park, required:false, include:[Address]},
+      {model: Park, required: false, include:[Address]},
       {model: User, required:false}
-  ]}).then(visit => {
+    ]
+  }
+  ).then(visit => {
     visit.update(req.body).then((updated) => {
-      console.log('res voisit', updated)
       res.send(updated);
     })
   })

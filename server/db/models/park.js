@@ -6,13 +6,10 @@ const Address = db.define('address', {
     // line_2: Sequelize.STRING,
     city: Sequelize.STRING,
     state: Sequelize.STRING,
-    zip: Sequelize.STRING,
-    coordinates: {
-        type: Sequelize.JSON,
-        defaultValue: {
-            latitude: null,
-            longitude: null,
-        }
+    zipcode: Sequelize.STRING,
+    location: {
+      type: Sequelize.JSON,
+      defaultValue: {lat: 0, lng: 0},
     }
 });
 // One to many between park and visits
@@ -79,7 +76,7 @@ const Park = db.define('park', {
     //         line_1: "",
     //         city: "",
     //         state: "",
-    //         zip: "",            
+    //         zip: "",
     //     }
     // }
 })
