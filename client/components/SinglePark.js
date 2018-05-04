@@ -328,7 +328,7 @@ export class SinglePark extends Component {
           <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
           <AddVisitForm
           nowString={this.state.nowString}
-          handleSubmit={this.handleSubmit} git />
+          handleSubmit={this.handleSubmit} />
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>
