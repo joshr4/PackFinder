@@ -22,6 +22,8 @@ import {
 import axios from 'axios'
 var Chart = require('react-d3-core').Chart;
 import {BarChart, LineChart} from 'react-d3-basic'
+import AddVisitForm from './addvisitform';
+
 // var LineChart = require('react-d3-basic').LineChart;
 
 /* eslint-disable react/no-multi-comp */
@@ -56,7 +58,7 @@ let dateDisplay = function(dateObj) {
   let month = dateObj.getMonth() + 1;
   if (month < 10) {
     month = "0" + month;
-  }  
+  }
   let day = dateObj.getDate();
   if (day < 10) {
     day = "0" + day;
@@ -71,13 +73,13 @@ let strfTime = function(dateObj) {
   let month = dateObj.getMonth() + 1;
   if (month < 10) {
     month = "0" + month;
-  }  
+  }
   let day = dateObj.getDate();
   if (day < 10) {
     day = "0" + day;
   }
   let DString = month + "/" + day;
-  
+
   let hour = dateObj.getHours();
   let minutes = dateObj.getMinutes();
   let hourString = (hour < 10) ? "0" + hour + ":" : hour + ":";
@@ -98,7 +100,7 @@ let stringFormat = function(dateObj) {
   let minutes = dateObj.getMinutes();
   let outputString = "";
   outputString = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + minutes;
-  return outputString;  
+  return outputString;
 }
 
 let YmDFormat = function(dateObj) {
@@ -131,7 +133,7 @@ export class SinglePark extends Component {
           {time: "test", visits: .00074},
           {time: "test2", visits: .00074}
       ],
-      maxVisits: 0,      
+      maxVisits: 0,
       userId: 1,
       parkId: 1,
     };
@@ -161,9 +163,9 @@ export class SinglePark extends Component {
       let nPartitions = width/hourPartition;
       console.log("nPartitions: ", nPartitions);
       let maxVisits = 0;
-      
+
       for (let i = 0; i < nPartitions; i ++) {
-        let intervalStart = new Date(minT.getTime() + hourPartition*i);  
+        let intervalStart = new Date(minT.getTime() + hourPartition*i);
         let intervalEnd = new Date(minT.getTime() + hourPartition*(i + 1));
         let d3Elem = {
           // time: intervalStart,
@@ -205,7 +207,7 @@ export class SinglePark extends Component {
         maxT,
         d3Data,
         maxVisits,
-      })      
+      })
     })
   }
   handleSubmit(event) {
@@ -213,7 +215,7 @@ export class SinglePark extends Component {
     console.log('event.target: ', event.target);
     let visitDate = event.target.visitDate.value;
     let fromTime = event.target.fromTime.value;
-    let toTime = event.target.toTime.value;  
+    let toTime = event.target.toTime.value;
     let newVisitInfo = {
       userId: this.state.userId,
       parkId: this.state.parkId
@@ -232,7 +234,7 @@ export class SinglePark extends Component {
     console.log("newVisitInfo: ", newVisitInfo);
     axios.post("api/visits", newVisitInfo).then(response => {
       console.log("visit post reponse: ", response.data);
-    })    
+    })
   }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
@@ -242,7 +244,7 @@ export class SinglePark extends Component {
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
       console.log("this.state: ", this.state);
-      const videos = ["1", "2", "3", "4", "5"]; 
+      const videos = ["1", "2", "3", "4", "5"];
       const items = [
         {
           childKey: 0,
@@ -264,13 +266,13 @@ export class SinglePark extends Component {
       const simpleList = courses.map(val => (
         <li key={val} data-id={val}>List Item {val}</li>
       ));
-  
+
       const ItemExampleProps = () => (
         <Item.Group items={items} />
       )
       var D3data = [
         {letter: "Z", visits: .00074},
-      ];      
+      ];
       var D3data = this.state.d3Data;
       // var parseDate = d3.time.format("%m/%d/%y").parse;
       var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
@@ -299,14 +301,14 @@ export class SinglePark extends Component {
       yTicks = [this.state.maxVisits, "d"],
       yDomain = [0, 3],
       // .ticks(d3.time.days, 1)
-      // .tickFormat((true) ? d3.time.format('%H:%M') : "")      
+      // .tickFormat((true) ? d3.time.format('%H:%M') : "")
       xTicks = [d3.time.hours, 1]
-      ;     
+      ;
       // var xScale = d3.time.scale()
-      // .domain([mindate, maxdate])        
+      // .domain([mindate, maxdate])
     return (
-      <div>    
-          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>           
+      <div>
+          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
           <Container text style={{marginBottom:'2em'}}>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>X Dog Park</Header>
           </Container>
@@ -324,25 +326,9 @@ export class SinglePark extends Component {
           </Segment>
           <Segment attached style={{marginBottom:'10px'}}>
           <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
-              <Form onSubmit={this.handleSubmit}>
-                  <Form.Group widths='equal'>
-                  <Form.Field>
-                    <label>Date</label>
-                    <Input type='date' name="visitDate" style={{marginLeft:'0px'}} defaultValue={this.state.nowString}/>
-                  </Form.Field>
-                  </Form.Group>
-                  <Form.Group widths='equal'>
-                  <Form.Field>
-                    <label>From</label>
-                    <Input type='time' name="fromTime" style={{marginLeft:'0px'}} defaultValue="17:00"/>
-                  </Form.Field>
-                  <Form.Field>
-                    <label>To</label>
-                    <Input type='time' name="toTime" style={{marginLeft:'0px'}} defaultValue="20:00"/>
-                  </Form.Field>
-                  </Form.Group>
-                  <Button type="submit" name="submitBtn">Schedule Visit</Button>
-              </Form>          
+          <AddVisitForm
+          nowString={this.state.nowString}
+          handleSubmit={this.handleSubmit} git />
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>
@@ -350,11 +336,11 @@ export class SinglePark extends Component {
         </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column width={16}>              
+          <Grid.Column width={16}>
           <Segment>
             Select day to view number of people:
             <input style={{marginLeft:"10px"}} name="selectDate" type="date"/>
-            
+
             </Segment>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Visitors</Header>
           <div
@@ -375,17 +361,17 @@ export class SinglePark extends Component {
           yTicks= {yTicks}
           // yDomain= {yDomain}
           // yLabel = {yLabel}
-          textAlign='center'/>                   
+          textAlign='center'/>
           </div>
-          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>                      
-          
+          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>
+
           </Grid.Column>
-          </Grid.Row>          
+          </Grid.Row>
           </Grid>
           <br/> <br/> <br/>
         </Segment>
-    
-    
+
+
         <Segment inverted vertical style={{ padding: '5em 0em' }}>
           <Container>
             <Grid divided inverted stackable>
