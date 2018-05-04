@@ -1,4 +1,8 @@
+
+
+const axios = require('axios');
 const faker = require('faker');
+
 
 // const toonAvatar = require('cartoon-avatar');
 const Promise = require('bluebird');
@@ -186,14 +190,50 @@ const parks = [
   },
 ];
 
+async function geocode(park){
+    let location = park.line1 + ' ' + park.city + ' ' + park.state;
+
+    let tempResult;
+
+    await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params: {
+        address: location,
+        key: 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY'
+      }
+    }).then(res => res.data.results.forEach(result => {
+      let tempLocation = {
+        lat: (Math.round(result.geometry.location.lat * 10000000) / 10000000),
+        lng: (Math.round(result.geometry.location.lng * 10000000) / 10000000)};
+
+
+        tempResult = tempLocation
+
+      return tempLocation;
+    })
+  )
+    .catch(err => console.log(err))
+    // console.log('tempResult ',tempResult)
+    return tempResult
+
+}
+
+
 function createParks(addresses) {
+
+
   return Promise.all(
     addresses.map(async park => {
+
+      let tempLocation = await geocode(park)
+
+      // console.log("hereeee ", tempLocation)
+
       const address = await Address.create({
         line1: park.line1,
         city: park.city,
         state: park.state,
         zipcode: park.zipcode,
+        location: tempLocation,
       });
       return Park.create({
         name: park.name,
