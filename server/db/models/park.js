@@ -2,11 +2,11 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Address = db.define('address', {
-    line_1: Sequelize.STRING,
+    line1: Sequelize.STRING,
     // line_2: Sequelize.STRING,
     city: Sequelize.STRING,
     state: Sequelize.STRING,
-    zip: Sequelize.STRING,
+    zipcode: Sequelize.STRING,
 });
 // One to many between park and visits
 // One to many between user and visits
