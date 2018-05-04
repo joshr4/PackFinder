@@ -30,12 +30,10 @@ class Dnd extends React.Component {
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
-  console.log('realstate',this.state)
   }
 
   componentDidMount() {
     this.props.getVisits();
-    console.log("new props: ", this.props);
   }
 
   toggleModal() {
@@ -53,7 +51,6 @@ class Dnd extends React.Component {
 
   moveEvent({ event, start, end }) {
     const { events } = this.props;
-    console.log("moved event!");
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
 
@@ -64,19 +61,6 @@ class Dnd extends React.Component {
       end,
     };
     this.props.updateVisit(updatedEvent);
-    // const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
-    // updatedEvent[0].start = start
-    // updatedEvent[0].end = end
-    // updatedEvent[0].id = event.id
-    // axios
-    //   .put(`api/visits/${event.id}/change-times`, newTimes)
-    //   .then(response => {
-    //     this.setState({
-    //       events: nextEvents,
-    //     });
-    //   });
-    //   console.log("moved event!");
-        
   }
 
   removeEvent(event) {
@@ -86,12 +70,6 @@ class Dnd extends React.Component {
 
   resizeEvent = (resizeType, { event, start, end }) => {
     const { events } = this.props;
-
-    // const nextEvents = events.map(existingEvent => {
-    //   return existingEvent.id == event.id
-    //     ? { ...existingEvent, start, end }
-    //     : existingEvent;
-    // });
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
     updatedEvent[0].end = end
@@ -100,7 +78,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    console.log("calendar events: ", this.props.events);
+    console.log('selected',this.state.selectedEvent)
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -122,22 +100,23 @@ class Dnd extends React.Component {
 
         />
       </div>
-      // : <div />
     );
   }
 }
 
 const mapState = state => {
-
+console.log('mapstate', state.calendar)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
     title: visit.title,
     start: new Date(visit.start),
-    end: new Date(visit.end)
+    end: new Date(visit.end),
+    address: visit.park.addressId
     }
     return newVisit
   })
+  console.log('postmap',calEvents)
   return {
     events: calEvents
   };
@@ -152,7 +131,6 @@ const mapDispatch = dispatch => {
       dispatch(deleteVisit(visit));
     },
     updateVisit(visit) {
-      console.log('updated visit', visit);
       dispatch(updateVisit(visit));
     },
   };
