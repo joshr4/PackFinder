@@ -16,7 +16,8 @@ import {
   Visibility,
   Card,
   Item,
-  Label, Embed
+  Label, Embed,
+  Form, Input, Radio, Select, TextArea, Checkbox
 } from 'semantic-ui-react'
 import axios from 'axios'
 var Chart = require('react-d3-core').Chart;
@@ -63,6 +64,29 @@ let dateDisplay = function(dateObj) {
   return month + "/" + day;
 }
 
+let strfTime = function(dateObj) {
+  if (dateObj == "") {
+    return ""
+  }
+  let month = dateObj.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }  
+  let day = dateObj.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  let DString = month + "/" + day;
+  
+  let hour = dateObj.getHours();
+  let minutes = dateObj.getMinutes();
+  let hourString = (hour < 10) ? "0" + hour + ":" : hour + ":";
+  let minuteString = (minutes < 10) ? "0" + minutes : minutes;
+  let TString = hourString + minuteString;
+
+  return DString + " " + TString;
+}
+
 let stringFormat = function(dateObj) {
   if (dateObj == "") {
     return ""
@@ -77,10 +101,27 @@ let stringFormat = function(dateObj) {
   return outputString;  
 }
 
+let YmDFormat = function(dateObj) {
+  let year = dateObj.getFullYear();
+  let day = dateObj.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  let month = dateObj.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  return year + "-" + month + "-" + day;
+}
+
 export class SinglePark extends Component {
   constructor() {
     super()
+    let thisDate = new Date(Date.now());
+    let thisDateString = YmDFormat(thisDate);
     this.state = {
+      now: thisDate,
+      nowString:thisDateString,
       visits:[],
       minT: "",
       maxT: "",
@@ -89,8 +130,12 @@ export class SinglePark extends Component {
           {letter: "Z", visits: .00074},
           {time: "test", visits: .00074},
           {time: "test2", visits: .00074}
-        ]      
+      ],
+      maxVisits: 0,      
+      userId: 1,
+      parkId: 1,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     axios.get("api/visits").then(response => {
@@ -115,6 +160,7 @@ export class SinglePark extends Component {
       console.log("partition: ", hourPartition);
       let nPartitions = width/hourPartition;
       console.log("nPartitions: ", nPartitions);
+      let maxVisits = 0;
       
       for (let i = 0; i < nPartitions; i ++) {
         let intervalStart = new Date(minT.getTime() + hourPartition*i);  
@@ -123,6 +169,8 @@ export class SinglePark extends Component {
           // time: intervalStart,
           time: stringFormat(intervalStart),
           date: dateDisplay(intervalStart),
+          timeDisplay: timeDisplay(intervalStart),
+          strfTime: strfTime(intervalStart),
           // time: timeDisplay(intervalStart, true),
           // time: intervalStart.getTime(),
           visits: 0,
@@ -143,6 +191,9 @@ export class SinglePark extends Component {
             d3Elem.visits ++;
           }
         })
+        if (d3Elem.visits > maxVisits) {
+          maxVisits = d3Elem.visits;
+        }
         d3Data.push(d3Elem);
         console.log(i, " intervalStart: ", intervalStart);
       }
@@ -153,8 +204,35 @@ export class SinglePark extends Component {
         minT,
         maxT,
         d3Data,
+        maxVisits,
       })      
     })
+  }
+  handleSubmit(event) {
+    console.log("line 193 handling submit: ", event, event.target);
+    console.log('event.target: ', event.target);
+    let visitDate = event.target.visitDate.value;
+    let fromTime = event.target.fromTime.value;
+    let toTime = event.target.toTime.value;  
+    let newVisitInfo = {
+      userId: this.state.userId,
+      parkId: this.state.parkId
+    }
+    let year = parseInt(visitDate.split("-")[0]);
+    let month = parseInt(visitDate.split("-")[1]) - 1;
+    let day = parseInt(visitDate.split("-")[2]);
+    let fromHour = parseInt(fromTime.split(":")[0]);
+    let fromMin = parseInt(fromTime.split(":")[1]);
+    let toHour = parseInt(toTime.split(":")[0]);
+    let toMin = parseInt(toTime.split(":")[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    newVisitInfo.start = startTime;
+    newVisitInfo.end = endTime;
+    console.log("newVisitInfo: ", newVisitInfo);
+    axios.post("api/visits", newVisitInfo).then(response => {
+      console.log("visit post reponse: ", response.data);
+    })    
   }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
@@ -206,20 +284,23 @@ export class SinglePark extends Component {
         }
       ],
       x = function(d) {
-        console.log("d.time: ", d.time, typeof (d.time));
+        // console.log("d.time: ", d.time, typeof (d.time));
         if (typeof (d.time) === typeof ("string")) {
           return d.time;
         }
         else if (d.time) {
-          console.log("parsedDate: ", parseDate(d.time.toString()));
+          // console.log("parsedDate: ", parseDate(d.time.toString()));
           return parseDate(d.time.toString());
         }
       },
       xScale = 'ordinal',
       xLabel = "Time",
       yLabel = "Visitors",
-      yTicks = [3, "d"],
-      yDomain = [0, 3]
+      yTicks = [this.state.maxVisits, "d"],
+      yDomain = [0, 3],
+      // .ticks(d3.time.days, 1)
+      // .tickFormat((true) ? d3.time.format('%H:%M') : "")      
+      xTicks = [d3.time.hours, 1]
       ;     
       // var xScale = d3.time.scale()
       // .domain([mindate, maxdate])        
@@ -229,18 +310,46 @@ export class SinglePark extends Component {
           <Container text style={{marginBottom:'2em'}}>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>X Dog Park</Header>
           </Container>
-          <Segment attached>
-            Address: 123 West Avenue
-        </Segment>
-        <Segment attached>
-            Average number of visitors: 5
-        </Segment>
-        <Segment attached style={{marginBottom:'10px'}}>
-            Dogs are one type of animal.
-        </Segment>
-        <Image size='big' centered={true} src='https://react.semantic-ui.com/assets/images/wireframe/image.png' fluid />
           <Grid celled>
           <Grid.Row>
+        <Grid.Column width={8}>
+          <Segment attached>
+            Address: 123 West Avenue
+          </Segment>
+          <Segment attached>
+              Average number of visitors: 5
+          </Segment>
+          <Segment attached>
+              Dogs are one type of animal.
+          </Segment>
+          <Segment attached style={{marginBottom:'10px'}}>
+          <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
+              <Form onSubmit={this.handleSubmit}>
+                  <Form.Group widths='equal'>
+                  <Form.Field>
+                    <label>Date</label>
+                    <Input type='date' name="visitDate" style={{marginLeft:'0px'}} defaultValue={this.state.nowString}/>
+                  </Form.Field>
+                  </Form.Group>
+                  <Form.Group widths='equal'>
+                  <Form.Field>
+                    <label>From</label>
+                    <Input type='time' name="fromTime" style={{marginLeft:'0px'}} defaultValue="17:00"/>
+                  </Form.Field>
+                  <Form.Field>
+                    <label>To</label>
+                    <Input type='time' name="toTime" style={{marginLeft:'0px'}} defaultValue="20:00"/>
+                  </Form.Field>
+                  </Form.Group>
+                  <Button type="submit" name="submitBtn">Schedule Visit</Button>
+              </Form>          
+          </Segment>
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <Image size='big' centered={true} src='https://react.semantic-ui.com/assets/images/wireframe/image.png' fluid />
+        </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
           <Grid.Column width={16}>              
           <Segment>
             Select day to view number of people:
@@ -261,8 +370,9 @@ export class SinglePark extends Component {
           chartSeries = {chartSeries}
           x= {x}
           xLabel= {xLabel}
-            xScale= {xScale}
-          // yTicks= {yTicks}
+          xScale= {xScale}
+          xTicks={xTicks}
+          yTicks= {yTicks}
           // yDomain= {yDomain}
           // yLabel = {yLabel}
           textAlign='center'/>                   

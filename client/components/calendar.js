@@ -108,11 +108,11 @@ const mapState = state => {
 console.log('mapstate', state.calendar)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
-    id: visit.id,
-    title: visit.title,
-    start: new Date(visit.start),
-    end: new Date(visit.end),
-    address: visit.park.addressId
+      id: visit.id,
+      title: visit.title,
+      start: new Date(visit.start),
+      end: new Date(visit.end),
+    // address: visit.park.addressId
     }
     return newVisit
   })
