@@ -37,8 +37,8 @@ export const deleteVisit = visit => dispatch =>
 
 export const updateVisit = visit => dispatch =>
   axios
-    .put(`api/visits/${visit.id}`)
-    .then(res => dispatch(delVisit(res.data || defaultVisits)))
+    .put(`api/visits/${visit.id}/change-times`, visit)
+    .then(res => dispatch(updVisit(res.data || defaultVisits)))
     .catch(err => console.log(err));
 
 /**
@@ -49,7 +49,9 @@ export default function(state = defaultVisits, action) {
     case GET_VISITS:
       return action.visits;
     case UPDATE_VISIT:
-      return state.map(visit => action.visit.id !== visit.id);
+      return state.map(
+        visit => (action.visit.id !== visit.id ? visit : action.visit)
+      );
     case DELETE_VISIT:
       return state.filter(visit => action.visit.id !== visit.id);
     default:
