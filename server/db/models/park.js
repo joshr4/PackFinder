@@ -23,16 +23,10 @@ const Visit = db.define('visit', {
     start: {
         type: Sequelize.DATE,
         allowNull: false,
-        // defaultValue: null,
-        // get() {
-        //     let startTime = new Date(this.getDataValue('start'));
-        //     return startTime;
-        // },
     },
     end: {
         type: Sequelize.DATE,
         allowNull: false,
-        // defaultValue: null,
         // get() {
         //     let endTime = new Date(this.getDataValue('end'));
         //     return endTime;
