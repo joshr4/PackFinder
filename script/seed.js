@@ -62,8 +62,26 @@ async function seed () {
   console.log('seeding user');
   await usersSeed();
   await parksSeed();
+  // let user1 = 
   console.log("Park: ", Park);
-  // Adding Users to Park through "visits" MtM relationship
+  let user1 = await User.findOne({
+    where: {
+      email:'dan@dan.com',
+    }
+  })
+  let user2 = await User.findOne({
+    where: {
+      email:'josh@josh.com',
+    }
+  })
+  let user3 = await User.findOne({
+    where: {
+      email:'ricky@ricky.com',
+    }
+  })
+    // Adding Users to Park through "visits" MtM relationship
+  let startTime = new Date(2018, 3, 9, 12, 0);
+  let endTime = new Date(2018, 3, 9, 15, 0);
   await Park1.addUsers([user1, user2], {through: {
     start: startTime,
     end: endTime,
@@ -85,10 +103,6 @@ async function seed () {
   }})
   await user2.save();
 
-  // Wowzers! We can even `await` on the right-hand side of the assignment operator
-  // and store the result that the promise resolves to in a variable! This is nice!
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
   // // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // // and store the result that the promise resolves to in a variable! This is nice!
   // console.log(`seeded ${users.length} users`)
