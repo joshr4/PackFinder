@@ -9,8 +9,18 @@
  *
  * Now that you've got the main idea, check it out in practice below!
  */
-const db = require('../server/db')
-const {User, Pet, Park, Visit, Address, Event, Review} = require('../server/db/models')
+const db = require('../server/db');
+const {
+  User,
+  Pet,
+  Park,
+  Visit,
+  Address,
+  Event,
+  Review,
+} = require('../server/db/models');
+const usersSeed = require('./seed/seed-users');
+const parksSeed = require('./seed/seed-parks');
 
 async function seed () {
   await db.sync({force: true})
@@ -49,20 +59,9 @@ async function seed () {
   Park2.setAddress(addressOhioPlace);
   await Park2.save();
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
-  const user1 = await User.create({email: 'user1@email.com', password:'user1'});
-  const user2 = await User.create({email: 'user2@email.com', password:'user2'});
-  const user3 = await User.create({email: 'user3@email.com', password:'user3'});
-  // const startTime = new Date(2018, 4, 2, 16, 0);
-  // const endTime = new Date(2018, 4, 2, 20, 0);
-  const startTime = new Date(2015, 3, 12, 10, 30, 0, 0);
-  const endTime = new Date(2015, 3, 12, 12, 30, 0, 0);
-  // start: new Date(2015, 3, 0),
-  // end: new Date(2015, 3, 1),
-
+  console.log('seeding user');
+  await usersSeed();
+  await parksSeed();
   console.log("Park: ", Park);
   // Adding Users to Park through "visits" MtM relationship
   await Park1.addUsers([user1, user2], {through: {
@@ -90,6 +89,10 @@ async function seed () {
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
+  // // Wowzers! We can even `await` on the right-hand side of the assignment operator
+  // // and store the result that the promise resolves to in a variable! This is nice!
+  // console.log(`seeded ${users.length} users`)
+  console.log(`seeded successfully`);
 }
 
 // Execute the `seed` function
@@ -97,19 +100,19 @@ async function seed () {
 // that might occur inside of `seed`
 seed()
   .catch(err => {
-    console.error(err.message)
-    console.error(err.stack)
-    process.exitCode = 1
+    console.error(err.message);
+    console.error(err.stack);
+    process.exitCode = 1;
   })
   .then(() => {
-    console.log('closing db connection')
-    db.close()
-    console.log('db connection closed')
-  })
+    console.log('closing db connection');
+    db.close();
+    console.log('db connection closed');
+  });
 
 /*
  * note: everything outside of the async function is totally synchronous
  * The console.log below will occur before any of the logs that occur inside
  * of the async function
  */
-console.log('seeding...')
+console.log('seeding...');
