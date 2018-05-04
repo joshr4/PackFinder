@@ -32,16 +32,16 @@ class Map extends Component {
   render() {
 
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
-    const markers = this.props.markers.map((venue, i) => {
+    const markers = this.props.markers.map((park, i) => {
 
       const marker = {
         position: {
-          lat: venue.location.lat,
-          lng: venue.location.lng,
+          lat: park.location.lat,
+          lng: park.location.lng,
         }
       }
 
-      return <Marker key={venue.location.lat.toString() + venue.location.lng.toString()} {...marker} />
+      return <Marker key={park.location.lat.toString() + park.location.lng.toString()} {...marker} />
     })
 
     // <Marker
