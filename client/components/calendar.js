@@ -92,7 +92,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-
+    console.log("calendar events: ", this.props.events);
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -110,7 +110,7 @@ class Dnd extends React.Component {
           onDoubleClickEvent={event => this.openModal(event)}
           onEventResize={this.resizeEvent}
           defaultView="week"
-          defaultDate={new Date(2015, 3, 12)}
+          defaultDate={new Date(2018, 3, 12)}
         />
       </div>
       // : <div />
