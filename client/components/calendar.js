@@ -53,7 +53,6 @@ class Dnd extends React.Component {
 
   moveEvent({ event, start, end }) {
     const { events } = this.props;
-    console.log("moved event!");
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
 
@@ -64,19 +63,6 @@ class Dnd extends React.Component {
       end,
     };
     this.props.updateVisit(updatedEvent);
-    // const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
-    // updatedEvent[0].start = start
-    // updatedEvent[0].end = end
-    // updatedEvent[0].id = event.id
-    // axios
-    //   .put(`api/visits/${event.id}/change-times`, newTimes)
-    //   .then(response => {
-    //     this.setState({
-    //       events: nextEvents,
-    //     });
-    //   });
-    //   console.log("moved event!");
-        
   }
 
   removeEvent(event) {
@@ -86,12 +72,6 @@ class Dnd extends React.Component {
 
   resizeEvent = (resizeType, { event, start, end }) => {
     const { events } = this.props;
-
-    // const nextEvents = events.map(existingEvent => {
-    //   return existingEvent.id == event.id
-    //     ? { ...existingEvent, start, end }
-    //     : existingEvent;
-    // });
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
     updatedEvent[0].end = end
@@ -122,7 +102,6 @@ class Dnd extends React.Component {
 
         />
       </div>
-      // : <div />
     );
   }
 }
@@ -152,7 +131,6 @@ const mapDispatch = dispatch => {
       dispatch(deleteVisit(visit));
     },
     updateVisit(visit) {
-      console.log('updated visit', visit);
       dispatch(updateVisit(visit));
     },
   };
