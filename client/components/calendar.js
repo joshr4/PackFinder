@@ -35,6 +35,7 @@ class Dnd extends React.Component {
 
   componentDidMount() {
     this.props.getVisits();
+    console.log("new props: ", this.props);
   }
 
   toggleModal() {
