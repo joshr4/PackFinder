@@ -6,6 +6,7 @@ import history from '../history';
  */
 const GET_VISITS = 'GET_VISITS';
 const DELETE_VISIT = 'DELETE_VISIT';
+const UPDATE_VISIT = 'UPDATE_VISIT';
 
 /**
  * INITIAL STATE
@@ -17,6 +18,7 @@ const defaultVisits = [];
  */
 const getAllVisits = visits => ({ type: GET_VISITS, visits });
 const delVisit = visit => ({ type: DELETE_VISIT, visit });
+const updVisit = visit => ({ type: UPDATE_VISIT, visit });
 
 /**
  * THUNK CREATORS
@@ -32,6 +34,13 @@ export const deleteVisit = visit => dispatch =>
     .delete(`api/visits/${visit.id}`)
     .then(res => dispatch(delVisit(res.data || defaultVisits)))
     .catch(err => console.log(err));
+
+export const updateVisit = visit => dispatch =>
+  axios
+    .put(`api/visits/${visit.id}`)
+    .then(res => dispatch(delVisit(res.data || defaultVisits)))
+    .catch(err => console.log(err));
+
 /**
  * REDUCER
  */
@@ -39,6 +48,8 @@ export default function(state = defaultVisits, action) {
   switch (action.type) {
     case GET_VISITS:
       return action.visits;
+    case UPDATE_VISIT:
+      return state.map(visit => action.visit.id !== visit.id);
     case DELETE_VISIT:
       return state.filter(visit => action.visit.id !== visit.id);
     default:

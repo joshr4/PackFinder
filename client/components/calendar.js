@@ -9,7 +9,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
 import { EventModal } from './index';
-import { getVisits, deleteVisit } from '../store';
+import { getVisits, deleteVisit, updateVisit } from '../store';
 import { connect } from 'react-redux';
 
 // import '../../public/calendar.css'
@@ -23,9 +23,7 @@ class Dnd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: events,
       selectedEvent: {},
-      calendar: [],
       showModal: false,
     };
   this.moveEvent = this.moveEvent.bind(this);
@@ -36,7 +34,7 @@ class Dnd extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadVisits();
+    this.props.getVisits();
   }
 
   toggleModal() {
@@ -64,13 +62,13 @@ class Dnd extends React.Component {
       start,
       end,
     };
-    axios
-      .put(`api/visits/${event.id}/change-times`, newTimes)
-      .then(response => {
-        this.setState({
-          events: nextEvents,
-        });
-      });
+    // axios
+    //   .put(`api/visits/${event.id}/change-times`, newTimes)
+    //   .then(response => {
+    //     this.setState({
+    //       events: nextEvents,
+    //     });
+    //   });
   }
 
   removeEvent(event) {
@@ -139,13 +137,17 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    loadVisits() {
+    getVisits() {
       console.log('loaded visits');
       dispatch(getVisits());
     },
     removeVisit(visit) {
       console.log('deleted visit', visit);
       dispatch(deleteVisit(visit));
+    },
+    updateVisit(visit) {
+      console.log('updated visit', visit);
+      dispatch(updateVisit(visit));
     },
   };
 };
