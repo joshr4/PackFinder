@@ -71,6 +71,7 @@ class Dnd extends React.Component {
         end
     }
     axios.put(`api/visits/${event.id}/change-times`, newTimes).then(response => {
+        console.log("updated event: ", response.data);
         this.setState({
           events: nextEvents,
         })
@@ -98,9 +99,16 @@ class Dnd extends React.Component {
         : existingEvent;
     });
 
-    this.setState({
-      events: nextEvents,
-    });
+    let newTimes = {
+        start,
+        end
+    }
+    axios.put(`api/visits/${event.id}/change-times`, newTimes).then(response => {
+        console.log("updated event (resize): ", response.data);
+        this.setState({
+          events: nextEvents,
+        })
+    }) 
 
     //alert(`${event.title} was resized to ${start}-${end}`);
   };

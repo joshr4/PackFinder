@@ -7,6 +7,13 @@ const Address = db.define('address', {
     city: Sequelize.STRING,
     state: Sequelize.STRING,
     zip: Sequelize.STRING,
+    coordinates: {
+        type: Sequelize.JSON,
+        defaultValue: {
+            latitude: null,
+            longitude: null,
+        }
+    }
 });
 // One to many between park and visits
 // One to many between user and visits
@@ -59,7 +66,16 @@ const Park = db.define('park', {
     schedule: {
         type: Sequelize.JSON,
         defaultValue: {},
-    }
+    },
+    // address: {
+    //     type: Sequelize.JSON,
+    //     defaultValue: {
+    //         line_1: "",
+    //         city: "",
+    //         state: "",
+    //         zip: "",            
+    //     }
+    // }
 })
 
 Park.prototype.getVisits = function(startTime, endTime) {
