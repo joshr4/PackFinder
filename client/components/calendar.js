@@ -77,7 +77,7 @@ class Dnd extends React.Component {
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
-    const { events } = this.state;
+    const { events } = this.props;
 
     const nextEvents = events.map(existingEvent => {
       return existingEvent.id == event.id
@@ -85,9 +85,10 @@ class Dnd extends React.Component {
         : existingEvent;
     });
 
-    this.setState({
-      events: nextEvents,
-    });
+    // this.setState({
+    //   events: nextEvents,
+    // });
+    this.props.updateEvent(nextEvents)
   };
 
   render() {
@@ -145,9 +146,9 @@ const mapDispatch = dispatch => {
       console.log('deleted visit', visit);
       dispatch(deleteVisit(visit));
     },
-    updateVisit(visit) {
-      console.log('updated visit', visit);
-      dispatch(updateVisit(visit));
+    updateVisit(newVisits) {
+      console.log('updated visit', newVisits);
+      dispatch(updateVisit(newVisits));
     },
   };
 };
