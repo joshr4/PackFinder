@@ -36,12 +36,12 @@ class Map extends Component {
 
       const marker = {
         position: {
-          lat: park.location.lat,
-          lng: park.location.lng,
+          lat: park.address.location.lat,
+          lng: park.address.location.lng,
         }
       }
 
-      return <Marker key={park.location.lat.toString() + park.location.lng.toString()} {...marker} />
+      return <Marker key={park.address.location.lat.toString() + park.address.location.lng.toString()} {...marker} />
     })
 
     // <Marker
