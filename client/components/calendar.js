@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -8,8 +9,8 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { EventModal } from './index';
-import { getVisits, deleteVisit, updateVisit } from '../store';
+import { EventModal, AddEventModal } from './index';
+import { getVisits, deleteVisit, updateVisit, addVisit } from '../store';
 import { connect } from 'react-redux';
 
 // import '../../public/calendar.css'
@@ -25,11 +26,13 @@ class Dnd extends React.Component {
     this.state = {
       selectedEvent: {},
       showModal: false,
+      showAddModal: false,
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
+  this.toggleAddModal = this.toggleAddModal.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +80,16 @@ class Dnd extends React.Component {
     this.props.updateVisit(updatedEvent[0])
   };
 
+  toggleAddModal = () => {
+    this.setState({
+      showAddModal: !this.state.showAddModal,
+    });
+  }
+  addEvent = (event) => {
+    this.props.addNewVisit(event)
+    this.toggleAddModal()
+  }
+
   render() {
     return (
       <div style={{ height: '1000px' }}>
@@ -86,6 +99,13 @@ class Dnd extends React.Component {
           onDelete={this.removeEvent}
           item={this.state.selectedEvent}
         />
+        <AddEventModal
+          show={this.state.showAddModal}
+          onClose={this.toggleAddModal}
+          onAdd={this.addEvent}
+          item={this.state.selectedEvent}
+        />
+        <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
         <DragAndDropCalendar
           selectable
           culture="en-GB"
@@ -131,6 +151,10 @@ const mapDispatch = dispatch => {
     },
     updateVisit(visit) {
       dispatch(updateVisit(visit));
+    },
+    addNewVisit(visit) {
+      console.log('ADDED')
+      dispatch(addVisit(visit));
     },
   };
 };
