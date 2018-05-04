@@ -27,13 +27,117 @@ import {BarChart, LineChart} from 'react-d3-basic'
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
+
+let timeDisplay = function(dateObj, military=false) {
+  if (dateObj == "") {
+    return ""
+  }
+  let hour = dateObj.getHours();
+  let minutes = dateObj.getMinutes();
+  let outputString = "";
+  let suffix = "";
+  if (!military) {
+    if (hour >= 12) {
+      hour -= 12;
+      suffix = " PM";
+    }
+    else {
+      suffix = " AM";
+    }
+  }
+  let hourString = (hour < 10) ? "0" + hour + ":" : hour + ":";
+  let minuteString = (minutes < 10) ? "0" + minutes : minutes;
+  outputString = hourString + minuteString + suffix;
+  return outputString;
+}
+
+let dateDisplay = function(date) {
+  
+}
+
+let stringFormat = function(dateObj) {
+  if (dateObj == "") {
+    return ""
+  }
+  let year = dateObj.getFullYear();
+  let day = dateObj.getDate();
+  let month = dateObj.getMonth();
+  let hour = dateObj.getHours();
+  let minutes = dateObj.getMinutes();
+  let outputString = "";
+  outputString = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + minutes;
+  return outputString;  
+}
+
 export class SinglePark extends Component {
   constructor() {
     super()
     this.state = {
+      visits:[],
+      minT: "",
+      maxT: "",
+      xIndices: [],
+      d3Data: [
+          {letter: "Z", visits: .00074},
+          {time: "test", visits: .00074},
+          {time: "test2", visits: .00074}
+        ]      
     };
   }
   componentDidMount() {
+    axios.get("api/visits").then(response => {
+      let visits = response.data;
+      let minT = "";
+      let maxT = "";
+      visits.forEach(visit => {
+        let startT = new Date(visit.start);
+        let endT = new Date(visit.end);
+        if (minT == "" || startT < minT) {
+          minT = startT;
+        }
+        if (maxT == "" || endT > maxT) {
+          maxT = endT;
+        }
+      })
+      let d3Data = [];
+      let width = maxT - minT;
+      console.log("width: ", width);
+      let halfHourpartition = 1000*60*30;
+      let hourPartition = 1000*60*60;
+      console.log("partition: ", hourPartition);
+      let nPartitions = width/hourPartition;
+      console.log("nPartitions: ", nPartitions);
+      
+      for (let i = 0; i < nPartitions; i ++) {
+        let intervalStart = new Date(minT.getTime() + hourPartition*i);  
+        let intervalEnd = new Date(minT.getTime() + hourPartition*(i + 1));
+        let d3Elem = {
+          // time: intervalStart,
+          time: stringFormat(intervalStart),
+          // time: timeDisplay(intervalStart, true),
+          // time: intervalStart.getTime(),
+          visits: 0
+        };
+        visits.forEach(visit => {
+          let startT = new Date(visit.start);
+          let endT = new Date(visit.end);
+          if ((startT < intervalEnd && endT > intervalStart)) {
+            console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
+            d3Elem.visits ++;
+          }
+        })
+        d3Data.push(d3Elem);
+        console.log(i, " intervalStart: ", intervalStart);
+      }
+      console.log("d3Data loaded: ", d3Data);
+
+      this.setState({
+        visits,
+        minT,
+        maxT,
+        d3Data,
+      })      
+    })
   }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
@@ -42,7 +146,7 @@ export class SinglePark extends Component {
       const { children } = this.props
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      console.log("this.state: ", this.state)
+      console.log("this.state: ", this.state);
       const videos = ["1", "2", "3", "4", "5"]; 
       const items = [
         {
@@ -70,49 +174,38 @@ export class SinglePark extends Component {
         <Item.Group items={items} />
       )
       var D3data = [
-        {letter: "A", frequency: .08167},
-        {letter: "B", frequency: .01492},
-        {letter: "C", frequency: .02780},
-        {letter: "D", frequency: .04253},
-        {letter: "E", frequency: .12702},
-        {letter: "F", frequency: .02288},
-        {letter: "G", frequency: .02022},
-        {letter: "H", frequency: .06094},
-        {letter: "I", frequency: .06973},
-        {letter: "J", frequency: .00153},
-        {letter: "K", frequency: .00747},
-        {letter: "L", frequency: .04025},
-        {letter: "M", frequency: .02517},
-        {letter: "N", frequency: .06749},
-        {letter: "O", frequency: .07507},
-        {letter: "P", frequency: .01929},
-        {letter: "Q", frequency: .00098},
-        {letter: "R", frequency: .05987},
-        {letter: "S", frequency: .06333},
-        {letter: "T", frequency: .09056},
-        {letter: "U", frequency: .02758},
-        {letter: "V", frequency: .01037},
-        {letter: "W", frequency: .02465},
-        {letter: "X", frequency: .00150},
-        {letter: "Y", frequency: .01971},
-        {letter: "Z", frequency: .00074}
+        {letter: "Z", visits: .00074},
       ];      
+      var D3data = this.state.d3Data;
+      // var parseDate = d3.time.format("%m/%d/%y").parse;
+      var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
       var width = 1000,
       height = 600,
       title = "Bar Chart",
       chartSeries = [
         {
-          field: 'frequency',
-          name: 'Frequency'
+          field: 'visits',
+          name: 'Visits'
         }
       ],
       x = function(d) {
-        return d.letter;
+        console.log("d.time: ", d.time, typeof (d.time));
+        if (typeof (d.time) === typeof ("string")) {
+          return d.time;
+        }
+        else if (d.time) {
+          console.log("parsedDate: ", parseDate(d.time.toString()));
+          return parseDate(d.time.toString());
+        }
       },
       xScale = 'ordinal',
-      xLabel = "Letter",
-      yLabel = "Frequency",
-      yTicks = [20, "%"];      
+      xLabel = "Time",
+      yLabel = "Visitors",
+      yTicks = [3, "d"],
+      yDomain = [0, 3]
+      ;     
+      // var xScale = d3.time.scale()
+      // .domain([mindate, maxdate])        
     return (
       <div>    
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>           
@@ -137,7 +230,7 @@ export class SinglePark extends Component {
             <input style={{marginLeft:"10px"}} name="selectDate" type="date"/>
             
             </Segment>
-          <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Purchase Map</Header>
+          <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Visitors</Header>
           <div
           style={{"marginLeft":"auto"}}
           className="segment centered"
@@ -151,9 +244,10 @@ export class SinglePark extends Component {
           chartSeries = {chartSeries}
           x= {x}
           xLabel= {xLabel}
-          xScale= {xScale}
-          yTicks= {yTicks}
-          yLabel = {yLabel}
+            xScale= {xScale}
+          // yTicks= {yTicks}
+          // yDomain= {yDomain}
+          // yLabel = {yLabel}
           textAlign='center'/>                   
           </div>
           <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>                      

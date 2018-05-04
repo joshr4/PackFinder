@@ -35,6 +35,10 @@ const Visit = db.define('visit', {
         //     let endTime = new Date(this.getDataValue('end'));
         //     return endTime;
         // },
+    },
+    title: {
+        type: Sequelize.TEXT,
+        allowNull: true
     }
 })
 
@@ -63,7 +67,16 @@ const Park = db.define('park', {
     schedule: {
         type: Sequelize.JSON,
         defaultValue: {},
-    }
+    },
+    // address: {
+    //     type: Sequelize.JSON,
+    //     defaultValue: {
+    //         line_1: "",
+    //         city: "",
+    //         state: "",
+    //         zip: "",
+    //     }
+    // }
 })
 
 Park.prototype.getVisits = function(startTime, endTime) {
