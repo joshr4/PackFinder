@@ -23,9 +23,11 @@ router.delete('/:id', (req, res, next) => {
 router.put('/:id/change-times', (req, res, next) => {
   console.log("change-times req.body: ", req.body);
   Visit.findById(req.params.id).then(visit => {
-    visit.update(req.body).then(() => {
-      res.send(visit);
+    visit.update(req.body).then((updated) => {
+      console.log('res voisit', updated)
+      res.send(updated);
     })
   })
 
 })
+
