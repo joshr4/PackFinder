@@ -10,7 +10,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
 import { EventModal, AddEventModal } from './index';
-import { getVisits, deleteVisit, updateVisit, addVisit } from '../store';
+import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
 
 // import '../../public/calendar.css'
@@ -36,7 +36,7 @@ class Dnd extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getVisits();
+    this.props.getData();
   }
 
   toggleModal() {
@@ -104,6 +104,7 @@ class Dnd extends React.Component {
           onClose={this.toggleAddModal}
           onAdd={this.addEvent}
           item={this.state.selectedEvent}
+          parkList={this.props.parkList}
         />
         <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
         <DragAndDropCalendar
@@ -135,16 +136,27 @@ const mapState = state => {
     }
     return newVisit
   })
+  //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
+  let dropDownParks = state.parkList.map(park=>{
+    let newPark = {
+      key: park.id,
+      value: park.id,
+      text: park.name
+    }
+    return newPark
+  })
   return {
     events: calEvents,
-    user: state.user
+    user: state.user,
+    parkList: dropDownParks
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    getVisits() {
+    getData() {
       dispatch(getVisits());
+      dispatch(getParksAddresses());
     },
     removeVisit(visit) {
       dispatch(deleteVisit(visit));

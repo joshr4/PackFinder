@@ -40,10 +40,13 @@ const AddVisitForm = props => (
         />
       </Form.Field>
     </Form.Group>
-    <DropdownExampleSearchSelection list={[ { key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }, { key: 'us', value: 'us', flag: 'us', text: 'USA' }]} />
+    <DropdownExampleSearchSelection list={props.parkList} />
     <Button type="submit" name="submitBtn">
       Schedule Visit
     </Button>
   </Form>
 );
 export default AddVisitForm;
+
+
+// [ { key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }, { key: 'us', value: 'us', flag: 'us', text: 'USA' }]
