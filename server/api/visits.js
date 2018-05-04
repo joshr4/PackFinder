@@ -34,7 +34,8 @@ router.put('/:id/change-times', (req, res, next) => {
       id: req.params.id
     },
     include:[
-      {model: Park, required: false, include:[Address]}
+      {model: Park, required: false, include:[Address]},
+      {model: User, required:false}
     ]
   }
   ).then(visit => {
@@ -48,14 +49,20 @@ router.put('/:id/change-times', (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   console.log("req.body: ", req.body);
-  relatedPark = await Park.findById(req.body.parkId);
-  relatedUser = await User.findById(req.body.userId);
-  Visit.create(req.body).then(visit => {
-    visit.title = relatedPark.name;
-    visit.setPark(relatedPark);
-    visit.setUser(relatedUser);
-    res.json(visit);
-  })
+  let relatedPark = await Park.findById(req.body.parkId);
+  let relatedUser = await User.findById(req.body.userId);
+  let newVisit = await Visit.create({
+    start:req.body.start,
+    end:req.body.end,
+    parkId:req.body.parkId,
+    userId:req.body.userId
+  });
+  console.log("created new visit: ", newVisit);
+  // newVisit.title = relatedPark.name;
+  // newVisit.setPark(relatedPark);
+  // newVisit.setUser(relatedUser);
+  await newVisit.save();
+  res.json(visit);
   // Visit.findById(req.params.id).then(visit => {
   //   visit.update(req.body).then((updated) => {
   //     console.log('res voisit', updated)
