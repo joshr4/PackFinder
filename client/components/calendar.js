@@ -30,12 +30,10 @@ class Dnd extends React.Component {
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
-  console.log('realstate',this.state)
   }
 
   componentDidMount() {
     this.props.getVisits();
-    console.log("new props: ", this.props);
   }
 
   toggleModal() {
@@ -80,7 +78,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    console.log("calendar events: ", this.props.events);
+    console.log('selected',this.state.selectedEvent)
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -107,16 +105,18 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-
+console.log('mapstate', state.calendar)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
     title: visit.title,
     start: new Date(visit.start),
-    end: new Date(visit.end)
+    end: new Date(visit.end),
+    address: visit.park.addressId
     }
     return newVisit
   })
+  console.log('postmap',calEvents)
   return {
     events: calEvents
   };
