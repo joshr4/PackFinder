@@ -36,8 +36,7 @@ export class Example extends Component {
       const { children } = this.props
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      console.log("this.state: ", this.state)
-      const videos = ["1", "2", "3", "4", "5"]; 
+      const videos = ["1", "2", "3", "4", "5"];
       const items = [
         {
           childKey: 0,
@@ -59,12 +58,12 @@ export class Example extends Component {
       const simpleList = courses.map(val => (
         <li key={val} data-id={val}>List Item {val}</li>
       ));
-  
+
       const ItemExampleProps = () => (
         <Item.Group items={items} />
       )
     return (
-      <div>    
+      <div>
           <Segment style={{ padding: '2em', paddingTop: '5em' }} vertical>
           <Container text style={{marginBottom:'2em'}}>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Example</Header>
@@ -73,7 +72,7 @@ export class Example extends Component {
           <Grid.Row>
             <Grid.Column width={3}>
             <Item.Group divided>
-            
+
                 {videos.map(elem => {
                   return(
                   <Card>
@@ -82,9 +81,9 @@ export class Example extends Component {
                       <a key={elem} onClick={() => this.changeVideo(elem)}>{elem}</a>
                   </Card.Header>
                       </Card.Content>
-                  </Card>                                            
+                  </Card>
                   )
-                  })              
+                  })
               }
           </Item.Group>
           </Grid.Column>
@@ -93,22 +92,22 @@ export class Example extends Component {
           icon='right circle arrow'
           aspectRatio="4:3"
           url={`/files/${this.state.videoURL}`}
-            />                      
+            />
 
           </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-          <Grid.Column width={16}>              
+          <Grid.Column width={16}>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Chart Here</Header>
-          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>                      
+          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>
           </Grid.Column>
           </Grid.Row>
-          
+
           </Grid>
           <br/> <br/> <br/>
         </Segment>
-    
-    
+
+
         <Segment inverted vertical style={{ padding: '5em 0em' }}>
           <Container>
             <Grid divided inverted stackable>
