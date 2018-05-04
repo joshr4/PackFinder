@@ -87,7 +87,7 @@ class Dnd extends React.Component {
 
     // this.setState({
     //   events: nextEvents,
-    // });
+    // });npm
     this.props.updateEvent(nextEvents)
   };
 
