@@ -3,9 +3,6 @@ import { Button, Header, Image, Modal } from 'semantic-ui-react';
 
 const EventModal = props => (
   <Modal open={props.show}>
-    {props.item.start
-      ? console.log('modal', props.item.start.toString())
-      : console.log('nothing')}
     <Button onClick={() => props.onClose()}>Close</Button>
     <Button onClick={() => props.onDelete(props.item)}>Delete Event</Button>
     {/* <Modal.Header>{props.selEvent.title}</Modal.Header> */}

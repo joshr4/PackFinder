@@ -78,7 +78,6 @@ class Dnd extends React.Component {
   };
 
   render() {
-    console.log('selected',this.state.selectedEvent)
     return (
       <div style={{ height: '1000px' }}>
         <EventModal
@@ -105,7 +104,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-console.log('mapstate', state.calendar)
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
     id: visit.id,
@@ -116,7 +114,6 @@ console.log('mapstate', state.calendar)
     }
     return newVisit
   })
-  console.log('postmap',calEvents)
   return {
     events: calEvents
   };
