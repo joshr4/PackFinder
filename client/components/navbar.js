@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Image } from 'semantic-ui-react';
+import { Menu, Image, Header } from 'semantic-ui-react';
 // https://logomakr.com/4zlisz
 
 const styles = {
@@ -26,11 +26,24 @@ const styles = {
     fontFamily: 'Veradana, sans-serif',
     fontWeight: 500,
   },
+  titleText: {
+    fontFamily: 'Pacifico, cursive',
+    fontSize: 50,
+    color: '#55b9bf',
+    textShadow:
+      '2px 5px 6px rgba(0,0,0,0.2)',
+    letterSpacing: '2px',
+    fontWeight: 100,
+  },
 };
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
   <Menu stackable style={styles.menu}>
-    <Image style={styles.image} src={'/images/logo.png'} />
+    {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
+    <Header as="h1" style={styles.titleText}>
+      {' '}
+      Pack Finder{' '}
+    </Header>
     {isLoggedIn ? (
       <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
         {/* The navbar will show these links after you log in */}
