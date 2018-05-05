@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Parallax } from 'react-parallax';
+import { Button } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 export const Splash = props => {
   const styles = {
@@ -25,20 +27,22 @@ export const Splash = props => {
 
   return (
     <div>
-      <Parallax strength={500}  bgImage={image1}>
-        <div  style={{ height: '80vw', backgroundSize: "cover" }}>
-          <div style={insideStyles}>Get Started</div>
+      <Parallax strength={500} bgImage={image1}>
+        <div style={{ height: '100vw', backgroundSize: 'cover' }}>
+          <Button as={NavLink} to="/profile" style={insideStyles}>
+            Get Started
+          </Button>
         </div>
       </Parallax>
-      <h1>| | |</h1>
+      {/* <h1>| | |</h1> */}
       <Parallax blur={{ min: -1, max: 3 }} bgImage={image2}>
-        <div style={{ height: 500 }} >
+        <div style={{ height: 500 }}>
           <div style={insideStyles}>Dynamic Blur</div>
         </div>
       </Parallax>
-      <h1>| | |</h1>
+      {/* <h1>| | |</h1> */}
       <Parallax strength={-100} bgImage={image3}>
-        <div style={{ height: 500 }} >
+        <div style={{ height: 500 }}>
           <div style={insideStyles}>Reverse direction</div>
         </div>
       </Parallax>
