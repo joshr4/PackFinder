@@ -16,8 +16,9 @@ const AddEventModal = props => (
       <Modal.Description>
         <Header>{props.item.title}</Header>
         <AddVisitForm
-          nowString={'test!!?'}
+          nowString={props.nowString}
           handleSubmit={() => props.onAdd(props.item)}
+          parkList={props.parkList}
         />
       </Modal.Description>
     </Modal.Content>
