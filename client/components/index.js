@@ -17,10 +17,7 @@ export {default as AddEventModal} from './addeventmodal'
 export {default as ParkList} from './parkList/ParkList'
 export {default as ParkListItem} from './parkList/ParkListItem'
 export {default as Map} from './parkList/Map'
-<<<<<<< HEAD
 export {default as Splash} from './splash'
 export {default as SubNavbar} from './sub-navbar'
-=======
 export {default as AddVisitForm} from './addvisitform'
 export {default as DogPark} from './dog-park'
->>>>>>> c55d5c01699b848fab93cb72dcc99aaacc749f30

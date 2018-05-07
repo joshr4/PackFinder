@@ -2,11 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-<<<<<<< HEAD
-import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, Splash} from './components'
-=======
-import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark} from './components'
->>>>>>> c55d5c01699b848fab93cb72dcc99aaacc749f30
+import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash} from './components'
 
 import {me} from './store'
 
