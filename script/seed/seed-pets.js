@@ -1,5 +1,5 @@
 const faker = require('faker');
-const chance = require('chance')(1232)
+const chance = require('chance')(123221)
 // const toonAvatar = require('cartoon-avatar');
 const Promise = require('bluebird');
 const db = require('../../server/db');
@@ -217,7 +217,7 @@ async function randPet() {
     name: faker.name.firstName(),
     age: chance.integer({
       min: 1,
-      max: 16
+      max: 11
     }),
     breed: `${subBreed}${randBreed}`,
     imageUrls: [imageUrl],
@@ -229,8 +229,8 @@ async function randPet() {
       max: 125
     }),
     userId: chance.integer({
-      min: 1,
-      max: 19
+      min: 17,
+      max: 25
     })
   };
 

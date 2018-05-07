@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Segment, Grid, Header } from 'semantic-ui-react';
-import { ProfileItem } from '.';
+import { ProfileItem, UserProfileItem } from '.';
 import { getPets, deletePet, updatePet, addPet } from '../store';
 
 /**
@@ -18,14 +18,14 @@ class Profile extends React.Component {
         <Container className="container">
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
-            <ProfileItem info={this.props.user} />
+            <UserProfileItem info={this.props.user} />
             <Header as="h3">Dogs:</Header>
-            {this.props.pets ? this.props.pets.map((pet, i) => {
+            {this.props.userPets ? this.props.userPets.map((pet, i) => {
               console.log('pet info', pet)
               return (<ProfileItem key={i} info={pet} />)
             })
             :
-            <h3>No Pets</h3>
+            <h3>Add a dog to your profile!</h3>
             }
           </Grid>
         </Container>
@@ -38,10 +38,10 @@ class Profile extends React.Component {
  * CONTAINER
  */
 const mapState = state => {
-
+  console.log('User',state.user)
   return {
     user: state.user,
-    pets: [{name:'fido', bio: 'asdasdf'},{name:'fidosbro', bio: 'qouiqeuqerasdasdf'}]
+    userPets: state.pets.filter(pet => pet.userId===state.user.id)
   };
 };
 
