@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Header, Image, Rail, Segment, Sticky } from  'semantic-ui-react'
 import { getParksAddresses } from '../../store/index.js'
 
-class ParkList extends Component {
+export class ParkList extends Component {
 
   constructor(props){
     super(props)
@@ -22,8 +22,6 @@ class ParkList extends Component {
 
     const markers = this.props.nearbyParks
 
-    console.log(this.props.nearbyParks)
-
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
     //   }, {
@@ -39,7 +37,7 @@ class ParkList extends Component {
       <div className="ui one cards">
 
       {this.props.nearbyParks.map(park => {
-         return <ParkListItem key={park.id} currentPark={park} />
+         return <ParkListItem key={park.id} currentPark={park} history={this.props.history} />
       })}
 
 
