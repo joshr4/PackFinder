@@ -54,6 +54,7 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
+    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
@@ -126,7 +127,6 @@ class Dnd extends React.Component {
         addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
     })
   }
-
 
   render() {
     return (
