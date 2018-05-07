@@ -298,7 +298,6 @@ export class DogPark extends Component {
         addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
     })
   }
-
   handleChange = (e, data) => {
     console.log('change name/value',data ,e.target.name, e.target.value)
     this.setState({

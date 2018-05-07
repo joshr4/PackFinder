@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 const db = require('../../server/db');
 const { User } = require('../../server/db/models');
 
-const numUsers = 50;
+const numUsers = 20;
 
 function doTimes(n, fn) {
   const results = [];
