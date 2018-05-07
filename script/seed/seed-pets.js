@@ -210,9 +210,9 @@ async function randPet() {
   }
   let imageUrl = 'https://images.dog.ceo/breeds/bulldog-boston/n02096585_2374.jpg'
   await axios.get(`https://dog.ceo/api/breed/${urlBreed}/images/random`)
-  .then(res => {
-    imageUrl = res.data.message
-  })
+    .then(res => {
+      imageUrl = res.data.message
+    })
   const pet = {
     name: faker.name.firstName(),
     age: chance.integer({
@@ -239,14 +239,29 @@ async function randPet() {
 
 function generatePets() {
   const pets = doTimes(numPets, randPet);
+
+  //PUT CUSTOM PETS HERE
+
   // pets.push(
   //   Pet.build({
-  //     firstName: 'Daniel',
-  //     lastName: 'Simandl',
-  //     email: `dan@dan.com`,
-  //     password: '123',
-  //   })
-  // );
+  //     age: chance.integer({
+  //       min: 1,
+  //       max: 16
+  //     }),
+  //     breed: `${subBreed}${randBreed}`,
+  //     imageUrls: [imageUrl],
+  //     bio: chance.paragraph({
+  //       sentences: 1
+  //     }),
+  //     weight: chance.integer({
+  //       min: 7,
+  //       max: 125
+  //     }),
+  //     userId: chance.integer({
+  //       min: 1,
+  //       max: 19
+  //     })
+  //   }))
   return pets;
 }
 
