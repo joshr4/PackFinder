@@ -10,6 +10,7 @@ import { ProfileItem } from '.';
 export const Profile = props => {
   return (
     <Container className="container">
+      <br />
       <Grid columns={2} divided>
         <Header as="h3">Owner:</Header>
         <ProfileItem />

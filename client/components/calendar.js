@@ -130,7 +130,7 @@ class Dnd extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '1000px' }}>
+      <div className="container" style={{ height: '1000px' }}>
         <EventModal
           show={this.state.showModal}
           onClose={this.toggleModal}

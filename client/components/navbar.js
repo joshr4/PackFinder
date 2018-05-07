@@ -67,8 +67,8 @@ export const Navbar = props => {
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}
-            <Menu.Item as={NavLink} name="home" to="/home" />
-            <Menu.Item onClick={handleClick} name="logout" to="/home" />
+            <Menu.Item style={styles.menuItem} as={NavLink} name="home" to="/home" />
+            <Menu.Item style={styles.menuItem} onClick={handleClick} name="logout" to="/home" />
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">
