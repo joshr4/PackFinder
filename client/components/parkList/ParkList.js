@@ -20,7 +20,6 @@ export class ParkList extends Component {
 
     const markers = this.props.nearbyParks;
     const { contextRef } = this.state;
-    console.log('context Ref', contextRef)
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
     //   }, {
