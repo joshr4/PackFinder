@@ -19,6 +19,7 @@ const AddEventModal = props => (
           nowString={props.nowString}
           handleSubmit={props.handleSubmit}
           handleChange={props.handleChange}
+          handleFieldChange={props.handleFieldChange}
           parkList={props.parkList}
           addFormFieldData={props.addFormFieldData}
         />

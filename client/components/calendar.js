@@ -28,7 +28,7 @@ class Dnd extends React.Component {
       showModal: false,
       showAddModal: false,
       addFormFieldData: {
-        park: 4,
+        park: 1,
         start: '2018-04-09T20:00:00.000Z',
         end: '2018-04-09T17:00:00.000Z',
         visitDate: '2018-04-09',
@@ -40,6 +40,7 @@ class Dnd extends React.Component {
   this.openModal = this.openModal.bind(this);
   this.toggleAddModal = this.toggleAddModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
+  this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +54,7 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
+    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
@@ -93,19 +95,44 @@ class Dnd extends React.Component {
     });
   }
   addEvent = () => {
-    console.log('state',this.state)
-    let newVisit = {
-      
+    let stateVisit = this.state.addFormFieldData
+    console.log('state',stateVisit)    
+    let year = parseInt(stateVisit.visitDate.split("-")[0]);
+    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split("-")[2]);
+    let fromHour = parseInt(stateVisit.start.slice(11).split(":")[0]);
+    let fromMin = parseInt(stateVisit.start.slice(11).split(":")[1]);
+    let toHour = parseInt(stateVisit.end.slice(11).split(":")[0]);
+    let toMin = parseInt(stateVisit.end.slice(11).split(":")[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
+    let newVisitInfo = {
+      start: startTime,
+      end: endTime,
+      parkId: stateVisit.park,
+      userId: 55,
+      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
     }
-    this.props.addNewVisit(this.state.addFormFieldData)
+    console.log('VISIT', newVisitInfo)
+    //ADD IN USER ID TO POST REQUEST
+    this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()
   }
-  handleChange = e => {
-    console.log('change name/value',e.target.name, e.target.value)
+  handleChange = (e, data) => {
+    console.log('change name/value',data ,e.target.name, e.target.value)
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
   }
+  
+  handleFieldChange = (data) => {
+    console.log('change name/value',data)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
+    })
+  }
+  
 
   render() {
     return (
@@ -121,6 +148,7 @@ class Dnd extends React.Component {
           onClose={this.toggleAddModal}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
+          handleFieldChange={this.handleFieldChange}
           item={this.state.selectedEvent}
           parkList={this.props.parkList}
           addFormFieldData={this.state.addFormFieldData}

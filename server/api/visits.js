@@ -55,14 +55,15 @@ router.post('/', async (req, res, next) => {
     start:req.body.start,
     end:req.body.end,
     parkId:req.body.parkId,
-    userId:req.body.userId
+    userId:req.body.userId,
+    title: req.body.title
   });
   console.log("created new visit: ", newVisit);
   // newVisit.title = relatedPark.name;
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);
   await newVisit.save();
-  res.json(visit);
+  res.json(newVisit);
   // Visit.findById(req.params.id).then(visit => {
   //   visit.update(req.body).then((updated) => {
   //     console.log('res voisit', updated)

@@ -8,7 +8,7 @@ const DropdownExampleSearchSelection = (props) => (
 )
 
 const AddVisitForm = props => (
-  <Form onSubmit={props.handleSubmit} onChange={e =>props.handleChange(e)}>
+  <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
     <Form.Group widths="equal" >
       <Form.Field>
         <label>Date</label>
@@ -59,8 +59,8 @@ const AddVisitForm = props => (
             options={props.parkList}
             name="park"
             style={{ marginLeft: '0px' }}
-            //value={props.addFormFieldData.park}
-            onChange={e =>props.handleChange(e)}
+            value={props.addFormFieldData.park}
+            onChange={(e, data) => props.handleFieldChange(data)}
           />
       </Form.Field>
     </Form.Group>
