@@ -190,7 +190,7 @@ const parks = [
   },
 ];
 
-async function geocode(park){
+async function geocode(park) {
     let location = park.line_1 + ' ' + park.city + ' ' + park.state;
 
     let tempResult;
@@ -219,8 +219,6 @@ async function geocode(park){
 
 
 function createParks(addresses) {
-
-
   return Promise.all(
     addresses.map(async park => {
 
