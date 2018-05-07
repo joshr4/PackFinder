@@ -27,25 +27,25 @@ const addNewVisit = visit => ({ type: ADD_VISIT, visit });
  */
 export const getVisits = () => dispatch =>
   axios
-    .get('api/visits')
+    .get('/api/visits')
     .then(res => dispatch(getAllVisits(res.data || defaultVisits)))
     .catch(err => console.log(err));
 
 export const deleteVisit = visit => dispatch =>
   axios
-    .delete(`api/visits/${visit.id}`)
+    .delete(`/api/visits/${visit.id}`)
     .then(() => dispatch(delVisit(visit || defaultVisits)))
     .catch(err => console.log(err));
 
 export const updateVisit = visit => dispatch =>
   axios
-    .put(`api/visits/${visit.id}/change-times`, visit)
+    .put(`/api/visits/${visit.id}/change-times`, visit)
     .then(res => dispatch(updVisit(res.data || defaultVisits)))
     .catch(err => console.log(err));
 
 export const addVisit = visit => dispatch =>
   axios
-    .post(`api/visits/`, visit)
+    .post(`/api/visits/`, visit)
     .then(res => dispatch(addNewVisit(res.data || defaultVisits)))
     .catch(err => console.log(err));
 
