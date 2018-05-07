@@ -320,7 +320,6 @@ export class DogPark extends Component {
     console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
   }
   handleChange = (e, data) => {
     console.log('change name/value',data ,e.target.name, e.target.value)
