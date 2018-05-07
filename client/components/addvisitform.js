@@ -2,11 +2,6 @@ import React from 'react';
 import { Button, Form, Input, Dropdown } from 'semantic-ui-react';
 //import { countryOptions } from '../common'
 
-
-const DropdownExampleSearchSelection = (props) => (
-  <Dropdown placeholder='Select location' fluid search selection options={props.list} />
-)
-
 const AddVisitForm = props => (
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
     <Form.Group widths="equal" >
@@ -62,6 +57,3 @@ const AddVisitForm = props => (
   </Form>
 );
 export default AddVisitForm;
-
-
-// [ { key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }, { key: 'us', value: 'us', flag: 'us', text: 'USA' }]
