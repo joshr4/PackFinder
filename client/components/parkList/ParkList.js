@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem } from '../index.js'
+import { Map, ParkListItem } from '../index.js';
 import { connect } from 'react-redux';
-import { Grid, Header, Image, Rail, Segment, Sticky } from  'semantic-ui-react'
+import { Grid, Header, Image, Rail, Segment, Sticky } from 'semantic-ui-react';
 import { getParksAddresses, getGeolocation } from '../../store/index.js'
 
 class ParkList extends Component {
@@ -15,6 +15,8 @@ class ParkList extends Component {
         lng: -87.6412237
       }
     }
+
+
   }
 
   componentDidMount() {
@@ -52,10 +54,13 @@ class ParkList extends Component {
     this.setState({ map })
   }
 
+  handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
 
     const markers = this.props.nearbyParks
+    const { contextRef } = this.state;
+
 
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
@@ -65,10 +70,10 @@ class ParkList extends Component {
     // ]
 
     return (
-
+      <div className="container" ref={this.handleContextRef}>
       <Grid columns={2}>
 
-      <Grid.Column width={11}>
+      <Grid.Column width={9}>
       <div className="ui one cards">
 
       {this.props.nearbyParks.map(park => {
@@ -79,7 +84,8 @@ class ParkList extends Component {
     </div>
       </Grid.Column>
 
-      <Grid.Column width={5}>
+      <Grid.Column width={7}>
+      <Sticky context={contextRef} offset={130}>
       <Map
         zoom={15}
         center={this.state.location}
@@ -90,8 +96,10 @@ class ParkList extends Component {
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
+     </Sticky>
     </Grid.Column>
     </Grid>
+  </div>
     );
   }
 }
@@ -100,6 +108,7 @@ const mapStateToProps = state => {
   return {nearbyParks: state.parkList,
     userPosition: state.location.coords
   };
+
 };
 
 const mapDispatch = dispatch => {

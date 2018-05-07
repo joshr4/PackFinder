@@ -6,8 +6,9 @@ import user from './user'
 import calendar from './calendar'
 import parkList from './parkList'
 import location from './location'
+import pets from './pets'
 
-const reducer = combineReducers({user, calendar, parkList, location})
+const reducer = combineReducers({user, calendar, parkList, pets, location})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -19,3 +20,4 @@ export * from './user'
 export * from './calendar'
 export * from './parkList'
 export * from './location'
+export * from './pets'

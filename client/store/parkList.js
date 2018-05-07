@@ -21,7 +21,7 @@ const getAllAddresses = addresses => ({ type: GET_PARKS, addresses });
  */
 export const getParksAddresses = () => dispatch =>
   axios
-    .get('api/parks')
+    .get('/api/parks')
     .then(res => dispatch(getAllAddresses(res.data)))
     .catch(err => console.log(err));
 

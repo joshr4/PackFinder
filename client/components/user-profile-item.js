@@ -6,32 +6,20 @@ import { Container, Segment, Grid, Image, List } from 'semantic-ui-react';
 /**
  * COMPONENT
  */
-export const ProfileItem = props => {
+export const UserProfileItem = props => {
   return (
         <Grid.Row>
           <Grid.Column width="4">
             <Image
               size="small"
-              src={props.info.imageUrls[0]}
+              src="http://images.clipartpanda.com/sad-girl-stick-figure-image.png"
               circular
             />
           </Grid.Column>
           <Grid.Column width="12">
             <Segment>
               <List>
-                <List.Item>Name: {props.info.name}</List.Item>
-                <List.Item>
-                  Breed: {props.info.breed}
-                </List.Item>
-                <List.Item>
-                  Bio: {props.info.bio}
-                </List.Item>
-                <List.Item>
-                  Age: {props.info.age}
-                </List.Item>
-                <List.Item>
-                  Weight: {props.info.weight}
-                </List.Item>
+                <List.Item>Email: {props.info.email}</List.Item>
               </List>
             </Segment>
           </Grid.Column>
@@ -47,7 +35,7 @@ export const ProfileItem = props => {
 //     email: state.user.email
 //   }
 // }
-export default ProfileItem;
+export default UserProfileItem;
 // export default connect(mapState)(UserHome)
 
 /**
