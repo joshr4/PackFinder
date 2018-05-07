@@ -2,27 +2,60 @@ import React, { Component } from 'react';
 import { Map, ParkListItem } from '../index.js'
 import { connect } from 'react-redux';
 import { Grid, Header, Image, Rail, Segment, Sticky } from  'semantic-ui-react'
-import { getParksAddresses } from '../../store/index.js'
+import { getParksAddresses, getGeolocation } from '../../store/index.js'
 
 class ParkList extends Component {
 
   constructor(props){
     super(props)
-    this.state = {}
+    this.state = {
+      map: null,
+      location: {
+        lat: 41.895266,
+        lng: -87.6412237
+      }
+    }
   }
 
   componentDidMount() {
-    this.props.getEveryAddresses()
+    this.props.getEveryAddresses();
+    this.props.getUserLocation();
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.userPosition !== this.props.userPosition){
+      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}})
+    }
+  }
+
+  mapMoved(){
+
+    const tempLocation = this.state.map.getCenter().toJSON();
+
+    this.setState({location: {
+        lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
+        lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
+    }, () => {console.log(this.state.location)})
+
+  }
+
+
+  zoomChanged(){
+    console.log('zoomChanged: ', this.state.map.getZoom())
+  }
+
+  mapLoaded(map){
+    if (this.state.map !== null){
+      return
+    }
+
+    this.setState({ map })
   }
 
 
   render() {
 
-    const location = {lat: 41.895266, lng: -87.6412237}
-
     const markers = this.props.nearbyParks
-
-    console.log(this.props.nearbyParks)
 
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
@@ -46,14 +79,14 @@ class ParkList extends Component {
     </div>
       </Grid.Column>
 
-
-
-
       <Grid.Column width={5}>
       <Map
-        zoom={14}
-        center={location}
+        zoom={15}
+        center={this.state.location}
         markers={markers}
+        mapMoved={this.mapMoved.bind(this)}
+        mapLoaded={this.mapLoaded.bind(this)}
+        zoomChanged={this.zoomChanged.bind(this)}
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
@@ -64,7 +97,9 @@ class ParkList extends Component {
 }
 
 const mapStateToProps = state => {
-  return {nearbyParks: state.parkList};
+  return {nearbyParks: state.parkList,
+    userPosition: state.location.coords
+  };
 };
 
 const mapDispatch = dispatch => {
@@ -72,6 +107,9 @@ const mapDispatch = dispatch => {
     getEveryAddresses() {
       dispatch(getParksAddresses());
     },
+    getUserLocation() {
+      dispatch(getGeolocation())
+    }
   };
 };
 

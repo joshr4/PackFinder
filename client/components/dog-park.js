@@ -414,4 +414,4 @@ export class DogPark extends Component {
   }
 }
 
-export default SinglePark
+export default DogPark

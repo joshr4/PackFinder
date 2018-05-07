@@ -4,34 +4,24 @@ import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
 
 class Map extends Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    const { center } = props;
+
     this.state = {
-      map: null,
+      defaultCenter: center
     }
   }
 
-  mapMoved(){
-      console.log('mapMoved: ', JSON.stringify(this.state.map.getCenter()))
-    }
-
-    mapLoaded(map){
-      if (this.state.map !== null){
-        return
-      }
-
-      this.setState({ map })
-    }
-
-    zoomChanged(){
-      console.log('zoomChanged: ', this.state.map.getZoom())
-    }
 
 
 
   render() {
 
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
+
+
+
     const markers = this.props.markers.map((park, i) => {
 
       const marker = {
@@ -53,11 +43,11 @@ class Map extends Component {
 
     return (
       <GoogleMap
-      ref={this.mapLoaded.bind(this)}
-      onDragEnd={this.mapMoved.bind(this)}
-      onZoomChanged={this.zoomChanged.bind(this)}
+      ref={this.props.mapLoaded}
+      onDragEnd={this.props.mapMoved}
+      onZoomChanged={this.props.zoomChanged}
       defaultZoom={this.props.zoom}
-      defaultCenter={this.props.center} >
+      center={this.props.center} >
       { markers }
 
 
