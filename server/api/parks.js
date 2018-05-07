@@ -5,7 +5,9 @@ module.exports = router
 router.get('/', (req, res, next) => {
   Park.findAll({
       include:[
-          {model: User, required:false},
+          {model: Visit, required:false, 
+            include:[{model:User}]},
+            // {model:User, required:false},
         //   {model: Visit, required:false},
           {model: Address, required:false},
       ]

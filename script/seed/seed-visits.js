@@ -14,36 +14,33 @@ async function createVisits() {
     let nParks = allParks.length;
     let startT = new Date(2018, 4, 7, 13, 0);
     let endT = new Date(2018, 4, 7, 16, 0); 
-    let testUser = await User.findById(1);
-    let testPark = await Park.findById(1);
-    // await testUser.addParks([testPark], {
-    //     start: startT,
-    //     end: endT,            
-    //     title: testPark.name,
-    // });
-    // await testUser.save();
+    let startT2 = new Date(2018, 4, 7, 15, 0);
+    let endT2 = new Date(2018, 4, 7, 18, 0); 
     for (let i = 0; i < allUsers.length; i ++) {
         let thisUser = allUsers[i];
         let parkIndex = i % nParks;
         let thisPark = allParks[parkIndex];
         console.log("thisUser: ", thisUser.id);
         console.log("thisPark: ", thisPark.id);
-        // thisUser.addPark(thisPark, {
-        //     start: startT,
-        //     end: endT,            
-        // })
-        // thisUser.save();
-        let newVisit = await Visit.create({
-            // start: new Date(Date.now()),
+        let visit1 = await Visit.create({
             start: startT,
             end: endT,
-            userId: thisUser.id,
-            parkId: thisPark.id
+            title: thisPark.name,
         })
-    //     newVisit.setUser(allUsers[i]);
-    //     newVisit.setPark(allParks[parkIndex]);
+        visit1.setUser(thisUser);
+        visit1.setPark(thisPark);
+        await visit1.save();
+        let visit2 = await Visit.create({
+            start: startT2,
+            end: endT2,
+            userId: thisUser.id,
+            parkId: thisPark.id,
+            title: thisPark.name,
+        })
+        // await thisUser.addUserFavorites(thisPark);
+        await thisUser.addFavorite(thisPark);
+        await thisUser.save();
     }
-    // return Promise.map(generateUsers(), users => users.save());
 }
 
 async function seed() {
