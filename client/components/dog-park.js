@@ -136,7 +136,11 @@ export class DogPark extends Component {
       maxVisits: 0,
       userId: 1,
       parkId: 1,
-      park:{},
+      park:{
+        address: {
+        line_1:""
+      }
+    },
       addFormFieldData: {
         park: 1,
         start: '2018-04-09T20:00:00.000Z',
@@ -150,12 +154,16 @@ export class DogPark extends Component {
   }
   componentDidMount() {
       let parkId = this.props.match.params.id;
-      axios.get(`api/parks/${parkId}`).then(response => {
+      console.log("parkId: ", parkId);
+      let parkURL = `api/parks/${parkId}`;
+      console.log("parkURL: ", parkURL);
+      axios.get(`/api/parks/${parkId}`).then(response => {
+        console.log("response from line 147: ", response);
         this.setState({
             park:response.data
         })
       });
-    axios.get("api/visits").then(response => {
+    axios.get("/api/visits").then(response => {
       let visits = response.data;
       let minT = "";
       let maxT = "";
@@ -251,10 +259,10 @@ export class DogPark extends Component {
       console.log("visit post reponse: ", response.data);
     })
   }
-  
+
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
-    console.log('state',stateVisit)    
+    console.log('state',stateVisit)
     let year = parseInt(stateVisit.visitDate.split("-")[0]);
     let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split("-")[2]);
@@ -283,7 +291,7 @@ export class DogPark extends Component {
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
   }
-  
+
   handleFieldChange = (data) => {
     console.log('change name/value',data)
     this.setState({
@@ -370,19 +378,21 @@ export class DogPark extends Component {
           <Grid.Row>
         <Grid.Column width={8}>
           <Segment attached>
-          {this.state.park.address}
+          <b>Address: <br/></b>
+          {this.state.park.address.line_1}
           </Segment>
           <Segment attached>
           {this.state.park.averageVisitors}
           </Segment>
           <Segment attached>
+          <b>Description: <br/></b>
           {this.state.park.description}
           </Segment>
           <Segment attached style={{marginBottom:'10px'}}>
           <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
           <AddVisitForm
           nowString={this.state.nowString}
-          handleSubmit={this.handleSubmit} 
+          handleSubmit={this.handleSubmit}
           handleChange={props.handleChange}
           handleFieldChange={props.handleFieldChange}
           parkList={props.parkList}
@@ -403,7 +413,7 @@ export class DogPark extends Component {
             </Segment>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Visitors</Header>
           <div
-          style={{"marginLeft":"auto"}}
+          style={{"margin":"auto"}}
           className="segment centered"
           >
           <BarChart
@@ -422,8 +432,6 @@ export class DogPark extends Component {
           // yLabel = {yLabel}
           textAlign='center'/>
           </div>
-          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>
-
           </Grid.Column>
           </Grid.Row>
           </Grid>

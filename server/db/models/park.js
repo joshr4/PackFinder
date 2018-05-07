@@ -19,6 +19,7 @@ const Visit = db.define('visit', {
         primaryKey: true,
         type: Sequelize.INTEGER,
         autoIncrement: true,
+        allowNull: false,
     },
     start: {
         type: Sequelize.DATE,
