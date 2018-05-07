@@ -19,6 +19,7 @@ const styles = {
     zIndex: 1,
     width: '100vw',
     color: '#54B8BF',
+    hight: '85px'
   },
   menuItem: {
     color: '#fff',
@@ -34,6 +35,8 @@ const styles = {
       '2px 5px 6px rgba(0,0,0,0.2)',
     letterSpacing: '2px',
     fontWeight: 100,
+    paddingTop: '10px',
+    paddingLeft: '10px',
   },
 };
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Parallax, Background } from 'react-parallax';
 import { Button } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
+import {connect} from 'react-redux';
 
 export const Splash = props => {
   const image1 =
@@ -23,25 +24,23 @@ export const Splash = props => {
     left: '50%',
     transform: 'translate(-50%,-50%)',
   };
-  const coverImage = {
-    // height: '100vw',
-  };
   return (
-    <div>
+    <div style={{paddingTop: '0vh'}} className="splash">
       <Parallax strength={500}>
         <div className="custom-bg">
+
           <Button as={NavLink} to="/profile" style={insideStyles}>
             Get Started
           </Button>
         </div>
       </Parallax>
-      {/* <h1>| | |</h1> */}
+      <h1>| | |</h1>
       <Parallax blur={{ min: -1, max: 3 }} bgImage={image2}>
         <div style={{ minHeight: '100vh' }}>
           <div style={insideStyles}>Dynamic Blur</div>
         </div>
       </Parallax>
-      {/* <h1>| | |</h1> */}
+      <h1>| | |</h1>
       <Parallax strength={-100} bgImage={image3}>
         <div style={{ minHeight: '100vh' }}>
           <div style={insideStyles}>Reverse direction</div>
