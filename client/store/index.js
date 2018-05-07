@@ -5,8 +5,9 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import calendar from './calendar'
 import parkList from './parkList'
+import pets from './pets'
 
-const reducer = combineReducers({user, calendar, parkList})
+const reducer = combineReducers({user, calendar, parkList, pets})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -17,3 +18,4 @@ export default store
 export * from './user'
 export * from './calendar'
 export * from './parkList'
+export * from './pets'

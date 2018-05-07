@@ -320,7 +320,6 @@ export class DogPark extends Component {
     console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
   }
   handleChange = (e, data) => {
     console.log('change name/value',data ,e.target.name, e.target.value)
@@ -397,7 +396,7 @@ export class DogPark extends Component {
       xScale = 'ordinal',
       xLabel = 'Time',
       yLabel = 'Visitors',
-      yTicks = [this.state.maxVisits, 'd'],
+      yTicks = [Math.min(this.state.maxVisits, 10), 'd'],
       yDomain = [0, 3],
       // .ticks(d3.time.days, 1)
       // .tickFormat((true) ? d3.time.format('%H:%M') : "")
@@ -438,7 +437,7 @@ export class DogPark extends Component {
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>
-          <Image size="big" centered={true} src={this.state.park.imageUrl} fluid />
+          <Image size="big"  centered={true} src={this.state.park.imageUrl} fluid />
         </Grid.Column>
         </Grid.Row>
         <Grid.Row>
