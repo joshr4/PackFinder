@@ -265,10 +265,10 @@ export class DogPark extends Component {
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split('-')[2]);
-    let fromHour = parseInt(stateVisit.start.slice(11).split(':')[0]);
-    let fromMin = parseInt(stateVisit.start.slice(11).split(':')[1]);
-    let toHour = parseInt(stateVisit.end.slice(11).split(':')[0]);
-    let toMin = parseInt(stateVisit.end.slice(11).split(':')[1]);
+    let fromHour = parseInt(stateVisit.start.split(':')[0]);
+    let fromMin = parseInt(stateVisit.start.split(':')[1]);
+    let toHour = parseInt(stateVisit.end.split(':')[0]);
+    let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
     // console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
@@ -282,7 +282,6 @@ export class DogPark extends Component {
     // console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
   }
   handleChange = (e, data) => {
     // console.log('change name/value',data ,e.target.name, e.target.value)
