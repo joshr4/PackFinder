@@ -3,6 +3,7 @@ import { Parallax, Background } from 'react-parallax';
 import { Button, Image } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { fadeInLeftBig } from 'react-animations';
 
 export const Splash = props => {
   const image1 =
@@ -28,13 +29,14 @@ export const Splash = props => {
     <div style={{ paddingTop: '0vh' }} className="splash">
       <Parallax strength={500}>
         <div className="splash-bg-1">
+        <div className="splash-block-1">
+          Build your pack!
+        </div>
           <Button as={NavLink} to="/profile" style={insideStyles}>
             Get Started
           </Button>
         </div>
       </Parallax>
-      {/* <div style={{backgroundColor: 'rgb(44, 66, 80)'}}><h1>| | |</h1></div> */}
-      {/* <div style={{backgroundColor: 'rgb(44, 66, 80)'}}><h1>| | |</h1></div> */}
       <Parallax strength={-100}>
         {/* bgImage={image3} */}
         <div className="splash-bg-3">

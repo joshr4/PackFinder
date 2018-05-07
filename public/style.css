@@ -36,6 +36,15 @@ form div {
   background-attachment: fixed;
   background-position: top;
 }
+.splash-block-1 {
+  padding: 20;
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  color: white;
+  font-size: 40px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 .splash-bg-3 {
   min-height: 100vh;
   height: 100vh;
