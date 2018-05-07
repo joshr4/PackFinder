@@ -151,8 +151,8 @@ class Dnd extends React.Component {
         <DragAndDropCalendar
           selectable
           culture="en-GB"
-          // events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           events={this.props.events}
+          //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           onEventDrop={this.moveEvent}
           resizable
           onDoubleClickEvent={event => this.openModal(event)}

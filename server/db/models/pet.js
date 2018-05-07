@@ -15,7 +15,7 @@ const Pet = db.define('pet', {
       allowNull: false
     },
     breed: {
-        type: Sequelize.ENUM('Golden Retriever', 'Samoyed', 'Maltese', 'Boxer', 'Corgi'),
+        type: Sequelize.STRING,
         unique:false,
     },
     imageUrls: {
