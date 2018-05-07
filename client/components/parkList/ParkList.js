@@ -77,7 +77,8 @@ class ParkList extends Component {
       <div className="ui one cards">
 
       {this.props.nearbyParks.map(park => {
-         return <ParkListItem key={park.id} currentPark={park} />
+         return <ParkListItem key={park.id} currentPark={park}
+         history={this.props.history} />
       })}
 
 
@@ -95,6 +96,7 @@ class ParkList extends Component {
         zoomChanged={this.zoomChanged.bind(this)}
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
+
       />
      </Sticky>
     </Grid.Column>
