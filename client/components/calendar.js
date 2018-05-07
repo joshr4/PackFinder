@@ -158,7 +158,7 @@ class Dnd extends React.Component {
           onDoubleClickEvent={event => this.openModal(event)}
           onEventResize={this.resizeEvent}
           defaultView="week"
-          defaultDate={new Date(2018, 3, 12, 10, 0)}
+          defaultDate={new Date(2018, 4, 12, 10, 0)}
           step={30}
           min={new Date(0, 0, 0, 6, 0)}
           max={new Date(0, 0, 0, 23, 0)}

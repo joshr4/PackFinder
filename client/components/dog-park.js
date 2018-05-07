@@ -158,15 +158,22 @@ export class DogPark extends Component {
       this.props.getData();
       let parkId = this.props.match.params.id;
       // console.log("parkId: ", parkId);
-      let parkURL = `api/parks/${parkId}`;
+      let parkURL = `/api/parks/${parkId}`;
+      let parkVisitsURL = `/api/parks/${parkId}/visits`;
       // console.log("parkURL: ", parkURL);
-      // axios.get(`/api/parks/${parkId}`).then(response => {
-      //   // console.log("response from line 147: ", response);
-      //   this.setState({
-      //       park:response.data
-      //   })
-      // });
-    axios.get('/api/visits').then(response => {
+      let parkArray = this.props.parkList.filter(park => park.id == this.props.match.params.id);
+      console.log("parkArray: ", parkArray);
+      // this.setState({
+      //   park: parkArray[0],
+      // })
+      axios.get(`/api/parks/${parkId}`).then(response => {
+        // console.log("response from line 147: ", response);
+        this.setState({
+            park:response.data
+        })
+      });
+    // axios.get('/api/visits').then(response => {
+    axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let minT = '';
       let maxT = '';
@@ -185,14 +192,15 @@ export class DogPark extends Component {
       // console.log("width: ", width);
       let halfHourpartition = 1000 * 60 * 30;
       let hourPartition = 1000 * 60 * 60;
+      let dayPartition = 24 * hourPartition;
       // console.log("partition: ", hourPartition);
-      let nPartitions = width / hourPartition;
+      let nPartitions = width / dayPartition;
       // console.log("nPartitions: ", nPartitions);
       let maxVisits = 0;
 
       for (let i = 0; i < nPartitions; i++) {
-        let intervalStart = new Date(minT.getTime() + hourPartition * i);
-        let intervalEnd = new Date(minT.getTime() + hourPartition * (i + 1));
+        let intervalStart = new Date(minT.getTime() + dayPartition * i);
+        let intervalEnd = new Date(minT.getTime() + dayPartition * (i + 1));
         let d3Elem = {
           // time: intervalStart,
           time: stringFormat(intervalStart),
@@ -212,7 +220,7 @@ export class DogPark extends Component {
             // d3Elem.time = dateDisplay(intervalStart);
           }
           else {
-            d3Elem.time = timeDisplay(intervalStart);
+            d3Elem.time = dateDisplay(intervalStart);
           }
           if ((startT < intervalEnd && endT > intervalStart)) {
             // console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
@@ -283,12 +291,6 @@ export class DogPark extends Component {
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
   }
-  handleChange = (e, data) => {
-    // console.log('change name/value',data ,e.target.name, e.target.value)
-    this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
-    })
-  }
 
   handleFieldChange = (data) => {
     // console.log('change name/value',data)
@@ -297,31 +299,6 @@ export class DogPark extends Component {
     })
   }
 
-  addEvent = () => {
-    let stateVisit = this.state.addFormFieldData
-    console.log('state',stateVisit)
-    let year = parseInt(stateVisit.visitDate.split("-")[0]);
-    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
-    let day = parseInt(stateVisit.visitDate.split("-")[2]);
-    let fromHour = parseInt(stateVisit.start.slice(11).split(":")[0]);
-    let fromMin = parseInt(stateVisit.start.slice(11).split(":")[1]);
-    let toHour = parseInt(stateVisit.end.slice(11).split(":")[0]);
-    let toMin = parseInt(stateVisit.end.slice(11).split(":")[1]);
-    let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, toHour, toMin);
-    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
-    let newVisitInfo = {
-      start: startTime,
-      end: endTime,
-      parkId: stateVisit.park,
-      userId: 55,
-      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
-    }
-    console.log('VISIT', newVisitInfo)
-    //ADD IN USER ID TO POST REQUEST
-    this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
-  }
   handleChange = (e, data) => {
     console.log('change name/value',data ,e.target.name, e.target.value)
     this.setState({
@@ -329,12 +306,6 @@ export class DogPark extends Component {
     })
   }
 
-  handleFieldChange = (data) => {
-    console.log('change name/value',data)
-    this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
-    })
-  }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
   render() {
@@ -375,7 +346,7 @@ export class DogPark extends Component {
       var D3data = this.state.d3Data;
       // var parseDate = d3.time.format("%m/%d/%y").parse;
       var parseDate = d3.time.format('%Y-%m-%d %H:%M').parse;
-      var width = 1000,
+      var width = 1500,
       height = 600,
       title = 'Bar Chart',
       chartSeries = [
@@ -401,7 +372,8 @@ export class DogPark extends Component {
       yDomain = [0, 3],
       // .ticks(d3.time.days, 1)
       // .tickFormat((true) ? d3.time.format('%H:%M') : "")
-      xTicks = [d3.time.hours, 1]
+      // xTicks = [d3.time.format("%m-%d"), 3]
+      xTicks = [d3.time.days, 1]
       ;
       // var xScale = d3.time.scale()
       // .domain([mindate, maxdate])
@@ -434,6 +406,7 @@ export class DogPark extends Component {
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
           addFormFieldData={this.state.addFormFieldData}
+          hideParks={true}
           />
           </Segment>
         </Grid.Column>
@@ -446,13 +419,13 @@ export class DogPark extends Component {
           <Segment>
             Select day to view number of people:
             <input style={{marginLeft: '10px'}} name="selectDate" type="date" />
-
+            <Button type="submit" name="submitBtn" style={{marginLeft: '10px'}} color='blue' size='tiny'>
+              Select Day
+            </Button>
+      
             </Segment>
           <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
-          <div
-          style={{'margin': 'auto'}}
-          className="segment centered"
-          >
+          <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
           <BarChart
           style={{'marginLeft': '500px'}}
           title= {title}
@@ -468,7 +441,7 @@ export class DogPark extends Component {
           // yDomain= {yDomain}
           // yLabel = {yLabel}
           textAlign="center" />
-          </div>
+          </Segment>
           </Grid.Column>
           </Grid.Row>
           </Grid>

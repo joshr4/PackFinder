@@ -23,10 +23,21 @@ router.get('/:id', (req, res, next) => {
             id:req.params.id,
         },
         include:[
-            {model: User, required:false},
-          //   {model: Visit, required:false},
+            {model: Visit, required:false},
             {model: Address, required:false},
         ]        
     }).then((park) => {res.json(park)});
-  })
+ })
+  
+router.get('/:id/visits', (req, res, next) => {
+    Park.findOne({
+        where: {
+            id:req.params.id,
+        },
+        include:[
+            {model: User, required:false},
+            {model: Visit, required:false},
+        ]        
+        }).then((park) => {res.json(park.visits)});
+ })
   
