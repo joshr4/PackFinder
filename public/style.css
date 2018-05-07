@@ -6,9 +6,6 @@ body .container {
   padding-top: 20vh;
 
 }
-body .splash {
-
-}
 a {
   text-decoration: none;
 }
@@ -31,11 +28,27 @@ form div {
   font-size: 30;
 }
 
-.custom-bg {
+.splash-bg-1 {
   min-height: 100vh;
   height: 100vh;
   background: url('https://images.unsplash.com/photo-1518056914555-de1d7f0b3967?ixlib=rb-0.3.5…EyMDd9&s=fd08518…&auto=format&fit=crop&w=1350&q=80');
   background-size: cover;
   background-attachment: fixed;
   background-position: top;
+}
+.splash-block-1 {
+  padding: 20;
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  color: white;
+  font-size: 40px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.splash-bg-3 {
+  min-height: 100vh;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1504595403659-9088ce801e29?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d812e1079e635c6fb59ded315f72316f&auto=format&fit=crop&w=1268&q=80');
+  background-size: cover;
+  background-position: center;
 }

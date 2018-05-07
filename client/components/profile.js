@@ -8,6 +8,7 @@ import { getPets, deletePet, updatePet, addPet } from '../store';
 /**
  * COMPONENT
  */
+
 class Profile extends React.Component {
   componentDidMount() {
     this.props.getData();
