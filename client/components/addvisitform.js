@@ -49,6 +49,7 @@ const AddVisitForm = props => (
         <Dropdown
             options={props.parkList}
             name="park"
+            scrolling="true"
             style={{ marginLeft: '0px' }}
             value={props.addFormFieldData.park}
             onChange={(e, data) => props.handleFieldChange(data)}
