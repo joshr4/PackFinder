@@ -56,7 +56,7 @@ router.post('/', async (req, res, next) => {
     end:req.body.end,
     parkId:req.body.parkId,
     userId:req.body.userId,
-    title:req.body.title,
+    title: req.body.title
   });
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);
@@ -65,7 +65,7 @@ router.post('/', async (req, res, next) => {
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);
   await newVisit.save();
-  res.json(visit);
+  res.json(newVisit);
   // Visit.findById(req.params.id).then(visit => {
   //   visit.update(req.body).then((updated) => {
   //     console.log('res voisit', updated)

@@ -310,7 +310,7 @@ export class SinglePark extends Component {
       <div>
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
           <Container text style={{marginBottom:'2em'}}>
-          <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>X Dog Park</Header>
+          <Header as='h3' style={{ fontSize: '3em' }} textAlign="center">X Dog Park</Header>
           </Container>
           <Grid celled>
           <Grid.Row>
