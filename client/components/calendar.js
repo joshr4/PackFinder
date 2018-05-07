@@ -54,7 +54,6 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
-    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
@@ -96,7 +95,6 @@ class Dnd extends React.Component {
   }
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
-    console.log('state',stateVisit)
     let year = parseInt(stateVisit.visitDate.split("-")[0]);
     let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split("-")[2]);
@@ -106,7 +104,6 @@ class Dnd extends React.Component {
     let toMin = parseInt(stateVisit.end.split(":")[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
-    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -114,7 +111,6 @@ class Dnd extends React.Component {
       userId: 55,
       title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
     }
-    console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()

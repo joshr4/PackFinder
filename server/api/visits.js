@@ -55,8 +55,10 @@ router.post('/', async (req, res, next) => {
     end:req.body.end,
     parkId:req.body.parkId,
     userId:req.body.userId,
-    title: req.body.title
+    title:req.body.title,
   });
+  // newVisit.setPark(relatedPark);
+  // newVisit.setUser(relatedUser);
   // newVisit.title = relatedPark.name;
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);
