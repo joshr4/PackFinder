@@ -136,18 +136,26 @@ export class DogPark extends Component {
       maxVisits: 0,
       userId: 1,
       parkId: 1,
-      park:{}
+      park:{
+        address: {
+          line_1:""
+        }
+      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
       let parkId = this.props.match.params.id;
-      axios.get(`api/parks/${parkId}`).then(response => {
+      console.log("parkId: ", parkId);
+      let parkURL = `api/parks/${parkId}`;
+      console.log("parkURL: ", parkURL); 
+      axios.get(`/api/parks/${parkId}`).then(response => {
+        console.log("response from line 147: ", response);
         this.setState({
             park:response.data
         })
       });
-    axios.get("api/visits").then(response => {
+    axios.get("/api/visits").then(response => {
       let visits = response.data;
       let minT = "";
       let maxT = "";
@@ -323,12 +331,14 @@ export class DogPark extends Component {
           <Grid.Row>
         <Grid.Column width={8}>
           <Segment attached>
-          {this.state.park.address}
+          <b>Address: <br/></b>
+          {this.state.park.address.line_1}
           </Segment>
           <Segment attached>
           {this.state.park.averageVisitors}
           </Segment>
           <Segment attached>
+          <b>Description: <br/></b>
           {this.state.park.description}
           </Segment>
           <Segment attached style={{marginBottom:'10px'}}>
@@ -351,7 +361,7 @@ export class DogPark extends Component {
             </Segment>
           <Header as='h3' style={{ fontSize: '3em' }} textAlign='center'>Visitors</Header>
           <div
-          style={{"marginLeft":"auto"}}
+          style={{"margin":"auto"}}
           className="segment centered"
           >
           <BarChart
@@ -370,8 +380,6 @@ export class DogPark extends Component {
           // yLabel = {yLabel}
           textAlign='center'/>
           </div>
-          <Embed url='https://bl.ocks.org/mbostock/raw/3885304/' defaultActive={true}/>
-
           </Grid.Column>
           </Grid.Row>
           </Grid>
@@ -414,4 +422,4 @@ export class DogPark extends Component {
   }
 }
 
-export default SinglePark
+export default DogPark
