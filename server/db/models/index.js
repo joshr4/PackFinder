@@ -1,6 +1,6 @@
 const User = require('./user')
 const Pet = require('./pet')
-const {Park, Visit, Address} = require('./park')
+const {Park, Visit, Address, Favorite} = require('./park')
 const Event = require('./event')
 const Review = require('./review')
 
@@ -23,15 +23,28 @@ User.hasMany(Pet, {
   as: 'pets',
   foreignKey: 'userId',  
 });
-User.belongsToMany(Park, {through:Visit}); 
+
+// User.hasMany(Park, {
+//   as: 'favorites',
+// });
+
+
+User.belongsToMany(Park, {through:'UserFavorites', as:'favorites'});
+Park.belongsToMany(User, {through:'UserFavorites'});
+
+
+// User.belongsToMany(Park, {through:Visit}); 
 //User has getParks, setParks, addPark, addParks as magic methods 
-Park.belongsToMany(User, {through:Visit}); 
+// Park.belongsToMany(User, {through:Visit}); 
 //Park has getUsers, setUsers, addUser, addUsers as magic methods
   // User has many visits -> MtM to Park
   // Park has many visits -> MtM to User
 Park.belongsTo(Address); //Park will have address Id
-Visit.belongsTo(Address);
+// Visit.belongsTo(Address); <- no longer needed
 Visit.belongsTo(Park);
+Park.hasMany(Visit);
+Visit.belongsTo(User);
+User.hasMany(Visit);
   // Park has one address
   // Visit has one address
 Park.hasMany(Review, {

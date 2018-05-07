@@ -19,18 +19,15 @@ const Visit = db.define('visit', {
         primaryKey: true,
         type: Sequelize.INTEGER,
         autoIncrement: true,
+        allowNull: false,
     },
     start: {
         type: Sequelize.DATE,
-        defaultValue: null,
-        // get() {
-        //     let startTime = new Date(this.getDataValue('start'));
-        //     return startTime;
-        // },
+        allowNull: false,
     },
     end: {
         type: Sequelize.DATE,
-        defaultValue: null,
+        allowNull: false,
         // get() {
         //     let endTime = new Date(this.getDataValue('end'));
         //     return endTime;

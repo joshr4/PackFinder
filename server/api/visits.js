@@ -5,7 +5,8 @@ module.exports = router
 router.get('/', (req, res, next) => {
   Visit.findAll({
       include:[
-          {model: Park, required:false, include:[Address]}
+          {model: Park, required:false, include:[Address]},
+          {model: User, required:false}
       ]
   })
     .then(visits => res.json(visits))
@@ -13,7 +14,14 @@ router.get('/', (req, res, next) => {
 })
 
 router.delete('/:id', (req, res, next) => {
-  Visit.findById(req.params.id).then(visit => {
+  Visit.findOne({
+    where: {
+      id:req.params.id,
+    },
+    include:[
+      {model: Park, required:false, include:[Address]},
+      {model: User, required:false}
+    ]}).then(visit => {
     visit.destroy().then(() => {
       res.send(200);
     })
@@ -21,13 +29,46 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.put('/:id/change-times', (req, res, next) => {
-  console.log("change-times req.body: ", req.body);
-  Visit.findById(req.params.id).then(visit => {
+  Visit.findOne({
+    where: {
+      id: req.params.id
+    },
+    include:[
+      {model: Park, required: false, include:[Address]},
+      {model: User, required:false}
+    ]
+  }
+  ).then(visit => {
     visit.update(req.body).then((updated) => {
-      console.log('res voisit', updated)
       res.send(updated);
     })
   })
 
+})
+
+
+router.post('/', async (req, res, next) => {
+  let relatedPark = await Park.findById(req.body.parkId);
+  let relatedUser = await User.findById(req.body.userId);
+  let newVisit = await Visit.create({
+    start:req.body.start,
+    end:req.body.end,
+    parkId:req.body.parkId,
+    userId:req.body.userId,
+    title: req.body.title
+  });
+  // newVisit.setPark(relatedPark);
+  // newVisit.setUser(relatedUser);
+  // newVisit.title = relatedPark.name;
+  // newVisit.setPark(relatedPark);
+  // newVisit.setUser(relatedUser);
+  await newVisit.save();
+  res.json(newVisit);
+  // Visit.findById(req.params.id).then(visit => {
+  //   visit.update(req.body).then((updated) => {
+  //     console.log('res voisit', updated)
+  //     res.send(updated);
+  //   })
+  // })
 })
 

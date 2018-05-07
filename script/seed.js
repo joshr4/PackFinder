@@ -21,87 +21,17 @@ const {
 } = require('../server/db/models');
 const usersSeed = require('./seed/seed-users');
 const parksSeed = require('./seed/seed-parks');
+const visitsSeed = require('./seed/seed-visits');
 
 async function seed () {
   await db.sync({force: true})
   console.log('db synced!')
-  // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
-  // executed until that promise resolves!
-  // Creating example seed addresses
-  const address1 = await Address.create({
-    line_1:"405 W Superior Street",
-    city: "Chicago",
-    state: "IL",
-    zip: "60615"
-  });
-  const addressLEDP = await Address.create({
-    line_1:"450 E Benton Pl",
-    city: "Chicago",
-    state: "IL",
-    zip: "60601"
-  });
-  const addressOhioPlace = await Address.create({
-    line_1:"360 W Ohio St",
-    city: "Chicago",
-    state: "IL",
-    zip: "60654"
-  });
-  // Creating example parks
-  const Park1 = await Park.create({
-    name: "Lakeshore East Dog Park",
-  });
-  const Park2 = await Park.create({
-    name: "Ohio Place Dog Park",
-  });
-  // Setting address of example parks
-  Park1.setAddress(addressLEDP);
-  await Park1.save();
-  Park2.setAddress(addressOhioPlace);
-  await Park2.save();
 
   console.log('seeding user');
   await usersSeed();
   await parksSeed();
-  // let user1 = 
-  console.log("Park: ", Park);
-  let user1 = await User.findOne({
-    where: {
-      email:'dan@dan.com',
-    }
-  })
-  let user2 = await User.findOne({
-    where: {
-      email:'josh@josh.com',
-    }
-  })
-  let user3 = await User.findOne({
-    where: {
-      email:'ricky@ricky.com',
-    }
-  })
-    // Adding Users to Park through "visits" MtM relationship
-  let startTime = new Date(2018, 3, 9, 12, 0);
-  let endTime = new Date(2018, 3, 9, 15, 0);
-  await Park1.addUsers([user1, user2], {through: {
-    start: startTime,
-    end: endTime,
-    title: Park1.name
-  }})
-  await Park1.save();
-  // Adding Parks to Users through "visits" MtM relationship
-  await user3.addParks([Park1, Park2], {through: {
-    start: startTime,
-    end: endTime,
-    title: Park2.name
-  }})
-  await user3.save();
-  // Adding a single park to a user through a "visit"
-  await user2.addParks(Park2, {through: {
-    start: startTime,
-    end: endTime,
-    title: Park2.name
-  }})
-  await user2.save();
+  await visitsSeed();
+
 
   // // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // // and store the result that the promise resolves to in a variable! This is nice!
