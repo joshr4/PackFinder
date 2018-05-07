@@ -13,14 +13,12 @@ class ParkListItem extends Component {
 
 
   clickHandler(){
-    // this.props.history.push does not work
-    // console.log(this.props.history)
+    this.props.history.push(`/dog-park/${this.props.currentPark.id}`)
   }
 
 
   render() {
 
-    // console.log(this.props.currentPark)
     const currentPark = this.props.currentPark
 
     return (
@@ -42,9 +40,9 @@ class ParkListItem extends Component {
           </Grid.Column>
           <Grid.Column width={3}>
 
-          {/*change link to button after fixing this.props.history*/}
-          <Link to={`/dog-park/${currentPark.id}`}>
-          >See Details</Link>
+
+          <Button onClick={this.clickHandler.bind(this)}>
+          See Details</Button>
           </Grid.Column>
           </Grid>
         </div>
