@@ -23,7 +23,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile" component={Profile} />
-        <Route path="/dog-park" component={SinglePark} />
+        <Route exact path="/dog-park" component={SinglePark} />
         <Route path="/dog-park/:id" component={DogPark} />
         <Route path="/dog-park-graph" component={ParkGraph} />
         <Route path="/example" component={Example} />

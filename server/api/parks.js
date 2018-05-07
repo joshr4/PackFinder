@@ -13,3 +13,18 @@ router.get('/', (req, res, next) => {
     .then(parks => res.json(parks))
     .catch(next)
 })
+
+
+router.get('/:id', (req, res, next) => {
+    Park.findOne({
+        where: {
+            id:req.params.id,
+        },
+        include:[
+            {model: User, required:false},
+          //   {model: Visit, required:false},
+            {model: Address, required:false},
+        ]        
+    }).then((park) => {res.json(park)});
+  })
+  
