@@ -38,7 +38,8 @@ const AddVisitForm = props => (
         />
       </Form.Field>
     </Form.Group>
-    <Form.Group widths="equal" >
+    {props.hideParks ? null : (      
+      <Form.Group widths="equal">
       <Form.Field>
         <label>Select Park</label>
         <Dropdown
@@ -50,9 +51,10 @@ const AddVisitForm = props => (
             onChange={(e, data) => props.handleFieldChange(data)}
           />
       </Form.Field>
-    </Form.Group>
+      </Form.Group>
+    )}
     <Button type="submit" name="submitBtn">
-      Schedule Visit
+    Schedule Visit
     </Button>
   </Form>
 );
