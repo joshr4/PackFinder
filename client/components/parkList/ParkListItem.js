@@ -33,18 +33,18 @@ class ParkListItem extends Component {
           <div className="ui star rating" data-rating="4"></div>
           </Grid.Column>
           <Grid.Column width={5}>
-          <h3> Name:  {currentPark.name}</h3>
+          <h3> {currentPark.name}</h3>
           Rating: <div className="ui star rating" data-rating="4"></div>
           </Grid.Column>
           <Grid.Column width={5}>
           <h4>{currentPark.address.line_1}</h4>
-          <h4>{currentPark.address.city} {currentPark.address.state} {currentPark.address.zipcode}</h4>
+          <h4>{currentPark.address.city} {currentPark.address.state}, {currentPark.address.zipcode}</h4>
           </Grid.Column>
           <Grid.Column width={3}>
 
           {/*change link to button after fixing this.props.history*/}
           <Link to={`/dog-park/${currentPark.id}`}>
-          >See Detail</Link>
+          >See Details</Link>
           </Grid.Column>
           </Grid>
         </div>
