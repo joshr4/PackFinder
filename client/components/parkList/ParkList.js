@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Map } from '../index.js'
-import {connect} from 'react-redux';
+import { Map, ParkListItem } from '../index.js'
+import { connect } from 'react-redux';
 import { Grid, Header, Image, Rail, Segment, Sticky } from  'semantic-ui-react'
 import { getParksAddresses } from '../../store/index.js'
 
@@ -37,99 +37,12 @@ class ParkList extends Component {
 
       <Grid.Column width={11}>
       <div className="ui one cards">
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-        <Grid columns={3}>
-        <Grid.Column width={3}>
-          <h2> Name: fake name park </h2>
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-          </Grid.Column>
-          <Grid.Column width={5}>
-          <h2> Name: fake name park </h2>
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-          </Grid.Column>
-          <Grid.Column width={5}>
-          <h2> Name: fake name park </h2>
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-          </Grid.Column>
-          <Grid.Column width={3}>
-          <h2> Name: fake name park </h2>
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-          </Grid.Column>
-          </Grid>
-        </div>
 
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="2"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="3"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="3"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="3"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-        </div>
-      </div>
-      <div className="card">
-        <div className="image">
-          <img />
-        </div>
-        <div className="extra">
-          Rating:
-          <div className="ui star rating" data-rating="4"></div>
-        </div>
-      </div>
+      {this.props.nearbyParks.map(park => {
+         return <ParkListItem key={park.id} currentPark={park} />
+      })}
+
+
     </div>
       </Grid.Column>
 
