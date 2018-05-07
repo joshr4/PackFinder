@@ -9,7 +9,7 @@ import { ProfileItem } from '.';
  */
 export const Profile = props => {
   return (
-    <Container>
+    <Container className="container">
       <Grid columns={2} divided>
         <Header as="h3">Owner:</Header>
         <ProfileItem />

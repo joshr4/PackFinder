@@ -1,36 +1,98 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Image } from 'semantic-ui-react';
-// https://logomakr.com/7sbzeB
+import { Menu, Header } from 'semantic-ui-react';
+import { SubNavbar } from '.';
+import history from '../history';
+// https://logomakr.com/4zlisz
 
 const styles = {
   image: {
     maxWidth: '357px',
-    height: '100px'
-  }
-}
+    height: '100px',
+  },
+  menu: {
+    margin: 0,
+    backgroundColor: 'rgba(0,0,0,0)',
+    position: 'fixed',
+    top: '0px',
+    zIndex: 1,
+    width: '100vw',
+    color: '#54B8BF',
+    height: '85px',
+  },
+  menuItem: {
+    color: '#fff',
+    fontSize: 20,
+    fontFamily: 'Veradana, sans-serif',
+    fontWeight: 500,
+  },
+  titleText: {
+    fontFamily: 'Pacifico, cursive',
+    fontSize: 50,
+    color: '#55b9bf',
+    textShadow: '2px 5px 6px rgba(0,0,0,0.2)',
+    letterSpacing: '2px',
+    fontWeight: 100,
+    paddingTop: '10px',
+    paddingLeft: '10px',
+  },
+};
 
-const Navbar = ({ handleClick, isLoggedIn }) => (
-  <Menu stackable>
-    <Image style={styles.image} src={'/images/logo.png'} />
-    {isLoggedIn ? (
-      <Menu.Menu position="right">
-        {/* The navbar will show these links after you log in */}
-        <Menu.Item as={Link} name="home" to="/home" />
-        <Menu.Item onClick={handleClick} name="logout" to="/home" />
-        </Menu.Menu>
-    ) : (
-      <Menu.Menu position="right">
-        {/* The navbar will show these links before you log in */}
-        <Menu.Item as={Link} name="login" to="/login" />
-        <Menu.Item as={Link} name="signup" to="/signup" />
-      </Menu.Menu>
-    )}
-  </Menu>
-);
+export const Navbar = props => {
+  const path = history.location.pathname;
+  const { isLoggedIn, handleClick } = props;
+  if (path === '/') {
+    styles.menu = {
+      ...styles.menu,
+      backgroundColor: 'rgba(0,0,0,0)',
+      boxShadow: '0 0 0',
+      border: '0px',
+    };
+  } else {
+    styles.menu = { ...styles.menu, backgroundColor: 'rgb(44, 66, 80)' };
+  }
+  return (
+    <div>
+      <Menu stackable style={styles.menu}>
+        {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
+        <NavLink to="/">
+          <Header as="h1" style={styles.titleText}>
+            {' '}
+            Pack Finder{' '}
+          </Header>
+        </NavLink>
+        {isLoggedIn ? (
+          <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
+            {/* The navbar will show these links after you log in */}
+            <Menu.Item as={NavLink} name="home" to="/home" />
+            <Menu.Item onClick={handleClick} name="logout" to="/home" />
+          </Menu.Menu>
+        ) : (
+          <Menu.Menu position="right">
+            {/* The navbar will show these NavLinks before you log in */}
+            <Menu.Item
+              style={styles.menuItem}
+              as={NavLink}
+              name="login"
+              to="/login"
+            />
+            <Menu.Item
+              style={styles.menuItem}
+              as={NavLink}
+              name="signup"
+              to="/signup"
+            />
+          </Menu.Menu>
+        )}
+      </Menu>
+      {path !== '/' ? <SubNavbar /> : <div />}
+    </div>
+  );
+};
+// }
 
 /**
  * CONTAINER
@@ -49,7 +111,7 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(Navbar);
+export default withRouter(connect(mapState, mapDispatch)(Navbar));
 
 /**
  * PROP TYPES
