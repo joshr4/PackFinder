@@ -390,14 +390,14 @@ export class DogPark extends Component {
           </Segment>
           <Segment attached style={{marginBottom:'10px'}}>
           <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
-          <AddVisitForm
+          {/* <AddVisitForm
           nowString={this.state.nowString}
           handleSubmit={this.handleSubmit}
           handleChange={props.handleChange}
           handleFieldChange={props.handleFieldChange}
           parkList={props.parkList}
           addFormFieldData={props.addFormFieldData}
-          />
+          /> */}
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>

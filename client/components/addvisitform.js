@@ -29,7 +29,7 @@ const AddVisitForm = props => (
           name="start"
           style={{ marginLeft: '0px' }}
           defaultValue="17:00"
-          value={props.addFormFieldData.fromTime}          
+          value={props.addFormFieldData.fromTime}
         />
       </Form.Field>
       <Form.Field>
@@ -39,22 +39,13 @@ const AddVisitForm = props => (
           name="end"
           style={{ marginLeft: '0px' }}
           defaultValue="20:00"
-          value={props.addFormFieldData.toTime}          
+          value={props.addFormFieldData.toTime}
         />
       </Form.Field>
     </Form.Group>
     <Form.Group widths="equal" >
       <Form.Field>
         <label>Select Park</label>
-        {/* <DropdownExampleSearchSelection 
-          list={props.parkList}
-          name="park"
-          style={{ marginLeft: '0px' }}
-          value={props.addFormFieldData.park}
-          onChange={(e)=> {
-          console.log('dropchange,e ',e)
-          return props.handleChange(e)}}
-        /> */}
         <Dropdown
             options={props.parkList}
             name="park"
