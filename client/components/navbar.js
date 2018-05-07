@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Image, Header, Grid } from 'semantic-ui-react';
+import { Menu, Header } from 'semantic-ui-react';
 import { SubNavbar } from '.';
+import history from '../history';
 // https://logomakr.com/4zlisz
 
 const styles = {
@@ -40,41 +41,58 @@ const styles = {
   },
 };
 
-const Navbar = ({ handleClick, isLoggedIn }) => (
-  <div>
-    <Menu stackable style={styles.menu}>
-      {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
-      <Header as="h1" style={styles.titleText}>
-        {' '}
-        Pack Finder{' '}
-      </Header>
-      {isLoggedIn ? (
-        <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
-          {/* The navbar will show these links after you log in */}
-          <Menu.Item as={Link} name="home" to="/home" />
-          <Menu.Item onClick={handleClick} name="logout" to="/home" />
-        </Menu.Menu>
-      ) : (
-        <Menu.Menu position="right">
-          {/* The navbar will show these links before you log in */}
-          <Menu.Item
-            style={styles.menuItem}
-            as={Link}
-            name="login"
-            to="/login"
-          />
-          <Menu.Item
-            style={styles.menuItem}
-            as={Link}
-            name="signup"
-            to="/signup"
-          />
-        </Menu.Menu>
-      )}
-    </Menu>
-    {isLoggedIn ? <SubNavbar /> : <div />}
-  </div>
-);
+export const Navbar = props => {
+  const path = history.location.pathname;
+  const { isLoggedIn, handleClick } = props;
+  if (path === '/') {
+    styles.menu = {
+      ...styles.menu,
+      backgroundColor: 'rgba(0,0,0,0)',
+      boxShadow: '0 0 0',
+      border: '0px',
+    };
+  } else {
+    styles.menu = { ...styles.menu, backgroundColor: 'rgb(44, 66, 80)' };
+  }
+  return (
+    <div>
+      <Menu stackable style={styles.menu}>
+        {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
+        <NavLink to="/">
+          <Header as="h1" style={styles.titleText}>
+            {' '}
+            Pack Finder{' '}
+          </Header>
+        </NavLink>
+        {isLoggedIn ? (
+          <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
+            {/* The navbar will show these links after you log in */}
+            <Menu.Item as={NavLink} name="home" to="/home" />
+            <Menu.Item onClick={handleClick} name="logout" to="/home" />
+          </Menu.Menu>
+        ) : (
+          <Menu.Menu position="right">
+            {/* The navbar will show these NavLinks before you log in */}
+            <Menu.Item
+              style={styles.menuItem}
+              as={NavLink}
+              name="login"
+              to="/login"
+            />
+            <Menu.Item
+              style={styles.menuItem}
+              as={NavLink}
+              name="signup"
+              to="/signup"
+            />
+          </Menu.Menu>
+        )}
+      </Menu>
+      {isLoggedIn ? <SubNavbar /> : <div />}
+    </div>
+  );
+};
+// }
 
 /**
  * CONTAINER
@@ -93,7 +111,7 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(Navbar);
+export default withRouter(connect(mapState, mapDispatch)(Navbar));
 
 /**
  * PROP TYPES

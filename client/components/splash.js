@@ -34,13 +34,13 @@ export const Splash = props => {
           </Button>
         </div>
       </Parallax>
-      <h1>| | |</h1>
+      <div style={{backgroundColor: 'rgb(44, 66, 80)'}}><h1>| | |</h1></div>
       <Parallax blur={{ min: -1, max: 3 }} bgImage={image2}>
         <div style={{ minHeight: '100vh' }}>
           <div style={insideStyles}>Dynamic Blur</div>
         </div>
       </Parallax>
-      <h1>| | |</h1>
+      <div style={{backgroundColor: 'rgb(44, 66, 80)'}}><h1>| | |</h1></div>
       <Parallax strength={-100} bgImage={image3}>
         <div style={{ minHeight: '100vh' }}>
           <div style={insideStyles}>Reverse direction</div>
