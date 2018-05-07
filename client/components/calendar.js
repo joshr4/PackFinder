@@ -27,12 +27,20 @@ class Dnd extends React.Component {
       selectedEvent: {},
       showModal: false,
       showAddModal: false,
+      addFormFieldData: {
+        park: 1,
+        start: '2018-04-09T20:00:00.000Z',
+        end: '2018-04-09T17:00:00.000Z',
+        visitDate: '2018-04-09',
+      },
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
   this.toggleAddModal = this.toggleAddModal.bind(this);
+  this.handleChange = this.handleChange.bind(this);
+  this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +54,7 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
+    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
@@ -85,10 +94,45 @@ class Dnd extends React.Component {
       showAddModal: !this.state.showAddModal,
     });
   }
-  addEvent = (event) => {
-    this.props.addNewVisit(event)
+  addEvent = () => {
+    let stateVisit = this.state.addFormFieldData
+    console.log('state',stateVisit)    
+    let year = parseInt(stateVisit.visitDate.split("-")[0]);
+    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split("-")[2]);
+    let fromHour = parseInt(stateVisit.start.slice(11).split(":")[0]);
+    let fromMin = parseInt(stateVisit.start.slice(11).split(":")[1]);
+    let toHour = parseInt(stateVisit.end.slice(11).split(":")[0]);
+    let toMin = parseInt(stateVisit.end.slice(11).split(":")[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
+    let newVisitInfo = {
+      start: startTime,
+      end: endTime,
+      parkId: stateVisit.park,
+      userId: 55,
+      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
+    }
+    console.log('VISIT', newVisitInfo)
+    //ADD IN USER ID TO POST REQUEST
+    this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()
   }
+  handleChange = (e, data) => {
+    console.log('change name/value',data ,e.target.name, e.target.value)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
+    })
+  }
+  
+  handleFieldChange = (data) => {
+    console.log('change name/value',data)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
+    })
+  }
+  
 
   render() {
     return (
@@ -102,9 +146,12 @@ class Dnd extends React.Component {
         <AddEventModal
           show={this.state.showAddModal}
           onClose={this.toggleAddModal}
-          onAdd={this.addEvent}
+          handleSubmit={this.addEvent}
+          handleChange={this.handleChange}
+          handleFieldChange={this.handleFieldChange}
           item={this.state.selectedEvent}
           parkList={this.props.parkList}
+          addFormFieldData={this.state.addFormFieldData}
         />
         <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
         <DragAndDropCalendar
@@ -168,7 +215,7 @@ const mapDispatch = dispatch => {
       dispatch(updateVisit(visit));
     },
     addNewVisit(visit) {
-      console.log('ADDED')
+      console.log('ADDED, visit',visit)
       dispatch(addVisit(visit));
     },
   };
