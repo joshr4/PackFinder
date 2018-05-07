@@ -48,7 +48,6 @@ router.put('/:id/change-times', (req, res, next) => {
 
 
 router.post('/', async (req, res, next) => {
-  console.log("req.body: ", req.body);
   let relatedPark = await Park.findById(req.body.parkId);
   let relatedUser = await User.findById(req.body.userId);
   let newVisit = await Visit.create({
@@ -60,7 +59,6 @@ router.post('/', async (req, res, next) => {
   });
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);
-  console.log("created new visit: ", newVisit);
   // newVisit.title = relatedPark.name;
   // newVisit.setPark(relatedPark);
   // newVisit.setUser(relatedUser);

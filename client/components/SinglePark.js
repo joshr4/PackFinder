@@ -156,12 +156,12 @@ export class SinglePark extends Component {
       })
       let d3Data = [];
       let width = maxT - minT;
-      console.log("width: ", width);
+      // console.log("width: ", width);
       let halfHourpartition = 1000*60*30;
       let hourPartition = 1000*60*60;
-      console.log("partition: ", hourPartition);
+      // console.log("partition: ", hourPartition);
       let nPartitions = width/hourPartition;
-      console.log("nPartitions: ", nPartitions);
+      // console.log("nPartitions: ", nPartitions);
       let maxVisits = 0;
 
       for (let i = 0; i < nPartitions; i ++) {
@@ -189,7 +189,7 @@ export class SinglePark extends Component {
             d3Elem.time = timeDisplay(intervalStart);
           }
           if ((startT < intervalEnd && endT > intervalStart)) {
-            console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
+            // console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
             d3Elem.visits ++;
           }
         })
@@ -197,9 +197,9 @@ export class SinglePark extends Component {
           maxVisits = d3Elem.visits;
         }
         d3Data.push(d3Elem);
-        console.log(i, " intervalStart: ", intervalStart);
+        // console.log(i, " intervalStart: ", intervalStart);
       }
-      console.log("d3Data loaded: ", d3Data);
+      // console.log("d3Data loaded: ", d3Data);
 
       this.setState({
         visits,
@@ -211,8 +211,8 @@ export class SinglePark extends Component {
     })
   }
   handleSubmit(event) {
-    console.log("line 193 handling submit: ", event, event.target);
-    console.log('event.target: ', event.target);
+    // console.log("line 193 handling submit: ", event, event.target);
+    // console.log('event.target: ', event.target);
     let visitDate = event.target.visitDate.value;
     let fromTime = event.target.fromTime.value;
     let toTime = event.target.toTime.value;
@@ -231,19 +231,19 @@ export class SinglePark extends Component {
     let endTime = new Date(year, month, day, toHour, toMin);
     newVisitInfo.start = startTime;
     newVisitInfo.end = endTime;
-    console.log("newVisitInfo: ", newVisitInfo);
+    // console.log("newVisitInfo: ", newVisitInfo);
     axios.post("api/visits", newVisitInfo).then(response => {
-      console.log("visit post reponse: ", response.data);
+      // console.log("visit post reponse: ", response.data);
     })
   }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
   render() {
-      console.log("test");
+      // console.log("test");
       const { children } = this.props
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      console.log("this.state: ", this.state);
+      // console.log("this.state: ", this.state);
       const videos = ["1", "2", "3", "4", "5"];
       const items = [
         {

@@ -29,9 +29,9 @@ class Dnd extends React.Component {
       showAddModal: false,
       addFormFieldData: {
         park: 1,
-        start: '2018-04-09T20:00:00.000Z',
-        end: '2018-04-09T17:00:00.000Z',
-        visitDate: '2018-04-09',
+        start: '14:00',
+        end: '15:00',
+        visitDate: '2018-06-09',
       },
     };
   this.moveEvent = this.moveEvent.bind(this);
@@ -96,17 +96,15 @@ class Dnd extends React.Component {
   }
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
-    console.log('state',stateVisit)    
     let year = parseInt(stateVisit.visitDate.split("-")[0]);
     let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split("-")[2]);
-    let fromHour = parseInt(stateVisit.start.slice(11).split(":")[0]);
-    let fromMin = parseInt(stateVisit.start.slice(11).split(":")[1]);
-    let toHour = parseInt(stateVisit.end.slice(11).split(":")[0]);
-    let toMin = parseInt(stateVisit.end.slice(11).split(":")[1]);
+    let fromHour = parseInt(stateVisit.start.split(":")[0]);
+    let fromMin = parseInt(stateVisit.start.split(":")[1]);
+    let toHour = parseInt(stateVisit.end.split(":")[0]);
+    let toMin = parseInt(stateVisit.end.split(":")[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
-    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -114,25 +112,21 @@ class Dnd extends React.Component {
       userId: 55,
       title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
     }
-    console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()
   }
-  handleChange = (e, data) => {
-    console.log('change name/value',data ,e.target.name, e.target.value)
+  handleChange = e => {
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
   }
-  
-  handleFieldChange = (data) => {
-    console.log('change name/value',data)
+
+  handleFieldChange = data => {
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
     })
   }
-  
 
   render() {
     return (
@@ -215,7 +209,6 @@ const mapDispatch = dispatch => {
       dispatch(updateVisit(visit));
     },
     addNewVisit(visit) {
-      console.log('ADDED, visit',visit)
       dispatch(addVisit(visit));
     },
   };
