@@ -27,12 +27,19 @@ class Dnd extends React.Component {
       selectedEvent: {},
       showModal: false,
       showAddModal: false,
+      addFormFieldData: {
+        park: 4,
+        start: '2018-04-09T20:00:00.000Z',
+        end: '2018-04-09T17:00:00.000Z',
+        visitDate: '2018-04-09',
+      },
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
   this.toggleAddModal = this.toggleAddModal.bind(this);
+  this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -85,9 +92,19 @@ class Dnd extends React.Component {
       showAddModal: !this.state.showAddModal,
     });
   }
-  addEvent = (event) => {
-    this.props.addNewVisit(event)
+  addEvent = () => {
+    console.log('state',this.state)
+    let newVisit = {
+      
+    }
+    this.props.addNewVisit(this.state.addFormFieldData)
     this.toggleAddModal()
+  }
+  handleChange = e => {
+    console.log('change name/value',e.target.name, e.target.value)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
+    })
   }
 
   render() {
@@ -102,9 +119,11 @@ class Dnd extends React.Component {
         <AddEventModal
           show={this.state.showAddModal}
           onClose={this.toggleAddModal}
-          onAdd={this.addEvent}
+          handleSubmit={this.addEvent}
+          handleChange={this.handleChange}
           item={this.state.selectedEvent}
           parkList={this.props.parkList}
+          addFormFieldData={this.state.addFormFieldData}
         />
         <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
         <DragAndDropCalendar
@@ -168,7 +187,7 @@ const mapDispatch = dispatch => {
       dispatch(updateVisit(visit));
     },
     addNewVisit(visit) {
-      console.log('ADDED')
+      console.log('ADDED, visit',visit)
       dispatch(addVisit(visit));
     },
   };
