@@ -138,17 +138,25 @@ export class DogPark extends Component {
       parkId: 1,
       park:{
         address: {
-          line_1:""
-        }
+        line_1:""
       }
+    },
+      addFormFieldData: {
+        park: 1,
+        start: '2018-04-09T20:00:00.000Z',
+        end: '2018-04-09T17:00:00.000Z',
+        visitDate: '2018-04-09',
+      },
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFieldChange = this.handleFieldChange.bind(this);
   }
   componentDidMount() {
       let parkId = this.props.match.params.id;
       console.log("parkId: ", parkId);
       let parkURL = `api/parks/${parkId}`;
-      console.log("parkURL: ", parkURL); 
+      console.log("parkURL: ", parkURL);
       axios.get(`/api/parks/${parkId}`).then(response => {
         console.log("response from line 147: ", response);
         this.setState({
@@ -251,6 +259,45 @@ export class DogPark extends Component {
       console.log("visit post reponse: ", response.data);
     })
   }
+
+  addEvent = () => {
+    let stateVisit = this.state.addFormFieldData
+    console.log('state',stateVisit)
+    let year = parseInt(stateVisit.visitDate.split("-")[0]);
+    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split("-")[2]);
+    let fromHour = parseInt(stateVisit.start.slice(11).split(":")[0]);
+    let fromMin = parseInt(stateVisit.start.slice(11).split(":")[1]);
+    let toHour = parseInt(stateVisit.end.slice(11).split(":")[0]);
+    let toMin = parseInt(stateVisit.end.slice(11).split(":")[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
+    let newVisitInfo = {
+      start: startTime,
+      end: endTime,
+      parkId: stateVisit.park,
+      userId: 55,
+      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
+    }
+    console.log('VISIT', newVisitInfo)
+    //ADD IN USER ID TO POST REQUEST
+    this.props.addNewVisit(newVisitInfo)
+    this.toggleAddModal()
+  }
+  handleChange = (e, data) => {
+    console.log('change name/value',data ,e.target.name, e.target.value)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
+    })
+  }
+
+  handleFieldChange = (data) => {
+    console.log('change name/value',data)
+    this.setState({
+        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
+    })
+  }
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
   render() {
@@ -343,9 +390,14 @@ export class DogPark extends Component {
           </Segment>
           <Segment attached style={{marginBottom:'10px'}}>
           <Header as='h5' style={{ fontSize: '2em' }}>Schedule A Visit</Header>
-          <AddVisitForm
+          {/* <AddVisitForm
           nowString={this.state.nowString}
-          handleSubmit={this.handleSubmit} />
+          handleSubmit={this.handleSubmit}
+          handleChange={props.handleChange}
+          handleFieldChange={props.handleFieldChange}
+          parkList={props.parkList}
+          addFormFieldData={props.addFormFieldData}
+          /> */}
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>

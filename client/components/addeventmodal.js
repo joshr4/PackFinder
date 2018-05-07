@@ -17,8 +17,11 @@ const AddEventModal = props => (
         <Header>{props.item.title}</Header>
         <AddVisitForm
           nowString={props.nowString}
-          handleSubmit={() => props.onAdd(props.item)}
+          handleSubmit={props.handleSubmit}
+          handleChange={props.handleChange}
+          handleFieldChange={props.handleFieldChange}
           parkList={props.parkList}
+          addFormFieldData={props.addFormFieldData}
         />
       </Modal.Description>
     </Modal.Content>
