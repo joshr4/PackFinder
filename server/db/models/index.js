@@ -21,7 +21,7 @@ const Review = require('./review')
   // User has many pets
 User.hasMany(Pet, {
   as: 'pets',
-  foreignKey: 'userId',  
+  foreignKey: 'userId',
 });
 
 // User.hasMany(Park, {
@@ -33,13 +33,14 @@ User.belongsToMany(Park, {through:'UserFavorites', as:'favorites'});
 Park.belongsToMany(User, {through:'UserFavorites'});
 
 
-// User.belongsToMany(Park, {through:Visit}); 
-//User has getParks, setParks, addPark, addParks as magic methods 
-// Park.belongsToMany(User, {through:Visit}); 
+// User.belongsToMany(Park, {through:Visit});
+//User has getParks, setParks, addPark, addParks as magic methods
+// Park.belongsToMany(User, {through:Visit});
 //Park has getUsers, setUsers, addUser, addUsers as magic methods
   // User has many visits -> MtM to Park
   // Park has many visits -> MtM to User
-Park.belongsTo(Address); //Park will have address Id
+Park.belongsTo(Address); //Park will have addressId
+User.belongsTo(Address); //User will have addressId
 // Visit.belongsTo(Address); <- no longer needed
 Visit.belongsTo(Park);
 Park.hasMany(Visit);
@@ -50,7 +51,7 @@ User.hasMany(Visit);
 Park.hasMany(Review, {
   as: 'reviews',
   foreignKey: 'reviews'
-})  
+})
   // Reviews?
     // Park has many reviews
     // User has many reviews

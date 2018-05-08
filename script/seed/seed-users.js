@@ -4,6 +4,8 @@ const faker = require('faker');
 const Promise = require('bluebird');
 const db = require('../../server/db');
 const { User } = require('../../server/db/models');
+const ZILLOW_ID = 'X1-ZWz1geapbn0miz_44w9p'
+
 
 const numUsers = 20;
 
