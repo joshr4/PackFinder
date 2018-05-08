@@ -198,17 +198,14 @@ export class DogPark extends Component {
 
     this.setState({ map })
   }
-  
+
   updateD3() {
-    console.log("Loading visits from state: ", this.state);
-    console.log("new prop events: ", this.props.events);
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
 
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
-      console.log("filteredEvents: ", filteredEvents);
       visits = filteredEvents;
       // let visits = this.props.events;
       let dateMin = '';
@@ -230,7 +227,7 @@ export class DogPark extends Component {
         if (dateMin == '' || startT < dateMin) {
           dateMin = startT;
         }
-      
+
         if (maxT == '' || endT > maxT && !this.state.dayView) {
           maxT = endT;
         }
@@ -241,7 +238,6 @@ export class DogPark extends Component {
 
       let d3Data = [];
       let width = maxT - minT;
-      // console.log("width: ", width);
       let halfHourpartition = 1000 * 60 * 30;
       let hourPartition = 1000 * 60 * 60;
 
@@ -250,20 +246,19 @@ export class DogPark extends Component {
       let dayPartition = 24 * hourPartition;
       let nDays = datewidth/dayPartition;
       let dayOptions = [];
-      // console.log("dateMin, dateMax, nDays: ", dateMin, dateMax, nDays);
       let dateOnlyMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate(), 0, 0);
       for (let i = 0; i < nDays; i++) {
         let dayOption = new Date(dateOnlyMin.getTime() + dayPartition * i);
-        let dayOptionString = dateDisplay(dayOption) + "/" + dateOnlyMin.getFullYear(); 
+        let dayOptionString = dateDisplay(dayOption) + "/" + dateOnlyMin.getFullYear();
         let elem = {
-          val: dateOnlyMin.getFullYear() + "/" + dateDisplay(dayOption), 
+          val: dateOnlyMin.getFullYear() + "/" + dateDisplay(dayOption),
           display: dayOptionString,
         };
         dayOptions.push(elem);
       }
       this.setState({
         dayOptions,
-      })      
+      })
 
       let nPartitions = width / this.state.timePartition;
       if (this.state.dayView) {
@@ -272,10 +267,9 @@ export class DogPark extends Component {
       let maxVisits = 0;
       for (let i = 0; i < nPartitions; i++) {
         let intervalStart = new Date(minT.getTime() + this.state.timePartition * i);
-        // console.log("intervalStart: ", intervalStart);
         if (!this.state.dayView) {
           let dateOnly = new Date(minT.getFullYear(), minT.getMonth(), minT.getDate(), 0, 0);
-          intervalStart = new Date(dateOnly.getTime() + this.state.timePartition * i);          
+          intervalStart = new Date(dateOnly.getTime() + this.state.timePartition * i);
         }
         let intervalEnd = new Date(intervalStart.getTime() + this.state.timePartition);
         let d3Elem = {
@@ -296,11 +290,9 @@ export class DogPark extends Component {
             d3Elem.time = dateDisplay(intervalStart);
           }
           else {
-            d3Elem.time = timeDisplay(intervalStart);            
+            d3Elem.time = timeDisplay(intervalStart);
           }
-          // console.log("visit vs interval: ", intervalStart, intervalEnd, "|", startT, endT);
           if ((startT < intervalEnd && endT > intervalStart)) {
-            // console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
             d3Elem.visits++;
           }
         })
@@ -308,9 +300,7 @@ export class DogPark extends Component {
           maxVisits = d3Elem.visits;
         }
         d3Data.push(d3Elem);
-        // console.log(i, " intervalStart: ", intervalStart);
       }
-      // console.log("d3Data loaded: ", d3Data);
       this.setState({
         visits,
         minT,
@@ -321,17 +311,11 @@ export class DogPark extends Component {
     })
   }
   componentDidMount() {
-    console.log("state from mount: ", this.state);
-    console.log("props from mount: ", this.props);
     let parkId = this.props.match.params.id;
-    // console.log("parkId: ", parkId);
     let parkURL = `/api/parks/${parkId}`;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-    // console.log("parkURL: ", parkURL);
     let parkArray = this.props.parkList.filter(park => park.id == this.props.match.params.id);
-    // console.log("parkArray: ", parkArray);
     axios.get(`/api/parks/${parkId}`).then(response => {
-      // console.log("response from line 147: ", response);
       this.setState({
         park:response.data
       })
@@ -376,7 +360,6 @@ export class DogPark extends Component {
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
-    // console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -384,22 +367,18 @@ export class DogPark extends Component {
       userId: 55,
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
-    // console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
     this.props.addNewVisit(newVisitInfo).then((result) => {
-      console.log("result from addNewVisit: ", result);
       this.updateD3();
     });
   }
 
   handleFieldChange = (data) => {
-    // console.log('change name/value',data)
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
     })
   }
   handleChange = (e, data) => {
-    // console.log('change name/value',data ,e.target.name, e.target.value)
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
@@ -409,9 +388,7 @@ export class DogPark extends Component {
   showFixedMenu = () => this.setState({ fixed: true })
   changeDate(event) {
     event.preventDefault();
-    // console.log("new date: ", event.target.selectDate.value);
     let splitDate = event.target.selectDate.value.split("/");
-    // console.log("splitDate: ", splitDate);
     // dayView = true;
     let selectedDate = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
     this.setState({
@@ -427,16 +404,13 @@ export class DogPark extends Component {
       timePartition:dayPartition,
       dayView: false,
       selectedDate:"",
-    });    
+    });
     this.updateD3();
   }
   render() {
-      // console.log("test");
       const { children } = this.props
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      console.log("this.state (render): ", this.state);
-      console.log("this.props (render): ", this.props);
       const videos = ['1', '2', '3', '4', '5'];
       const items = [
         {
@@ -479,12 +453,10 @@ export class DogPark extends Component {
         }
       ],
       x = function(d) {
-        // console.log("d.time: ", d.time, typeof (d.time));
         if (typeof (d.time) === typeof ('string')) {
           return d.time;
         }
         else if (d.time) {
-          // console.log("parsedDate: ", parseDate(d.time.toString()));
           return parseDate(d.time.toString());
         }
       },
@@ -516,7 +488,7 @@ export class DogPark extends Component {
         location:this.state.park.address.location}
       }
     ]
-      
+
     return (
       <div>
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
@@ -545,7 +517,7 @@ export class DogPark extends Component {
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
-          addFormFieldData={this.state.addFormFieldData}
+          item={this.state.addFormFieldData}
           hideParks={true}
           />
           </Segment>
@@ -567,7 +539,7 @@ export class DogPark extends Component {
         <Grid.Row>
           <Grid.Column width={16}>
           <Segment>
-          <Form onSubmit={this.changeDate}>                    
+          <Form onSubmit={this.changeDate}>
             Select day to view:
 
             <select name="selectDate" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
@@ -575,7 +547,7 @@ export class DogPark extends Component {
               return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
             })}
             </select>
-            
+
 
             <Button type="submit" name="submitDate" style={{marginLeft: '10px'}} color='blue' size='tiny'>
               Select Day
@@ -583,9 +555,9 @@ export class DogPark extends Component {
             {this.state.dayView ? (
               <Button onClick={this.clearDate} name="clearDate" style={{marginLeft: '10px'}} color='green' size='tiny'>
                 Clear
-              </Button>            
+              </Button>
             ) : null}
-          </Form>      
+          </Form>
             </Segment>
           <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
           <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
@@ -647,7 +619,6 @@ export class DogPark extends Component {
   }
 }
 const mapState = state => {
-  console.log("state from 574: ", state);
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
       id: visit.id,
@@ -690,7 +661,7 @@ const mapDispatch = dispatch => {
     },
     async addNewVisit(visit) {
       await dispatch(addVisit(visit));
-      dispatch(getVisits());
+      await dispatch(getVisits());
     },
   };
 };
