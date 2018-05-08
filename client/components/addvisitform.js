@@ -5,7 +5,6 @@ import { Button, Form, Input, Dropdown } from 'semantic-ui-react';
 const AddVisitForm = props => (
 
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
-  {console.log('Modal edit form item', props.item)}
     <Form.Group widths="equal" >
       <Form.Field>
         <label>Date</label>

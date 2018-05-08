@@ -73,7 +73,6 @@ class Dnd extends React.Component {
 
   async openModal(event, type){
     let selEvent = event
-    console.log('openModal event', event)
     // console.log('datedisplay', dateDisplay(event.start))
     // console.log('timedisplay', timeDisplay(event.start))
     if ( type === 'view'){
@@ -109,7 +108,6 @@ class Dnd extends React.Component {
       start,
       end,
     };
-    console.log('move',updatedEvent)
     this.props.updateVisit(updatedEvent);
   }
 
@@ -128,7 +126,6 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('addEvent')
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -150,7 +147,6 @@ class Dnd extends React.Component {
     this.toggleModal()
   }
   updateEvent = () => {
-    console.log('updateEvent',this.state.selectedEvent)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -167,14 +163,12 @@ class Dnd extends React.Component {
       id: stateVisit.id,
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
-    console.log('updateEvent visit',newVisitInfo)
 
     this.props.updateVisit(newVisitInfo)
     this.toggleModal()
   }
 
   handleChange = e => {
-    console.log('change handler', e.target.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
     })
@@ -255,16 +249,13 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getData() {
-      console.log('get visits')
       dispatch(getVisits());
       dispatch(getParksAddresses());
     },
     removeVisit(visit) {
-      console.log('updated visist', visit)
       dispatch(deleteVisit(visit));
     },
     async updateVisit(visit) {
-      console.log('updated visist', visit)
       await dispatch(updateVisit(visit));
       dispatch(getVisits());
     },
