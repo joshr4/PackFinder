@@ -29,6 +29,7 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.put('/:id/change-times', (req, res, next) => {
+  console.log('update',req.body)
   Visit.findOne({
     where: {
       id: req.params.id

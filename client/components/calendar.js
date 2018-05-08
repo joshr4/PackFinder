@@ -26,7 +26,7 @@ class Dnd extends React.Component {
     super(props);
     this.state = {
       selectedEvent: {
-        park: 1,
+        id: 1,
         start: '14:00',
         end: '15:00',
         visitDate: '2018-06-09',
@@ -57,6 +57,8 @@ class Dnd extends React.Component {
   this.openModal = this.openModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.handleFieldChange = this.handleFieldChange.bind(this);
+  this.updateEvent = this.updateEvent.bind(this);
+  this.addEvent = this.addEvent.bind(this);
   }
 
   componentDidMount() {
@@ -82,9 +84,9 @@ class Dnd extends React.Component {
       // let fromMin = event.start.getMinutes();
       // let toHour = event.end.getHours();
       // let toMin = event.end.getMinutes();
-      selEvent.visitDate = `${year}-${month + 1}-${day}`
-      selEvent.start = timeDisplay(event.start)
-      selEvent.end = timeDisplay(event.end)
+      //selEvent.visitDate = `${year}-${month + 1}-${day}`
+      //selEvent.start = timeDisplay(event.start)
+      //selEvent.end = timeDisplay(event.end)
       // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
       await this.setState({
         selectedEvent: selEvent,
@@ -107,6 +109,7 @@ class Dnd extends React.Component {
       start,
       end,
     };
+    console.log('move',updatedEvent)
     this.props.updateVisit(updatedEvent);
   }
 
@@ -125,6 +128,7 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
+    console.log('addEvent')
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -145,6 +149,30 @@ class Dnd extends React.Component {
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
+  updateEvent = () => {
+    console.log('updateEvent',this.state.selectedEvent)
+    let stateVisit = this.state.selectedEvent
+    let year = parseInt(stateVisit.visitDate.split('-')[0]);
+    let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split('-')[2]);
+    let fromHour = parseInt(stateVisit.start.split(':')[0]);
+    let fromMin = parseInt(stateVisit.start.split(':')[1]);
+    let toHour = parseInt(stateVisit.end.split(':')[0]);
+    let toMin = parseInt(stateVisit.end.split(':')[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    let newVisitInfo = {
+      start: startTime,
+      end: endTime,
+      id: stateVisit.id,
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+    }
+    console.log('updateEvent visit',newVisitInfo)
+
+    this.props.updateVisit(newVisitInfo)
+    this.toggleModal()
+  }
+
   handleChange = e => {
     console.log('change handler', e.target.value)
     this.setState({
@@ -172,7 +200,7 @@ class Dnd extends React.Component {
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
           onEdit={this.openModal}
-          handleEdit={this.props.updateVisit}
+          handleEdit={this.updateEvent}
         />
         <Button onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
         <DragAndDropCalendar
@@ -235,9 +263,10 @@ const mapDispatch = dispatch => {
       console.log('updated visist', visit)
       dispatch(deleteVisit(visit));
     },
-    updateVisit(visit) {
+    async updateVisit(visit) {
       console.log('updated visist', visit)
-      //dispatch(updateVisit(visit));
+      await dispatch(updateVisit(visit));
+      dispatch(getVisits());
     },
     async addNewVisit(visit) {
       await dispatch(addVisit(visit));
