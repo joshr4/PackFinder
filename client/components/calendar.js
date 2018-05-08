@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { EventModal, AddEventModal } from './index';
+import { EventModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'

@@ -23,7 +23,6 @@ const EventModal = props => {
         />
         <Modal.Description>
           <Header>{item.title}</Header>
-          {console.log('Modalitem',item)}
             { modalType === 'view' ? <div>
               <p>Start Time: {item.start.toString()}</p>
               <p>End Time: {item.end.toString()}</p>
