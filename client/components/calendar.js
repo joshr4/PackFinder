@@ -12,6 +12,7 @@ import axios from 'axios';
 import { EventModal, AddEventModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
+import { timeDisplay, dateDisplay } from './global'
 
 // import '../../public/calendar.css'
 // Setup the localizer by providing the moment (or globalize) Object
@@ -42,7 +43,6 @@ class Dnd extends React.Component {
         }
       },
       showModal: false,
-      showAddModal: false,
       addFormFieldData: {
         park: 1,
         start: '14:00',
@@ -70,8 +70,27 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type){
+    let selEvent = event
+    console.log('openModal event', event)
+    // console.log('datedisplay', dateDisplay(event.start))
+    // console.log('timedisplay', timeDisplay(event.start))
+    if ( type === 'view'){
+      let year = event.start.getFullYear();
+      let month = event.start.getMonth();
+      let day = event.start.getDate();
+      // let fromHour = event.start.getHours();
+      // let fromMin = event.start.getMinutes();
+      // let toHour = event.end.getHours();
+      // let toMin = event.end.getMinutes();
+      selEvent.visitDate = `${year}-${month + 1}-${day}`
+      selEvent.start = timeDisplay(event.start)
+      selEvent.end = timeDisplay(event.end)
+      // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
+      await this.setState({
+        selectedEvent: selEvent,
+      })
+    }
     await this.setState({
-      selectedEvent: event,
       modalType: type
     })
     if (this.state.modalType !== 'edit') this.toggleModal()
@@ -107,26 +126,27 @@ class Dnd extends React.Component {
 
   addEvent = () => {
     let stateVisit = this.state.selectedEvent
-    let year = parseInt(stateVisit.visitDate.split("-")[0]);
-    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
-    let day = parseInt(stateVisit.visitDate.split("-")[2]);
-    let fromHour = parseInt(stateVisit.start.split(":")[0]);
-    let fromMin = parseInt(stateVisit.start.split(":")[1]);
-    let toHour = parseInt(stateVisit.end.split(":")[0]);
-    let toMin = parseInt(stateVisit.end.split(":")[1]);
+    let year = parseInt(stateVisit.visitDate.split('-')[0]);
+    let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split('-')[2]);
+    let fromHour = parseInt(stateVisit.start.split(':')[0]);
+    let fromMin = parseInt(stateVisit.start.split(':')[1]);
+    let toHour = parseInt(stateVisit.end.split(':')[0]);
+    let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
 
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
   handleChange = e => {
+    console.log('change handler', e.target.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
     })
@@ -152,6 +172,7 @@ class Dnd extends React.Component {
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
           onEdit={this.openModal}
+          handleEdit={this.props.updateVisit}
         />
         <Button onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
         <DragAndDropCalendar
@@ -188,7 +209,7 @@ const mapState = state => {
     return newVisit
   })
   //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
-  let dropDownParks = state.parkList.map(park=>{
+  let dropDownParks = state.parkList.map( park => {
     let newPark = {
       key: park.id,
       value: park.id,
@@ -206,14 +227,17 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getData() {
+      console.log('get visits')
       dispatch(getVisits());
       dispatch(getParksAddresses());
     },
     removeVisit(visit) {
+      console.log('updated visist', visit)
       dispatch(deleteVisit(visit));
     },
     updateVisit(visit) {
-      dispatch(updateVisit(visit));
+      console.log('updated visist', visit)
+      //dispatch(updateVisit(visit));
     },
     async addNewVisit(visit) {
       await dispatch(addVisit(visit));

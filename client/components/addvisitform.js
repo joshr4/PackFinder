@@ -3,7 +3,9 @@ import { Button, Form, Input, Dropdown } from 'semantic-ui-react';
 //import { countryOptions } from '../common'
 
 const AddVisitForm = props => (
+
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
+  {console.log('Modal edit form item', props.item)}
     <Form.Group widths="equal" >
       <Form.Field>
         <label>Date</label>
@@ -11,8 +13,8 @@ const AddVisitForm = props => (
           type="date"
           name="visitDate"
           style={{ marginLeft: '0px' }}
-          defaultValue={props.nowString}
-          value={props.addFormFieldData.visitDate}
+          //defaultValue={props.nowString}
+          value={props.item.visitDate}
         />
       </Form.Field>
     </Form.Group>
@@ -23,9 +25,9 @@ const AddVisitForm = props => (
           type="time"
           name="start"
           style={{ marginLeft: '0px' }}
-          defaultValue="17:00"
-          value={props.addFormFieldData.fromTime}
-        />
+          //defaultValue="17:00"
+          value={props.item.start.toString()}
+          />
       </Form.Field>
       <Form.Field>
         <label>To</label>
@@ -33,26 +35,24 @@ const AddVisitForm = props => (
           type="time"
           name="end"
           style={{ marginLeft: '0px' }}
-          defaultValue="20:00"
-          value={props.addFormFieldData.toTime}
+          //defaultValue="20:00"
+          value={props.item.end}
         />
       </Form.Field>
     </Form.Group>
-    {props.hideParks ? null : (
       <Form.Group widths="equal">
       <Form.Field>
         <label>Select Park</label>
         <Dropdown
             options={props.parkList}
             name="park"
-            scrolling="true"
+            scrolling={true}
             style={{ marginLeft: '0px' }}
-            value={props.addFormFieldData.park}
+            value={props.item.park}
             onChange={(e, data) => props.handleFieldChange(data)}
           />
       </Form.Field>
       </Form.Group>
-    )}
     <Button type="submit" name="submitBtn">
     Save Visit
     </Button>
