@@ -91,8 +91,7 @@ function generateUsers(userAddresses) {
   return users;
 }
 
-async function createUsers(locations) {
-  // const createdAddresses = await generateAddresses(locations)
+function createUsers() {
   return Promise.map(generateAddresses(addresses).then(addressArray =>
     generateUsers(addressArray)), users => users.save());
 }
