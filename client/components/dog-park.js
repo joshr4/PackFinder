@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { Map, ParkListItem } from './index.js';
 import {
   Button,
   Container,
@@ -118,6 +119,10 @@ let YmDFormat = function(dateObj) {
   return year + '-' + month + '-' + day;
 }
 
+let halfHourpartition = 1000 * 60 * 30;
+let hourPartition = 1000 * 60 * 60;
+let dayPartition = 24 * hourPartition;
+
 export class DogPark extends Component {
   constructor(props) {
     super(props)
@@ -140,67 +145,133 @@ export class DogPark extends Component {
       parkId: 1,
       park: {
         address: {
-        line_1: ''
+        line_1: '',
+        location: {
+          lat: "",
+          lng: ""
+        }
       }
     },
       addFormFieldData: {
-        park: 1,
-        start: '14:00',
-        end: '15:00',
-        visitDate: '2018-06-09',
+        park: parseInt(props.match.params.id),
+        start: '17:00',
+        end: '20:00',
+        visitDate: '2018-05-09',
       },
+      selectedDate: "",
+      dayView: false,
+      timePartition: dayPartition,
+      dayOptions: [],
+      map: null,
+      location: {
+        lat: 41.895266,
+        lng: -87.6412237
+      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.changeDate = this.changeDate.bind(this);
+    this.updateD3 = this.updateD3.bind(this);
+    this.clearDate = this.clearDate.bind(this);
   }
-  componentDidMount() {
-      this.props.getData();
-      let parkId = this.props.match.params.id;
-      // console.log("parkId: ", parkId);
-      let parkURL = `/api/parks/${parkId}`;
-      let parkVisitsURL = `/api/parks/${parkId}/visits`;
-      // console.log("parkURL: ", parkURL);
-      let parkArray = this.props.parkList.filter(park => park.id == this.props.match.params.id);
-      console.log("parkArray: ", parkArray);
-      // this.setState({
-      //   park: parkArray[0],
-      // })
-      axios.get(`/api/parks/${parkId}`).then(response => {
-        // console.log("response from line 147: ", response);
-        this.setState({
-            park:response.data
-        })
-      });
-    // axios.get('/api/visits').then(response => {
+  mapMoved(){
+
+    const tempLocation = this.state.map.getCenter().toJSON();
+
+    this.setState({location: {
+        lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
+        lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
+    }, () => {console.log(this.state.location)})
+
+  }
+
+
+  zoomChanged(){
+    console.log('zoomChanged: ', this.state.map.getZoom())
+  }
+
+  mapLoaded(map){
+    if (this.state.map !== null){
+      return
+    }
+
+    this.setState({ map })
+  }
+
+  updateD3() {
+    let parkId = this.props.match.params.id;
+    let parkVisitsURL = `/api/parks/${parkId}/visits`;
+
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
+      let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
+      visits = filteredEvents;
+      // let visits = this.props.events;
+      let dateMin = '';
+      let dateMax = '';
       let minT = '';
       let maxT = '';
+      if (this.state.dayView) {
+        minT = this.state.selectedDate;
+        let plusOne = minT;
+        plusOne = new Date(minT.getTime() + dayPartition);
+        maxT = plusOne;
+      }
       visits.forEach(visit => {
-        let startT = new Date(visit.start);
+      let startT = new Date(visit.start);
         let endT = new Date(visit.end);
-        if (minT == '' || startT < minT) {
-          minT = startT;
+        if (minT == '' || startT < minT && !this.state.dayView) {
+            minT = startT;
         }
-        if (maxT == '' || endT > maxT) {
+        if (dateMin == '' || startT < dateMin) {
+          dateMin = startT;
+        }
+
+        if (maxT == '' || endT > maxT && !this.state.dayView) {
           maxT = endT;
         }
+        if (dateMax == '' || endT > dateMax) {
+          dateMax = endT;
+        }
       })
+
       let d3Data = [];
       let width = maxT - minT;
-      // console.log("width: ", width);
       let halfHourpartition = 1000 * 60 * 30;
       let hourPartition = 1000 * 60 * 60;
-      let dayPartition = 24 * hourPartition;
-      // console.log("partition: ", hourPartition);
-      let nPartitions = width / dayPartition;
-      // console.log("nPartitions: ", nPartitions);
-      let maxVisits = 0;
 
+
+      let datewidth = dateMax - dateMin;
+      let dayPartition = 24 * hourPartition;
+      let nDays = datewidth/dayPartition;
+      let dayOptions = [];
+      let dateOnlyMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate(), 0, 0);
+      for (let i = 0; i < nDays; i++) {
+        let dayOption = new Date(dateOnlyMin.getTime() + dayPartition * i);
+        let dayOptionString = dateDisplay(dayOption) + "/" + dateOnlyMin.getFullYear();
+        let elem = {
+          val: dateOnlyMin.getFullYear() + "/" + dateDisplay(dayOption),
+          display: dayOptionString,
+        };
+        dayOptions.push(elem);
+      }
+      this.setState({
+        dayOptions,
+      })
+
+      let nPartitions = width / this.state.timePartition;
+      if (this.state.dayView) {
+        nPartitions = 24;
+      }
+      let maxVisits = 0;
       for (let i = 0; i < nPartitions; i++) {
-        let intervalStart = new Date(minT.getTime() + dayPartition * i);
-        let intervalEnd = new Date(minT.getTime() + dayPartition * (i + 1));
+        let intervalStart = new Date(minT.getTime() + this.state.timePartition * i);
+        if (!this.state.dayView) {
+          let dateOnly = new Date(minT.getFullYear(), minT.getMonth(), minT.getDate(), 0, 0);
+          intervalStart = new Date(dateOnly.getTime() + this.state.timePartition * i);
+        }
+        let intervalEnd = new Date(intervalStart.getTime() + this.state.timePartition);
         let d3Elem = {
           // time: intervalStart,
           time: stringFormat(intervalStart),
@@ -215,15 +286,13 @@ export class DogPark extends Component {
           let startT = new Date(visit.start);
           let endT = new Date(visit.end);
           // Setting X-label
-          d3Elem.time = dateDisplay(intervalStart);
-          if (startT.getHours() == 0) {
-            // d3Elem.time = dateDisplay(intervalStart);
-          }
-          else {
+          if (!this.state.dayView) {
             d3Elem.time = dateDisplay(intervalStart);
           }
+          else {
+            d3Elem.time = timeDisplay(intervalStart);
+          }
           if ((startT < intervalEnd && endT > intervalStart)) {
-            // console.log("adding visit: ", intervalStart, intervalEnd, "|", startT, endT);
             d3Elem.visits++;
           }
         })
@@ -231,10 +300,7 @@ export class DogPark extends Component {
           maxVisits = d3Elem.visits;
         }
         d3Data.push(d3Elem);
-        // console.log(i, " intervalStart: ", intervalStart);
       }
-      // console.log("d3Data loaded: ", d3Data);
-
       this.setState({
         visits,
         minT,
@@ -243,6 +309,20 @@ export class DogPark extends Component {
         maxVisits,
       })
     })
+  }
+  componentDidMount() {
+    let parkId = this.props.match.params.id;
+    let parkURL = `/api/parks/${parkId}`;
+    let parkVisitsURL = `/api/parks/${parkId}/visits`;
+    let parkArray = this.props.parkList.filter(park => park.id == this.props.match.params.id);
+    axios.get(`/api/parks/${parkId}`).then(response => {
+      this.setState({
+        park:response.data
+      })
+    });
+    this.props.getData().then(() => {
+      this.updateD3();
+    });
   }
   handleSubmit(event) {
     let visitDate = event.target.visitDate.value;
@@ -264,12 +344,13 @@ export class DogPark extends Component {
     newVisitInfo.start = startTime;
     newVisitInfo.end = endTime;
     axios.post('api/visits', newVisitInfo).then(response => {
+      this.updateD3();
+      // this.setState({});
     })
   }
-
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
-    // console.log('state',stateVisit)
+    console.log('stateVisit: ',stateVisit)
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split('-')[2]);
@@ -279,7 +360,6 @@ export class DogPark extends Component {
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
-    // console.log(year,month,day, 'from hour',fromHour,'min',fromMin,'tohour',toHour,'min',toMin)
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -287,19 +367,18 @@ export class DogPark extends Component {
       userId: 55,
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
-    // console.log('VISIT', newVisitInfo)
     //ADD IN USER ID TO POST REQUEST
-    this.props.addNewVisit(newVisitInfo)
+    this.props.addNewVisit(newVisitInfo).then((result) => {
+      this.updateD3();
+    });
   }
 
   handleFieldChange = (data) => {
-    // console.log('change name/value',data)
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
     })
   }
   handleChange = (e, data) => {
-    console.log('change name/value',data ,e.target.name, e.target.value)
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
@@ -307,12 +386,31 @@ export class DogPark extends Component {
 
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
+  changeDate(event) {
+    event.preventDefault();
+    let splitDate = event.target.selectDate.value.split("/");
+    // dayView = true;
+    let selectedDate = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
+    this.setState({
+      timePartition:hourPartition,
+      dayView: true,
+      selectedDate:selectedDate,
+    })
+    this.updateD3();
+  }
+  clearDate(event) {
+    event.preventDefault();
+    this.setState({
+      timePartition:dayPartition,
+      dayView: false,
+      selectedDate:"",
+    });
+    this.updateD3();
+  }
   render() {
-      // console.log("test");
       const { children } = this.props
       const { fixed } = this.state
       const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      // console.log("this.state: ", this.state);
       const videos = ['1', '2', '3', '4', '5'];
       const items = [
         {
@@ -355,12 +453,10 @@ export class DogPark extends Component {
         }
       ],
       x = function(d) {
-        // console.log("d.time: ", d.time, typeof (d.time));
         if (typeof (d.time) === typeof ('string')) {
           return d.time;
         }
         else if (d.time) {
-          // console.log("parsedDate: ", parseDate(d.time.toString()));
           return parseDate(d.time.toString());
         }
       },
@@ -376,6 +472,23 @@ export class DogPark extends Component {
       ;
       // var xScale = d3.time.scale()
       // .domain([mindate, maxdate])
+    // const markers = [
+    //   {
+    //     address: {
+    //       location: {lat: 41.895266, lng: -87.641223}
+    //     }
+    //   }, {
+    //     address: {
+    //       location: {lat: 41.8788652, lng: -87.6262237}
+    //     }
+    //   }
+    // ]
+    const markers = [
+      {address:{
+        location:this.state.park.address.location}
+      }
+    ]
+
     return (
       <div>
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
@@ -404,24 +517,47 @@ export class DogPark extends Component {
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
-          addFormFieldData={this.state.addFormFieldData}
+          item={this.state.addFormFieldData}
           hideParks={true}
           />
           </Segment>
         </Grid.Column>
         <Grid.Column width={8}>
-          <Image size="big"  centered={true} src={this.state.park.imageUrl} fluid />
+            <Map
+            zoom={15}
+            center={this.state.park.address.location}
+            markers={markers}
+            mapMoved={this.mapMoved.bind(this)}
+            mapLoaded={this.mapLoaded.bind(this)}
+            zoomChanged={this.zoomChanged.bind(this)}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+          <Image size="big"  centered={true} src={this.state.park.imageUrl} />
         </Grid.Column>
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={16}>
           <Segment>
-            Select day to view number of people:
-            <input style={{marginLeft: '10px'}} name="selectDate" type="date" />
-            <Button type="submit" name="submitBtn" style={{marginLeft: '10px'}} color='blue' size='tiny'>
+          <Form onSubmit={this.changeDate}>
+            Select day to view:
+
+            <select name="selectDate" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
+            {this.state.dayOptions.map(elem => {
+              return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
+            })}
+            </select>
+
+
+            <Button type="submit" name="submitDate" style={{marginLeft: '10px'}} color='blue' size='tiny'>
               Select Day
             </Button>
-      
+            {this.state.dayView ? (
+              <Button onClick={this.clearDate} name="clearDate" style={{marginLeft: '10px'}} color='green' size='tiny'>
+                Clear
+              </Button>
+            ) : null}
+          </Form>
             </Segment>
           <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
           <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
@@ -485,12 +621,13 @@ export class DogPark extends Component {
 const mapState = state => {
   let calEvents = state.calendar.map(visit => {
     let newVisit = {
-    id: visit.id,
-    title: visit.title,
-    start: new Date(visit.start),
-    end: new Date(visit.end),
-    address: visit.park.address,
-    userId: visit.userId
+      id: visit.id,
+      title: visit.title,
+      start: new Date(visit.start),
+      end: new Date(visit.end),
+      address: visit.park.address,
+      parkId: visit.park.id,
+      userId: visit.userId
     }
     return newVisit
   })
@@ -512,9 +649,9 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getData() {
-      dispatch(getVisits());
-      dispatch(getParksAddresses());
+    async getData() {
+      await dispatch(getVisits());
+      await dispatch(getParksAddresses());
     },
     removeVisit(visit) {
       dispatch(deleteVisit(visit));
@@ -522,8 +659,9 @@ const mapDispatch = dispatch => {
     updateVisit(visit) {
       dispatch(updateVisit(visit));
     },
-    addNewVisit(visit) {
-      dispatch(addVisit(visit));
+    async addNewVisit(visit) {
+      await dispatch(addVisit(visit));
+      await dispatch(getVisits());
     },
   };
 };

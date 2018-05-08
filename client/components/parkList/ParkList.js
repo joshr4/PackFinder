@@ -64,7 +64,6 @@ class ParkList extends Component {
     const markers = this.props.nearbyParks
     const { contextRef } = this.state;
 
-
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
     //   }, {
@@ -99,7 +98,6 @@ class ParkList extends Component {
         zoomChanged={this.zoomChanged.bind(this)}
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-
       />
      </Sticky>
     </Grid.Column>
