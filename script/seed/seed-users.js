@@ -1,13 +1,17 @@
 const faker = require('faker');
+const chance = require('chance')(123)
 
 // const toonAvatar = require('cartoon-avatar');
 const Promise = require('bluebird');
 const db = require('../../server/db');
-const { User } = require('../../server/db/models');
-const ZILLOW_ID = 'X1-ZWz1geapbn0miz_44w9p'
+const {
+  User,
+  Address
+} = require('../../server/db/models');
+const addresses = require('./chicagoAddresses')
 
-
-const numUsers = 20;
+// console.log('this is addresses', addresses)
+const numUsers = 200;
 
 function doTimes(n, fn) {
   const results = [];
@@ -17,18 +21,33 @@ function doTimes(n, fn) {
   return results;
 }
 
-function randUser() {
+function generateAddresses(locations) {
+  let createdAddresses = locations.map(address => Address.create(address))
+  return Promise.all(createdAddresses)
+}
+
+
+
+function randomIndex(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function randUser(possibleAddresses) {
+  const start = randomIndex(possibleAddresses.length)
+  const addressId = possibleAddresses.splice(start, 1)[0].id;
   const user = {
     password: '123',
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
+    addressId
   };
   user.email = `${user.firstName}.${user.lastName}@gmail.com`;
   return User.build(user);
 }
 
-function generateUsers() {
-  const users = doTimes(numUsers, randUser);
+
+function generateUsers(userAddresses) {
+  const users = doTimes(numUsers, () => randUser(userAddresses));
   users.push(
     User.build({
       firstName: 'Daniel',
@@ -72,13 +91,15 @@ function generateUsers() {
   return users;
 }
 
-function createUsers() {
-  return Promise.map(generateUsers(), users => users.save());
+async function createUsers(locations) {
+  // const createdAddresses = await generateAddresses(locations)
+  return Promise.map(generateAddresses(addresses).then(addressArray =>
+    generateUsers(addressArray)), users => users.save());
 }
 
 function seed() {
   console.log('Syncing users');
-  return createUsers();
+  return createUsers(addresses);
 }
 
 module.exports = seed
