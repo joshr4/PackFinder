@@ -24,7 +24,23 @@ class Dnd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedEvent: {},
+      selectedEvent: {
+        park: 1,
+        start: '14:00',
+        end: '15:00',
+        visitDate: '2018-06-09',
+        address: {
+          city: 'Chicago',
+          id: 5,
+          line_1: '7340 N. Rogers Ave.',
+          location: {
+            lat: 42.0151089,
+            lng: -87.6780689
+          },
+          state: 'IL',
+          zipcode: '60626',
+        }
+      },
       showModal: false,
       showAddModal: false,
       addFormFieldData: {
@@ -33,6 +49,7 @@ class Dnd extends React.Component {
         end: '15:00',
         visitDate: '2018-06-09',
       },
+      modalType: 'view',
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
@@ -53,9 +70,10 @@ class Dnd extends React.Component {
     });
   }
 
-  openModal(event){
-    this.setState({
+  async openModal(event, type){
+    await this.setState({
       selectedEvent: event,
+      modalType: type
     })
     this.toggleModal()
   }
@@ -130,10 +148,16 @@ class Dnd extends React.Component {
     return (
       <div className="container" style={{ height: '1000px' }}>
         <EventModal
+          modalType={this.state.modalType}
           show={this.state.showModal}
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
           item={this.state.selectedEvent}
+          handleSubmit={this.addEvent}
+          handleChange={this.handleChange}
+          handleFieldChange={this.handleFieldChange}
+          parkList={this.props.parkList}
+          addFormFieldData={this.state.addFormFieldData}
         />
         <AddEventModal
           show={this.state.showAddModal}
@@ -145,7 +169,7 @@ class Dnd extends React.Component {
           parkList={this.props.parkList}
           addFormFieldData={this.state.addFormFieldData}
         />
-        <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
+        <Button onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
         <DragAndDropCalendar
           selectable
           culture="en-GB"
@@ -153,7 +177,7 @@ class Dnd extends React.Component {
           //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           onEventDrop={this.moveEvent}
           resizable
-          onDoubleClickEvent={event => this.openModal(event)}
+          onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
           defaultView="week"
           defaultDate={new Date(2018, 4, 12, 10, 0)}
