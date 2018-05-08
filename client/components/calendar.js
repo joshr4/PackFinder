@@ -47,14 +47,6 @@ class Dnd extends React.Component {
     this.props.getData();
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log('willrecieveprops',nextProps)
-    console.log('state1',this.state)
-
-    //this.setState({events: nextProps.events})
-    console.log('state2',this.state)
-  }
-
   toggleModal() {
     this.setState({
       showModal: !this.state.showModal,
@@ -62,7 +54,6 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
-    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
