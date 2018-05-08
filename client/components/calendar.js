@@ -54,7 +54,6 @@ class Dnd extends React.Component {
   }
 
   openModal(event){
-    console.log('modal',event)
     this.setState({
       selectedEvent: event,
     })
@@ -109,10 +108,9 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      userId: 55,
       title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
     }
-    //ADD IN USER ID TO POST REQUEST
+
     this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()
   }
@@ -209,8 +207,9 @@ const mapDispatch = dispatch => {
     updateVisit(visit) {
       dispatch(updateVisit(visit));
     },
-    addNewVisit(visit) {
-      dispatch(addVisit(visit));
+    async addNewVisit(visit) {
+      await dispatch(addVisit(visit));
+      dispatch(getVisits());
     },
   };
 };
