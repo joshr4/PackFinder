@@ -55,7 +55,6 @@ class Dnd extends React.Component {
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
-  this.toggleAddModal = this.toggleAddModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.handleFieldChange = this.handleFieldChange.bind(this);
   }
@@ -75,7 +74,7 @@ class Dnd extends React.Component {
       selectedEvent: event,
       modalType: type
     })
-    this.toggleModal()
+    if (this.state.modalType !== 'edit') this.toggleModal()
   }
 
   moveEvent({ event, start, end }) {
@@ -106,13 +105,8 @@ class Dnd extends React.Component {
     this.props.updateVisit(updatedEvent[0])
   };
 
-  toggleAddModal = () => {
-    this.setState({
-      showAddModal: !this.state.showAddModal,
-    });
-  }
   addEvent = () => {
-    let stateVisit = this.state.addFormFieldData
+    let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split("-")[0]);
     let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split("-")[2]);
@@ -130,17 +124,17 @@ class Dnd extends React.Component {
     }
 
     this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
+    this.toggleModal()
   }
   handleChange = e => {
     this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
+        selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
     })
   }
 
   handleFieldChange = data => {
     this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
+        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
 
@@ -157,17 +151,7 @@ class Dnd extends React.Component {
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
-          addFormFieldData={this.state.addFormFieldData}
-        />
-        <AddEventModal
-          show={this.state.showAddModal}
-          onClose={this.toggleAddModal}
-          handleSubmit={this.addEvent}
-          handleChange={this.handleChange}
-          handleFieldChange={this.handleFieldChange}
-          item={this.state.selectedEvent}
-          parkList={this.props.parkList}
-          addFormFieldData={this.state.addFormFieldData}
+          onEdit={this.openModal}
         />
         <Button onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
         <DragAndDropCalendar

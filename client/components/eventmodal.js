@@ -3,11 +3,14 @@ import { Button, Header, Image, Modal } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
 const EventModal = props => {
-  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, addFormFieldData, nowString } = props
+  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit } = props
   return (
     <Modal open={props.show}>
       <Button onClick={() => props.onClose()}>Close</Button>
-      { modalType === 'view' ? <Button onClick={() => onDelete(item)}>Delete Visit</Button>
+      { modalType === 'view' ? (<div><Button onClick={() => onEdit(item, 'edit')}>Edit Visit</Button>
+      <Button onClick={() => onDelete(item)}>Delete Visit</Button>
+      </div>
+      )
       : <Button onClick={() => handleSubmit}>Add Visit</Button>}
       {/* <Modal.Header>{props.selEvent.title}</Modal.Header> */}
       <Modal.Content image>
@@ -33,7 +36,7 @@ const EventModal = props => {
               handleChange={handleChange}
               handleFieldChange={handleFieldChange}
               parkList={parkList}
-              addFormFieldData={addFormFieldData}
+              addFormFieldData={item}
          />
           }
         </Modal.Description>

@@ -38,7 +38,7 @@ const AddVisitForm = props => (
         />
       </Form.Field>
     </Form.Group>
-    {props.hideParks ? null : (      
+    {props.hideParks ? null : (
       <Form.Group widths="equal">
       <Form.Field>
         <label>Select Park</label>
@@ -54,7 +54,7 @@ const AddVisitForm = props => (
       </Form.Group>
     )}
     <Button type="submit" name="submitBtn">
-    Schedule Visit
+    Save Visit
     </Button>
   </Form>
 );
