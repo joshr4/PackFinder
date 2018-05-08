@@ -17,11 +17,7 @@ class Map extends Component {
 
 
   render() {
-
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
-
-
-
     const markers = this.props.markers.map((park, i) => {
 
       const marker = {
@@ -30,7 +26,6 @@ class Map extends Component {
           lng: park.address.location.lng,
         }
       }
-
       return <Marker key={park.address.location.lat.toString() + park.address.location.lng.toString()} {...marker} />
     })
 

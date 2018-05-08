@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Grid } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -9,9 +9,10 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { EventModal, AddEventModal } from './index';
+import { EventModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
+import { timeDisplay, dateDisplay } from './global'
 
 // import '../../public/calendar.css'
 // Setup the localizer by providing the moment (or globalize) Object
@@ -24,23 +25,40 @@ class Dnd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedEvent: {},
+      selectedEvent: {
+        id: 1,
+        start: '14:00',
+        end: '15:00',
+        visitDate: '2018-06-09',
+        address: {
+          city: 'Chicago',
+          id: 5,
+          line_1: '7340 N. Rogers Ave.',
+          location: {
+            lat: 42.0151089,
+            lng: -87.6780689
+          },
+          state: 'IL',
+          zipcode: '60626',
+        }
+      },
       showModal: false,
-      showAddModal: false,
       addFormFieldData: {
         park: 1,
         start: '14:00',
         end: '15:00',
         visitDate: '2018-06-09',
       },
+      modalType: 'view',
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
   this.toggleModal = this.toggleModal.bind(this);
   this.openModal = this.openModal.bind(this);
-  this.toggleAddModal = this.toggleAddModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.handleFieldChange = this.handleFieldChange.bind(this);
+  this.updateEvent = this.updateEvent.bind(this);
+  this.addEvent = this.addEvent.bind(this);
   }
 
   componentDidMount() {
@@ -53,11 +71,30 @@ class Dnd extends React.Component {
     });
   }
 
-  openModal(event){
-    this.setState({
-      selectedEvent: event,
+  async openModal(event, type){
+    let selEvent = event
+    // console.log('datedisplay', dateDisplay(event.start))
+    // console.log('timedisplay', timeDisplay(event.start))
+    if ( type === 'view'){
+      let year = event.start.getFullYear();
+      let month = event.start.getMonth();
+      let day = event.start.getDate();
+      // let fromHour = event.start.getHours();
+      // let fromMin = event.start.getMinutes();
+      // let toHour = event.end.getHours();
+      // let toMin = event.end.getMinutes();
+      //selEvent.visitDate = `${year}-${month + 1}-${day}`
+      //selEvent.start = timeDisplay(event.start)
+      //selEvent.end = timeDisplay(event.end)
+      // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
+      await this.setState({
+        selectedEvent: selEvent,
+      })
+    }
+    await this.setState({
+      modalType: type
     })
-    this.toggleModal()
+    if (this.state.modalType !== 'edit') this.toggleModal()
   }
 
   moveEvent({ event, start, end }) {
@@ -88,72 +125,87 @@ class Dnd extends React.Component {
     this.props.updateVisit(updatedEvent[0])
   };
 
-  toggleAddModal = () => {
-    this.setState({
-      showAddModal: !this.state.showAddModal,
-    });
-  }
   addEvent = () => {
-    let stateVisit = this.state.addFormFieldData
-    let year = parseInt(stateVisit.visitDate.split("-")[0]);
-    let month = parseInt(stateVisit.visitDate.split("-")[1]) - 1;
-    let day = parseInt(stateVisit.visitDate.split("-")[2]);
-    let fromHour = parseInt(stateVisit.start.split(":")[0]);
-    let fromMin = parseInt(stateVisit.start.split(":")[1]);
-    let toHour = parseInt(stateVisit.end.split(":")[0]);
-    let toMin = parseInt(stateVisit.end.split(":")[1]);
+    let stateVisit = this.state.selectedEvent
+    let year = parseInt(stateVisit.visitDate.split('-')[0]);
+    let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split('-')[2]);
+    let fromHour = parseInt(stateVisit.start.split(':')[0]);
+    let fromMin = parseInt(stateVisit.start.split(':')[1]);
+    let toHour = parseInt(stateVisit.end.split(':')[0]);
+    let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
     let endTime = new Date(year, month, day, toHour, toMin);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
 
     this.props.addNewVisit(newVisitInfo)
-    this.toggleAddModal()
+    this.toggleModal()
   }
+  updateEvent = () => {
+    let stateVisit = this.state.selectedEvent
+    let year = parseInt(stateVisit.visitDate.split('-')[0]);
+    let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
+    let day = parseInt(stateVisit.visitDate.split('-')[2]);
+    let fromHour = parseInt(stateVisit.start.split(':')[0]);
+    let fromMin = parseInt(stateVisit.start.split(':')[1]);
+    let toHour = parseInt(stateVisit.end.split(':')[0]);
+    let toMin = parseInt(stateVisit.end.split(':')[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let endTime = new Date(year, month, day, toHour, toMin);
+    let newVisitInfo = {
+      start: startTime,
+      end: endTime,
+      id: stateVisit.id,
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+    }
+
+    this.props.updateVisit(newVisitInfo)
+    this.toggleModal()
+  }
+
   handleChange = e => {
     this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
+        selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
     })
   }
 
   handleFieldChange = data => {
     this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
+        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
 
   render() {
     return (
-      <div className="container" style={{ height: '1000px' }}>
+      <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <EventModal
+          modalType={this.state.modalType}
           show={this.state.showModal}
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
           item={this.state.selectedEvent}
-        />
-        <AddEventModal
-          show={this.state.showAddModal}
-          onClose={this.toggleAddModal}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
-          item={this.state.selectedEvent}
           parkList={this.props.parkList}
-          addFormFieldData={this.state.addFormFieldData}
+          onEdit={this.openModal}
+          handleEdit={this.updateEvent}
         />
-        <Button onClick={() => this.toggleAddModal()}>Add Visit</Button>
+
         <DragAndDropCalendar
+          // className="no-scroll"
           selectable
           culture="en-GB"
           events={this.props.events}
           //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           onEventDrop={this.moveEvent}
           resizable
-          onDoubleClickEvent={event => this.openModal(event)}
+          onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
           defaultView="week"
           defaultDate={new Date(2018, 4, 12, 10, 0)}
@@ -162,6 +214,10 @@ class Dnd extends React.Component {
           max={new Date(0, 0, 0, 23, 0)}
           // max={new Date(0, 0, 0, 23, 0)}
         />
+        <Grid>
+        <Button positive style={{margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
+        <p style={{marginTop: 30 }}>Double click an event on the calendar to edit/delete</p>
+        </Grid>
       </div>
     );
   }
@@ -180,7 +236,7 @@ const mapState = state => {
     return newVisit
   })
   //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
-  let dropDownParks = state.parkList.map(park=>{
+  let dropDownParks = state.parkList.map( park => {
     let newPark = {
       key: park.id,
       value: park.id,
@@ -204,8 +260,9 @@ const mapDispatch = dispatch => {
     removeVisit(visit) {
       dispatch(deleteVisit(visit));
     },
-    updateVisit(visit) {
-      dispatch(updateVisit(visit));
+    async updateVisit(visit) {
+      await dispatch(updateVisit(visit));
+      dispatch(getVisits());
     },
     async addNewVisit(visit) {
       await dispatch(addVisit(visit));
