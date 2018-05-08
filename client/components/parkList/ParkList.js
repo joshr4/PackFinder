@@ -33,7 +33,6 @@ class ParkList extends Component {
   }
 
   mapMoved(){
-
     const tempLocation = this.state.map.getCenter().toJSON();
 
     this.setState({location: {
@@ -44,7 +43,6 @@ class ParkList extends Component {
 
   }
 
-
   zoomChanged(){
     console.log('zoomChanged: ', this.state.map.getZoom())
   }
@@ -53,9 +51,18 @@ class ParkList extends Component {
     if (this.state.map !== null){
       return
     }
-
     this.setState({ map })
   }
+
+  mouseOverHandler(evt){
+    console.log(evt.target.id)
+  }
+
+  mouseOutHandler(evt){
+    console.log("moust out", evt.target)
+  }
+
+
 
   handleContextRef = contextRef => this.setState({ contextRef });
 
@@ -80,8 +87,12 @@ class ParkList extends Component {
       <div className="ui one cards">
 
       {this.props.nearbyParks.map(park => {
-         return <ParkListItem key={park.id} currentPark={park}
-         history={this.props.history} />
+         return <ParkListItem
+         key={park.id}
+         currentPark={park}
+         history={this.props.history}
+         mouseOverHandler={this.mouseOverHandler.bind(this)}
+         mouseOutHandler={this.mouseOutHandler.bind(this)} />
       })}
 
 

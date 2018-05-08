@@ -24,15 +24,20 @@ class Map extends Component {
 
     const markers = this.props.markers.map((park, i) => {
 
+      const image = `/../../../images/markers/marker_red${i+1}.png`
+
       const marker = {
         position: {
           lat: park.address.location.lat,
           lng: park.address.location.lng,
-        }
+        },
+        icon: image
       }
 
-      return <Marker key={park.address.location.lat.toString() + park.address.location.lng.toString()} {...marker} />
+      return <Marker key={i} {...marker} />
     })
+
+    console.log(markers)
 
     // <Marker
     // position={{ lat: -34.397, lng: 150.644 }}
