@@ -23,7 +23,7 @@ function randUser() {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
   };
-  user.email = `${user.firstName}.${user.lastName}@${faker.internet.domainName()}`;
+  user.email = `${user.firstName}.${user.lastName}@gmail.com`;
   return User.build(user);
 }
 
