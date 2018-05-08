@@ -18,7 +18,6 @@ async function seedFriends() {
     for (let i = 0; i < allUsers.length; i ++) {
         let thisUser = allUsers[i];
         for (let x = 0; x < 3; x++) {
-            console.log("x + 1: ", x + 1);
             let randomUserIndex = parseInt(Math.floor(Math.random()*(nUsers - 1)));
             // console.log("randomUserIndex: ", randomUserIndex);
             // console.log("random user: ", allUsers[randomUserIndex]);
