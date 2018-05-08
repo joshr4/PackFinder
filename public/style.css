@@ -4,7 +4,6 @@ body {
 }
 body .container {
   padding-top: 20vh;
-
 }
 a {
   text-decoration: none;
@@ -12,20 +11,36 @@ a {
 label {
   display: block;
 }
-
 nav a {
   display: inline-block;
   margin: 1em;
 }
-
 form div {
+  /* margin: 1em; */
+  display: inline-block;
+}
+.login-signup * {
+  min-width: 300px;
+  max-width: 300px;
+}
+.login-signup > button {
   margin: 1em;
   display: inline-block;
 }
-
 .title-text {
   font-family: 'Pacifico', cursive;
   font-size: 30;
+}
+.login-signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-signup > form {
+  align-items: center;
+  width: 33.33vw;
+  justify-content: center;
 }
 
 .splash-bg-1 {
