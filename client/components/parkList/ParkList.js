@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Map, ParkListItem } from '../index.js';
 import { connect } from 'react-redux';
 import { Grid, Header, Image, Rail, Segment, Sticky } from 'semantic-ui-react';
-import { getParksAddresses, getGeolocation } from '../../store/index.js'
+import { getParksAddresses, getGeolocation, getNearByParksAddresses } from '../../store/index.js'
 
 class ParkList extends Component {
 
@@ -20,13 +20,15 @@ class ParkList extends Component {
   }
 
   componentDidMount() {
-    this.props.getEveryAddresses();
+    // this.props.getEveryAddresses();
     this.props.getUserLocation();
+    this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218) //3218 = 2 miles in meters
   }
 
   componentWillReceiveProps(nextProps){
     if (nextProps.userPosition !== this.props.userPosition){
-      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}})
+      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
+        this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218)})
     }
   }
 
@@ -37,7 +39,8 @@ class ParkList extends Component {
     this.setState({location: {
         lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
         lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
-    }, () => {console.log(this.state.location)})
+    }, () => {
+      this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218)})
 
   }
 
@@ -88,7 +91,7 @@ class ParkList extends Component {
       <Grid.Column width={7}>
       <Sticky context={contextRef} offset={130}>
       <Map
-        zoom={15}
+        zoom={14}
         center={this.state.location}
         markers={markers}
         mapMoved={this.mapMoved.bind(this)}
@@ -120,6 +123,9 @@ const mapDispatch = dispatch => {
     },
     getUserLocation() {
       dispatch(getGeolocation())
+    },
+    getNearbyParks(lat, lng, dist) {
+      dispatch(getNearByParksAddresses(lat, lng, dist))
     }
   };
 };
