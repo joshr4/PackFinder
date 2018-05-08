@@ -182,7 +182,7 @@ class Dnd extends React.Component {
 
   render() {
     return (
-      <div className="container" style={{ height: '1000px' }}>
+      <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <EventModal
           modalType={this.state.modalType}
           show={this.state.showModal}
@@ -196,8 +196,9 @@ class Dnd extends React.Component {
           onEdit={this.openModal}
           handleEdit={this.updateEvent}
         />
-        <Button onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
+
         <DragAndDropCalendar
+          // className="no-scroll"
           selectable
           culture="en-GB"
           events={this.props.events}
@@ -213,6 +214,7 @@ class Dnd extends React.Component {
           max={new Date(0, 0, 0, 23, 0)}
           // max={new Date(0, 0, 0, 23, 0)}
         />
+        <Button positive style={{marginTop: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
       </div>
     );
   }

@@ -52,7 +52,7 @@ const AddVisitForm = props => (
           />
       </Form.Field>
       </Form.Group>
-    <Button type="submit" name="submitBtn">
+    <Button positive style={{margin: 10 }} type="submit" name="submitBtn">
     Save Visit
     </Button>
   </Form>

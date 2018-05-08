@@ -1,18 +1,20 @@
 import React from 'react';
-import { Button, Header, Image, Modal } from 'semantic-ui-react';
+import { Button, Header, Image, Modal, Grid } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
 const EventModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit, handleEdit } = props
   return (
     <Modal open={props.show}>
-      <Button onClick={() => props.onClose()}>Close</Button>
-      { modalType === 'view' ? (<div><Button onClick={() => onEdit(item, 'edit')}>Edit Visit</Button>
-      <Button onClick={() => onDelete(item)}>Delete Visit</Button>
-      </div>
-      )
-      : <div> </div>
-    }
+      <Grid>
+        <Button color="blue" style={{ marginLeft: 35, marginTop: 20}} onClick={() => props.onClose()}>Close</Button>
+        { modalType === 'view' ?
+            <Button color="teal" style={{marginTop: 20}} onClick={() => onEdit(item, 'edit')}>Edit Visit</Button>
+          : null}
+        { modalType === 'view' ?
+            <Button negative style={{marginRight: 20, marginTop: 20}} onClick={() => onDelete(item)}>Delete Visit</Button>
+          : null}
+      </Grid>
       {/* : <Button onClick={() => handleSubmit}>Add Visit</Button>}
        <Modal.Header>{props.item.title}</Modal.Header> */}
       <Modal.Content image>
@@ -47,3 +49,8 @@ const EventModal = props => {
   )
 };
 export default EventModal;
+
+
+ {/* <Grid.Column width={4}>
+            <Button negative style={{margin: 20 }} onClick={() => onDelete(item)}>Delete Visit</Button>
+          </Grid.Column> */}
