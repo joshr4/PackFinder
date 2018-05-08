@@ -22,7 +22,6 @@ class Profile extends React.Component {
             <UserProfileItem info={this.props.user} />
             <Header as="h3">Dogs:</Header>
             {this.props.userPets ? this.props.userPets.map((pet, i) => {
-              console.log('pet info', pet)
               return (<ProfileItem key={i} info={pet} />)
             })
             :
@@ -39,7 +38,6 @@ class Profile extends React.Component {
  * CONTAINER
  */
 const mapState = state => {
-  console.log('User',state.user)
   return {
     user: state.user,
     userPets: state.pets.filter(pet => pet.userId===state.user.id)

@@ -47,6 +47,14 @@ class Dnd extends React.Component {
     this.props.getData();
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log('willrecieveprops',nextProps)
+    console.log('state1',this.state)
+
+    //this.setState({events: nextProps.events})
+    console.log('state2',this.state)
+  }
+
   toggleModal() {
     this.setState({
       showModal: !this.state.showModal,
@@ -109,10 +117,9 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      userId: 55,
       title: this.props.parkList.filter(park => park.key===stateVisit.park)[0].text
     }
-    //ADD IN USER ID TO POST REQUEST
+
     this.props.addNewVisit(newVisitInfo)
     this.toggleAddModal()
   }
@@ -209,8 +216,9 @@ const mapDispatch = dispatch => {
     updateVisit(visit) {
       dispatch(updateVisit(visit));
     },
-    addNewVisit(visit) {
-      dispatch(addVisit(visit));
+    async addNewVisit(visit) {
+      await dispatch(addVisit(visit));
+      dispatch(getVisits());
     },
   };
 };
