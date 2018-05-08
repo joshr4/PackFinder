@@ -10,6 +10,7 @@ router.get('/', (req, res, next) => {
     attributes: ['id', 'email'],
     include:[
       {model: Park, required:false, as:'favorites'},
+      {model: User, required:false, as:'friends'},
       {model: Visit, required:false,
       include:[{
         model:Park,

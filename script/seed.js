@@ -1,6 +1,6 @@
 /**
  * Welcome to the seed file! This seed file uses a newer language feature called...
- *
+ *  
  *                  -=-= ASYNC...AWAIT -=-=
  *
  * Async-await is a joy to use! Read more about it in the MDN docs:
@@ -22,7 +22,7 @@ const {
 const usersSeed = require('./seed/seed-users');
 const parksSeed = require('./seed/seed-parks');
 const visitsSeed = require('./seed/seed-visits');
-const petsSeed = require('./seed/seed-pets');
+const friendSeed = require('./seed/seed-friends');
 
 async function seed () {
   await db.sync({force: true})
@@ -32,7 +32,7 @@ async function seed () {
   await usersSeed();
   await parksSeed();
   await visitsSeed();
-  await petsSeed();
+  await friendSeed();
 
 
   // // Wowzers! We can even `await` on the right-hand side of the assignment operator
