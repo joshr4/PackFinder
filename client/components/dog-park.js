@@ -690,7 +690,7 @@ const mapDispatch = dispatch => {
     },
     async addNewVisit(visit) {
       await dispatch(addVisit(visit));
-      dispatch(getVisits());
+      await dispatch(getVisits());
     },
   };
 };
