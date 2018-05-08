@@ -30,6 +30,7 @@ User.hasMany(Pet, {
 
 
 User.belongsToMany(Park, {through:'UserFavorites', as:'favorites'});
+User.belongsToMany(User, {through:'FriendsTable', as:'friends'});
 Park.belongsToMany(User, {through:'UserFavorites'});
 
 
