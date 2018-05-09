@@ -63,7 +63,9 @@ export default function(state = defaultVisits, action) {
     case DELETE_VISIT:
       return state.filter(visit => action.visit.id !== visit.id);
     case ADD_VISIT:
-      return Object.assign(state, action.visit);
+      return [...state];
+      //return [...state, action.visit];
+      //the new visit is intentionally left out here, a GET_VISIT must be triggered after an ADD_VISIT in order to eager load address info, so that the visit will properly render on the calendar. The /api/visits/ POST route should ultimately be modified to eager load this data to fix this bug.
     default:
       return state;
   }
