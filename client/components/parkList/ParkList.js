@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Map, ParkListItem } from '../index.js';
 import { connect } from 'react-redux';
 import { Grid, Header, Image, Rail, Segment, Sticky } from 'semantic-ui-react';
-import { getParksAddresses, getGeolocation, getNearByParksAddresses } from '../../store/index.js'
+import { getParksAddresses, getGeolocation, getNearByParksAddresses, getNearByUsersInfo } from '../../store/index.js'
 
 class ParkList extends Component {
 
@@ -24,6 +24,7 @@ class ParkList extends Component {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
     this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218) //3218 = 2 miles in meters
+    // this.props.getNearByUsers(this.state.location)
   }
 
   componentWillReceiveProps(nextProps){
@@ -139,9 +140,12 @@ const mapDispatch = dispatch => {
     getUserLocation() {
       dispatch(getGeolocation())
     },
-    getNearbyParks(lat, lng, dist) {
+    getNearbyParks(lat, lng, dist){
       dispatch(getNearByParksAddresses(lat, lng, dist))
-    }
+    },
+    // getNearByUsers(location){
+    //   dispatch(getNearByUsersInfo(location))
+    // }
   };
 };
 
