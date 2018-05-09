@@ -13,7 +13,8 @@ class ParkList extends Component {
       location: {
         lat: 41.895266,
         lng: -87.6412237
-      }
+      },
+      isHover: -1
     }
 
 
@@ -33,7 +34,6 @@ class ParkList extends Component {
   }
 
   mapMoved(){
-
     const tempLocation = this.state.map.getCenter().toJSON();
 
     this.setState({location: {
@@ -44,7 +44,6 @@ class ParkList extends Component {
 
   }
 
-
   zoomChanged(){
     console.log('zoomChanged: ', this.state.map.getZoom())
   }
@@ -53,9 +52,20 @@ class ParkList extends Component {
     if (this.state.map !== null){
       return
     }
-
     this.setState({ map })
   }
+
+  mouseOverHandler(index){
+    if (this.state.isHover !== index) {
+      this.setState({isHover: index})
+    }
+  }
+
+  mouseOutHandler(index){
+    this.setState({isHover: -1})
+  }
+
+
 
   handleContextRef = contextRef => this.setState({ contextRef });
 
@@ -78,9 +88,14 @@ class ParkList extends Component {
       <Grid.Column width={9}>
       <div className="ui one cards">
 
-      {this.props.nearbyParks.map(park => {
-         return <ParkListItem key={park.id} currentPark={park}
-         history={this.props.history} />
+      {this.props.nearbyParks.map((park, index) => {
+         return <ParkListItem
+         key={park.id}
+         index={index}
+         currentPark={park}
+         history={this.props.history}
+         mouseOverHandler={this.mouseOverHandler.bind(this)}
+         mouseOutHandler={this.mouseOutHandler.bind(this)} />
       })}
 
 
@@ -90,7 +105,7 @@ class ParkList extends Component {
       <Grid.Column width={7}>
       <Sticky context={contextRef} offset={130}>
       <Map
-        zoom={14}
+        zoom={13}
         center={this.state.location}
         markers={markers}
         mapMoved={this.mapMoved.bind(this)}
@@ -98,6 +113,8 @@ class ParkList extends Component {
         zoomChanged={this.zoomChanged.bind(this)}
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
+        isHover={this.state.isHover}
+
       />
      </Sticky>
     </Grid.Column>

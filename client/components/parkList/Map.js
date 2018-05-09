@@ -13,20 +13,34 @@ class Map extends Component {
     }
   }
 
-
-
-
   render() {
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
+
     const markers = this.props.markers.map((park, i) => {
+
+      let icon = {}
+      if (this.props.isHover === i){
+        icon = {
+          url: `/../../../images/markers/marker_yellow${i+1}.png`,
+          scaledSize: {width: 33, height: 60}
+        }
+      }
+      else {
+        icon = {
+          url: `/../../../images/markers/marker_red${i+1}.png`
+        }
+      }
 
       const marker = {
         position: {
           lat: park.address.location.lat,
           lng: park.address.location.lng,
-        }
+        },
+        icon: icon,
       }
-      return <Marker key={park.address.location.lat.toString() + park.address.location.lng.toString()} {...marker} />
+
+      return <Marker key={i} {...marker} />
+
     })
 
     // <Marker

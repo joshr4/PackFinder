@@ -39,7 +39,7 @@ export const deletePet = pet => dispatch =>
 
 export const updatePet = pet => dispatch =>
   axios
-    .put(`/api/pets/${pet.id}/change-times`, pet)
+    .put(`/api/pets/${pet.id}`, pet)
     .then(res => dispatch(updPet(res.data || defaultPets)))
     .catch(err => console.log(err));
 
@@ -63,7 +63,7 @@ export default function(state = defaultPets, action) {
     case DELETE_PET:
       return state.filter(pet => action.pet.id !== pet.id);
     case ADD_PET:
-      return Object.assign(state, action.pet);
+      return [...state, action.pet];
     default:
       return state;
   }

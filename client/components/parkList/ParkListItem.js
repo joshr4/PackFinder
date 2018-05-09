@@ -20,12 +20,13 @@ class ParkListItem extends Component {
   render() {
 
     const currentPark = this.props.currentPark
+    const i = this.props.index
 
     return (
 
-      <div className="card">
+      <div className="card" onMouseOver={() => this.props.mouseOverHandler(i)} onMouseLeave={() => this.props.mouseOutHandler(i)}>
         <div className="extra">
-        <Grid columns={3}>
+        <Grid columns={3} >
         <Grid.Column width={3}>
         <Image size='small' centered={true} src='https://react.semantic-ui.com/assets/images/wireframe/image.png' />
           <div className="ui star rating" data-rating="4"></div>
