@@ -48,7 +48,12 @@ class Dnd extends React.Component {
         start: '',
         end: '',
         visitDate: '',
+        park: '',
       },
+      startValid: false,
+      endValid: false,
+      visitDateValid: false,
+      parkValid: false,
       formValid: false,
       showModal: false,
       modalType: 'view',
@@ -122,7 +127,7 @@ class Dnd extends React.Component {
         }
       })
     }
-    console.log('open modal state',this.state.selectedEvent)
+    console.log('open modal state', this.state.selectedEvent)
     await this.setState({
       modalType: type
     })
@@ -202,20 +207,61 @@ class Dnd extends React.Component {
 
   handleChange = e => {
     console.log('change', e.target.name, e.target.value)
+    // this.setState({
+    //     selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
+    // })
     this.setState({
-        selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
-    })
+      selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
+      () => { this.validateField(e.target.name, e.target.value) })
+  })
   }
 
   handleFieldChange = data => {
-    console.log('field drop',data.value)
+    console.log('field drop', data.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
 
+  validateField = (fieldName, value) => {
+    console.log('validate')
+    let fieldValidationErrors = this.state.formErrors;
+    let startValid = this.state.startValid;
+    let endValid = this.state.endValid;
+    let parkValid = this.state.parkValid;
+    let visitDateValid = this.state.visitDateValid;
+
+    switch (fieldName) {
+      case 'start':
+        startValid = value.length === 5
+        fieldValidationErrors.start = startValid ? '' : ' is invalid';
+        break;
+      case 'end':
+        endValid = value.length === 5 //&& (value.slice(0,2)*60 + value.slice(-2))> this.state.selectedEvent.start.slice(0,2)*60 + this.state.selectedEvent.start.slice(-2);
+        fieldValidationErrors.end = endValid ? '' : ' is invalid';
+        break;
+      case 'park':
+        parkValid = value !== null;
+        fieldValidationErrors.park = parkValid ? '' : ' is invalid';
+        break;
+      case 'visitDate':
+        visitDateValid = value.length === 10;
+        fieldValidationErrors.visitDate = visitDateValid ? '' : ' is invalid';
+        break;
+      default:
+        break;
+    }
+    console.log('valid',startValid,endValid,parkValid,visitDateValid)
+    this.setState({formErrors: fieldValidationErrors,
+                    startValid: startValid,
+                    endValid: endValid,
+                    visitDateValid: visitDateValid,
+                    parkValid: parkValid,
+                  }, this.validateForm);
+  }
+
   render() {
-    console.log('render',this.state.selectedEvent)
+    console.log('render', this.state)
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <EventModal
