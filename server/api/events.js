@@ -85,4 +85,5 @@ router.post('/add-user', async (req, res, next) => {
   await relatedPark.addAttendee(addUser);
   res.json(relatedPark);
 
+
 })
