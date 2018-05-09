@@ -80,27 +80,17 @@ class Dnd extends React.Component {
 
   async openModal(event, type){
     let selEvent = event
-    // console.log('datedisplay', dateDisplay(event.start))
-    // console.log('timedisplay', timeDisplay(event.start))
     if (type === 'view'){
       let year = event.start.getFullYear();
       let month = event.start.getMonth();
       let day = event.start.getDate();
-      // let fromHour = event.start.getHours();
-      // let fromMin = event.start.getMinutes();
-      // let toHour = event.end.getHours();
-      // let toMin = event.end.getMinutes();
       let month0 = ''
       let day0 = ''
       if (month < 9) month0 = '0'
       if (day < 10) day0 = '0'
       selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
       selEvent.start = timeDisplay(event.start, true)
-
       selEvent.end = timeDisplay(event.end, true)
-      // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
-      //selEvent.park = this.props
-
       await this.setState({
         selectedEvent: selEvent,
       })
@@ -127,7 +117,6 @@ class Dnd extends React.Component {
         }
       })
     }
-    console.log('open modal state', this.state.selectedEvent)
     await this.setState({
       modalType: type
     })
@@ -206,10 +195,6 @@ class Dnd extends React.Component {
   }
 
   handleChange = e => {
-    console.log('change', e.target.name, e.target.value)
-    // this.setState({
-    //     selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
-    // })
     this.setState({
       selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
       () => { this.validateField(e.target.name, e.target.value) })
@@ -217,14 +202,12 @@ class Dnd extends React.Component {
   }
 
   handleFieldChange = data => {
-    console.log('field drop', data.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
 
   validateField = (fieldName, value) => {
-    console.log('validate')
     let fieldValidationErrors = this.state.formErrors;
     let startValid = this.state.startValid;
     let endValid = this.state.endValid;
@@ -251,7 +234,6 @@ class Dnd extends React.Component {
       default:
         break;
     }
-    console.log('valid',startValid,endValid,parkValid,visitDateValid)
     this.setState({formErrors: fieldValidationErrors,
                     startValid: startValid,
                     endValid: endValid,
@@ -261,7 +243,6 @@ class Dnd extends React.Component {
   }
 
   render() {
-    console.log('render', this.state)
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <EventModal
