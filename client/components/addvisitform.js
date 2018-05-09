@@ -6,7 +6,7 @@ const AddVisitForm = props => (
 
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
     <Form.Group widths="equal" >
-      <Form.Field>
+      <Form.Field required>
         <label>Date</label>
         <Input
           type="date"
@@ -18,7 +18,7 @@ const AddVisitForm = props => (
       </Form.Field>
     </Form.Group>
     <Form.Group widths="equal" >
-      <Form.Field>
+      <Form.Field required>
         <label>From</label>
         <Input
           type="time"
@@ -28,7 +28,7 @@ const AddVisitForm = props => (
           value={props.item.start.toString()}
           />
       </Form.Field>
-      <Form.Field>
+      <Form.Field required>
         <label>To</label>
         <Input
           type="time"
@@ -40,7 +40,7 @@ const AddVisitForm = props => (
       </Form.Field>
     </Form.Group>
       <Form.Group widths="equal">
-      <Form.Field>
+      <Form.Field required>
         <label>Select Park</label>
         <Dropdown
             options={props.parkList}

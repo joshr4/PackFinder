@@ -13,6 +13,7 @@ import { EventModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'
+import { isNull } from 'util';
 
 // import '../../public/calendar.css'
 // Setup the localizer by providing the moment (or globalize) Object
@@ -26,29 +27,30 @@ class Dnd extends React.Component {
     super(props);
     this.state = {
       selectedEvent: {
-        id: 1,
-        start: '14:00',
-        end: '15:00',
-        visitDate: '2018-06-09',
+        id: null,
+        start: '',
+        end: '',
+        visitDate: '',
+        park: null,
         address: {
-          city: 'Chicago',
-          id: 5,
-          line_1: '7340 N. Rogers Ave.',
+          city: '',
+          id: null,
+          line_1: '',
           location: {
-            lat: 42.0151089,
-            lng: -87.6780689
+            lat: null,
+            lng: null
           },
-          state: 'IL',
-          zipcode: '60626',
+          state: '',
+          zipcode: '',
         }
       },
-      showModal: false,
-      addFormFieldData: {
-        park: 1,
-        start: '14:00',
-        end: '15:00',
-        visitDate: '2018-06-09',
+      formErrors: {
+        start: '',
+        end: '',
+        visitDate: '',
       },
+      formValid: false,
+      showModal: false,
       modalType: 'view',
     };
   this.moveEvent = this.moveEvent.bind(this);
@@ -83,14 +85,18 @@ class Dnd extends React.Component {
       // let fromMin = event.start.getMinutes();
       // let toHour = event.end.getHours();
       // let toMin = event.end.getMinutes();
-      //selEvent.visitDate = `${year}-${month + 1}-${day}`
-      //selEvent.start = timeDisplay(event.start)
-      //selEvent.end = timeDisplay(event.end)
+      selEvent.visitDate = `${year}-${month + 1}-${day}`
+      selEvent.start = timeDisplay(event.start, true)
+
+      selEvent.end = timeDisplay(event.end, true)
       // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
+      //selEvent.park = this.props
+
       await this.setState({
         selectedEvent: selEvent,
       })
     }
+    console.log('open modal state',this.state.selectedEvent)
     await this.setState({
       modalType: type
     })
@@ -169,18 +175,21 @@ class Dnd extends React.Component {
   }
 
   handleChange = e => {
+    console.log('change', e.target.name, e.target.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
     })
   }
 
   handleFieldChange = data => {
+    console.log('field drop',data.value)
     this.setState({
         selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
 
   render() {
+    console.log('render',this.state.selectedEvent)
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <EventModal
@@ -231,7 +240,8 @@ const mapState = state => {
     start: new Date(visit.start),
     end: new Date(visit.end),
     address: visit.park.address,
-    userId: visit.userId
+    userId: visit.userId,
+    park: visit.parkId
     }
     return newVisit
   })

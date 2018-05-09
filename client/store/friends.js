@@ -27,7 +27,7 @@ const addNewFriend = friend => ({ type: ADD_FRIEND, friend });
  */
 export const getFriends = () => dispatch =>
   axios
-    .get('/api/friends')
+    .get('/api/user/friends')
     .then(res => dispatch(getAllFriends(res.data || defaultFriends)))
     .catch(err => console.log(err));
 
