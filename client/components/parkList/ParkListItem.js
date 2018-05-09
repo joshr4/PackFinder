@@ -20,10 +20,11 @@ class ParkListItem extends Component {
   render() {
 
     const currentPark = this.props.currentPark
+    const i = this.props.index
 
     return (
 
-      <div className="card" onMouseOver={this.props.mouseOverHandler} onMouseLeave={this.props.mouseOutHandler}>
+      <div className="card" onMouseOver={() => this.props.mouseOverHandler(i)} onMouseLeave={() => this.props.mouseOutHandler(i)}>
         <div className="extra">
         <Grid columns={3} >
         <Grid.Column width={3}>

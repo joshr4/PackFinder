@@ -13,31 +13,31 @@ class Map extends Component {
     }
   }
 
-
-
-
   render() {
 
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
 
 
-
     const markers = this.props.markers.map((park, i) => {
 
-      const image = `/../../../images/markers/marker_red${i+1}.png`
+      let image = ''
+      if (this.props.isHover === i){
+        image = `/../../../images/markers/marker_yellow${i+1}.png`
+      }
+      else {
+        image = `/../../../images/markers/marker_red${i+1}.png`
+      }
 
       const marker = {
         position: {
           lat: park.address.location.lat,
           lng: park.address.location.lng,
         },
-        icon: image
+        icon: image,
       }
 
       return <Marker key={i} {...marker} />
     })
-
-    console.log(markers)
 
     // <Marker
     // position={{ lat: -34.397, lng: 150.644 }}

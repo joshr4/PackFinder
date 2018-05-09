@@ -13,7 +13,8 @@ class ParkList extends Component {
       location: {
         lat: 41.895266,
         lng: -87.6412237
-      }
+      },
+      isHover: -1
     }
 
 
@@ -54,12 +55,14 @@ class ParkList extends Component {
     this.setState({ map })
   }
 
-  mouseOverHandler(evt){
-    console.log(evt.target.id)
+  mouseOverHandler(index){
+    if (this.state.isHover !== index) {
+      this.setState({isHover: index})
+    }
   }
 
-  mouseOutHandler(evt){
-    console.log("moust out", evt.target)
+  mouseOutHandler(index){
+    this.setState({isHover: -1})
   }
 
 
@@ -86,9 +89,10 @@ class ParkList extends Component {
       <Grid.Column width={9}>
       <div className="ui one cards">
 
-      {this.props.nearbyParks.map(park => {
+      {this.props.nearbyParks.map((park, index) => {
          return <ParkListItem
          key={park.id}
+         index={index}
          currentPark={park}
          history={this.props.history}
          mouseOverHandler={this.mouseOverHandler.bind(this)}
@@ -102,7 +106,7 @@ class ParkList extends Component {
       <Grid.Column width={7}>
       <Sticky context={contextRef} offset={130}>
       <Map
-        zoom={14}
+        zoom={13}
         center={this.state.location}
         markers={markers}
         mapMoved={this.mapMoved.bind(this)}
@@ -110,7 +114,7 @@ class ParkList extends Component {
         zoomChanged={this.zoomChanged.bind(this)}
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-
+        isHover={this.state.isHover}
       />
      </Sticky>
     </Grid.Column>
