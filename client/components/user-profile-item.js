@@ -15,21 +15,32 @@ import { EditUserModal } from '.';
  * COMPONENT
  */
 export class UserProfileItem extends React.Component {
-  state = {
-    showModal: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      showModal: false,
+      firstName: '',
+      lastName: '',
+      email: '',
+      line_1: '',
+      city: '',
+      state: '',
+      zip: '',
+      description: '',
+    };
+  }
   toggleEditUserModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
   handleSubmit = e => {
-    console.log('submitted E', e);
-  };
-  handleChange = e => {
-    console.log('form Change EE', e)
-  }
-  render() {
-    console.log('state instide userprofile item', this.state);
+    this.toggleEditUserModal();
 
+    console.log('submitted', this.state);
+  };
+  handleChange = (value, type) => {
+    this.setState({ [type]: value });
+  };
+  render() {
     return (
       <Grid.Row>
         <EditUserModal

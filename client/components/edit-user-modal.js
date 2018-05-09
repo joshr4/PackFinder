@@ -12,12 +12,7 @@ import {
 } from 'semantic-ui-react';
 
 const EditUserModal = props => {
-  console.log('editUserModal', props);
-  const options = [
-    { key: 'm', text: 'Male', value: 'male' },
-    { key: 'f', text: 'Female', value: 'female' },
-  ];
-
+  const { handleChange, handleSubmit, toggle } = props;
   return (
     <Modal open={props.show} onClose={props.toggle}>
       <Modal.Header>Edit your profile</Modal.Header>
@@ -28,20 +23,24 @@ const EditUserModal = props => {
           src="http://images.clipartpanda.com/sad-girl-stick-figure-image.png"
         />
         <Button> Test </Button>
-        <Modal.Description style={{ minWidth: '80%' }}>
+        <Modal.Description>
           <Form>
             <Form.Group widths="equal">
               <Form.Field
                 fluid
                 control={Input}
                 label="First name"
+                name="firstName"
                 placeholder="First name"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
               <Form.Field
                 fluid
                 control={Input}
                 label="Last name"
+                name="lastName"
                 placeholder="Last name"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -49,21 +48,18 @@ const EditUserModal = props => {
                 fluid
                 control={Input}
                 label="Email"
+                name="email"
                 placeholder="email@domain.com"
-              />
-              <Form.Field
-                fluid
-                control={Select}
-                label="Gender"
-                options={options}
-                placeholder="Gender"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
             </Form.Group>
             <Form.Group widths="equal">
               <Form.Field
                 control={TextArea}
                 label="About"
+                name="description"
                 placeholder="Tell us more about yourself..."
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -71,37 +67,45 @@ const EditUserModal = props => {
                 fluid
                 control={Input}
                 label="line_1"
+                name="line_1"
                 placeholder="Address"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
             </Form.Group>
             <Form.Group widths="equal">
               <Form.Field
                 fluid
                 control={Input}
-                label="city"
+                label="City"
+                name="city"
                 placeholder="City"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
               <Form.Field
                 fluid
                 control={Input}
                 label="state"
+                name="state"
                 placeholder="State"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
               <Form.Field
                 fluid
                 control={Input}
                 label="zip"
+                name="zip"
                 placeholder="Zip"
+                onChange={e => handleChange(e.target.value, e.target.name)}
               />
             </Form.Group>
           </Form>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" inverted>
+        <Button onClick={toggle} color="red" inverted>
           <Icon name="remove" />Cancel
         </Button>
-        <Button color="green" inverted>
+        <Button onClick={handleSubmit} color="green" inverted>
           <Icon name="checkmark" />Save
         </Button>
       </Modal.Actions>

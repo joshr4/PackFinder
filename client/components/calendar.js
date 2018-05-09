@@ -9,10 +9,11 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { EventModal } from './index';
+import { VisitModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'
+import { isNull } from 'util';
 
 // import '../../public/calendar.css'
 // Setup the localizer by providing the moment (or globalize) Object
@@ -26,29 +27,35 @@ class Dnd extends React.Component {
     super(props);
     this.state = {
       selectedEvent: {
-        id: 1,
-        start: '14:00',
-        end: '15:00',
-        visitDate: '2018-06-09',
+        id: null,
+        start: '',
+        end: '',
+        visitDate: '',
+        park: null,
         address: {
-          city: 'Chicago',
-          id: 5,
-          line_1: '7340 N. Rogers Ave.',
+          city: '',
+          id: null,
+          line_1: '',
           location: {
-            lat: 42.0151089,
-            lng: -87.6780689
+            lat: null,
+            lng: null
           },
-          state: 'IL',
-          zipcode: '60626',
+          state: '',
+          zipcode: '',
         }
       },
-      showModal: false,
-      addFormFieldData: {
-        park: 1,
-        start: '14:00',
-        end: '15:00',
-        visitDate: '2018-06-09',
+      formErrors: {
+        start: '',
+        end: '',
+        visitDate: '',
+        park: '',
       },
+      startValid: false,
+      endValid: false,
+      visitDateValid: false,
+      parkValid: false,
+      formValid: false,
+      showModal: false,
       modalType: 'view',
     };
   this.moveEvent = this.moveEvent.bind(this);
@@ -73,28 +80,47 @@ class Dnd extends React.Component {
 
   async openModal(event, type){
     let selEvent = event
-    // console.log('datedisplay', dateDisplay(event.start))
-    // console.log('timedisplay', timeDisplay(event.start))
-    if ( type === 'view'){
+    if (type === 'view'){
       let year = event.start.getFullYear();
       let month = event.start.getMonth();
       let day = event.start.getDate();
-      // let fromHour = event.start.getHours();
-      // let fromMin = event.start.getMinutes();
-      // let toHour = event.end.getHours();
-      // let toMin = event.end.getMinutes();
-      //selEvent.visitDate = `${year}-${month + 1}-${day}`
-      //selEvent.start = timeDisplay(event.start)
-      //selEvent.end = timeDisplay(event.end)
-      // console.log('open modal event', year, month, day)//, month, day, fromHour, fromMin, toHour, toMin)
+      let month0 = ''
+      let day0 = ''
+      if (month < 9) month0 = '0'
+      if (day < 10) day0 = '0'
+      selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
+      selEvent.start = timeDisplay(event.start, true)
+      selEvent.end = timeDisplay(event.end, true)
       await this.setState({
         selectedEvent: selEvent,
+      })
+    }
+    if (type === 'add'){
+      await this.setState({
+        selectedEvent: {
+          id: null,
+          start: '',
+          end: '',
+          visitDate: '',
+          park: null,
+          address: {
+            city: '',
+            id: null,
+            line_1: '',
+            location: {
+              lat: null,
+              lng: null
+            },
+            state: '',
+            zipcode: '',
+          }
+        }
       })
     }
     await this.setState({
       modalType: type
     })
-    if (this.state.modalType !== 'edit') this.toggleModal()
+    if (type !== 'edit') this.toggleModal()
   }
 
   moveEvent({ event, start, end }) {
@@ -170,8 +196,9 @@ class Dnd extends React.Component {
 
   handleChange = e => {
     this.setState({
-        selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value})
-    })
+      selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
+      () => { this.validateField(e.target.name, e.target.value) })
+  })
   }
 
   handleFieldChange = data => {
@@ -180,10 +207,45 @@ class Dnd extends React.Component {
     })
   }
 
+  validateField = (fieldName, value) => {
+    let fieldValidationErrors = this.state.formErrors;
+    let startValid = this.state.startValid;
+    let endValid = this.state.endValid;
+    let parkValid = this.state.parkValid;
+    let visitDateValid = this.state.visitDateValid;
+
+    switch (fieldName) {
+      case 'start':
+        startValid = value.length === 5
+        fieldValidationErrors.start = startValid ? '' : ' is invalid';
+        break;
+      case 'end':
+        endValid = value.length === 5 //&& (value.slice(0,2)*60 + value.slice(-2))> this.state.selectedEvent.start.slice(0,2)*60 + this.state.selectedEvent.start.slice(-2);
+        fieldValidationErrors.end = endValid ? '' : ' is invalid';
+        break;
+      case 'park':
+        parkValid = value !== null;
+        fieldValidationErrors.park = parkValid ? '' : ' is invalid';
+        break;
+      case 'visitDate':
+        visitDateValid = value.length === 10;
+        fieldValidationErrors.visitDate = visitDateValid ? '' : ' is invalid';
+        break;
+      default:
+        break;
+    }
+    this.setState({formErrors: fieldValidationErrors,
+                    startValid: startValid,
+                    endValid: endValid,
+                    visitDateValid: visitDateValid,
+                    parkValid: parkValid,
+                  }, this.validateForm);
+  }
+
   render() {
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
-        <EventModal
+        <VisitModal
           modalType={this.state.modalType}
           show={this.state.showModal}
           onClose={this.toggleModal}
@@ -231,7 +293,8 @@ const mapState = state => {
     start: new Date(visit.start),
     end: new Date(visit.end),
     address: visit.park.address,
-    userId: visit.userId
+    userId: visit.userId,
+    park: visit.parkId
     }
     return newVisit
   })

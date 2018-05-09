@@ -69,6 +69,7 @@ function randUser(possibleAddresses) {
     password: '123',
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
+    imageUrl: faker.image.avatar(),
     addressId
   };
   user.email = `${user.firstName}.${user.lastName}@gmail.com`;
@@ -82,40 +83,50 @@ function generateUsers(userAddresses) {
     User.build({
       firstName: 'Daniel',
       lastName: 'Simandl',
+      imageUrl: faker.image.avatar(),
       email: `dan@dan.com`,
       password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
     })
   );
   users.push(
     User.build({
       firstName: 'Josh',
       lastName: 'Remaley',
+      imageUrl: faker.image.avatar(),
       email: `josh@josh.com`,
       password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
     })
   );
   users.push(
     User.build({
       firstName: 'Ricky',
       lastName: 'Li',
+      imageUrl: faker.image.avatar(),
       email: `ricky@ricky.com`,
       password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
     })
   );
   users.push(
     User.build({
       firstName: 'Mathew',
       lastName: 'Chan',
+      imageUrl: faker.image.avatar(),
       email: `matt@matt.com`,
       password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
     })
   );
   users.push(
     User.build({
       firstName: 'Kevin',
       lastName: 'OMalley',
+      imageUrl: faker.image.avatar(),
       email: `kevin@kevin.com`,
       password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
     })
   );
   return users;
