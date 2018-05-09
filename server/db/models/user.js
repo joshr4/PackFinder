@@ -1,5 +1,7 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
+const {Message, Request} = require('./contact')
+
 const db = require('../db')
 
 const User = db.define('user', {
@@ -65,6 +67,40 @@ module.exports = User
  */
 User.prototype.correctPassword = function (candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
+}
+
+User.prototype.hasRequest = async function(otherUser) {
+  let checkRequest = await Request.findOne({
+    where: {
+      $or: [{toId:this.id, fromId:otherUser.id}, {toId:otherUser.id, fromId:this.id}],
+    }
+  });
+  return checkRequest;
+}
+
+User.prototype.sendRequest = async function(recipient) {
+  let recipientUser = recipient;
+  if (typeof recipient === "number" || typeof recipient === "string") {
+    recipientUser = User.findById(recipient);
+  }  
+  let reverseRequest = await thisUser.getRequesters({
+    where:{
+        id:recipientUser.id
+    }
+  });
+  if (reverseRequest.length > 0) {
+      console.log("existing request found! ", thisUser.id, recipientUser.id);
+      await thisUser.removeRequester(recipientUser);
+      await recipientUser.removeRequestee(recipientUser);
+      // existingRequests[0].destroy();                
+      await thisUser.addFriend(recipientUser);
+      await recipientUser.addFriend(thisUser);
+  }
+  else {
+      await thisUser.addRequestee(recipientUser);
+      await recipientUser.addRequester(recipientUser);
+  }
+  return recpientUser;
 }
 
 // User.prototype.visitedParks = function() {
