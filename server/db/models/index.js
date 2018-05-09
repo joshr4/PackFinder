@@ -3,6 +3,7 @@ const Pet = require('./pet')
 const {Park, Visit, Address, Favorite} = require('./park')
 const Event = require('./event')
 const Review = require('./review')
+const {Request, Message} = require('./contact')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -24,14 +25,30 @@ User.hasMany(Pet, {
   foreignKey: 'userId',
 });
 
-// User.hasMany(Park, {
-//   as: 'favorites',
-// });
-
 
 User.belongsToMany(Park, {through:'UserFavorites', as:'favorites'});
-User.belongsToMany(User, {through:'FriendsTable', as:'friends'});
-Park.belongsToMany(User, {through:'UserFavorites'});
+
+User.belongsToMany(User, { as: 'Friends', through: 'friends' });
+User.belongsToMany(User, { as: 'Requestees', through: 'friendRequests', foreignKey: 'requesterId', onDelete: 'CASCADE'});
+User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignKey: 'requesteeId', onDelete: 'CASCADE'});
+
+
+Event.belongsTo(User, {as:'creator'});
+Event.belongsToMany(User, {through: 'eventParticipants', 
+as:'attendees', foreignKey:'eventId', otherKey:'userId'});
+User.belongsToMany(Event, {through:'eventParticipants'});
+Event.belongsTo(Park);
+
+// Message.hasOne(User, {as:'sender'});
+// User.hasMany(Message, {as: 'sent'});
+// Message.hasOne(User, {as:'recipient'});
+// User.hasMany(Message, {as: 'inbox'});
+// User.hasMany(Request);
+
+Message.belongsTo(User, {as:'sender', foreignKey:'senderId'});
+Message.belongsTo(User, {as:'recipient', foreignKey:'recipientId'});
+User.hasMany(Message, {as: 'messageOutbox', foreignKey:'senderId'});
+User.hasMany(Message, {as: 'messageInbox', foreignKey:'recipientId'});
 
 
 // User.belongsToMany(Park, {through:Visit});
@@ -63,5 +80,7 @@ module.exports = {
   Visit,
   Address,
   Event,
-  Review
+  Review,
+  Message,
+  Request
 }
