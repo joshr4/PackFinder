@@ -1,4 +1,5 @@
 const faker = require('faker');
+const axios = require('axios');
 const chance = require('chance')(123)
 
 // const toonAvatar = require('cartoon-avatar');
@@ -19,6 +20,35 @@ function doTimes(n, fn) {
     results.push(fn());
   }
   return results;
+}
+
+async function geocode(addresses) {
+
+  for (let i = 0 ; i < addresses.length; i ++){
+
+    let park = addresses[i];
+
+    let location = park.line_1 + ' ' + park.city + ' ' + park.state;
+
+    let tempResult;
+
+    await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params: {
+        address: location,
+        key: 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY'
+      }
+    }).then(res => res.data.results.forEach(result => {
+      let tempLocation = {
+        lat: (Math.round(result.geometry.location.lat * 10000000) / 10000000),
+        lng: (Math.round(result.geometry.location.lng * 10000000) / 10000000)};
+
+
+      tempResult = tempLocation
+      console.log(tempResult)
+      addresses[i].location = tempResult
+  })
+)
+}
 }
 
 function generateAddresses(locations) {
@@ -91,6 +121,8 @@ function generateUsers(userAddresses) {
   return users;
 }
 
+
+
 function createUsers() {
   return Promise.map(generateAddresses(addresses).then(addressArray =>
     generateUsers(addressArray)), users => users.save());
@@ -98,7 +130,11 @@ function createUsers() {
 
 function seed() {
   console.log('Syncing users');
-  return createUsers(addresses);
+  let resultHolder = geocode(addresses)
+  .then( () =>  {let createUsersholder = createUsers(addresses)
+  return createUsersholder}
+)
+  return resultHolder;
 }
 
 module.exports = seed
