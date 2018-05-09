@@ -20,12 +20,17 @@ class Map extends Component {
 
     const markers = this.props.markers.map((park, i) => {
 
-      let image = ''
+      let icon = {}
       if (this.props.isHover === i){
-        image = `/../../../images/markers/marker_yellow${i+1}.png`
+        icon = {
+          url: `/../../../images/markers/marker_yellow${i+1}.png`,
+          scaledSize: {width: 33, height: 60}
+        }
       }
       else {
-        image = `/../../../images/markers/marker_red${i+1}.png`
+        icon = {
+          url: `/../../../images/markers/marker_red${i+1}.png`
+        }
       }
 
       const marker = {
@@ -33,7 +38,7 @@ class Map extends Component {
           lat: park.address.location.lat,
           lng: park.address.location.lng,
         },
-        icon: image,
+        icon: icon,
       }
 
       return <Marker key={i} {...marker} />
