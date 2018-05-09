@@ -3,8 +3,6 @@ const {User, Pet, Address, Park, Visit} = require('../db/models')
 module.exports = router
 
 router.post('/', async (req, res, next) => {
-    console.log('post pet', req.body)
-    console.log("req.user: ", req.user);
     req.body.userId = req.user.dataValues.id
     Pet.create(req.body).then(pet => {
         res.json(pet);
