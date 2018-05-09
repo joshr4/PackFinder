@@ -15,7 +15,6 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  console.log("posting to event: ", req.body);
   let relatedPark = await Park.findById(req.body.parkId);
   let creatorUser = await User.findById(req.body.userId);
   let newEvent = await Event.create({
@@ -85,5 +84,5 @@ router.post('/add-user', async (req, res, next) => {
   let addUser = await User.findById(req.body.userId);
   await relatedPark.addAttendee(addUser);
   res.json(relatedPark);
-  
+
 })

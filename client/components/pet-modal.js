@@ -4,7 +4,6 @@ import AddVisitForm from './addvisitform';
 
 const EditPetModal = props => {
   let { item, onClose, handleAdd, handleUpdate, handleChange, isUpdatePet } = props
-  console.log('modal props.item', props.item)
   return (
     <Modal open={props.show}>
       <Modal.Content image>

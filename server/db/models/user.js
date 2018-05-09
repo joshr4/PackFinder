@@ -69,17 +69,16 @@ User.prototype.sendRequest = async function(recipient) {
   let recipientUser = recipient;
   if (typeof recipient === "number" || typeof recipient === "string") {
     recipientUser = User.findById(recipient);
-  }  
+  }
   let reverseRequest = await thisUser.getRequesters({
     where:{
         id:recipientUser.id
     }
   });
   if (reverseRequest.length > 0) {
-      console.log("existing request found! ", thisUser.id, recipientUser.id);
       await thisUser.removeRequester(recipientUser);
       await recipientUser.removeRequestee(recipientUser);
-      // existingRequests[0].destroy();                
+      // existingRequests[0].destroy();
       await thisUser.addFriend(recipientUser);
       await recipientUser.addFriend(thisUser);
   }
@@ -91,7 +90,7 @@ User.prototype.sendRequest = async function(recipient) {
 }
 
 // User.prototype.visitedParks = function() {
-  
+
 // }
 
 /**
