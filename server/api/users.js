@@ -50,6 +50,17 @@ router.get('/:id/received-requests', async (req, res, next) => {
   res.json(requesters);
 })
 
+router.put('/:id/approve-request', async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+  let friendId = req.body.friendId;
+  let friendIduser = await User.findById(friendId);
+  await user.removeRequester(friendIduser);
+  await friendIduser.removeRequestee(user);
+  await user.addFriend(friendIduser);
+  await friendIduser.addFriend(user);
+  res.json(requesters);  
+})
+
 router.post('/:id/friend-request', async (req, res, next) => {
   let friendId = req.body.friendId;
   let user = await User.findById(req.params.id);
@@ -81,6 +92,23 @@ router.get('/:id/has-request/:friendId', async (req, res, next) => {
   let requesters = await user.getRequesters({where:{id:friendId}});
   res.json((requestees.length > 0 || requesters.length > 0));
 })
+
+router.get('/:id/sent-request/:friendId', async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+  let friendId = req.params.friendId;
+  let friendIduser = await User.findById(friendId);
+  let requestees = await user.getRequestees({where:{id:friendId}});
+  res.json((requestees.length > 0));
+})
+
+router.get('/:id/received-request/:friendId', async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+  let friendId = req.params.friendId;
+  let friendIduser = await User.findById(friendId);
+  let requesters = await user.getRequesters({where:{id:friendId}});
+  res.json((requesters.length > 0 || requesters.length > 0));
+})
+
 
 router.put('/:id/cancel-request', async (req, res, next) => {
   let user = await User.findById(req.params.id);
