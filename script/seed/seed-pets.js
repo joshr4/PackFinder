@@ -10,6 +10,8 @@ const axios = require('axios');
 
 const numPets = 30;
 
+const randUser = [201,202,203,204,205]
+
 const breeds = {
   "affenpinscher": [],
   "african": [],
@@ -194,6 +196,9 @@ function doTimes(n, fn) {
 }
 
 async function randPet() {
+  let userSelect
+  if(chance.bool()) userSelect = chance.pickone(randUser)
+  else userSelect = chance.integer({min: 1,max: 205})
   let randBreed = chance.pickone(breedArray)
   let subBreed = ''
   if (breeds[randBreed].length > 1) {
@@ -228,10 +233,7 @@ async function randPet() {
       min: 7,
       max: 125
     }),
-    userId: chance.integer({
-      min: 17,
-      max: 25
-    })
+    userId: userSelect
   };
 
   return Pet.build(pet);

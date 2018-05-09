@@ -14,6 +14,7 @@ class Profile extends React.Component {
     this.props.getData();
   }
   render() {
+    console.log('profile props',this.props)
     return (
       <div>
         <Container className="container">

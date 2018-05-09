@@ -39,7 +39,7 @@ export const deletePet = pet => dispatch =>
 
 export const updatePet = pet => dispatch =>
   axios
-    .put(`/api/pets/${pet.id}/change-times`, pet)
+    .put(`/api/pets/${pet.id}`, pet)
     .then(res => dispatch(updPet(res.data || defaultPets)))
     .catch(err => console.log(err));
 
