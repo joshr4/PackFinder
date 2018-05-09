@@ -8,3 +8,13 @@ router.get('/', (req, res, next) => {
     .then(addresses => res.json(addresses))
     .catch(next)
 })
+
+router.get('/:id', (req, res, next) => {
+  Address.findOne({
+    where: {
+      id: req.params.id,
+  }
+  })
+    .then(addresses => res.json(addresses))
+    .catch(next)
+})

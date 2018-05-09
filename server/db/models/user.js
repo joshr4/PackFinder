@@ -3,6 +3,20 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const User = db.define('user', {
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  fullname: {
+    type: Sequelize.VIRTUAL,
+    get(){
+      return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName')
+    }
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -33,7 +47,6 @@ const User = db.define('user', {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue: "",
   },
   description: {
     type: Sequelize.TEXT,
@@ -55,7 +68,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 }
 
 // User.prototype.visitedParks = function() {
-  
+
 // }
 
 /**
