@@ -25,7 +25,7 @@ class Profile extends React.Component {
         userId: undefined,
       },
       isUpdatePet: false,
-    }
+    };
     this.togglePetModal = this.togglePetModal.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,8 +35,8 @@ class Profile extends React.Component {
     this.props.getData();
   }
   openPetModal = (pet, edit = true) => {
-    let selPet = {}
-    if (edit) selPet = Object.assign({}, pet)
+    let selPet = {};
+    if (edit) selPet = Object.assign({}, pet);
     else {
       selPet = {
         bio: '',
@@ -47,36 +47,38 @@ class Profile extends React.Component {
         age: undefined,
         id: undefined,
         userId: undefined,
-      }
+      };
     }
     this.setState({
       selectedPet: selPet,
       isUpdatePet: edit,
     });
-    this.togglePetModal()
-  }
+    this.togglePetModal();
+  };
   togglePetModal = () => {
     this.setState({
       showPetModal: !this.state.showPetModal,
     });
-  }
+  };
   handleAdd = () => {
-    console.log('handleADD')
-    this.props.addNewPet(this.state.selectedPet)
-    this.togglePetModal()
-  }
+    console.log('handleADD');
+    this.props.addNewPet(this.state.selectedPet);
+    this.togglePetModal();
+  };
   handleUpdate = () => {
-    console.log('handleupdate')
-    this.props.updatePet(this.state.selectedPet)
-    this.togglePetModal()
-  }
+    console.log('handleupdate');
+    this.props.updatePet(this.state.selectedPet);
+    this.togglePetModal();
+  };
   handleChange = e => {
     this.setState({
-      selectedPet: Object.assign(this.state.selectedPet, {[e.target.name]: e.target.value})
-    })
-  }
+      selectedPet: Object.assign(this.state.selectedPet, {
+        [e.target.name]: e.target.value,
+      }),
+    });
+  };
   render() {
-    console.log('profile props',this.props)
+    const { user, userPets } = this.props;
     return (
       <div>
         <EditPetModal
@@ -91,34 +93,47 @@ class Profile extends React.Component {
         <Container className="container">
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
-            <UserProfileItem info={this.props.user} />
-              <Grid.Row>
-                <Grid.Column width="4"><Header as="h3">Dogs:</Header></Grid.Column>
-                <Grid.Column width="12">
-                  <Button color="teal" onClick={() => this.openPetModal(null, false)}>Add a dog</Button>
-                </Grid.Column>
-              </Grid.Row>
-            {this.props.userPets ? this.props.userPets.map((pet, i) => {
-              return (<ProfileItem key={i} info={pet} openPetModal={this.openPetModal} />)
-            })
-            :
-            <h3>Add a dog to your profile!</h3>
-            }
+            <UserProfileItem user={user} />
+            <Grid.Row>
+              <Grid.Column width="4">
+                <Header as="h3">Dogs:</Header>
+              </Grid.Column>
+              <Grid.Column width="12">
+                <Button
+                  color="teal"
+                  onClick={() => this.openPetModal(null, false)}
+                >
+                  Add a dog
+                </Button>
+              </Grid.Column>
+            </Grid.Row>
+            {userPets ? (
+              userPets.map((pet, i) => {
+                return (
+                  <ProfileItem
+                    key={i}
+                    info={pet}
+                    openPetModal={this.openPetModal}
+                  />
+                );
+              })
+            ) : (
+              <h3>Add a dog to your profile!</h3>
+            )}
           </Grid>
         </Container>
       </div>
-  );
+    );
   }
 }
 
 /**
  * CONTAINER
  */
-const mapState = store => {
-  console.log('redux props',store.userPets)
+const mapState = ({ user, pets }) => {
   return {
-    user: store.user,
-    userPets: store.pets.filter(pet => pet.userId===store.user.id)
+    user,
+    userPets: pets.filter(pet => pet.userId === user.id),
   };
 };
 
