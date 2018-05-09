@@ -18,7 +18,7 @@ const ProfileItem = props => {
           </Grid.Column>
           <Grid.Column width="12">
             <Segment>
-              <Button color="teal" onClick={() => props.openPetModal(props.info, 'edit', true)}>Edit</Button>
+              <Button color="teal" inverted onClick={() => props.openPetModal(props.info, 'edit', true)}>Edit</Button>
               <List>
                 <List.Item>Name: {props.info.name}
                 </List.Item>

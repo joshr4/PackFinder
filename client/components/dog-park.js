@@ -350,7 +350,6 @@ export class DogPark extends Component {
   }
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
-    console.log('stateVisit: ',stateVisit)
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split('-')[2]);

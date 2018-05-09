@@ -277,7 +277,7 @@ class Dnd extends React.Component {
           // max={new Date(0, 0, 0, 23, 0)}
         />
         <Grid>
-        <Button positive style={{margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
+        <Button positive inverted style={{margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
         <p style={{marginTop: 30 }}>Double click an event on the calendar to edit/delete</p>
         </Grid>
       </div>
