@@ -48,6 +48,7 @@ const AddVisitForm = props => (
             scrolling={true}
             style={{ marginLeft: '0px' }}
             value={props.item.park}
+            placeholder={'Please select a park from the list'}
             onChange={(e, data) => props.handleFieldChange(data)}
           />
       </Form.Field>

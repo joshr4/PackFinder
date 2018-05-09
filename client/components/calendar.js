@@ -77,7 +77,7 @@ class Dnd extends React.Component {
     let selEvent = event
     // console.log('datedisplay', dateDisplay(event.start))
     // console.log('timedisplay', timeDisplay(event.start))
-    if ( type === 'view'){
+    if (type === 'view'){
       let year = event.start.getFullYear();
       let month = event.start.getMonth();
       let day = event.start.getDate();
@@ -85,7 +85,11 @@ class Dnd extends React.Component {
       // let fromMin = event.start.getMinutes();
       // let toHour = event.end.getHours();
       // let toMin = event.end.getMinutes();
-      selEvent.visitDate = `${year}-${month + 1}-${day}`
+      let month0 = ''
+      let day0 = ''
+      if (month < 9) month0 = '0'
+      if (day < 10) day0 = '0'
+      selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
       selEvent.start = timeDisplay(event.start, true)
 
       selEvent.end = timeDisplay(event.end, true)
@@ -96,11 +100,33 @@ class Dnd extends React.Component {
         selectedEvent: selEvent,
       })
     }
+    if (type === 'add'){
+      await this.setState({
+        selectedEvent: {
+          id: null,
+          start: '',
+          end: '',
+          visitDate: '',
+          park: null,
+          address: {
+            city: '',
+            id: null,
+            line_1: '',
+            location: {
+              lat: null,
+              lng: null
+            },
+            state: '',
+            zipcode: '',
+          }
+        }
+      })
+    }
     console.log('open modal state',this.state.selectedEvent)
     await this.setState({
       modalType: type
     })
-    if (this.state.modalType !== 'edit') this.toggleModal()
+    if (type !== 'edit') this.toggleModal()
   }
 
   moveEvent({ event, start, end }) {
