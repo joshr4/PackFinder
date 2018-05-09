@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { EventModal } from './index';
+import { VisitModal } from './index';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'
@@ -183,7 +183,7 @@ class Dnd extends React.Component {
   render() {
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
-        <EventModal
+        <VisitModal
           modalType={this.state.modalType}
           show={this.state.showModal}
           onClose={this.toggleModal}
