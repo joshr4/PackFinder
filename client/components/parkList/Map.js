@@ -14,9 +14,7 @@ class Map extends Component {
   }
 
   render() {
-
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
-
 
     const markers = this.props.markers.map((park, i) => {
 
@@ -37,6 +35,7 @@ class Map extends Component {
       }
 
       return <Marker key={i} {...marker} />
+
     })
 
     // <Marker
