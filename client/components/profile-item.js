@@ -7,35 +7,24 @@ import { Container, Segment, Grid, Image, List } from 'semantic-ui-react';
  * COMPONENT
  */
 export const ProfileItem = props => {
+  const { imageUrls, name, breed, bio, age, weight } = props.info;
   return (
-        <Grid.Row>
-          <Grid.Column width="4">
-            <Image
-              size="small"
-              src={props.info.imageUrls[0]}
-              circular
-            />
-          </Grid.Column>
-          <Grid.Column width="12">
-            <Segment>
-              <List>
-                <List.Item>Name: {props.info.name}</List.Item>
-                <List.Item>
-                  Breed: {props.info.breed}
-                </List.Item>
-                <List.Item>
-                  Bio: {props.info.bio}
-                </List.Item>
-                <List.Item>
-                  Age: {props.info.age}
-                </List.Item>
-                <List.Item>
-                  Weight: {props.info.weight}
-                </List.Item>
-              </List>
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
+    <Grid.Row>
+      <Grid.Column width="4">
+        <Image size="small" src={imageUrls[0]} circular />
+      </Grid.Column>
+      <Grid.Column width="12">
+        <Segment>
+          <List>
+            <List.Item>Name: {name}</List.Item>
+            <List.Item>Breed: {breed}</List.Item>
+            <List.Item>Bio: {bio}</List.Item>
+            <List.Item>Age: {age}</List.Item>
+            <List.Item>Weight: {weight}</List.Item>
+          </List>
+        </Segment>
+      </Grid.Column>
+    </Grid.Row>
   );
 };
 
