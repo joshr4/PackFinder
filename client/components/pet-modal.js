@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button, Header, Image, Modal, Grid, Input, Form, TextArea } from 'semantic-ui-react';
+import { Button, Header, Image, Modal, Grid, Input, Form, TextArea, Icon } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
 const EditPetModal = props => {
-  let { item, handleSubmit, handleChange, onEdit } = props
+  let { item, onClose, handleAdd, handleUpdate, handleChange, isUpdatePet } = props
+  console.log('modal props.item', props.item)
   return (
     <Modal open={props.show}>
-      <Grid>
-        <Button color="blue" style={{ marginLeft: 35, marginTop: 20}} onClick={() => props.onClose()}>Close</Button>
-      </Grid>
       <Modal.Content image>
         <Image
           wrapped
@@ -16,7 +14,7 @@ const EditPetModal = props => {
           src={item.imageUrls[0]}
         />
         <Modal.Description>
-          <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
+          <Form onSubmit={props.handleSubmit} onChange={e => handleChange(e)}>
             <Grid columns={2}>
               <Grid.Row>
                 <Grid.Column width={2}>
@@ -90,6 +88,14 @@ const EditPetModal = props => {
           </Form>
         </Modal.Description>
       </Modal.Content>
+      <Modal.Actions>
+      <Button color="red" inverted onClick={() => onClose()}>
+         <Icon name="remove" /> Cancel
+       </Button>
+       <Button color="green" inverted onClick={isUpdatePet ? () => handleUpdate() : () => handleAdd()}>
+         <Icon name="checkmark" /> Save
+       </Button>
+      </Modal.Actions>
     </Modal>
   )
 };

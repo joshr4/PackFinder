@@ -6,7 +6,7 @@ import { Container, Segment, Grid, Image, List, Button } from 'semantic-ui-react
 /**
  * COMPONENT
  */
-export const ProfileItem = props => {
+const ProfileItem = props => {
   return (
         <Grid.Row>
           <Grid.Column width="4">
@@ -18,7 +18,7 @@ export const ProfileItem = props => {
           </Grid.Column>
           <Grid.Column width="12">
             <Segment>
-              <Button color="teal" onClick={() => props.openPetModal(props.info)}>Edit</Button>
+              <Button color="teal" onClick={() => props.openPetModal(props.info, 'edit', true)}>Edit</Button>
               <List>
                 <List.Item>Name: {props.info.name}
                 </List.Item>

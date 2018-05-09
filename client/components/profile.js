@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Segment, Grid, Header } from 'semantic-ui-react';
+import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react';
 import { ProfileItem, UserProfileItem, EditPetModal } from '.';
 import { getPets, deletePet, updatePet, addPet } from '../store';
 
@@ -15,27 +15,43 @@ class Profile extends React.Component {
     this.state = {
       showPetModal: false,
       selectedPet: {
-        bio: 'bio',
-        breed: 'breed',
+        bio: '',
+        breed: '',
         imageUrls: [],
         name: '',
-        weight: null,
-        age: null,
-        id: null,
-        userId: null,
+        weight: undefined,
+        age: undefined,
+        id: undefined,
+        userId: undefined,
       },
+      isUpdatePet: false,
     }
     this.togglePetModal = this.togglePetModal.bind(this);
-    this.addPet = this.addPet.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.openPetModal = this.openPetModal.bind(this);
   }
   componentDidMount() {
     this.props.getData();
   }
-  openPetModal = (pet) => {
+  openPetModal = (pet, edit = true) => {
+    let selPet = {}
+    if (edit) selPet = Object.assign({}, pet)
+    else {
+      selPet = {
+        bio: '',
+        breed: '',
+        imageUrls: [],
+        name: '',
+        weight: undefined,
+        age: undefined,
+        id: undefined,
+        userId: undefined,
+      }
+    }
     this.setState({
-      selectedPet: pet,
+      selectedPet: selPet,
+      isUpdatePet: edit,
     });
     this.togglePetModal()
   }
@@ -44,9 +60,15 @@ class Profile extends React.Component {
       showPetModal: !this.state.showPetModal,
     });
   }
-  addPet = () => {
+  handleAdd = () => {
+    console.log('handleADD')
     this.props.addNewPet(this.state.selectedPet)
-    this.toggleModal()
+    this.togglePetModal()
+  }
+  handleUpdate = () => {
+    console.log('handleupdate')
+    this.props.updatePet(this.state.selectedPet)
+    this.togglePetModal()
   }
   handleChange = e => {
     this.setState({
@@ -60,14 +82,21 @@ class Profile extends React.Component {
           show={this.state.showPetModal}
           onClose={this.togglePetModal}
           item={this.state.selectedPet}
-          handleSubmit={this.addPet}
+          handleAdd={this.handleAdd}
           handleChange={this.handleChange}
+          handleUpdate={this.handleUpdate}
+          isUpdatePet={this.state.isUpdatePet}
         />
         <Container className="container">
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
             <UserProfileItem info={this.props.user} />
-            <Header as="h3">Dogs:</Header>
+              <Grid.Row>
+                <Grid.Column width="4"><Header as="h3">Dogs:</Header></Grid.Column>
+                <Grid.Column width="12">
+                  <Button color="teal" onClick={() => this.openPetModal(null, false)}>Add a dog</Button>
+                </Grid.Column>
+              </Grid.Row>
             {this.props.userPets ? this.props.userPets.map((pet, i) => {
               return (<ProfileItem key={i} info={pet} openPetModal={this.openPetModal} />)
             })
@@ -84,10 +113,11 @@ class Profile extends React.Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = store => {
+  console.log('redux props',store.userPets)
   return {
-    user: state.user,
-    userPets: state.pets.filter(pet => pet.userId===state.user.id)
+    user: store.user,
+    userPets: store.pets.filter(pet => pet.userId===store.user.id)
   };
 };
 
