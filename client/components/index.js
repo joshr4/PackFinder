@@ -21,9 +21,6 @@ export {default as Splash} from './splash'
 export {default as SubNavbar} from './sub-navbar'
 export {default as AddVisitForm} from './addvisitform'
 export {default as DogPark} from './dog-park'
-<<<<<<< HEAD
 export {default as NearbyUsers} from './nearby-users'
 export {default as EditUserModal} from './edit-user-modal'
-=======
 export {default as EditPetModal} from './pet-modal'
->>>>>>> bd09c77bbfb40599c7f2d4cd3537bf2055dfd0d1

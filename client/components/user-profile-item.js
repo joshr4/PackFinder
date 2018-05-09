@@ -32,8 +32,9 @@ export class UserProfileItem extends React.Component {
   toggleEditUserModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
-  handleSubmit = e => {
+  handleSubmit = () => {
     this.toggleEditUserModal();
+
 
     console.log('submitted', this.state);
   };
@@ -41,6 +42,7 @@ export class UserProfileItem extends React.Component {
     this.setState({ [type]: value });
   };
   render() {
+    const {fullName, email, imageUrl } = this.props.user
     return (
       <Grid.Row>
         <EditUserModal
@@ -59,7 +61,7 @@ export class UserProfileItem extends React.Component {
         <Grid.Column width="12">
           <Segment>
             <List>
-              <List.Item>Email: {this.props.info.email}</List.Item>
+              <List.Item>Email: {this.props.user.email}</List.Item>
             </List>
           </Segment>
           <Button onClick={this.toggleEditUserModal}>Edit</Button>
