@@ -3,6 +3,7 @@ const Pet = require('./pet')
 const {Park, Visit, Address, Favorite} = require('./park')
 const Event = require('./event')
 const Review = require('./review')
+const {Request, Message} = require('./contact')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -24,22 +25,32 @@ User.hasMany(Pet, {
   foreignKey: 'userId',  
 });
 
-// User.hasMany(Park, {
-//   as: 'favorites',
-// });
-
 
 User.belongsToMany(Park, {through:'UserFavorites', as:'favorites'});
-User.belongsToMany(User, {through:'FriendsTable', as:'friends'});
-Park.belongsToMany(User, {through:'UserFavorites'});
+
+User.belongsToMany(User, { as: 'Friends', through: 'friends' });
+User.belongsToMany(User, { as: 'Requestees', through: 'friendRequests', foreignKey: 'requesterId', onDelete: 'CASCADE'});
+User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignKey: 'requesteeId', onDelete: 'CASCADE'});
 
 
-// User.belongsToMany(Park, {through:Visit}); 
-//User has getParks, setParks, addPark, addParks as magic methods 
-// Park.belongsToMany(User, {through:Visit}); 
-//Park has getUsers, setUsers, addUser, addUsers as magic methods
-  // User has many visits -> MtM to Park
-  // Park has many visits -> MtM to User
+Event.belongsTo(User, {as:'creator'});
+Event.belongsToMany(User, {through: 'eventParticipants', 
+as:'attendees', foreignKey:'eventId', otherKey:'userId'});
+User.belongsToMany(Event, {through:'eventParticipants'});
+Event.belongsTo(Park);
+
+// Message.hasOne(User, {as:'sender'});
+// User.hasMany(Message, {as: 'sent'});
+// Message.hasOne(User, {as:'recipient'});
+// User.hasMany(Message, {as: 'inbox'});
+// User.hasMany(Request);
+
+Message.belongsTo(User, {as:'sender', foreignKey:'senderId'});
+Message.belongsTo(User, {as:'recipient', foreignKey:'recipientId'});
+User.hasMany(Message, {as: 'messageOutbox', foreignKey:'senderId'});
+User.hasMany(Message, {as: 'messageInbox', foreignKey:'recipientId'});
+
+
 Park.belongsTo(Address); //Park will have address Id
 // Visit.belongsTo(Address); <- no longer needed
 Visit.belongsTo(Park);
@@ -62,5 +73,7 @@ module.exports = {
   Visit,
   Address,
   Event,
-  Review
+  Review,
+  Message,
+  Request
 }
