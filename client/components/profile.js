@@ -76,6 +76,7 @@ class Profile extends React.Component {
     })
   }
   render() {
+    console.log('profile props',this.props)
     return (
       <div>
         <EditPetModal
