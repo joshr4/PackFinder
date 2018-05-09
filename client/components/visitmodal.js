@@ -4,6 +4,7 @@ import AddVisitForm from './addvisitform';
 
 const VisitModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit, handleEdit } = props
+  console.log('modal comp item', item)
   return (
     <Modal open={props.show}>
       <Grid>
@@ -24,8 +25,8 @@ const VisitModal = props => {
           src="https://images.dog.ceo/breeds/beagle/n02088364_17474.jpg"
         />
         <Modal.Description>
-          <Header>{item.title}</Header>
             { modalType === 'view' ? <div>
+            <Header>{item.title}</Header>
               <p>Start Time: {item.start.toString()}</p>
               <p>End Time: {item.end.toString()}</p>
               <p>Date: {item.visitDate}</p>
