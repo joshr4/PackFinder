@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Header, Image, Modal, Grid } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
-const EventModal = props => {
+const VisitModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit, handleEdit } = props
   return (
     <Modal open={props.show}>
@@ -48,9 +48,4 @@ const EventModal = props => {
     </Modal>
   )
 };
-export default EventModal;
-
-
- {/* <Grid.Column width={4}>
-            <Button negative style={{margin: 20 }} onClick={() => onDelete(item)}>Delete Visit</Button>
-          </Grid.Column> */}
+export default VisitModal;

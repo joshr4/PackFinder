@@ -74,7 +74,6 @@ class ParkList extends Component {
     const markers = this.props.nearbyParks
     const { contextRef } = this.state;
 
-
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
     //   }, {
@@ -115,6 +114,7 @@ class ParkList extends Component {
         containerElement={<div style={{ height: `80vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
         isHover={this.state.isHover}
+
       />
      </Sticky>
     </Grid.Column>
