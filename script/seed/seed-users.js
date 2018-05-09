@@ -9,7 +9,7 @@ const {
   User,
   Address
 } = require('../../server/db/models');
-const addresses = require('./chicagoAddresses')
+const addresses = require('./addresses')
 
 // console.log('this is addresses', addresses)
 const numUsers = 200;
@@ -22,34 +22,34 @@ function doTimes(n, fn) {
   return results;
 }
 
-async function geocode(addresses) {
+// async function geocode(addresses) {
 
-  for (let i = 0 ; i < addresses.length; i ++){
+//   for (let i = 0; i < addresses.length; i++) {
 
-    let park = addresses[i];
+//     let park = addresses[i];
 
-    let location = park.line_1 + ' ' + park.city + ' ' + park.state;
+//     let location = park.line_1 + ' ' + park.city + ' ' + park.state;
 
-    let tempResult;
+//     let tempResult;
 
-    await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      params: {
-        address: location,
-        key: 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY'
-      }
-    }).then(res => res.data.results.forEach(result => {
-      let tempLocation = {
-        lat: (Math.round(result.geometry.location.lat * 10000000) / 10000000),
-        lng: (Math.round(result.geometry.location.lng * 10000000) / 10000000)};
+//     await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+//       params: {
+//         address: location,
+//         key: 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY'
+//       }
+//     }).then(res => res.data.results.forEach(result => {
+//       let tempLocation = {
+//         lat: (Math.round(result.geometry.location.lat * 10000000) / 10000000),
+//         lng: (Math.round(result.geometry.location.lng * 10000000) / 10000000)
+//       };
 
 
-      tempResult = tempLocation
-      console.log(tempResult)
-      addresses[i].location = tempResult
-  })
-)
-}
-}
+//       tempResult = tempLocation
+//       console.log(tempResult)
+//       addresses[i].location = tempResult
+//     }))
+//   }
+// }
 
 function generateAddresses(locations) {
   let createdAddresses = locations.map(address => Address.create(address))
@@ -141,11 +141,12 @@ function createUsers() {
 
 function seed() {
   console.log('Syncing users');
-  let resultHolder = geocode(addresses)
-  .then( () =>  {let createUsersholder = createUsers(addresses)
-  return createUsersholder}
-)
-  return resultHolder;
+  // let resultHolder = geocode(addresses)
+  //   .then(() => {
+  //     let createUsersholder = createUsers(addresses)
+  //     return createUsersholder
+  //   })
+  return createUsers();
 }
 
 module.exports = seed
