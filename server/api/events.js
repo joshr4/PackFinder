@@ -85,5 +85,5 @@ router.post('/add-user', async (req, res, next) => {
   let addUser = await User.findById(req.body.userId);
   await relatedPark.addAttendee(addUser);
   res.json(relatedPark);
-  
+
 })
