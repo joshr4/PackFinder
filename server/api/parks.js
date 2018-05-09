@@ -28,10 +28,6 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
       ]
   })
     .then(parks => {
-      console.log('from api ', req.params)
-      // parks.forEach(park => {
-      //   console.log(JSON.stringify(park.address.location))
-      // })
 
       const filteredParks = parks.filter(park =>
         geolib.isPointInCircle(
