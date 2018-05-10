@@ -57,6 +57,7 @@ class Dnd extends React.Component {
       formValid: false,
       showModal: false,
       modalType: 'view',
+      user: {},
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
@@ -166,9 +167,10 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
+      userId: this.props.user.id,
     }
-
+    console.log("adding event: ", newVisitInfo);
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
@@ -187,7 +189,7 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       id: stateVisit.id,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
     }
 
     this.props.updateVisit(newVisitInfo)
@@ -243,6 +245,8 @@ class Dnd extends React.Component {
   }
 
   render() {
+    console.log("rendering state: ", this.state);
+    console.log("rendering props: ", this.props);
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <VisitModal
@@ -286,15 +290,17 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  let calEvents = state.visits.map(visit => {
+  console.log("this user: ", state.user);
+  let userVisits = state.visits.filter(visit => visit.userId == state.user.id); 
+  let calEvents = userVisits.map(visit => {
     let newVisit = {
-    id: visit.id,
-    title: visit.title,
-    start: new Date(visit.start),
-    end: new Date(visit.end),
-    address: visit.park.address,
-    userId: visit.userId,
-    park: visit.parkId
+      id: visit.id,
+      title: visit.title,
+      start: new Date(visit.start),
+      end: new Date(visit.end),
+      address: visit.park.address,
+      userId: visit.userId,
+      park: visit.parkId
     }
     return newVisit
   })

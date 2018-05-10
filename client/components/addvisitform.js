@@ -12,7 +12,7 @@ const AddVisitForm = props => (
           type="date"
           name="visitDate"
           style={{ marginLeft: '0px' }}
-          //defaultValue={props.nowString}
+          defaultValue={props.nowString}  
           value={props.item.visitDate}
         />
       </Form.Field>
@@ -24,7 +24,7 @@ const AddVisitForm = props => (
           type="time"
           name="start"
           style={{ marginLeft: '0px' }}
-          //defaultValue="17:00"
+          defaultValue="17:00"
           value={props.item.start.toString()}
           />
       </Form.Field>
@@ -34,7 +34,7 @@ const AddVisitForm = props => (
           type="time"
           name="end"
           style={{ marginLeft: '0px' }}
-          //defaultValue="20:00"
+          defaultValue="20:00"
           value={props.item.end}
         />
       </Form.Field>
