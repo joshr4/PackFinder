@@ -55,6 +55,7 @@ class Dnd extends React.Component {
       visitDateValid: false,
       parkValid: false,
       formValid: false,
+      slider: 1,
       showModal: false,
       modalType: 'view',
     };
@@ -64,21 +65,13 @@ class Dnd extends React.Component {
   this.openModal = this.openModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.handleFieldChange = this.handleFieldChange.bind(this);
+  this.handleSliderChange = this.handleSliderChange.bind(this);
   this.updateEvent = this.updateEvent.bind(this);
   this.addEvent = this.addEvent.bind(this);
   }
 
   componentDidMount() {
     this.props.getData();
-    var visitLength = document.getElementById("visitLength");
-    var output = document.getElementById("demo");
-    console.log('vivislider',visitLength)
-
-    output.innerHTML = visitLength.value; // Display the default slider value
-    // Update the current slider value (each time you drag the slider handle)
-    visitLength.oninput = function() {
-        console.log('slider', this.value);
-    }
   }
 
   toggleModal() {
@@ -108,9 +101,9 @@ class Dnd extends React.Component {
       await this.setState({
         selectedEvent: {
           id: null,
-          start: '',
+          start: moment().format('HH:mm'),
           end: '',
-          visitDate: '',
+          visitDate: moment().format('YYYY-MM-DD'),
           park: null,
           address: {
             city: '',
@@ -170,7 +163,7 @@ class Dnd extends React.Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, toHour, toMin);
+    let endTime = new Date(year, month, day, fromHour, 15 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -216,6 +209,9 @@ class Dnd extends React.Component {
         selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
   }
+  handleSliderChange = e => {
+    this.setState({ slider: e.target.value})
+  }
 
   validateField = (fieldName, value) => {
     let fieldValidationErrors = this.state.formErrors;
@@ -253,7 +249,6 @@ class Dnd extends React.Component {
   }
 
   render() {
-
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <VisitModal
@@ -262,12 +257,14 @@ class Dnd extends React.Component {
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
           item={this.state.selectedEvent}
+          slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
           onEdit={this.openModal}
           handleEdit={this.updateEvent}
+          handleSliderChange={this.handleSliderChange}
         />
 
         <DragAndDropCalendar

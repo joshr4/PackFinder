@@ -3,7 +3,7 @@ import { Button, Header, Image, Modal, Grid } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
 const VisitModal = props => {
-  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit, handleEdit } = props
+  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, handleSliderChange, parkList, nowString, onEdit, handleEdit, slider } = props
   return (
     <Modal open={props.show}>
       <Grid>
@@ -39,9 +39,11 @@ const VisitModal = props => {
               nowString={nowString}
               handleSubmit={modalType === 'add' ? handleSubmit : handleEdit}
               handleChange={handleChange}
+              handleSliderChange={handleSliderChange}
               handleFieldChange={handleFieldChange}
               parkList={parkList}
               item={item}
+              slider={slider}
          />
           }
         </Modal.Description>

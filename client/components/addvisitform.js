@@ -41,7 +41,8 @@ const AddVisitForm = props => {
       </Form.Field> */}
       <Form.Field required>
         <div style={{marginTop: '25px'}} className="slidecontainer">
-          <input type="range" min="1" max="4" value={props.item.duration} className="slider" id="visitLength" />
+          <input type="range" min="1" max="4" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
+          <p>{`Duration: ${props.slider * 15} minutes`}</p>
         </div>
       </Form.Field>
     </Form.Group>
