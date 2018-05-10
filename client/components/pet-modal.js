@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Header, Image, Modal, Grid, Input, Form, TextArea, Icon } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
-const EditPetModal = props => {
+const PetModal = props => {
   let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet } = props
   // console.log('modal props.', props.item)
   return (
@@ -100,4 +100,4 @@ const EditPetModal = props => {
     </Modal>
   )
 };
-export default EditPetModal;
+export default PetModal;
