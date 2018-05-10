@@ -23,14 +23,14 @@ class ParkList extends Component {
   componentDidMount() {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
-    this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218) //3218 = 2 miles in meters
+    this.props.getNearbyParks(this.state.location, 3218) //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
   }
 
   componentWillReceiveProps(nextProps){
     if (nextProps.userPosition !== this.props.userPosition){
       this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
-        this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218)})
+        this.props.getNearbyParks(this.state.location, 3218)})
     }
   }
 
@@ -41,7 +41,7 @@ class ParkList extends Component {
         lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
         lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
     }, () => {
-      this.props.getNearbyParks(this.state.location.lat, this.state.location.lng, 3218)})
+      this.props.getNearbyParks(this.state.location, 3218)})
 
   }
 
@@ -140,8 +140,8 @@ const mapDispatch = dispatch => {
     getUserLocation() {
       dispatch(getGeolocation())
     },
-    getNearbyParks(lat, lng, dist){
-      dispatch(getNearByParksAddresses(lat, lng, dist))
+    getNearbyParks(location, dist){
+      dispatch(getNearByParksAddresses(location, dist))
     },
     // getNearByUsers(location){
     //   dispatch(getNearByUsersInfo(location))

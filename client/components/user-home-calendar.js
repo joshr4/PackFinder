@@ -55,10 +55,8 @@ class Dnd extends React.Component {
       visitDateValid: false,
       parkValid: false,
       formValid: false,
-      slider: 1,
       showModal: false,
       modalType: 'view',
-      user: {},
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
@@ -66,7 +64,6 @@ class Dnd extends React.Component {
   this.openModal = this.openModal.bind(this);
   this.handleChange = this.handleChange.bind(this);
   this.handleFieldChange = this.handleFieldChange.bind(this);
-  this.handleSliderChange = this.handleSliderChange.bind(this);
   this.updateEvent = this.updateEvent.bind(this);
   this.addEvent = this.addEvent.bind(this);
   }
@@ -102,9 +99,9 @@ class Dnd extends React.Component {
       await this.setState({
         selectedEvent: {
           id: null,
-          start: moment().format('HH:mm'),
+          start: '',
           end: '',
-          visitDate: moment().format('YYYY-MM-DD'),
+          visitDate: '',
           park: null,
           address: {
             city: '',
@@ -155,7 +152,6 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('startvalid',this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -165,15 +161,14 @@ class Dnd extends React.Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
+    let endTime = new Date(year, month, day, toHour, toMin);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
-      userId: this.props.user.id,
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
-    console.log("adding event: ", newVisitInfo);
+
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
@@ -192,7 +187,7 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       id: stateVisit.id,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
 
     this.props.updateVisit(newVisitInfo)
@@ -200,7 +195,7 @@ class Dnd extends React.Component {
   }
 
   handleChange = e => {
-
+    console.log(e)
     this.setState({
       selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
       () => { this.validateField(e.target.name, e.target.value) })
@@ -209,11 +204,8 @@ class Dnd extends React.Component {
 
   handleFieldChange = data => {
     this.setState({
-        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value}),
+        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
     })
-  }
-  handleSliderChange = e => {
-    this.setState({ slider: e.target.value})
   }
 
   validateField = (fieldName, value) => {
@@ -252,8 +244,6 @@ class Dnd extends React.Component {
   }
 
   render() {
-    console.log("rendering state: ", this.state);
-    console.log("rendering props: ", this.props);
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <VisitModal
@@ -262,14 +252,12 @@ class Dnd extends React.Component {
           onClose={this.toggleModal}
           onDelete={this.removeEvent}
           item={this.state.selectedEvent}
-          slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
           handleFieldChange={this.handleFieldChange}
           parkList={this.props.parkList}
           onEdit={this.openModal}
           handleEdit={this.updateEvent}
-          handleSliderChange={this.handleSliderChange}
         />
 
         <DragAndDropCalendar
@@ -282,11 +270,11 @@ class Dnd extends React.Component {
           resizable
           onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
-          defaultView="week"
+          defaultView="day"
           defaultDate={moment().toDate()}
           step={30}
-          min={new Date(0, 0, 0, 6, 0)}
-          max={new Date(0, 0, 0, 23, 0)}
+          min={new Date(0, 0, 0, 0, 0)}
+          max={new Date(0, 0, 0, 24, 0)}
           // max={new Date(0, 0, 0, 23, 0)}
         />
         <Grid>
@@ -299,17 +287,15 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("this user: ", state.user);
-  let userVisits = state.visits.filter(visit => visit.userId == state.user.id); 
-  let calEvents = userVisits.map(visit => {
+  let calEvents = state.visits.map(visit => {
     let newVisit = {
-      id: visit.id,
-      title: visit.title,
-      start: new Date(visit.start),
-      end: new Date(visit.end),
-      address: visit.park.address,
-      userId: visit.userId,
-      park: visit.parkId
+    id: visit.id,
+    title: visit.title,
+    start: new Date(visit.start),
+    end: new Date(visit.end),
+    address: visit.park.address,
+    userId: visit.userId,
+    park: visit.parkId
     }
     return newVisit
   })
