@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
-import { getNearByUsersInfo } from '../store';
+import { getNearByUsersInfo, getGeolocation  } from '../store';
 
 /**
  * COMPONENT
@@ -45,7 +45,10 @@ const mapDispatch = dispatch => {
   return {
     getSuggestedFriends(location) {
       dispatch(getNearByUsersInfo(location))
-    }
+    },
+    getUserLocation() {
+      dispatch(getGeolocation())
+    },
   };
 };
 
