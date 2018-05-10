@@ -10,7 +10,11 @@ router.post('/login', (req, res, next) => {
     where: {
       email: req.body.email,
     },
-    include: [Address],
+    include: [
+      {
+        all: true,
+      },
+    ],
   })
     .then(user => {
       if (!user) {
@@ -52,17 +56,24 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: [Address],
+      include: [
+        {
+          all: true,
+        },
+      ],
     }).then(user => {
       res.json(user);
     });
   } else {
-    res.json(req.user)
+    res.json(req.user);
   }
 });
 
-router.get('/auth/google', 
-    passport.authenticate('google', { scope: 'email' })
+router.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: 'email',
+  })
 );
 
 router.use('/google', require('./google'));
