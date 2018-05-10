@@ -37,7 +37,7 @@ export class UserHome extends Component {
   }
 
   render() {
-    const {nearbyUsers, parkList} = this.props;
+    const { nearbyUsers, parkList } = this.props;
     return (
       <div className="container">
         <Grid columns={3} centered style={{ padding: '2em' }}>
@@ -48,32 +48,41 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {nearbyUsers[0] && nearbyUsers.map(user => <NearbyUsers key={user.id} user={user} />)}
+                  {nearbyUsers[0] &&
+                    nearbyUsers.map(user => (
+                      <NearbyUsers key={user.id} user={user} />
+                    ))}
                 </Feed>
               </Card.Content>
             </Card>
           </Grid.Column>
 
           <Grid.Column>
-            <Card>
+            <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {parkList ? parkList.map(park => <NearbyParks key={park.id} park={park} />) : (<div />)}
+                  {parkList ? (
+                    parkList.map(park => (
+                      <NearbyParks key={park.id} park={park} />
+                    ))
+                  ) : (
+                    <div />
+                  )}
                 </Feed>
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column>
+          {/* <Grid.Column>
             <Card>
               <Card.Content>
                 <Card.Header>Welcome , {this.props.email}</Card.Header>
-                {/* <UserHomeCalendar /> */}
+                <UserHomeCalendar />
               </Card.Content>
             </Card>
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid>
       </div>
     );
