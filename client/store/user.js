@@ -74,7 +74,9 @@ export const auth = (email, password, method) => dispatch =>
     })
     .then(
       res => {
-        dispatch(getUser(res.data));
+        console.log('response', res.data)
+        axios.get(`/api/users/${res.data.id}`)
+        .then(resp => dispatch(getUser(resp.data)))
         history.push('/home');
       },
       authError => {
