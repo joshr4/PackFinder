@@ -267,6 +267,7 @@ class Dnd extends React.Component {
           onEdit={this.openModal}
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
+          noPark={false}
         />
 
         <DragAndDropCalendar

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Map, ParkListItem, DogParkModal } from './index.js';
+import { Map, ParkListItem, VisitModal } from './index.js';
 import moment from 'moment';
 import {
   Button,
@@ -474,7 +474,7 @@ export class DogPark extends Component {
     return (
 
       <div>
-        <DogParkModal
+        <VisitModal
           modalType={'add'}
           show={this.state.showModal}
           onClose={this.toggleModal}

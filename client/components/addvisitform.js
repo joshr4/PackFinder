@@ -62,7 +62,7 @@ const AddVisitForm = props => {
       </Form.Group>
     }
     <Button positive style={{margin: 10 }} type="submit" name="submitBtn" disabled={!props.item.park}>
-    Save Visit
+    Save Check-in
     </Button>
   </Form>
 )};
