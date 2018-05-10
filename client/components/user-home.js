@@ -66,8 +66,6 @@ export const UserHome = props => {
         <Card>
             <Card.Content>
               <Card.Header>Welcome , {email}</Card.Header>
-            </Card.Content>
-            <Card.Content>
                 <UserHomeCalendar />
             </Card.Content>
           </Card>

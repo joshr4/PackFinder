@@ -270,11 +270,11 @@ class Dnd extends React.Component {
           resizable
           onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
-          defaultView="week"
-          defaultDate={new Date(2018, 4, 12, 10, 0)}
+          defaultView="day"
+          defaultDate={moment()}
           step={30}
-          min={new Date(0, 0, 0, 6, 0)}
-          max={new Date(0, 0, 0, 23, 0)}
+          min={new Date(0, 0, 0, 0, 0)}
+          max={new Date(0, 0, 0, 24, 0)}
           // max={new Date(0, 0, 0, 23, 0)}
         />
         <Grid>

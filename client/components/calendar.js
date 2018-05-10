@@ -154,6 +154,7 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
+    console.log('startvalid',this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -206,7 +207,7 @@ class Dnd extends React.Component {
 
   handleFieldChange = data => {
     this.setState({
-        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value})
+        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value}),
     })
   }
   handleSliderChange = e => {
@@ -278,7 +279,7 @@ class Dnd extends React.Component {
           onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
           defaultView="week"
-          defaultDate={new Date(2018, 4, 12, 10, 0)}
+          defaultDate={moment()}
           step={30}
           min={new Date(0, 0, 0, 6, 0)}
           max={new Date(0, 0, 0, 23, 0)}

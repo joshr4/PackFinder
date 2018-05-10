@@ -7,7 +7,7 @@ const AddVisitForm = props => {
 
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
     <Form.Group widths="equal" >
-      <Form.Field required>
+      <Form.Field>
         <label>Date</label>
         <Input
           type="date"
@@ -19,17 +19,16 @@ const AddVisitForm = props => {
       </Form.Field>
     </Form.Group>
     <Form.Group widths="equal" >
-      <Form.Field required>
+      <Form.Field>
         <label>From</label>
         <Input
           type="time"
           name="start"
           style={{ marginLeft: '0px' }}
-          //defaultValue="17:00"
           value={props.item.start.toString()}
           />
       </Form.Field>
-      {/* <Form.Field required>
+      {/* <Form.Field>
         <label>To</label>
         <Input
           type="time"
@@ -39,7 +38,7 @@ const AddVisitForm = props => {
           value={props.item.end}
         />
       </Form.Field> */}
-      <Form.Field required>
+      <Form.Field>
         <div style={{marginTop: '25px'}} className="slidecontainer">
           <input type="range" min="1" max="4" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
           <p>{`Duration: ${props.slider * 15} minutes`}</p>
@@ -60,7 +59,7 @@ const AddVisitForm = props => {
           />
       </Form.Field>
       </Form.Group>
-    <Button positive style={{margin: 10 }} type="submit" name="submitBtn">
+    <Button positive style={{margin: 10 }} type="submit" name="submitBtn" disabled={!props.item.park}>
     Save Visit
     </Button>
   </Form>
