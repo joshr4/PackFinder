@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
-import { getNearByUsersInfo, getGeolocation  } from '../store';
+import { getNearByUsersInfo, getGeolocation } from '../store';
 
 /**
  * COMPONENT
@@ -11,21 +11,21 @@ import { getNearByUsersInfo, getGeolocation  } from '../store';
 
 export const NearbyParks = props => {
   console.log('props', props);
-  const { user, pet, nearbyUsers } = props.user;
+  const { park } = props;
   return (
     <Feed.Event>
-      <Feed.Label image={user.image} />
+      {/* <Feed.Label image={park.image} /> */}
       <Feed.Content>
-        <Feed.Date content={`${user.distance} away`} />
-        <Feed.Summary>{`${user.name}'s pack:`}</Feed.Summary>
-        <Feed.Extra images>
+        <Feed.Date content={`Address: ${park.address.fullAddress}`} />
+        <Feed.Summary>{`${park.description}`}</Feed.Summary>
+        {/* <Feed.Extra images>
           <Image size="large" src={pet.image} />
         </Feed.Extra>
         <Feed.Extra>
           <Button size="tiny" name="add">
             request friend
-          </Button>
-        </Feed.Extra>
+          </Button> */}
+        {/* </Feed.Extra> */}
       </Feed.Content>
     </Feed.Event>
   );

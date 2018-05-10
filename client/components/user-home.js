@@ -96,9 +96,9 @@ export class UserHome extends Component {
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
               <Card.Content>
-                {/* <Feed>
-                  {users.map(user => <NearbyParks key={user.id} parks={parks} />)}
-                </Feed> */}
+                <Feed>
+                  {parkList ? parkList.map(park => <NearbyParks key={park.id} park={park} />) : (<div />)}
+                </Feed>
               </Card.Content>
             </Card>
           </Grid.Column>
