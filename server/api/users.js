@@ -1,56 +1,75 @@
 const router = require('express').Router()
-const {User, Park, Visit, Address, Pet, Request} = require('../db/models')
+const {
+  User,
+  Park,
+  Visit,
+  Address,
+  Pet,
+  Request
+} = require('../db/models')
 const geolib = require('geolib');
 module.exports = router
 
 router.get('/', (req, res, next) => {
   User.findAll({
-    // explicitly select only the id and email fields - even though
-    // users' passwords are encrypted, it won't help if we just
-    // send everything to anyone who asks!
+      // explicitly select only the id and email fields - even though
+      // users' passwords are encrypted, it won't help if we just
+      // send everything to anyone who asks!
 
-    attributes: ['id', 'email', 'fullName', 'imageUrl'],
-    include: [
-      { all: true },
-    ],
-  })
+      attributes: ['id', 'email', 'fullName', 'imageUrl'],
+      include: [{
+        all: true
+      }, ],
+    })
     .then(users => res.json(users))
     .catch(next)
 })
 
 router.get('/simple', (req, res, next) => {
   User.findAll({
-    // explicitly select only the id and email fields - even though
-    // users' passwords are encrypted, it won't help if we just
-    // send everything to anyone who asks!
+      // explicitly select only the id and email fields - even though
+      // users' passwords are encrypted, it won't help if we just
+      // send everything to anyone who asks!
 
-    attributes: ['id', 'email', 'imageUrl'], // add name latter
-    include: [
-      {model: Address, required: true},
-      {model: Pet, required: false, as: 'pets'},
+      attributes: ['id', 'email', 'imageUrl'], // add name latter
+      include: [{
+          model: Address,
+          required: true
+        },
+        {
+          model: Pet,
+          required: false,
+          as: 'pets'
+        },
 
-    ]
-  })
+      ]
+    })
     .then(users => res.json(users))
     .catch(next)
 })
 
 router.get('/:id', (req, res, next) => {
   User.findOne({
-    where:{id:req.params.id},
-    include:[{all:true}]
-  }
-).then(user => {
+    where: {
+      id: req.params.id
+    },
+    include: [{
+      all: true
+    }]
+  }).then(user => {
     res.json(user);
   })
 })
 
 router.get('/:id/friends', (req, res, next) => {
   User.findOne({
-    where:{id:req.params.id},
-    include:[{all:true}]
-  }
-).then(user => {
+    where: {
+      id: req.params.id
+    },
+    include: [{
+      all: true
+    }]
+  }).then(user => {
     res.json(user.friends);
   })
 })
@@ -83,20 +102,19 @@ router.post('/:id/friend-request', async (req, res, next) => {
   let user = await User.findById(req.params.id);
   let friendIduser = await User.findById(friendId);
   let reverseRequest = await user.getRequesters({
-    where:{
-        id:friendId
+    where: {
+      id: friendId
     }
   });
   if (reverseRequest.length > 0) {
-      await user.removeRequester(friendIduser);
-      await friendIduser.removeRequestee(user);
-      // existingRequests[0].destroy();
-      await user.addFriend(friendIduser);
-      await friendIduser.addFriend(user);
-  }
-  else {
-      await user.addRequestee(friendIduser);
-      await friendIduser.addRequester(user);
+    await user.removeRequester(friendIduser);
+    await friendIduser.removeRequestee(user);
+    // existingRequests[0].destroy();
+    await user.addFriend(friendIduser);
+    await friendIduser.addFriend(user);
+  } else {
+    await user.addRequestee(friendIduser);
+    await friendIduser.addRequester(user);
   }
   res.json(friendIduser);
 })
@@ -105,8 +123,16 @@ router.get('/:id/has-request/:friendId', async (req, res, next) => {
   let user = await User.findById(req.params.id);
   let friendId = req.params.friendId;
   let friendIduser = await User.findById(friendId);
-  let requestees = await user.getRequestees({where:{id:friendId}});
-  let requesters = await user.getRequesters({where:{id:friendId}});
+  let requestees = await user.getRequestees({
+    where: {
+      id: friendId
+    }
+  });
+  let requesters = await user.getRequesters({
+    where: {
+      id: friendId
+    }
+  });
   res.json((requestees.length > 0 || requesters.length > 0));
 })
 
@@ -114,7 +140,11 @@ router.get('/:id/sent-request/:friendId', async (req, res, next) => {
   let user = await User.findById(req.params.id);
   let friendId = req.params.friendId;
   let friendIduser = await User.findById(friendId);
-  let requestees = await user.getRequestees({where:{id:friendId}});
+  let requestees = await user.getRequestees({
+    where: {
+      id: friendId
+    }
+  });
   res.json((requestees.length > 0));
 })
 
@@ -122,7 +152,11 @@ router.get('/:id/received-request/:friendId', async (req, res, next) => {
   let user = await User.findById(req.params.id);
   let friendId = req.params.friendId;
   let friendIduser = await User.findById(friendId);
-  let requesters = await user.getRequesters({where:{id:friendId}});
+  let requesters = await user.getRequesters({
+    where: {
+      id: friendId
+    }
+  });
   res.json((requesters.length > 0 || requesters.length > 0));
 })
 
@@ -146,63 +180,86 @@ router.put('/:id/unfriend', async (req, res, next) => {
 })
 
 
-router.post('/:id/updateInfo', (req, res, next) => {
+router.put('/:id/updateUser', (req, res, next) => {
   User.findOne({
     where: {
       id: req.params.id
     },
-    include: [
-      {model: Address, required: false},
-    ]
-}).then(user => {
-
-  user.update(req.body).then((updated) => {
-    res.send(updated);
+    include: [{
+      model: Address,
+      required: false
+    }]
+  }).then(user => {
+    user.update(req.body).then((updated) => {
+      res.send(updated);
+    })
   })
 })
-})
 
-router.post('/:id/updateAddress', (req, res, next) => {
+router.put('/:id/updateAddress', (req, res, next) => {
   User.findOne({
     where: {
       id: req.params.id
     },
-    include: [
-      {model: Address, required: false},
-    ]
-}).then(user => {
+    include: [{
+      model: Address,
+      required: false
+    }]
+  }).then(user => {
+    if (user.address) {
+      user.address.updateAttributes(req.body).then((updated) => {
+        res.send(updated)
+      })
+    } else {
+      Address.create(req.body)
+        .then(address => {
+          console.log('address created', address)
+          user.setAddress(address)
+          console.log('user address set', user)
+            // .then(updatedUser => updatedUser.save())
+            .then(updatedUser => res.send(updatedUser))
 
-  console.log("we are in the put", req.body)
+        })
 
-  if (user){
-    user.address.updateAttributes(req.body).then((updated) => {
-      res.send(updated)
-    })
-  }
+    }
 
-})
+  })
 })
 
 router.get('/:latitude/:longitude/:distance', (req, res, next) => {
   User.findAll({
-    attributes: ['id', 'email', 'imageUrl'], // add name latter
-    include: [
-      {model: Address, required: true},
-      {model: Pet, required: false, as: 'pets'},
-    ]
-  })
+      attributes: ['id', 'email', 'imageUrl'], // add name latter
+      include: [{
+          model: Address,
+          required: true
+        },
+        {
+          model: Pet,
+          required: false,
+          as: 'pets'
+        },
+      ]
+    })
     .then(users => {
       const filteredUsers = users.filter(user =>
-        geolib.isPointInCircle(
-          {latitude: user.address.location.lat, longitude: user.address.location.lng},
-          {latitude: req.params.latitude, longitude: req.params.longitude},
+        geolib.isPointInCircle({
+            latitude: user.address.location.lat,
+            longitude: user.address.location.lng
+          }, {
+            latitude: req.params.latitude,
+            longitude: req.params.longitude
+          },
           req.params.distance)
       );
 
       filteredUsers.forEach(user => {
-        user.address.location.distance = geolib.convertUnit('km', geolib.getDistanceSimple(
-          {latitude: user.address.location.lat, longitude: user.address.location.lng},
-          {latitude: req.params.latitude, longitude: req.params.longitude}), 2)
+        user.address.location.distance = geolib.convertUnit('km', geolib.getDistanceSimple({
+          latitude: user.address.location.lat,
+          longitude: user.address.location.lng
+        }, {
+          latitude: req.params.latitude,
+          longitude: req.params.longitude
+        }), 2)
       })
 
       let sortedUsers = filteredUsers.sort((a, b) => {
@@ -213,7 +270,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
       })
 
 
-      res.json(sortedUsers.slice(0, 21))})
+      res.json(sortedUsers.slice(0, 21))
+    })
     .catch(next)
 })
-
