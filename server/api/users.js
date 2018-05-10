@@ -234,7 +234,7 @@ router.put('/:id/updateAddress', (req, res, next) => {
 
 router.get('/:latitude/:longitude/:distance', (req, res, next) => {
   User.findAll({
-      attributes: ['id', 'email', 'imageUrl'], // add name latter
+      attributes: ['id', 'email', 'imageUrl', 'firstName', 'lastName'],
       include: [{
           model: Address,
           required: true
