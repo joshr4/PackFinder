@@ -18,9 +18,26 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/simple', (req, res, next) => {
+  User.findAll({
+    // explicitly select only the id and email fields - even though
+    // users' passwords are encrypted, it won't help if we just
+    // send everything to anyone who asks!
+
+    attributes: ['id', 'email', 'imageUrl'], // add name latter
+    include: [
+      {model: Address, required: true},
+      {model: Pet, required: false, as: 'pets'},
+
+    ]
+  })
+    .then(users => res.json(users))
+    .catch(next)
+})
+
 router.get('/:id', (req, res, next) => {
   User.findOne({
-    where:{id:req.params.id}, 
+    where:{id:req.params.id},
     include:[{all:true}]
   }
 ).then(user => {
@@ -30,7 +47,7 @@ router.get('/:id', (req, res, next) => {
 
 router.get('/:id/friends', (req, res, next) => {
   User.findOne({
-    where:{id:req.params.id}, 
+    where:{id:req.params.id},
     include:[{all:true}]
   }
 ).then(user => {
@@ -58,7 +75,7 @@ router.put('/:id/approve-request', async (req, res, next) => {
   await friendIduser.removeRequestee(user);
   await user.addFriend(friendIduser);
   await friendIduser.addFriend(user);
-  res.json(requesters);  
+  res.json(requesters);
 })
 
 router.post('/:id/friend-request', async (req, res, next) => {
@@ -73,14 +90,14 @@ router.post('/:id/friend-request', async (req, res, next) => {
   if (reverseRequest.length > 0) {
       await user.removeRequester(friendIduser);
       await friendIduser.removeRequestee(user);
-      // existingRequests[0].destroy();                
+      // existingRequests[0].destroy();
       await user.addFriend(friendIduser);
       await friendIduser.addFriend(user);
   }
   else {
       await user.addRequestee(friendIduser);
       await friendIduser.addRequester(user);
-  }            
+  }
   res.json(friendIduser);
 })
 
@@ -128,21 +145,42 @@ router.put('/:id/unfriend', async (req, res, next) => {
   res.json(user);
 })
 
-router.get('/simple', (req, res, next) => {
-  User.findAll({
-    // explicitly select only the id and email fields - even though
-    // users' passwords are encrypted, it won't help if we just
-    // send everything to anyone who asks!
 
-    attributes: ['id', 'email', 'imageUrl'], // add name latter
+router.post('/:id/updateInfo', (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.params.id
+    },
     include: [
-      {model: Address, required: true},
-      {model: Pet, required: false, as: 'pets'},
-
+      {model: Address, required: false},
     ]
+}).then(user => {
+
+  user.update(req.body).then((updated) => {
+    res.send(updated);
   })
-    .then(users => res.json(users))
-    .catch(next)
+})
+})
+
+router.post('/:id/updateAddress', (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      {model: Address, required: false},
+    ]
+}).then(user => {
+
+  console.log("we are in the put", req.body)
+
+  if (user){
+    user.address.updateAttributes(req.body).then((updated) => {
+      res.send(updated)
+    })
+  }
+
+})
 })
 
 router.get('/:latitude/:longitude/:distance', (req, res, next) => {

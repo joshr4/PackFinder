@@ -13,9 +13,9 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  fullname: {
+  fullName: {
     type: Sequelize.VIRTUAL,
-    get(){
+    get () {
       return this.getDataValue('firstName') + ' ' + this.getDataValue('lastName')
     }
   },
