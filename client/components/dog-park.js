@@ -336,7 +336,7 @@ export class DogPark extends Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, 15 * this.state.slider);
+    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -383,6 +383,9 @@ export class DogPark extends Component {
       selectedDate:"",
     });
     this.updateD3();
+  }
+  handleSliderChange = e => {
+    this.setState({ slider: e.target.value})
   }
   render() {
       const { children } = this.props
@@ -465,10 +468,6 @@ export class DogPark extends Component {
         location:this.state.park.address.location}
       }
     ]
-
-    handleSliderChange = e => {
-      this.setState({ slider: e.target.value})
-    }
 
     return (
       <div>
