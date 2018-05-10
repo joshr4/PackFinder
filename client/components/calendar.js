@@ -155,7 +155,6 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('startvalid',this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -173,7 +172,6 @@ class Dnd extends React.Component {
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
       userId: this.props.user.id,
     }
-    console.log("adding event: ", newVisitInfo);
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
