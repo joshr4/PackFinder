@@ -205,24 +205,27 @@ router.put('/:id/updateAddress', (req, res, next) => {
       model: Address,
       required: false
     }]
-  }).then(user => {
+  }).then(async user => {
     if (user.address) {
       user.address.updateAttributes(req.body).then((updated) => {
         res.send(updated)
       })
     } else {
 
-      Address.create(req.body)
+      await Address.create(req.body)
         .then(async address => {
           // console.log('address created', address)
           await user.setAddress(address)
-
+          // console.log('updatedAddres', updatedAddress)
           // let updatedUser = await user.update()
-          console.log('user address set', user)
+          // console.log('user address set', user)
           // .then(updatedUser => res.send(updatedUser))
+          // res.send(user)
           return user
-        }).then(updatedUser => res.send(updatedUser))
+        })
+        // .then(updatedUser => res.send(updatedUser))
         //If I res.send(user) the addressId doesnt save, but if I dont it does
+        res.send(user)
     }
 
   })
