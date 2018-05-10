@@ -9,13 +9,13 @@ import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
  * COMPONENT
  */
 
- class UserHome extends Component{
+class UserHome extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  render(){
+  render() {
 
     const users = [
       {
@@ -54,82 +54,81 @@ import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
       },
     ];
 
-  return (
-    <div className="container">
-      <Grid columns={3} centered style={{ padding: '2em' }}>
-        <Grid.Column>
-          <Card>
-            <Card.Content>
-              <Card.Header>Suggested friends</Card.Header>
-            </Card.Content>
-            <Card.Content>
-              <Feed>
-                {users.map(user => <NearbyUsers key={user.id} user={user} />)}
-              </Feed>
-            </Card.Content>
-          </Card>
-        </Grid.Column>
+    return (
+      <div className="container">
+        <Grid columns={3} centered style={{ padding: '2em' }}>
+          <Grid.Column>
+            <Card>
+              <Card.Content>
+                <Card.Header>Suggested friends</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Feed>
+                  {users.map(user => <NearbyUsers key={user.id} user={user} />)}
+                </Feed>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
 
-        <Grid.Column>
-        <Card>
-          <Card.Content>
-            <Card.Header>Suggested friends</Card.Header>
-          </Card.Content>
-          <Card.Content>
-            <Feed>
-              {users.map(user => <NearbyUsers key={user.id} user={user} />)}
-            </Feed>
-          </Card.Content>
-        </Card>
-      </Grid.Column>
 
-        <Grid.Column>
-          <h3>Welcome , {this.props.email}</h3>
-            <Card.Content>
-              <Card.Header>Welcome , {email}</Card.Header>
-                {/* <UserHomeCalendar /> */}
-            </Card.Content>
-          </Card>
-
-        </Grid.Column>
+          <Grid.Column>
+            <Card>
+              <Card.Content>
+                <Card.Header>Suggested friends</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Feed>
+                  {users.map(user => <NearbyUsers key={user.id} user={user} />)}
+                </Feed>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+            <Grid.Column>
+              <Card>
+                <Card.Content>
+                  <Card.Header>Welcome , {this.props.email}</Card.Header>
+                  {/* <UserHomeCalendar /> */}
+                </Card.Content>
+              </Card>
+            </Grid.Column>
       </Grid>
     </div>
-  );
-  }
-}
+        );
+        }
+      }
 
 
-/**
- * CONTAINER
- */
+      /**
+       * CONTAINER
+       */
 const mapStateToProps = state => {
   return {
-    email: state.user.email.toString(),
-  };
-};
+          email: state.user.email.toString(),
+      };
+    };
 
 const mapDispatch = dispatch => {
   return {
-    // getEveryAddresses() {
-    //   dispatch(getParksAddresses());
-    // },
-    // getUserLocation() {
-    //   dispatch(getGeolocation())
-    // },
-    // getNearbyParks(lat, lng, dist){
-    //   dispatch(getNearByParksAddresses(lat, lng, dist))
-    // },
-    // getNearByUsers(location){
-    //   dispatch(getNearByUsersInfo(location))
-    // }
-  };
-};
+          // getEveryAddresses() {
+          //   dispatch(getParksAddresses());
+          // },
+          // getUserLocation() {
+          //   dispatch(getGeolocation())
+          // },
+          // getNearbyParks(lat, lng, dist){
+          //   dispatch(getNearByParksAddresses(lat, lng, dist))
+          // },
+          // getNearByUsers(location){
+          //   dispatch(getNearByUsersInfo(location))
+          // }
+        };
+      };
 
-export default connect(mapStateToProps, mapDispatch)(UserHome);
+      export default connect(mapStateToProps, mapDispatch)(UserHome);
 
-/**
- * PROP TYPES
- */
+      /**
+       * PROP TYPES
+       */
 // UserHome.propTypes = {
 //   email: PropTypes.string,
 // };
