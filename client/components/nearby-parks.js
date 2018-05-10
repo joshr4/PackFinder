@@ -14,18 +14,18 @@ export const NearbyParks = props => {
   const { park } = props;
   return (
     <Feed.Event>
-      <Feed.Label content={park.name} />
       <Feed.Content>
+      <Feed.Summary>{`${park.name}`}</Feed.Summary>
         <Feed.Date content={`Address: ${park.address.fullAddress}`} />
         <Feed.Summary>{`${park.description}`}</Feed.Summary>
         {/* <Feed.Extra images>
           <Image size="large" src={pet.image} />
         </Feed.Extra> */}
-        {/* <Feed.Extra>
+        <Feed.Extra>
           <Button size="tiny" name="add">
-            request friend
+            Park Details
           </Button>
-        </Feed.Extra> */}
+        </Feed.Extra>
       </Feed.Content>
     </Feed.Event>
   );
