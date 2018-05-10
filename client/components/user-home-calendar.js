@@ -271,7 +271,7 @@ class Dnd extends React.Component {
           onDoubleClickEvent={event => this.openModal(event, 'view')}
           onEventResize={this.resizeEvent}
           defaultView="day"
-          defaultDate={moment()}
+          defaultDate={moment().toDate()}
           step={30}
           min={new Date(0, 0, 0, 0, 0)}
           max={new Date(0, 0, 0, 24, 0)}
