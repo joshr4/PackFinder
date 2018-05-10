@@ -471,7 +471,6 @@ export class DogPark extends Component {
         location:this.state.park.address.location}
       }
     ]
-console.log('props park',this.props)
     return (
 
       <div>
@@ -484,11 +483,12 @@ console.log('props park',this.props)
           slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
-          handleFieldChange={this.handleFieldChange}
+          handleFieldChange={() => {}}
           parkList={this.props.parkList}
           onEdit={() => {}}
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
+          noPark={true}
         />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
           <Container text style={{marginBottom: '2em'}}>
@@ -508,20 +508,7 @@ console.log('props park',this.props)
           <b>Description: <br /></b>
           {this.state.park.description}
           </Segment>
-          <Segment attached style={{marginBottom: '10px'}}>
-          <Header as="h5" style={{ fontSize: '2em' }}>Schedule A Visit</Header>
-          <AddVisitForm
-          nowString={this.state.nowString}
-          handleSubmit={this.addEvent}
-          handleChange={this.handleChange}
-          handleFieldChange={this.handleFieldChange}
-          parkList={this.props.parkList}
-          item={this.state.addFormFieldData}
-          hideParks={true}
-          handleSliderChange={this.handleSliderChange}
-          slider={this.state.slider}
-          />
-          </Segment>
+          <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
         </Grid.Column>
         <Grid.Column width={8}>
             <Map

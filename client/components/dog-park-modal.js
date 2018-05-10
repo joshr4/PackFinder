@@ -3,8 +3,7 @@ import { Button, Header, Image, Modal, Grid } from 'semantic-ui-react';
 import AddVisitForm from './addvisitform';
 
 const DogParkModal = props => {
-  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, handleSliderChange, parkList, nowString, onEdit, handleEdit, slider } = props
-  console.log('modal props',props)
+  let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, handleSliderChange, parkList, nowString, onEdit, handleEdit, slider, noPark } = props
   return (
     <Modal open={props.show}>
       <Grid>
@@ -45,6 +44,7 @@ const DogParkModal = props => {
               parkList={parkList}
               item={item}
               slider={slider}
+              noPark={noPark}
          />
           }
         </Modal.Description>

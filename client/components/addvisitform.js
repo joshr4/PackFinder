@@ -20,7 +20,7 @@ const AddVisitForm = props => {
     </Form.Group>
     <Form.Group widths="equal" >
       <Form.Field>
-        <label>From</label>
+        <label>Time</label>
         <Input
           type="time"
           name="start"
@@ -45,10 +45,11 @@ const AddVisitForm = props => {
         </div>
       </Form.Field>
     </Form.Group>
+    { props.noPark ? <div /> :
       <Form.Group widths="equal">
-      <Form.Field required>
-        <label>Select Park</label>
-        <Dropdown
+       <Form.Field required>
+         <label>Select Park</label>
+           <Dropdown
             options={props.parkList}
             name="park"
             scrolling={true}
@@ -57,8 +58,9 @@ const AddVisitForm = props => {
             placeholder={'Please select a park from the list'}
             onChange={(e, data) => props.handleFieldChange(data)}
           />
-      </Form.Field>
+        </Form.Field>
       </Form.Group>
+    }
     <Button positive style={{margin: 10 }} type="submit" name="submitBtn" disabled={!props.item.park}>
     Save Visit
     </Button>
