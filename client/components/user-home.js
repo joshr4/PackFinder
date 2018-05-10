@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { NearbyUsers } from '.';
+import { NearbyUsers, UserHomeCalendar } from '.';
 /**
  * COMPONENT
  */
@@ -63,7 +63,12 @@ export const UserHome = props => {
           </Card>
         </Grid.Column>
         <Grid.Column>
-          <h3>Welcome , {email}</h3>
+        <Card>
+            <Card.Content>
+              <Card.Header>Welcome , {email}</Card.Header>
+                {/* <UserHomeCalendar /> */}
+            </Card.Content>
+          </Card>
         </Grid.Column>
       </Grid>
     </div>

@@ -80,7 +80,7 @@ export const EditUserModal = props => {
                 value={user.description}
               />
             </Form.Group>
-            <Form.Group widths="equal">
+            {/* <Form.Group widths="equal">
               <Form.Field
                 fluid
                 control={Input}
@@ -127,7 +127,7 @@ export const EditUserModal = props => {
                 }
                 value={user.address && user.address.zipcode}
               />
-            </Form.Group>
+            </Form.Group> */}
           </Form>
         </Modal.Description>
       </Modal.Content>

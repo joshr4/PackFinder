@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react';
-import { ProfileItem, UserProfileItem, EditPetModal } from '.';
+import { PetProfileItem, UserProfileItem, PetModal } from '.';
 import { getPets, deletePet, updatePet, addPet } from '../store';
 
 /**
@@ -65,9 +65,15 @@ class Profile extends React.Component {
     this.togglePetModal()
   }
   handleUpdate = () => {
-    this.props.updatePet(this.state.selectedPet)
-    this.togglePetModal()
-  }
+    console.log('handleupdate');
+    this.props.updatePet(this.state.selectedPet);
+    this.togglePetModal();
+  };
+  handleDeletePet = () => {
+    console.log('handldelete');
+    this.props.deletePet(this.state.selectedPet);
+    this.togglePetModal();
+  };
   handleChange = e => {
     this.setState({
       selectedPet: Object.assign(this.state.selectedPet, {
@@ -79,13 +85,14 @@ class Profile extends React.Component {
     const { userPets } = this.props;
     return (
       <div>
-        <EditPetModal
+        <PetModal
           show={this.state.showPetModal}
           onClose={this.togglePetModal}
           item={this.state.selectedPet}
           handleAdd={this.handleAdd}
           handleChange={this.handleChange}
           handleUpdate={this.handleUpdate}
+          handleDelete={this.handleDeletePet}
           isUpdatePet={this.state.isUpdatePet}
         />
         <Container className="container">
@@ -108,7 +115,7 @@ class Profile extends React.Component {
             {userPets ? (
               userPets.map((pet, i) => {
                 return (
-                  <ProfileItem
+                  <PetProfileItem
                     key={i}
                     info={pet}
                     openPetModal={this.openPetModal}
@@ -140,7 +147,7 @@ const mapDispatch = dispatch => {
     getData() {
       dispatch(getPets());
     },
-    removePet(pet) {
+    deletePet(pet) {
       dispatch(deletePet(pet));
     },
     updatePet(pet) {
