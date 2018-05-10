@@ -71,8 +71,10 @@ export const Navbar = props => {
             <Menu.Item style={styles.menuItem} onClick={handleClick} name="logout" to="/home" />
           </Menu.Menu>
         ) : (
+
           <Menu.Menu position="right">
             {/* The navbar will show these NavLinks before you log in */}
+            <Menu.Item style={styles.menuItem} as={NavLink} name="home" to="/parkList" />
             <Menu.Item
               style={styles.menuItem}
               as={NavLink}
