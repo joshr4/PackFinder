@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
 
-      attributes: ['id', 'email', 'fullName', 'imageUrl'],
+      attributes: ['id', 'email', 'fullName', 'firstName', 'lastName', 'imageUrl'],
       include: [{
         all: true
       }, ],
@@ -26,12 +26,13 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/simple', (req, res, next) => {
+  console.log('here i am')
   User.findAll({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
 
-      attributes: ['id', 'email', 'imageUrl'], // add name latter
+      attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl'], // add name latter
       include: [{
           model: Address,
           required: true
