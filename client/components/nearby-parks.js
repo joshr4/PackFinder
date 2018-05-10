@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
 import { getNearByUsersInfo, getGeolocation } from '../store';
+import history from '../history';
 
 /**
  * COMPONENT
@@ -22,7 +23,7 @@ export const NearbyParks = props => {
           <Image size="large" src={pet.image} />
         </Feed.Extra> */}
         <Feed.Extra>
-          <Button size="tiny" name="add">
+          <Button size="tiny" name="add" onClick={() => history.push(`/dog-park/${park.id}`)} >
             Park Details
           </Button>
         </Feed.Extra>
