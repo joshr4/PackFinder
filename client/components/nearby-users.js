@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Card, Feed, Button } from 'semantic-ui-react';
+import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
 
 /**
@@ -21,7 +21,7 @@ export const NearbyUsers = props => {
          { `${user.name}'s pack:`}
         </Feed.Summary>
         <Feed.Extra images>
-        <img src={pet.image} />
+        <Image size="large" src={pet.image} />
         </Feed.Extra>
         <Feed.Extra>
           <Button size="tiny" name="add">request friend</Button>

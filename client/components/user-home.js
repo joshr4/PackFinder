@@ -51,22 +51,22 @@ export const UserHome = props => {
     <div className="container">
       <Grid columns={2} centered style={{ padding: '2em' }}>
         <Grid.Column>
-          <Card>
+          <Card style={{ width: '100%' }}>
             <Card.Content>
               <Card.Header>Suggested friends</Card.Header>
             </Card.Content>
             <Card.Content>
-              <Feed>
+              <Feed >
                 {users.map(user => <NearbyUsers key={user.id} user={user} />)}
               </Feed>
             </Card.Content>
           </Card>
         </Grid.Column>
         <Grid.Column>
-        <Card>
+          <Card>
             <Card.Content>
               <Card.Header>Welcome , {email}</Card.Header>
-                {/* <UserHomeCalendar /> */}
+              {/* <UserHomeCalendar /> */}
             </Card.Content>
           </Card>
         </Grid.Column>
