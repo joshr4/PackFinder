@@ -253,7 +253,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
       );
 
       filteredUsers.forEach(user => {
-        user.address.location.distance = geolib.convertUnit('km', geolib.getDistanceSimple({
+        user.address.location.distance = geolib.convertUnit('mi', geolib.getDistanceSimple({
           latitude: user.address.location.lat,
           longitude: user.address.location.lng
         }, {
