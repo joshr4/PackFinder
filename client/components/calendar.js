@@ -155,6 +155,7 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
+    console.log('startvalid',this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;

@@ -343,7 +343,7 @@ export class DogPark extends Component {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      userId: 55,
+      userId: this.props.user.id,
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
     //ADD IN USER ID TO POST REQUEST
