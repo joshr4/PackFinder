@@ -4,7 +4,6 @@ import AddVisitForm from './addvisitform';
 
 const VisitModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, parkList, nowString, onEdit, handleEdit } = props
-  console.log('modal comp item', item)
   return (
     <Modal open={props.show}>
       <Grid>

@@ -6,7 +6,7 @@ import { Container, Segment, Grid, Image, List, Button } from 'semantic-ui-react
 /**
  * COMPONENT
  */
-const ProfileItem = props => {
+const PetProfileItem = props => {
   return (
         <Grid.Row>
           <Grid.Column width="4">
@@ -49,7 +49,7 @@ const ProfileItem = props => {
 //     email: state.user.email
 //   }
 // }
-export default ProfileItem;
+export default PetProfileItem;
 // export default connect(mapState)(UserHome)
 
 /**

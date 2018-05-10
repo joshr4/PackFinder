@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react';
-import { ProfileItem, UserProfileItem, EditPetModal } from '.';
+import { PetProfileItem, UserProfileItem, EditPetModal } from '.';
 import { getPets, deletePet, updatePet, addPet } from '../store';
 
 /**
@@ -110,7 +110,7 @@ class Profile extends React.Component {
             {userPets ? (
               userPets.map((pet, i) => {
                 return (
-                  <ProfileItem
+                  <PetProfileItem
                     key={i}
                     info={pet}
                     openPetModal={this.openPetModal}
