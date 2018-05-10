@@ -6,7 +6,6 @@ export let timeDisplay = function(dateObj, military = false) {
   let minutes = dateObj.getMinutes();
   let outputString = '';
   let suffix = '';
-  console.log('timefnc',hour)
   if (!military) {
     if (hour >= 12) {
       hour -= 12;

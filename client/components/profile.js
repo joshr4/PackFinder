@@ -61,10 +61,9 @@ class Profile extends React.Component {
     });
   };
   handleAdd = () => {
-    console.log('handleADD');
-    this.props.addNewPet(this.state.selectedPet);
-    this.togglePetModal();
-  };
+    this.props.addNewPet(this.state.selectedPet)
+    this.togglePetModal()
+  }
   handleUpdate = () => {
     console.log('handleupdate');
     this.props.updatePet(this.state.selectedPet);
