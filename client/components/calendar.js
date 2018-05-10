@@ -250,8 +250,6 @@ class Dnd extends React.Component {
   }
 
   render() {
-    console.log("rendering state: ", this.state);
-    console.log("rendering props: ", this.props);
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <VisitModal
