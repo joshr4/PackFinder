@@ -55,6 +55,8 @@ router.get('/me', (req, res) => {
     }).then(user => {
       res.json(user);
     });
+  } else {
+    res.json(req.user)
   }
 });
 
