@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const {
+  Address
+} = require('../db/models/')
 
 module.exports = router
 
@@ -7,7 +10,8 @@ router.post('/login', (req, res, next) => {
   User.findOne({
       where: {
         email: req.body.email
-      }
+      },
+      include: [Address]
     })
     .then(user => {
       if (!user) {
@@ -44,7 +48,16 @@ router.post('/logout', (req, res) => {
 })
 
 router.get('/me', (req, res) => {
-  res.json(req.user)
+  User.findOne({
+      where: {
+        id: req.user.id
+      },
+      include: [Address]
+    })
+    .then(user => {
+      res.json(user)
+
+    })
 })
 
 router.use('/google', require('./google'))
