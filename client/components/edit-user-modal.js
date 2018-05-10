@@ -1,28 +1,42 @@
 import React from 'react';
 import {
   Button,
-  Header,
   Image,
   Modal,
   Form,
   Icon,
   Input,
-  Select,
   TextArea,
 } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { EditImageModal } from '.';
+import { updateUserStore, submiteUserUpdate } from '../store';
 
-const EditUserModal = props => {
-  const { handleChange, handleSubmit, toggle } = props;
+export const EditUserModal = props => {
+  const {
+    updateFormFields,
+    saveUserChanges,
+    toggleModal,
+    toggleNestedModal,
+    user,
+    showModal,
+    showNestedModal,
+  } = props;
   return (
-    <Modal open={props.show} onClose={props.toggle}>
+    <Modal open={showModal} onClose={props.toggleModal}>
       <Modal.Header>Edit your profile</Modal.Header>
       <Modal.Content image>
-        <Image
-          wrapped
-          size="small"
-          src="http://images.clipartpanda.com/sad-girl-stick-figure-image.png"
-        />
-        <Button> Test </Button>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Image wrapped size="small" src={user.imageUrl} />
+          <EditImageModal
+            toggleNestedModal={toggleNestedModal}
+            showNestedModal={showNestedModal}
+          />
+
+          <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
+            Edit photo{' '}
+          </Button>
+        </div>
         <Modal.Description>
           <Form>
             <Form.Group widths="equal">
@@ -32,7 +46,8 @@ const EditUserModal = props => {
                 label="First name"
                 name="firstName"
                 placeholder="First name"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e => updateFormFields(e.target.value, e.target.name)}
+                value={user.firstName}
               />
               <Form.Field
                 fluid
@@ -40,7 +55,8 @@ const EditUserModal = props => {
                 label="Last name"
                 name="lastName"
                 placeholder="Last name"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e => updateFormFields(e.target.value, e.target.name)}
+                value={user.lastName}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -50,7 +66,8 @@ const EditUserModal = props => {
                 label="Email"
                 name="email"
                 placeholder="email@domain.com"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e => updateFormFields(e.target.value, e.target.name)}
+                value={user.email}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -59,7 +76,8 @@ const EditUserModal = props => {
                 label="About"
                 name="description"
                 placeholder="Tell us more about yourself..."
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e => updateFormFields(e.target.value, e.target.name)}
+                value={user.description}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -69,7 +87,10 @@ const EditUserModal = props => {
                 label="line_1"
                 name="line_1"
                 placeholder="Address"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e =>
+                  updateFormFields(e.target.value, { address: e.target.name })
+                }
+                value={user.address && user.address.line_1}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -79,7 +100,10 @@ const EditUserModal = props => {
                 label="City"
                 name="city"
                 placeholder="City"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e =>
+                  updateFormFields(e.target.value, { address: e.target.name })
+                }
+                value={user.address && user.address.city}
               />
               <Form.Field
                 fluid
@@ -87,30 +111,51 @@ const EditUserModal = props => {
                 label="state"
                 name="state"
                 placeholder="State"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e =>
+                  updateFormFields(e.target.value, { address: e.target.name })
+                }
+                value={user.address && user.address.state}
               />
               <Form.Field
                 fluid
                 control={Input}
                 label="zip"
-                name="zip"
+                name="zipcode"
                 placeholder="Zip"
-                onChange={e => handleChange(e.target.value, e.target.name)}
+                onChange={e =>
+                  updateFormFields(e.target.value, { address: e.target.name })
+                }
+                value={user.address && user.address.zipcode}
               />
             </Form.Group>
           </Form>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={toggle} color="red" inverted>
+        <Button onClick={toggleModal} color="red" inverted>
           <Icon name="remove" />Cancel
         </Button>
-        <Button onClick={handleSubmit} color="green" inverted>
+        <Button
+          onClick={() => toggleModal(saveUserChanges(props.user))}
+          color="green"
+          inverted
+        >
           <Icon name="checkmark" />Save
         </Button>
       </Modal.Actions>
     </Modal>
   );
 };
+const mapState = ({ user }) => ({ user });
+const mapDispatch = dispatch => {
+  return {
+    updateFormFields(value, type) {
+      dispatch(updateUserStore(value, type));
+    },
+    saveUserChanges(userUpdate) {
+      dispatch(submiteUserUpdate(userUpdate));
+    },
+  };
+};
 
-export default EditUserModal;
+export default connect(mapState, mapDispatch)(EditUserModal);
