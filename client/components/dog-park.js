@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Map, ParkListItem } from './index.js';
+import { Map, ParkListItem, VisitModal } from './index.js';
 import moment from 'moment';
 import {
   Button,
@@ -168,14 +168,17 @@ export class DogPark extends Component {
         lat: 41.895266,
         lng: -87.6412237
       },
-      slider: 1
+      slider: 1,
+      showModal: false,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleFieldChange = this.handleFieldChange.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.updateD3 = this.updateD3.bind(this);
     this.clearDate = this.clearDate.bind(this);
     this.handleSliderChange = this.handleSliderChange.bind(this);
+
+    this.toggleModal = this.toggleModal.bind(this);
+    this.addEvent = this.addEvent.bind(this);
   }
   mapMoved(){
 
@@ -190,7 +193,6 @@ export class DogPark extends Component {
 
 
   zoomChanged(){
-    console.log('zoomChanged: ', this.state.map.getZoom())
   }
 
   mapLoaded(map){
@@ -202,7 +204,6 @@ export class DogPark extends Component {
   }
 
   updateD3() {
-    console.log("updating D3 (203)");
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
 
@@ -210,7 +211,6 @@ export class DogPark extends Component {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
       visits = filteredEvents;
-      console.log("visits: ", visits);
       // let visits = this.props.events;
       let dateMin = '';
       let dateMax = '';
@@ -350,17 +350,18 @@ export class DogPark extends Component {
     this.props.addNewVisit(newVisitInfo).then((result) => {
       this.updateD3();
     });
+    this.toggleModal()
   }
 
-  handleFieldChange = (data) => {
-    this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {park: data.value})
-    })
-  }
   handleChange = (e, data) => {
     this.setState({
         addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
     })
+  }
+  toggleModal() {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
   }
 
   hideFixedMenu = () => this.setState({ fixed: false })
@@ -470,9 +471,25 @@ export class DogPark extends Component {
         location:this.state.park.address.location}
       }
     ]
-
     return (
+
       <div>
+        <VisitModal
+          modalType={'add'}
+          show={this.state.showModal}
+          onClose={this.toggleModal}
+          onDelete={() => {}}
+          item={this.state.addFormFieldData}
+          slider={this.state.slider}
+          handleSubmit={this.addEvent}
+          handleChange={this.handleChange}
+          handleFieldChange={() => {}}
+          parkList={this.props.parkList}
+          onEdit={() => {}}
+          handleEdit={this.updateEvent}
+          handleSliderChange={this.handleSliderChange}
+          noPark={true}
+        />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
           <Container text style={{marginBottom: '2em'}}>
           <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">{this.state.park.name}</Header>
@@ -491,20 +508,7 @@ export class DogPark extends Component {
           <b>Description: <br /></b>
           {this.state.park.description}
           </Segment>
-          <Segment attached style={{marginBottom: '10px'}}>
-          <Header as="h5" style={{ fontSize: '2em' }}>Schedule A Visit</Header>
-          <AddVisitForm
-          nowString={this.state.nowString}
-          handleSubmit={this.addEvent}
-          handleChange={this.handleChange}
-          handleFieldChange={this.handleFieldChange}
-          parkList={this.props.parkList}
-          item={this.state.addFormFieldData}
-          hideParks={true}
-          handleSliderChange={this.handleSliderChange}
-          slider={this.state.slider}
-          />
-          </Segment>
+          <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
         </Grid.Column>
         <Grid.Column width={8}>
             <Map
