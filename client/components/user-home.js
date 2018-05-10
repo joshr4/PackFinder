@@ -93,11 +93,11 @@ export class UserHome extends Component {
           <Grid.Column>
             <Card>
               <Card.Content>
-                <Card.Header>Suggested friends</Card.Header>
+                <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {users.map(user => <NearbyUsers key={user.id} user={user} />)}
+                  {users.map(user => <NearbyParks key={user.id} user={user} />)}
                 </Feed>
               </Card.Content>
             </Card>

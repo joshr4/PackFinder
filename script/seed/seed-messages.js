@@ -12,6 +12,7 @@ async function seedMessages() {
     let allUsers = await User.findAll();
     let nUsers = allUsers.length;
     for (let i = 0; i < allUsers.length; i ++) {
+        //console.log("i: ", i);
     }
 }
 
