@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash} from './components'
 
 import {me} from './store'
+import eventDetail from './components/event-detail';
 
 /**
  * COMPONENT
@@ -30,6 +31,7 @@ class Routes extends Component {
         <Route path="/example" component={Example} />
         <Route path="/parkList" component={ParkList} />
         <Route path="/calendar" component={Dnd} />
+        <Route path="/event" component={eventDetail} />
         {
           isLoggedIn &&
             <Switch>
