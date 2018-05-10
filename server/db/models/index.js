@@ -39,21 +39,11 @@ as:'attendees', foreignKey:'eventId', otherKey:'userId'});
 User.belongsToMany(Event, {through:'eventParticipants'});
 Event.belongsTo(Park);
 
-// Message.hasOne(User, {as:'sender'});
-// User.hasMany(Message, {as: 'sent'});
-// Message.hasOne(User, {as:'recipient'});
-// User.hasMany(Message, {as: 'inbox'});
-// User.hasMany(Request);
+Message.belongsTo(User, {as:'from', foreignKey:'fromId'});
+Message.belongsTo(User, {as:'to', foreignKey:'toId'});
+User.hasMany(Message, {as: 'outbox', foreignKey:'fromId'});
+User.hasMany(Message, {as: 'inbox', foreignKey:'toId'});
 
-Message.belongsTo(User, {as:'sender', foreignKey:'senderId'});
-Message.belongsTo(User, {as:'recipient', foreignKey:'recipientId'});
-User.hasMany(Message, {as: 'messageOutbox', foreignKey:'senderId'});
-User.hasMany(Message, {as: 'messageInbox', foreignKey:'recipientId'});
-
-
-// User.belongsToMany(Park, {through:Visit});
-//User has getParks, setParks, addPark, addParks as magic methods
-// Park.belongsToMany(User, {through:Visit});
 //Park has getUsers, setUsers, addUser, addUsers as magic methods
   // User has many visits -> MtM to Park
   // Park has many visits -> MtM to User

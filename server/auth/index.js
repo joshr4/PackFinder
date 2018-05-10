@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../db/models/user');
+const passport = require('passport');
 const { Address } = require('../db/models/');
 
 module.exports = router;
@@ -59,5 +60,9 @@ router.get('/me', (req, res) => {
     res.json(req.user)
   }
 });
+
+router.get('/auth/google', 
+    passport.authenticate('google', { scope: 'email' })
+);
 
 router.use('/google', require('./google'));

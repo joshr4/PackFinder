@@ -36,7 +36,24 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
           req.params.distance)
       );
 
-      res.json(filteredParks)})
+      filteredParks.forEach(park => {
+        park.address.location.distance = geolib.convertUnit('mi', geolib.getDistanceSimple({
+          latitude: park.address.location.lat,
+          longitude: park.address.location.lng
+        }, {
+          latitude: req.params.latitude,
+          longitude: req.params.longitude
+        }), 2)
+      })
+
+      let sortedParks = filteredParks.sort((a, b) => {
+        var a = (a.address.location.distance)
+        var b = (b.address.location.distance)
+
+        return a - b;
+      })
+
+      res.json(sortedParks)})
     .catch(next)
 })
 
@@ -58,8 +75,9 @@ router.get('/:id/visits', (req, res, next) => {
             id:req.params.id,
         },
         include:[
-            {model: User, required:false},
-            {model: Visit, required:false},
+            {model: Visit, required:false,
+                include:[{model:User}]                
+            },
         ]
         }).then((park) => {res.json(park.visits)});
  })

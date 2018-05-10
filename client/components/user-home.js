@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { NearbyUsers } from '.';
-import { NearbyParks } from '.';
+import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
+
 /**
  * COMPONENT
  */
@@ -85,6 +85,12 @@ import { NearbyParks } from '.';
 
         <Grid.Column>
           <h3>Welcome , {this.props.email}</h3>
+            <Card.Content>
+              <Card.Header>Welcome , {email}</Card.Header>
+                {/* <UserHomeCalendar /> */}
+            </Card.Content>
+          </Card>
+
         </Grid.Column>
       </Grid>
     </div>
