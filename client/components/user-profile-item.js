@@ -20,7 +20,7 @@ export class UserProfileItem extends React.Component {
     const { user, updateFormFields } = this.props;
     return (
       <Grid.Row>
-        {user.address && (
+        {user && (
           <EditUserModal
             updateFormFields={updateFormFields}
             showModal={this.state.showModal}

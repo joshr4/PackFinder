@@ -90,7 +90,7 @@ export const EditUserModal = props => {
                 onChange={e =>
                   updateFormFields(e.target.value, { address: e.target.name })
                 }
-                value={user.address.line_1}
+                value={user.address && user.address.line_1}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -103,7 +103,7 @@ export const EditUserModal = props => {
                 onChange={e =>
                   updateFormFields(e.target.value, { address: e.target.name })
                 }
-                value={user.address.city}
+                // value={user.address.city || ''}
               />
               <Form.Field
                 fluid
@@ -114,7 +114,7 @@ export const EditUserModal = props => {
                 onChange={e =>
                   updateFormFields(e.target.value, { address: e.target.name })
                 }
-                value={user.address.state}
+                // value={user.address.state || ''}
               />
               <Form.Field
                 fluid
@@ -125,7 +125,7 @@ export const EditUserModal = props => {
                 onChange={e =>
                   updateFormFields(e.target.value, { address: e.target.name })
                 }
-                value={user.address.zipcode}
+                // value={user.address.zipcode | ''}
               />
             </Form.Group>
           </Form>

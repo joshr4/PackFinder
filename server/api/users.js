@@ -206,10 +206,21 @@ router.put('/:id/updateAddress', (req, res, next) => {
       required: false
     }]
   }).then(user => {
-    if (user) {
+    if (user.address) {
       user.address.updateAttributes(req.body).then((updated) => {
         res.send(updated)
       })
+    } else {
+      Address.create(req.body)
+        .then(address => {
+          console.log('address created', address)
+          user.setAddress(address)
+            .then(updatedUser => updatedUser.save())
+            .then(updatedUser => res.send(updatedUser))
+
+          console.log('user add set', user)
+        })
+
     }
 
   })
