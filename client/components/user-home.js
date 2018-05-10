@@ -97,7 +97,7 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {users.map(user => <NearbyParks key={user.id} user={user} />)}
+                  {users.map(user => <NearbyParks key={user.id} parks={parks} />)}
                 </Feed>
               </Card.Content>
             </Card>
@@ -122,6 +122,8 @@ export class UserHome extends Component {
 const mapStateToProps = state => {
   return {
     email: state.user.email.toString(),
+    parkList: state.parkList,
+    nearbyUsers: state.nearbyUsers,
   };
 };
 
