@@ -32,6 +32,7 @@ export class UserHome extends Component {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+    this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
   }
 
