@@ -211,16 +211,18 @@ router.put('/:id/updateAddress', (req, res, next) => {
         res.send(updated)
       })
     } else {
+
       Address.create(req.body)
-        .then(address => {
-          console.log('address created', address)
-          user.setAddress(address)
+        .then(async address => {
+          // console.log('address created', address)
+          await user.setAddress(address)
+
+          // let updatedUser = await user.update()
           console.log('user address set', user)
-            // .then(updatedUser => updatedUser.save())
-            .then(updatedUser => res.send(updatedUser))
-
-        })
-
+          // .then(updatedUser => res.send(updatedUser))
+          return user
+        }).then(updatedUser => res.send(updatedUser))
+        //If I res.send(user) the addressId doesnt save, but if I dont it does
     }
 
   })
