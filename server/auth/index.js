@@ -46,14 +46,16 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/me', (req, res) => {
-  User.findOne({
-    where: {
-      id: req.user.id,
-    },
-    include: [Address],
-  }).then(user => {
-    res.json(user);
-  });
+  if (req.user) {
+    User.findOne({
+      where: {
+        id: req.user.id,
+      },
+      include: [Address],
+    }).then(user => {
+      res.json(user);
+    });
+  }
 });
 
 router.use('/google', require('./google'));

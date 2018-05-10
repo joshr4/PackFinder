@@ -215,10 +215,10 @@ router.put('/:id/updateAddress', (req, res, next) => {
         .then(address => {
           console.log('address created', address)
           user.setAddress(address)
-            .then(updatedUser => updatedUser.save())
+          console.log('user address set', user)
+            // .then(updatedUser => updatedUser.save())
             .then(updatedUser => res.send(updatedUser))
 
-          console.log('user add set', user)
         })
 
     }

@@ -34,12 +34,12 @@ export class UserProfileItem extends React.Component {
         </Grid.Column>
         <Grid.Column width="12">
           <Segment>
-            {user.address && (
+            {user && (
               <List>
                 <List.Item>Name: {user.fullName}</List.Item>
                 <List.Item>Email: {user.email}</List.Item>
                 <List.Item>Bio: {user.description}</List.Item>
-                <List.Item>Address: {user.address.fullAddress}</List.Item>
+                {user.address && <List.Item>Address: {user.address.fullAddress}</List.Item>}
               </List>
             )}
           </Segment>
