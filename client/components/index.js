@@ -5,6 +5,7 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
+export {default as UserHomeCalendar} from './user-home-calendar'
 export {default as SinglePark} from './SinglePark'
 export {default as Example} from './Example'
 export {default as ParkGraph} from './ParkGraph'

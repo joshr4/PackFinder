@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Map, ParkListItem } from './index.js';
+import moment from 'moment';
 import {
   Button,
   Container,
@@ -154,9 +155,9 @@ export class DogPark extends Component {
     },
       addFormFieldData: {
         park: parseInt(props.match.params.id),
-        start: '17:00',
+        start: moment().format('HH:mm'),
         end: '20:00',
-        visitDate: '2018-05-09',
+        visitDate: moment().format('YYYY-MM-DD'),
       },
       selectedDate: "",
       dayView: false,
@@ -166,14 +167,15 @@ export class DogPark extends Component {
       location: {
         lat: 41.895266,
         lng: -87.6412237
-      }
+      },
+      slider: 1
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.updateD3 = this.updateD3.bind(this);
     this.clearDate = this.clearDate.bind(this);
+    this.handleSliderChange = this.handleSliderChange.bind(this);
   }
   mapMoved(){
 
@@ -324,30 +326,6 @@ export class DogPark extends Component {
       this.updateD3();
     });
   }
-  handleSubmit(event) {
-    let visitDate = event.target.visitDate.value;
-    let fromTime = event.target.fromTime.value;
-    let toTime = event.target.toTime.value;
-    let newVisitInfo = {
-      userId: this.state.userId,
-      parkId: this.state.parkId
-    }
-    let year = parseInt(visitDate.split('-')[0]);
-    let month = parseInt(visitDate.split('-')[1]) - 1;
-    let day = parseInt(visitDate.split('-')[2]);
-    let fromHour = parseInt(fromTime.split(':')[0]);
-    let fromMin = parseInt(fromTime.split(':')[1]);
-    let toHour = parseInt(toTime.split(':')[0]);
-    let toMin = parseInt(toTime.split(':')[1]);
-    let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, toHour, toMin);
-    newVisitInfo.start = startTime;
-    newVisitInfo.end = endTime;
-    axios.post('api/visits', newVisitInfo).then(response => {
-      this.updateD3();
-      // this.setState({});
-    })
-  }
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
@@ -358,7 +336,7 @@ export class DogPark extends Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, toHour, toMin);
+    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -405,6 +383,9 @@ export class DogPark extends Component {
       selectedDate:"",
     });
     this.updateD3();
+  }
+  handleSliderChange = e => {
+    this.setState({ slider: e.target.value})
   }
   render() {
       const { children } = this.props
@@ -518,6 +499,8 @@ export class DogPark extends Component {
           parkList={this.props.parkList}
           item={this.state.addFormFieldData}
           hideParks={true}
+          handleSliderChange={this.handleSliderChange}
+          slider={this.state.slider}
           />
           </Segment>
         </Grid.Column>
