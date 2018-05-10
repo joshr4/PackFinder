@@ -75,8 +75,9 @@ router.get('/:id/visits', (req, res, next) => {
             id:req.params.id,
         },
         include:[
-            {model: User, required:false},
-            {model: Visit, required:false},
+            {model: Visit, required:false,
+                include:[{model:User}]                
+            },
         ]
         }).then((park) => {res.json(park.visits)});
  })

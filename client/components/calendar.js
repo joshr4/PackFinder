@@ -58,6 +58,7 @@ class Dnd extends React.Component {
       slider: 1,
       showModal: false,
       modalType: 'view',
+      user: {},
     };
   this.moveEvent = this.moveEvent.bind(this);
   this.removeEvent = this.removeEvent.bind(this);
@@ -169,9 +170,9 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
+      userId: this.props.user.id,
     }
-
     this.props.addNewVisit(newVisitInfo)
     this.toggleModal()
   }
@@ -190,7 +191,7 @@ class Dnd extends React.Component {
       start: startTime,
       end: endTime,
       id: stateVisit.id,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text,
     }
 
     this.props.updateVisit(newVisitInfo)
@@ -295,15 +296,17 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  let calEvents = state.visits.map(visit => {
+  console.log("this user: ", state.user);
+  let userVisits = state.visits.filter(visit => visit.userId == state.user.id); 
+  let calEvents = userVisits.map(visit => {
     let newVisit = {
-    id: visit.id,
-    title: visit.title,
-    start: new Date(visit.start),
-    end: new Date(visit.end),
-    address: visit.park.address,
-    userId: visit.userId,
-    park: visit.parkId
+      id: visit.id,
+      title: visit.title,
+      start: new Date(visit.start),
+      end: new Date(visit.end),
+      address: visit.park.address,
+      userId: visit.userId,
+      park: visit.parkId
     }
     return newVisit
   })

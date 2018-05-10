@@ -25,6 +25,7 @@ const petsSeed = require('./seed/seed-pets');
 const visitsSeed = require('./seed/seed-visits');
 const friendSeed = require('./seed/seed-friends');
 const eventsSeed = require('./seed/seed-events');
+const messagesSeed = require('./seed/seed-messages');
 
 async function seed () {
   await db.sync({force: true})
@@ -37,6 +38,7 @@ async function seed () {
   await visitsSeed();
   await friendSeed();
   await eventsSeed();
+  await messagesSeed();
 
 
   // // Wowzers! We can even `await` on the right-hand side of the assignment operator
