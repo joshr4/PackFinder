@@ -10,6 +10,12 @@ const Address = db.define('address', {
     location: {
       type: Sequelize.JSON,
       defaultValue: {lat: 0, lng: 0},
+    },
+    fullAddress: {
+        type: Sequelize.VIRTUAL,
+        get() {
+            return `${this.line_1} ${this.city}, ${this.state} ${this.zipcode}`
+        }
     }
 });
 // One to many between park and visits

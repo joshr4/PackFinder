@@ -42,7 +42,8 @@ export class UserProfileItem extends React.Component {
     this.setState({ [type]: value });
   };
   render() {
-    const {fullname, email, imageUrl } = this.props.user
+    const {fullName, email, imageUrl } = this.props.user
+    console.log('props', this.props.user)
     return (
       <Grid.Row>
         <EditUserModal
@@ -61,7 +62,7 @@ export class UserProfileItem extends React.Component {
         <Grid.Column width="12">
           <Segment>
             <List>
-              <List.Item>Name: {fullname}</List.Item>
+              <List.Item>Name: {fullName}</List.Item>
               <List.Item>Email: {email}</List.Item>
               <List.Item>Email: {email}</List.Item>
             </List>
