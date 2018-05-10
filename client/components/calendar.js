@@ -164,7 +164,7 @@ class Dnd extends React.Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
+    let endTime = new Date(year, month, day, fromHour, fromMin + 30 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
@@ -296,7 +296,7 @@ class Dnd extends React.Component {
 
 const mapState = state => {
   console.log("this user: ", state.user);
-  let userVisits = state.visits.filter(visit => visit.userId == state.user.id); 
+  let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = userVisits.map(visit => {
     let newVisit = {
       id: visit.id,

@@ -338,7 +338,7 @@ export class DogPark extends Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
+    let endTime = new Date(year, month, day, fromHour, fromMin + 30 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,

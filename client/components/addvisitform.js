@@ -13,7 +13,7 @@ const AddVisitForm = props => {
           type="date"
           name="visitDate"
           style={{ marginLeft: '0px' }}
-          defaultValue={props.nowString}  
+          //defaultValue={props.nowString}
           value={props.item.visitDate}
         />
       </Form.Field>
@@ -40,8 +40,8 @@ const AddVisitForm = props => {
       </Form.Field> */}
       <Form.Field>
         <div style={{marginTop: '25px'}} className="slidecontainer">
-          <input type="range" min="1" max="4" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
-          <p>{`Duration: ${props.slider * 15} minutes`}</p>
+          <input type="range" min="1" max="6" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
+          <p>{`Duration: ${props.slider * 30} minutes `}</p>
         </div>
       </Form.Field>
     </Form.Group>
