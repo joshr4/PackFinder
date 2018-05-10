@@ -1,24 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Container,
-  Segment,
-  Grid,
-  Image,
-  List,
-  Button,
-} from 'semantic-ui-react';
+import { Segment, Grid, Image, List, Button } from 'semantic-ui-react';
 import { EditUserModal } from '.';
 
 /**
  * COMPONENT
  */
 export class UserProfileItem extends React.Component {
-  state = { showModal: false };
+  state = { showModal: false, showNestedModal: false };
 
   toggleEditUserModal = () => {
     this.setState({ showModal: !this.state.showModal });
+  };
+  toggleNestedModal = () => {
+    this.setState({ showNestedModal: !this.state.showNestedModal });
   };
   render() {
     const { user, updateFormFields } = this.props;
@@ -27,10 +23,10 @@ export class UserProfileItem extends React.Component {
         {user.address && (
           <EditUserModal
             updateFormFields={updateFormFields}
-            show={this.state.showModal}
-            toggle={this.toggleEditUserModal}
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
+            showModal={this.state.showModal}
+            showNestedModal={this.state.showNestedModal}
+            toggleModal={this.toggleEditUserModal}
+            toggleNestedModal={this.toggleNestedModal}
           />
         )}
         <Grid.Column width="4">

@@ -9,20 +9,34 @@ import {
   TextArea,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { EditImageModal } from '.';
 import { updateUserStore, submiteUserUpdate } from '../store';
 
 export const EditUserModal = props => {
-  const { updateFormFields, saveUserChanges, toggle, user } = props;
+  const {
+    updateFormFields,
+    saveUserChanges,
+    toggleModal,
+    toggleNestedModal,
+    user,
+    showModal,
+    showNestedModal,
+  } = props;
   return (
-    <Modal open={props.show} onClose={props.toggle}>
+    <Modal open={showModal} onClose={props.toggleModal}>
       <Modal.Header>Edit your profile</Modal.Header>
       <Modal.Content image>
-        <Image
-          wrapped
-          size="small"
-          src="http://images.clipartpanda.com/sad-girl-stick-figure-image.png"
-        />
-        <Button> Test </Button>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Image wrapped size="small" src={user.imageUrl} />
+          <EditImageModal
+            toggleNestedModal={toggleNestedModal}
+            showNestedModal={showNestedModal}
+          />
+
+          <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
+            Edit photo{' '}
+          </Button>
+        </div>
         <Modal.Description>
           <Form>
             <Form.Group widths="equal">
@@ -118,11 +132,11 @@ export const EditUserModal = props => {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={toggle} color="red" inverted>
+        <Button onClick={toggleModal} color="red" inverted>
           <Icon name="remove" />Cancel
         </Button>
         <Button
-          onClick={() => toggle(saveUserChanges(props.user))}
+          onClick={() => toggleModal(saveUserChanges(props.user))}
           color="green"
           inverted
         >
