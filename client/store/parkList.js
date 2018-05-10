@@ -28,11 +28,14 @@ export const getParksAddresses = () => dispatch =>
     .catch(err => console.log(err));
 
 
-export const getNearByParksAddresses = (lat, lng, dist) => dispatch =>
-    axios
-      .get(`/api/parks/${lat}/${lng}/${dist}`)
+export const getNearByParksAddresses = (location, dist) => dispatch =>
+    {let distance = dist || 1609;
+      return axios
+      .get(`/api/parks/${location.lat}/${location.lng}/${distance}`)
       .then(res => dispatch(getNearbyParks(res.data)))
       .catch(err => console.log(err));
+    }
+
 /**
  * REDUCER
  */
