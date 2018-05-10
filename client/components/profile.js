@@ -82,7 +82,7 @@ class Profile extends React.Component {
     });
   };
   render() {
-    const { user, userPets } = this.props;
+    const { userPets } = this.props;
     return (
       <div>
         <PetModal
@@ -98,7 +98,7 @@ class Profile extends React.Component {
         <Container className="container">
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
-            <UserProfileItem user={user} />
+            <UserProfileItem />
             <Grid.Row>
               <Grid.Column width="4">
                 <Header as="h3">Dogs:</Header>
