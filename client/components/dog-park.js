@@ -338,12 +338,12 @@ export class DogPark extends Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, fromMin + 15 * this.state.slider);
+    let endTime = new Date(year, month, day, fromHour, fromMin + 30 * this.state.slider);
     let newVisitInfo = {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
-      userId: 55,
+      userId: this.props.user.id,
       title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
     }
     //ADD IN USER ID TO POST REQUEST
