@@ -37,42 +37,6 @@ export class UserHome extends Component {
   }
 
   render() {
-    const users = [
-      {
-        user: {
-          name: 'Jack',
-          image: faker.image.avatar(),
-          distance: '1 mile',
-        },
-        pet: {
-          name: 'Nova',
-          image: 'https://images.dog.ceo/breeds/kuvasz/n02104029_1313.jpg',
-        },
-      },
-      {
-        user: {
-          name: 'Jim',
-          image: faker.image.avatar(),
-          distance: '1 mile',
-        },
-        pet: {
-          name: 'Nicolette',
-          image: 'https://images.dog.ceo/breeds/boxer/n02108089_1159.jpg',
-        },
-      },
-      {
-        user: {
-          name: 'Dave',
-          image: faker.image.avatar(),
-          distance: '1 mile',
-        },
-        pet: {
-          name: 'Rollin',
-          image:
-            'https://images.dog.ceo/breeds/pinscher-miniature/n02107312_6541.jpg',
-        },
-      },
-    ];
     const {nearbyUsers, parkList} = this.props;
     return (
       <div className="container">
