@@ -88,7 +88,7 @@ export const Navbar = props => {
           </Menu.Menu>
         )}
       </Menu>
-      {path !== '/' ? <SubNavbar /> : <div />}
+      {path !== '/' && isLoggedIn ? <SubNavbar /> : <div />}
     </div>
   );
 };
