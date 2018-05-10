@@ -84,7 +84,7 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {users.map(user => <NearbyUsers key={user.id} user={user} />)}
+                  {nearbyUsers[0] && nearbyUsers.map(user => <NearbyUsers key={user.id} user={user} />)}
                 </Feed>
               </Card.Content>
             </Card>
@@ -96,9 +96,9 @@ export class UserHome extends Component {
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
               <Card.Content>
-                <Feed>
+                {/* <Feed>
                   {users.map(user => <NearbyParks key={user.id} parks={parks} />)}
-                </Feed>
+                </Feed> */}
               </Card.Content>
             </Card>
           </Grid.Column>

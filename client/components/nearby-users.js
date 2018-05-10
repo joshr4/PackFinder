@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
-import { getNearByUsersInfo, getGeolocation  } from '../store';
+import { getNearByUsersInfo, getGeolocation } from '../store';
 
 /**
  * COMPONENT
@@ -11,15 +11,20 @@ import { getNearByUsersInfo, getGeolocation  } from '../store';
 
 export const NearbyUsers = props => {
   console.log('props', props);
-  const { user, pet, nearbyUsers } = props.user;
+  const {
+    email,
+    pets,
+    imageUrl,
+    address,
+  } = props.user;
   return (
     <Feed.Event>
-      <Feed.Label image={user.image} />
+      <Feed.Label image={imageUrl} />
       <Feed.Content>
-        <Feed.Date content={`${user.distance} away`} />
-        <Feed.Summary>{`${user.name}'s pack:`}</Feed.Summary>
+        <Feed.Date content={`${address.location.distance} mi away`} />
+        <Feed.Summary>{`${email.split('.')[0]}'s pack:`}</Feed.Summary>
         <Feed.Extra images>
-          <Image size="large" src={pet.image} />
+          <Image size="large" src={pets[0].imageUrls[0]} />
         </Feed.Extra>
         <Feed.Extra>
           <Button size="tiny" name="add">
@@ -37,17 +42,16 @@ export const NearbyUsers = props => {
 const mapState = state => {
   return {
     email: state.user.email,
-    nearbyUsers: state.nearbyUsers
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     getSuggestedFriends(location) {
-      dispatch(getNearByUsersInfo(location))
+      dispatch(getNearByUsersInfo(location));
     },
     getUserLocation() {
-      dispatch(getGeolocation())
+      dispatch(getGeolocation());
     },
   };
 };
