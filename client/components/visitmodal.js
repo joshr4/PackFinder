@@ -18,16 +18,17 @@ const VisitModal = props => {
       {/* : <Button onClick={() => handleSubmit}>Add Visit</Button>}
        <Modal.Header>{props.item.title}</Modal.Header> */}
       <Modal.Content image>
-        <Image
+        {/* <Image
           wrapped
           size="medium"
           src="https://images.dog.ceo/breeds/beagle/n02088364_17474.jpg"
-        />
+        /> */}
         <Modal.Description>
             { modalType === 'view' ? <div>
             <Header>{item.title}</Header>
-              <p>Start Time: {item.start.toString()}</p>
-              <p>End Time: {item.end.toString()}</p>
+              <p>Time: {item.start.toString()}</p>
+              {/* <p>End Time: {item.end.toString()}</p> */}
+
               <p>Date: {item.visitDate}</p>
               <div>Address:</div>
               <div>{item.address.line_1}<br />

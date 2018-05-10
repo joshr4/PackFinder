@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Form, Input, Dropdown } from 'semantic-ui-react';
 //import { countryOptions } from '../common'
 
-const AddVisitForm = props => (
+const AddVisitForm = props => {
+  return (
 
   <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
     <Form.Group widths="equal" >
@@ -28,7 +29,7 @@ const AddVisitForm = props => (
           value={props.item.start.toString()}
           />
       </Form.Field>
-      <Form.Field required>
+      {/* <Form.Field required>
         <label>To</label>
         <Input
           type="time"
@@ -37,6 +38,11 @@ const AddVisitForm = props => (
           //defaultValue="20:00"
           value={props.item.end}
         />
+      </Form.Field> */}
+      <Form.Field required>
+        <div style={{marginTop: '25px'}} className="slidecontainer">
+          <input type="range" min="1" max="4" value={props.item.duration} className="slider" id="visitLength" />
+        </div>
       </Form.Field>
     </Form.Group>
       <Form.Group widths="equal">
@@ -57,5 +63,5 @@ const AddVisitForm = props => (
     Save Visit
     </Button>
   </Form>
-);
+)};
 export default AddVisitForm;

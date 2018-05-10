@@ -70,15 +70,6 @@ class Dnd extends React.Component {
 
   componentDidMount() {
     this.props.getData();
-    var visitLength = document.getElementById("visitLength");
-    var output = document.getElementById("demo");
-    console.log('vivislider',visitLength)
-
-    output.innerHTML = visitLength.value; // Display the default slider value
-    // Update the current slider value (each time you drag the slider handle)
-    visitLength.oninput = function() {
-        console.log('slider', this.value);
-    }
   }
 
   toggleModal() {
@@ -204,7 +195,6 @@ class Dnd extends React.Component {
   }
 
   handleChange = e => {
-
     this.setState({
       selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
       () => { this.validateField(e.target.name, e.target.value) })
@@ -253,7 +243,6 @@ class Dnd extends React.Component {
   }
 
   render() {
-
     return (
       <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
         <VisitModal
