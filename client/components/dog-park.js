@@ -202,6 +202,7 @@ export class DogPark extends Component {
   }
 
   updateD3() {
+    console.log("updating D3 (203)");
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
 
@@ -209,6 +210,7 @@ export class DogPark extends Component {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
       visits = filteredEvents;
+      console.log("visits: ", visits);
       // let visits = this.props.events;
       let dateMin = '';
       let dateMax = '';
