@@ -4,14 +4,35 @@ import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
 import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
+import {
+  getParksAddresses,
+  getGeolocation,
+  getNearByParksAddresses,
+  getNearByUsersInfo,
+} from '../store';
 
 /**
  * COMPONENT
  */
 
-class UserHome extends Component {
+export class UserHome extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      map: null,
+      location: {
+        lat: 41.895266,
+        lng: -87.6412237,
+      },
+      isHover: -1,
+    };
+  }
+
+  componentDidMount() {
+    // this.props.getEveryAddresses();
+    this.props.getUserLocation();
+    this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+    // this.props.getNearByUsers(this.state.location)
   }
 
   render() {
@@ -105,18 +126,18 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    // getEveryAddresses() {
-    //   dispatch(getParksAddresses());
-    // },
-    // getUserLocation() {
-    //   dispatch(getGeolocation())
-    // },
-    // getNearbyParks(lat, lng, dist){
-    //   dispatch(getNearByParksAddresses(lat, lng, dist))
-    // },
-    // getNearByUsers(location){
-    //   dispatch(getNearByUsersInfo(location))
-    // }
+    getEveryAddresses() {
+      dispatch(getParksAddresses());
+    },
+    getUserLocation() {
+      dispatch(getGeolocation());
+    },
+    getNearbyParks(lat, lng, dist) {
+      dispatch(getNearByParksAddresses(lat, lng, dist));
+    },
+    getNearByUsers(location) {
+      dispatch(getNearByUsersInfo(location));
+    },
   };
 };
 
