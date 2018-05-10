@@ -42,7 +42,7 @@ export class UserProfileItem extends React.Component {
     this.setState({ [type]: value });
   };
   render() {
-    const {fullName, email, imageUrl } = this.props.user
+    const {fullName, email, imageUrl, address } = this.props.user
     console.log('props', this.props.user)
     return (
       <Grid.Row>
@@ -64,7 +64,7 @@ export class UserProfileItem extends React.Component {
             <List>
               <List.Item>Name: {fullName}</List.Item>
               <List.Item>Email: {email}</List.Item>
-              <List.Item>Email: {email}</List.Item>
+              {/* <List.Item>Address: {address.fullAddress}</List.Item> */}
             </List>
           </Segment>
           <Button onClick={this.toggleEditUserModal}>Edit</Button>
