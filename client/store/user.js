@@ -8,7 +8,8 @@ const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 // const UPDATE_USER = 'UPDATE_USER';
 const SAVE_USER_CHANGES = 'SAVE_USER_CHANGES';
-
+const UPDATED_USER_ADDRESS = 'UPDATED_USER_ADDRESS';
+const UPDATED_USER_INFO = 'UPDATED_USER_INFO';
 /**
  * INITIAL STATE
  */
@@ -39,25 +40,55 @@ const save = userUpdate => ({
   userUpdate,
 });
 
+const updatedAddress = address => ({
+  type: UPDATED_USER_ADDRESS,
+  address,
+});
+
+const updatedUser = user => ({
+  type: UPDATED_USER_INFO,
+  user,
+});
+
 /**
  * THUNK CREATORS
  */
 
-export const submiteUserUpdate = userUpdate => async dispatch => {
-  try {
-    await axios.put(
-      `/api/users/${userUpdate.id}/updateAddress`,
-      userUpdate.address
-    );
-    const updatedUser = await axios.put(
-      `/api/users/${userUpdate.id}/updateUser`,
-      userUpdate
-    );
-    dispatch(save(updatedUser.data || defaultUser));
-  } catch (err) {
-    console.log(err);
-  }
-};
+export const updateUserAddresses = (userUpdate) => dispatch =>
+{
+  return axios
+    .put(`/api/users/${userUpdate.id}/updateAddress`, userUpdate)
+    .then(res => dispatch(updatedAddress(res.data)))
+    .catch(err => console.log(err));
+}
+
+export const updateUserInfo = (userUpdate) => dispatch =>
+{
+  axios
+    .put(`/api/users/${userUpdate.id}/updateUser`, userUpdate)
+    .then(res => dispatch(updatedUser(res.data)))
+    .catch(err => console.log(err));
+}
+
+// export const updateUser = (userData) => {
+//   return dispatch => (Promise.all([updatedAddress(userData),
+//   updateUserInfo(userData)]))
+// }
+// export const submiteUserUpdate = userUpdate => async dispatch => {
+//   try {
+//     await axios.put(
+//       `/api/users/${userUpdate.id}/updateAddress`,
+//       userUpdate.address
+//     );
+//     const updatedUser = await axios.put(
+//       `/api/users/${userUpdate.id}/updateUser`,
+//       userUpdate
+//     );
+//     dispatch(save(updatedUser.data || defaultUser));
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 // export const updateUserStore = (value, type) => dispatch => {
 //   dispatch(update(value, type));
@@ -124,6 +155,11 @@ export default function(state = defaultUser, action) {
     //       };
     case SAVE_USER_CHANGES:
       return action.userUpdate;
+    case UPDATED_USER_ADDRESS:
+      return { ...state, address: action.address }
+      // return action.user;
+    case UPDATED_USER_INFO:
+      return action.user;
     default:
       return state;
   }

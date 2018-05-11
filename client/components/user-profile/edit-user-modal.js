@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { EditImageModal } from '../index.js';
-import { updateUserStore, submiteUserUpdate } from '../../store';
+import { updateUserStore, submiteUserUpdate, updateUserInfo, updateUserAddresses } from '../../store';
 
 class EditUserModal extends Component {
 
@@ -29,6 +29,14 @@ class EditUserModal extends Component {
 
   onChangeHandler(evt){
     let tempUser = Object.assign({}, this.state.user)
+    if(tempUser.address === undefined){
+      tempUser.address = {
+        line_1: '',
+        city: '',
+        state: '',
+        zipcode: '60601',
+      }
+    }
     console.log(evt.target.name)
 
     if (evt.target.name === 'firstName'){
@@ -209,7 +217,8 @@ const mapDispatch = dispatch => {
     //   dispatch(updateUserStore(value, type));
     // },
     saveUserChanges(userUpdate) {
-      dispatch(submiteUserUpdate(userUpdate));
+      dispatch(updateUserInfo(userUpdate));
+      dispatch(updateUserAddresses(userUpdate))
     },
   };
 };
