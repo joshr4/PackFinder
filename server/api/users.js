@@ -144,7 +144,7 @@ router.put('/:id/approve-request', async (req, res, next) => {
   await friendIduser.removeRequestee(user);
   await user.addFriend(friendIduser);
   await friendIduser.addFriend(user);
-  res.json(requesters);
+  res.json(friendIduser);
 })
 
 router.post('/:id/friend-request', async (req, res, next) => {
