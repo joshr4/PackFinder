@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
+import { PackList, UserHomeCalendar, NearbyParks } from '.';
 import {
   getParksAddresses,
   getGeolocation,
@@ -50,7 +50,7 @@ export class UserHome extends Component {
                 <Feed>
                   {nearbyUsers[0] &&
                     nearbyUsers.map(user => (
-                      <NearbyUsers key={user.id} user={user} />
+                      <PackList key={user.id} user={user} />
                     ))}
                 </Feed>
               </Card.Content>

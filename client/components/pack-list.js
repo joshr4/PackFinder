@@ -9,8 +9,8 @@ import { getNearByUsersInfo, getGeolocation } from '../store';
  * COMPONENT
  */
 
-export const NearbyUsers = props => {
-  console.log('props', props);
+export const PackList = props => {
+  // console.log('props', props);
   const {
     email,
     pets,
@@ -56,11 +56,11 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(NearbyUsers);
+export default connect(mapState, mapDispatch)(PackList);
 
 /**
  * PROP TYPES
  */
-NearbyUsers.propTypes = {
+PackList.propTypes = {
   email: PropTypes.string,
 };

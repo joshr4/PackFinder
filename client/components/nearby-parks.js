@@ -11,7 +11,6 @@ import history from '../history';
  */
 
 export const NearbyParks = props => {
-  console.log('props', props);
   const { park } = props;
   return (
     <Feed.Event>
