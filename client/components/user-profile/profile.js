@@ -24,6 +24,7 @@ class Profile extends React.Component {
         id: undefined,
         userId: undefined,
       },
+      user: {},
       isUpdatePet: false,
     };
     this.togglePetModal = this.togglePetModal.bind(this);
@@ -82,6 +83,7 @@ class Profile extends React.Component {
     });
   };
   render() {
+
     const { userPets } = this.props;
     return (
       <div>
