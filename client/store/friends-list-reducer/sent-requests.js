@@ -20,19 +20,18 @@ const get = sentRequests => ({
   type: GET_SENT_REQUESTS,
   sentRequests,
 });
-const remove = () => ({
+const remove = (requestee) => ({
   type: REMOVE_SENT_REQUEST,
+  requestee,
 });
-const send = () => ({
+const send = (requestee) => ({
   type: SEND_REQUEST,
+  requestee,
 });
-
-
 
 /**
  * THUNK CREATORS
  */
-
 export const getSentRequests = (userId) => dispatch => {
   console.log('hitting thunk getSent')
   return axios
@@ -40,7 +39,23 @@ export const getSentRequests = (userId) => dispatch => {
     .then(res => dispatch(get(res.data)))
     .catch(err => console.log(err));
 }
+export const addSentRequest = (userId, friendId) => dispatch => {
+  console.log('hitting thunk addSentRequest')
+  return axios
+    .post(`/api/users/${userId}/friend-request`, {friendId})
+    .then(res => dispatch(send(res.data)))
+    .catch(err => console.log(err));
+}
 
+export const removeSentRequest = (userId, friendId) => dispatch => {
+  console.log('hitting thunk removeSentRequest')
+  return axios
+    .put(`/api/users/${userId}/cancel-request`, {friendId})
+    .then(res => dispatch(remove(res.data)))
+    .catch(err => console.log(err));
+}
+  
+  
 
 /**
  * REDUCER
@@ -48,7 +63,11 @@ export const getSentRequests = (userId) => dispatch => {
 export default function(state = defaultList, action) {
   switch (action.type) {
     case GET_SENT_REQUESTS:
-    return action.sentRequests;
+      return action.sentRequests;
+    case REMOVE_SENT_REQUEST:
+      return state.map(request => request.id != action.requestee.id);
+    case SEND_REQUEST:
+      return [...state, action.requestee]
     default:
       return state;
   }

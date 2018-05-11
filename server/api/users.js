@@ -169,6 +169,20 @@ router.post('/:id/friend-request', async (req, res, next) => {
   res.json(friendIduser);
 })
 
+router.post('/:id/friend-request/delete', async (req, res, next) => {
+  let friendId = req.body.friendId;
+  let user = await User.findById(req.params.id);
+  let friendIduser = await User.findById(friendId);
+  let reverseRequest = await user.getRequesters({
+    where: {
+      id: friendId
+    }
+  });
+  await user.removeFriend(friendIduser);
+  await friendIduser.removeFriend(user);
+  res.json(friendIduser);
+})
+
 router.get('/:id/has-request/:friendId', async (req, res, next) => {
   let user = await User.findById(req.params.id);
   let friendId = req.params.friendId;
@@ -217,7 +231,7 @@ router.put('/:id/cancel-request', async (req, res, next) => {
   let friendIduser = await User.findById(friendId);
   await user.removeRequestee(friendIduser);
   await friendIduser.removeRequester(user);
-  res.json(user);
+  res.json(friendIduser);
 })
 
 router.put('/:id/unfriend', async (req, res, next) => {

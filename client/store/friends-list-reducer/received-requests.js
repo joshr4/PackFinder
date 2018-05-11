@@ -48,6 +48,12 @@ axios
   .then(res => dispatch(get(res.data)))
   .catch(err => console.log(err));
 
+export const removeRequest = (userId, friendId) => dispatch =>
+axios
+  .put(`/api/users/${userId}/cancel-request`, {friendId})
+  .then(res => dispatch(get(res.data)))
+  .catch(err => console.log(err));
+  
 /**
  * REDUCER
  */
@@ -57,6 +63,8 @@ export default function(state = defaultList, action) {
     return action.receivedRequests;
     case APPROVE_RECEIVED_REQUEST:
     return state.map(map => map.id !== action.requester.id)
+    case REMOVE_RECEIVED_REQUEST:
+    return state.map(request => request.id != action.requester.id);   
     default:
       return state;
   }
