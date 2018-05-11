@@ -2,10 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash} from './components'
-
+import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash, EventDetail} from './components'
 import {me} from './store'
-import eventDetail from './components/event-detail';
 
 /**
  * COMPONENT
@@ -31,7 +29,7 @@ class Routes extends Component {
         <Route path="/example" component={Example} />
         <Route path="/parkList" component={ParkList} />
         <Route path="/calendar" component={Dnd} />
-        <Route path="/event" component={eventDetail} />
+        <Route path="/event" component={EventDetail} />
         {
           isLoggedIn &&
             <Switch>

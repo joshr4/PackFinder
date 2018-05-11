@@ -52,7 +52,7 @@ router.delete('/:id', (req, res, next) => {
   })
 })
 
-router.put('/:id/change-times', (req, res, next) => {
+router.put('/:id', (req, res, next) => {
   Event.findOne({
     where: {
       id: req.params.id
@@ -63,6 +63,7 @@ router.put('/:id/change-times', (req, res, next) => {
     ]
   }
   ).then(events => {
+    console.log('req.body',req.body)
     events.update(req.body).then((updated) => {
       res.send(updated);
     })

@@ -5,7 +5,7 @@ import AddVisitForm from './addvisitform';
 const VisitModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, handleSliderChange, parkList, nowString, onEdit, handleEdit, slider, noPark } = props
   return (
-    <Modal open={props.show}>
+    <Modal open={props.show} onClose={props.onClose} style={{width: '75vw'}} >
       <Grid>
         <Button color="blue" style={{ marginLeft: 35, marginTop: 20}} onClick={() => props.onClose()}>Close</Button>
         { modalType === 'view' ?
