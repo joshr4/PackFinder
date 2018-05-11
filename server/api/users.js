@@ -258,25 +258,32 @@ router.put('/:id/updateAddress', (req, res, next) => {
     }]
   }).then(async user => {
     if (user.address) {
-      user.address.updateAttributes(req.body).then((updated) => {
+      user.address.updateAttributes(req.body.address).then((updated) => {
         res.send(updated)
       })
-    } else {
+    }
 
-      await Address.create(req.body)
-        .then(async address => {
-          // console.log('address created', address)
-          await user.setAddress(address)
-          // console.log('updatedAddres', updatedAddress)
-          // let updatedUser = await user.update()
-          // console.log('user address set', user)
-          // .then(updatedUser => res.send(updatedUser))
-          // res.send(user)
-          return user
-        })
-      // .then(updatedUser => res.send(updatedUser))
-      //If I res.send(user) the addressId doesnt save, but if I dont it does
-      res.send(user)
+    else {
+
+      const newAddress = await Address.create(req.body.address)
+
+      user.setAddress(newAddress)
+        // .then(async address => {
+        //   // console.log('address created', address)
+        //   await user.setAddress(address)
+        //   // console.log('updatedAddres', updatedAddress)
+        //   // let updatedUser = await user.update()
+        //   // console.log('user address set', user)
+        //   // .then(updatedUser => res.send(updatedUser))
+        //   // res.send(user)
+        //   return user
+        // })
+        // .then(updated => {
+        // // .then(updatedUser => res.send(updatedUser))
+        // //If I res.send(user) the addressId doesnt save, but if I dont it does
+
+        res.send(newAddress)
+        // })
     }
 
   })

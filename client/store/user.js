@@ -6,9 +6,10 @@ import history from '../history';
  */
 const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
-const UPDATE_USER = 'UPDATE_USER';
+// const UPDATE_USER = 'UPDATE_USER';
 const SAVE_USER_CHANGES = 'SAVE_USER_CHANGES';
-
+const UPDATED_USER_ADDRESS = 'UPDATED_USER_ADDRESS';
+const UPDATED_USER_INFO = 'UPDATED_USER_INFO';
 /**
  * INITIAL STATE
  */
@@ -21,44 +22,77 @@ const getUser = user => ({
   type: GET_USER,
   user,
 });
+
 const removeUser = () => ({
   type: REMOVE_USER,
 });
-const update = (value, type) => ({
-  type: UPDATE_USER,
-  update: {
-    type,
-    value,
-  },
-});
+
+// const update = (value, type) => ({
+//   type: UPDATE_USER,
+//   update: {
+//     type,
+//     value,
+//   },
+// });
+
 const save = userUpdate => ({
   type: SAVE_USER_CHANGES,
   userUpdate,
+});
+
+const updatedAddress = address => ({
+  type: UPDATED_USER_ADDRESS,
+  address,
+});
+
+const updatedUser = user => ({
+  type: UPDATED_USER_INFO,
+  user,
 });
 
 /**
  * THUNK CREATORS
  */
 
-export const submiteUserUpdate = userUpdate => async dispatch => {
-  try {
-    await axios.put(
-      `/api/users/${userUpdate.id}/updateAddress`,
-      userUpdate.address
-    );
-    const updatedUser = await axios.put(
-      `/api/users/${userUpdate.id}/updateUser`,
-      userUpdate
-    );
-    dispatch(save(updatedUser.data || defaultUser));
-  } catch (err) {
-    console.log(err);
-  }
-};
+export const updateUserAddresses = (userUpdate) => dispatch =>
+{
+  return axios
+    .put(`/api/users/${userUpdate.id}/updateAddress`, userUpdate)
+    .then(res => dispatch(updatedAddress(res.data)))
+    .catch(err => console.log(err));
+}
 
-export const updateUserStore = (value, type) => dispatch => {
-  dispatch(update(value, type));
-};
+export const updateUserInfo = (userUpdate) => dispatch =>
+{
+  axios
+    .put(`/api/users/${userUpdate.id}/updateUser`, userUpdate)
+    .then(res => dispatch(updatedUser(res.data)))
+    .catch(err => console.log(err));
+}
+
+// export const updateUser = (userData) => {
+//   return dispatch => (Promise.all([updatedAddress(userData),
+//   updateUserInfo(userData)]))
+// }
+// export const submiteUserUpdate = userUpdate => async dispatch => {
+//   try {
+//     await axios.put(
+//       `/api/users/${userUpdate.id}/updateAddress`,
+//       userUpdate.address
+//     );
+//     const updatedUser = await axios.put(
+//       `/api/users/${userUpdate.id}/updateUser`,
+//       userUpdate
+//     );
+//     dispatch(save(updatedUser.data || defaultUser));
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+// export const updateUserStore = (value, type) => dispatch => {
+//   dispatch(update(value, type));
+// };
 
 export const me = () => dispatch =>
   axios
@@ -106,21 +140,26 @@ export default function(state = defaultUser, action) {
       return action.user;
     case REMOVE_USER:
       return defaultUser;
-    case UPDATE_USER:
-      return typeof action.update.type === 'string'
-        ? {
-            ...state,
-            [action.update.type]: action.update.value,
-          }
-        : {
-            ...state,
-            address: {
-              ...state.address,
-              [action.update.type.address]: action.update.value,
-            },
-          };
+    // case UPDATE_USER:
+    //   return typeof action.update.type === 'string'
+    //     ? {
+    //         ...state,
+    //         [action.update.type]: action.update.value,
+    //       }
+    //     : {
+    //         ...state,
+    //         address: {
+    //           ...state.address,
+    //           [action.update.type.address]: action.update.value,
+    //         },
+    //       };
     case SAVE_USER_CHANGES:
       return action.userUpdate;
+    case UPDATED_USER_ADDRESS:
+      return { ...state, address: action.address }
+      // return action.user;
+    case UPDATED_USER_INFO:
+      return action.user;
     default:
       return state;
   }
