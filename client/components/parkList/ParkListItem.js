@@ -33,7 +33,7 @@ class ParkListItem extends Component {
           </Grid.Column>
           <Grid.Column width={5}>
           <h3> {currentPark.name}</h3>
-          Rating: <div className="ui star rating" data-rating="4"></div>
+          <h4>{currentPark.address.location.distance} mi away</h4>
           </Grid.Column>
           <Grid.Column width={5}>
           <h4>{currentPark.address.line_1}</h4>
@@ -42,7 +42,7 @@ class ParkListItem extends Component {
           <Grid.Column width={3}>
 
 
-          <Button onClick={this.clickHandler.bind(this)}>
+          <Button style={{backgroundColor: '#54B8BF', color: 'white'}} onClick={this.clickHandler.bind(this)}>
           See Details</Button>
           </Grid.Column>
           </Grid>
