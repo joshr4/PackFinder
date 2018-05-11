@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button, Image } from 'semantic-ui-react';
 import faker from 'faker';
-import { getNearByUsersInfo, getGeolocation } from '../store';
-import history from '../history';
+import { getNearByUsersInfo, getGeolocation } from '../../store';
+import history from '../../history';
 
 /**
  * COMPONENT
  */
 
 export const NearbyParks = props => {
-  console.log('props', props);
   const { park } = props;
   return (
     <Feed.Event>
