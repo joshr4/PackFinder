@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
       attributes: ['id', 'email', 'fullName', 'firstName', 'lastName', 'imageUrl'],
       include: [{
         all: true
-      }, ],
+      }],
     })
     .then(users => res.json(users))
     .catch(next)

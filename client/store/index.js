@@ -9,6 +9,11 @@ import location from './location'
 import pets from './pets'
 import friends from './friends'
 import events from './events'
+import nearbyUsers from './nearby-users'
+import messages from './messages'
+import socket from '../socket'
+
+const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, nearbyUsers, messages})
 import friendsList from './friends-list-reducer'
 
 const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, friendsList})
@@ -17,6 +22,7 @@ const middleware = composeWithDevTools(applyMiddleware(
   createLogger({collapsed: true})
 ))
 const store = createStore(reducer, middleware)
+console.log("store.getState from store.js: ", store.getState());
 
 export default store
 export * from './user'
@@ -26,4 +32,6 @@ export * from './location'
 export * from './pets'
 export * from './friends'
 export * from './events'
+export * from './nearby-users'
+export * from './messages'
 export * from './friends-list-reducer'
