@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Segment, Grid, Image, List, Button } from 'semantic-ui-react';
-import { EditUserModal } from '.';
+import { EditUserModal } from '../index.js';
 
 /**
  * COMPONENT

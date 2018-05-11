@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react';
-import { PetProfileItem, UserProfileItem, PetModal } from '.';
-import { getPets, deletePet, updatePet, addPet } from '../store';
+import { PetProfileItem, UserProfileItem, PetModal } from '../index.js';
+import { getPets, deletePet, updatePet, addPet } from '../../store';
 
 /**
  * COMPONENT
@@ -24,6 +24,7 @@ class Profile extends React.Component {
         id: undefined,
         userId: undefined,
       },
+      user: {},
       isUpdatePet: false,
     };
     this.togglePetModal = this.togglePetModal.bind(this);
@@ -82,6 +83,7 @@ class Profile extends React.Component {
     });
   };
   render() {
+
     const { userPets } = this.props;
     return (
       <div>
