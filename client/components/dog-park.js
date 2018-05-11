@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Map, ParkListItem, VisitModal } from './index.js';
+import { SingleParkMap, ParkListItem, VisitModal } from './index.js';
 import moment from 'moment';
 import {
   Button,
@@ -148,8 +148,8 @@ export class DogPark extends Component {
         address: {
         line_1: '',
         location: {
-          lat: "",
-          lng: ""
+          lat: 41.895266,
+          lng: -87.6412237,
         }
       }
     },
@@ -180,26 +180,11 @@ export class DogPark extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.addEvent = this.addEvent.bind(this);
   }
-  mapMoved(){
-
-    const tempLocation = this.state.map.getCenter().toJSON();
-
-    this.setState({location: {
-        lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
-        lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
-    }, () => {console.log(this.state.location)})
-
-  }
-
-
-  zoomChanged(){
-  }
 
   mapLoaded(map){
     if (this.state.map !== null){
       return
     }
-
     this.setState({ map })
   }
 
@@ -466,11 +451,7 @@ export class DogPark extends Component {
     //     }
     //   }
     // ]
-    const markers = [
-      {address:{
-        location:this.state.park.address.location}
-      }
-    ]
+
     return (
 
       <div>
@@ -511,13 +492,10 @@ export class DogPark extends Component {
           <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
         </Grid.Column>
         <Grid.Column width={8}>
-            <Map
+            <SingleParkMap
             zoom={15}
             center={this.state.park.address.location}
-            markers={markers}
-            mapMoved={this.mapMoved.bind(this)}
             mapLoaded={this.mapLoaded.bind(this)}
-            zoomChanged={this.zoomChanged.bind(this)}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
           />
