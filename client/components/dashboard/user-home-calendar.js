@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
-import events from './events';
+import events from './../events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import BigCalendar from 'react-big-calendar';
@@ -9,10 +9,10 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { VisitModal } from './index';
-import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
+import { VisitModal } from './../index';
+import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../../store';
 import { connect } from 'react-redux';
-import { timeDisplay, dateDisplay } from './global'
+import { timeDisplay, dateDisplay } from './../global'
 import { isNull } from 'util';
 
 // import '../../public/calendar.css'

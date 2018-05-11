@@ -1,17 +1,22 @@
 const router = require('express').Router();
 const User = require('../db/models/user');
 const passport = require('passport');
-const { Address } = require('../db/models/');
+const {
+  Address,
+  Pet
+} = require('../db/models/');
 
 module.exports = router;
 
 router.post('/login', (req, res, next) => {
   User.findOne({
-    where: {
-      email: req.body.email,
-    },
-    include: [Address],
-  })
+      where: {
+        email: req.body.email,
+      },
+      include: [{
+        all: true,
+      } ],
+    })
     .then(user => {
       if (!user) {
         console.log('No such user found:', req.body.email);
@@ -52,17 +57,26 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
+<<<<<<< HEAD
       include: [{all:true}],
+=======
+      include: [{
+        all: true,
+      } ],
+>>>>>>> bbba9d50eae41ef39e1301b57d27b4106c8992a4
     }).then(user => {
       res.json(user);
     });
   } else {
-    res.json(req.user)
+    res.json(req.user);
   }
 });
 
-router.get('/auth/google', 
-    passport.authenticate('google', { scope: 'email' })
+router.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: 'email',
+  })
 );
 
 router.use('/google', require('./google'));
