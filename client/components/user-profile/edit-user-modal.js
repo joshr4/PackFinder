@@ -9,8 +9,8 @@ import {
   TextArea,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { EditImageModal } from '.';
-import { updateUserStore, submiteUserUpdate } from '../store';
+import { EditImageModal } from '../index.js';
+import { updateUserStore, submiteUserUpdate } from '../../store';
 
 export const EditUserModal = props => {
   const {
