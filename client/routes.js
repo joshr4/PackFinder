@@ -29,7 +29,7 @@ class Routes extends Component {
         <Route path="/example" component={Example} />
         <Route path="/parkList" component={ParkList} />
         <Route path="/calendar" component={Dnd} />
-        <Route path="/event" component={EventDetail} />
+        <Route path="/event/:id" component={EventDetail} />
         {
           isLoggedIn &&
             <Switch>
