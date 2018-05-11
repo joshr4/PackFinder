@@ -16,6 +16,11 @@ class Map extends Component {
   render() {
     // const mapKey = 'AIzaSyCcL9Cp8Qdi3dT9U5Iimud0LcDowumqomY';
 
+    const OPTIONS = {
+      minZoom: 11,
+    }
+
+
     const markers = this.props.markers.map((park, i) => {
 
       let icon = {}
@@ -53,6 +58,7 @@ class Map extends Component {
     return (
       <GoogleMap
       ref={this.props.mapLoaded}
+      options={OPTIONS}
       onDragEnd={this.props.mapMoved}
       onZoomChanged={this.props.zoomChanged}
       defaultZoom={this.props.zoom}
