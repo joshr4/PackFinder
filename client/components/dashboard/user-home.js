@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { NearbyUsers, UserHomeCalendar, NearbyParks } from '.';
+import { FriendsList, UserHomeCalendar, NearbyParks } from '../';
 import {
   getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
-} from '../store';
+} from '../../store';
 
 /**
  * COMPONENT
@@ -37,22 +37,17 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { nearbyUsers, parkList } = this.props;
+    const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={3} centered style={{ padding: '2em' }}>
+        <Grid columns={2} centered style={{ padding: '2em'}}>
           <Grid.Column>
             <Card style={{ width: '100%' }}>
               <Card.Content>
-                <Card.Header>Suggested friends</Card.Header>
+                <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content>
-                <Feed>
-                  {nearbyUsers[0] &&
-                    nearbyUsers.map(user => (
-                      <NearbyUsers key={user.id} user={user} />
-                    ))}
-                </Feed>
+              <Card.Content style={{height: '500px'}}>
+                {user && <FriendsList className="pack-list" user={user}  />}
               </Card.Content>
             </Card>
           </Grid.Column>
@@ -97,6 +92,7 @@ const mapStateToProps = state => {
     email: state.user.email.toString(),
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
+    user: state.user
   };
 };
 
