@@ -44,6 +44,11 @@ Message.belongsTo(User, {as:'to', foreignKey:'toId'});
 User.hasMany(Message, {as: 'outbox', foreignKey:'fromId'});
 User.hasMany(Message, {as: 'inbox', foreignKey:'toId'});
 
+// User (poster) posts message (posts) to event (event/eventId)
+Message.belongsTo(Event, {as:'event', foreignKey:'eventId'});
+Event.hasMany(Message, {as: 'messages', foreignKey:'eventId'});
+User.hasMany(Message, {as:'posts', foreignKey:'posterId'});
+Message.belongsTo(User, {as:'poster', foreignKey:'posterId'});
 //Park has getUsers, setUsers, addUser, addUsers as magic methods
   // User has many visits -> MtM to Park
   // Park has many visits -> MtM to User

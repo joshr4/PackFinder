@@ -52,7 +52,7 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: [Address],
+      include: [{all:true}],
     }).then(user => {
       res.json(user);
     });

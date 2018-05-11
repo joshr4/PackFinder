@@ -9,6 +9,10 @@ const Message = db.define('message', {
     content: {
         type: Sequelize.TEXT,
         defaultValue: null,
+    },
+    messageType: {
+        type: Sequelize.ENUM('private', 'public'),
+        defaultValue: 'private',
     }
 });
 
@@ -18,6 +22,12 @@ const Request = db.define('request', {
         defaultValue: false,
     },
 });
+
+const Post = db.define('post', {
+    content: {
+        type: Sequelize.TEXT
+    }
+})
 
 
 module.exports = {Message, Request}

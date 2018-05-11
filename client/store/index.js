@@ -10,13 +10,16 @@ import pets from './pets'
 import friends from './friends'
 import events from './events'
 import nearbyUsers from './nearby-users'
+import messages from './messages'
+import socket from '../socket'
 
-const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, nearbyUsers})
+const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, nearbyUsers, messages})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
 ))
 const store = createStore(reducer, middleware)
+console.log("store.getState from store.js: ", store.getState());
 
 export default store
 export * from './user'
@@ -27,3 +30,4 @@ export * from './pets'
 export * from './friends'
 export * from './events'
 export * from './nearby-users'
+export * from './messages'
