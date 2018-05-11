@@ -14,23 +14,23 @@ class ParkList extends Component {
         lat: 41.895266,
         lng: -87.6412237
       },
-      isHover: -1
+      isHover: -1,
+      range: 3218 // 2 miles
     }
-
 
   }
 
   componentDidMount() {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
-    this.props.getNearbyParks(this.state.location, 3218) //3218 = 2 miles in meters
+    this.props.getNearbyParks(this.state.location, this.state.range) //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
   }
 
   componentWillReceiveProps(nextProps){
     if (nextProps.userPosition !== this.props.userPosition){
       this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
-        this.props.getNearbyParks(this.state.location, 3218)})
+        this.props.getNearbyParks(this.state.location, this.state.range)})
     }
   }
 
@@ -41,7 +41,7 @@ class ParkList extends Component {
         lat: (Math.round(tempLocation.lat * 10000000) / 10000000),
         lng: (Math.round(tempLocation.lng * 10000000) / 10000000)}
     }, () => {
-      this.props.getNearbyParks(this.state.location, 3218)})
+      this.props.getNearbyParks(this.state.location, this.state.range)})
 
   }
 
@@ -106,7 +106,7 @@ class ParkList extends Component {
       <Grid.Column width={7}>
       <Sticky context={contextRef} offset={130}>
       <Map
-        zoom={13}
+        zoom={14}
         center={this.state.location}
         markers={markers}
         mapMoved={this.mapMoved.bind(this)}

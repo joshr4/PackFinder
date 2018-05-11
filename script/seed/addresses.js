@@ -2021,6 +2021,8 @@ const addresses = [{
   {
     line_1: '101 W SUPERIOR St #606',
     city: 'Chicago',
+    state: 'IL',
+    zipcode: '60654',
     location: {
       lat: 41.8954259,
       lng: -87.6317101
