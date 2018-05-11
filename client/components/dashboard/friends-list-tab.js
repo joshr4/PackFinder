@@ -14,11 +14,11 @@ export class FriendsListTab extends Component {
   };
 
   render() {
-    const { items } = this.props;
+    const { items, submit, user } = this.props;
     return (
       <Grid divided style={{ height: '75vh', overflow: 'scroll' }}>
         {items &&
-          items.map(item => <FriendsListItem key={item.id} item={item} />)}
+          items.map(item => <FriendsListItem user={user} submit={submit} key={item.id} item={item} />)}
       </Grid>
     );
   }

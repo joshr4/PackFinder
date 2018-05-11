@@ -21,7 +21,7 @@ import {
  */
 
 export const FriendsListItem = props => {
-  const { imageUrl, address, fullName, pets, id } = props.item;
+  const { imageUrl, address, fullName, pets, id, submit } = props.item;
 
   return (
     <Grid.Row columns={2} style={{padding: '1.5em 0px' }}>
@@ -43,7 +43,7 @@ export const FriendsListItem = props => {
                 icon="globe"
                 content={`${address.location.distance} mi away`}
               />}
-              <Button size="tiny" name="add">
+              <Button onClick={() => submit(user.id, id )} size="tiny" name="add">
                 send request
               </Button>
             </Grid.Row>
@@ -56,11 +56,7 @@ export const FriendsListItem = props => {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    email: state.user.email,
-  };
-};
+const mapState = ({user}) => ({user}) 
 
 const mapDispatch = dispatch => {
   return {

@@ -57,13 +57,7 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-<<<<<<< HEAD
       include: [{all:true}],
-=======
-      include: [{
-        all: true,
-      } ],
->>>>>>> bbba9d50eae41ef39e1301b57d27b4106c8992a4
     }).then(user => {
       res.json(user);
     });
