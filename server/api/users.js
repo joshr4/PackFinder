@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
       attributes: ['id', 'email', 'fullName', 'firstName', 'lastName', 'imageUrl'],
       include: [{
         all: true
-      }, ],
+      }],
     })
     .then(users => res.json(users))
     .catch(next)
@@ -55,8 +55,15 @@ router.get('/:id', (req, res, next) => {
       id: req.params.id
     },
     include: [{
-      all: true
-    }]
+        all: true
+      },
+      // {
+      //   model: User,
+      //   as: 'Requesters',
+      //   required: false,
+      //   include: [{model:Pets, required:false}]
+      // }
+    ]
   }).then(user => {
     res.json(user);
   })
@@ -74,18 +81,60 @@ router.get('/:id/friends', (req, res, next) => {
     res.json(user.friends);
   })
 })
-
-router.get('/:id/sent-requests', async (req, res, next) => {
-  let user = await User.findById(req.params.id);
-  let requestees = await user.getRequestees();
-  res.json(requestees);
+router.get('/:id/received-requests', (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [{
+      model: User,
+      as: 'Requesters',
+      required: false,
+      include: [{
+        all: true
+        // model: Pet,
+        // required: false
+      }]
+    }]
+  }).then(user => {
+    res.json(user.Requesters);
+  })
 })
 
-router.get('/:id/received-requests', async (req, res, next) => {
-  let user = await User.findById(req.params.id);
-  let requesters = await user.getRequesters();
-  res.json(requesters);
+router.get('/:id/sent-requests', (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [{
+      model: User,
+      as: 'Requestees',
+      required: false,
+      include: [{
+        all: true
+        // model: Pet,
+        // required: false
+      }]
+    }]
+  }).then(user => {
+    res.json(user.Requestees);
+  })
 })
+
+
+// router.get('/:id/sent-requests', async (req, res, next) => {
+//   console.log('Got to the sent-requests')
+//   let user = await User.findById(req.params.id);
+//   let requestees = await user.getRequestees();
+//   res.json(requestees);
+// })
+
+// router.get('/:id/received-requests', async (req, res, next) => {
+//   console.log('inside receive reqs')
+//   let user = await User.findById(req.params.id);
+//   let requesters = await user.getRequesters();
+//   res.json(requesters);
+// })
 
 router.put('/:id/approve-request', async (req, res, next) => {
   let user = await User.findById(req.params.id);
@@ -95,7 +144,7 @@ router.put('/:id/approve-request', async (req, res, next) => {
   await friendIduser.removeRequestee(user);
   await user.addFriend(friendIduser);
   await friendIduser.addFriend(user);
-  res.json(requesters);
+  res.json(friendIduser);
 })
 
 router.post('/:id/friend-request', async (req, res, next) => {
@@ -224,9 +273,9 @@ router.put('/:id/updateAddress', (req, res, next) => {
           // res.send(user)
           return user
         })
-        // .then(updatedUser => res.send(updatedUser))
-        //If I res.send(user) the addressId doesnt save, but if I dont it does
-        res.send(user)
+      // .then(updatedUser => res.send(updatedUser))
+      //If I res.send(user) the addressId doesnt save, but if I dont it does
+      res.send(user)
     }
 
   })
