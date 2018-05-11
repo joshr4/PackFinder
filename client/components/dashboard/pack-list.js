@@ -32,10 +32,17 @@ export const PackList = props => {
     },
     {
       menuItem: {
-        key: 'suggested',
-        content: 'suggested',
+        key: 'nearby users',
+        content: 'nearby users',
       },
       render: () => <Tab.Pane><PackListTab items={nearbyUsers}/></Tab.Pane>,
+    },
+    {
+      menuItem: {
+        key: 'sent',
+        content: 'sent',
+      },
+      render: () => <Tab.Pane><PackListTab items={user.Requestees}/></Tab.Pane>,
     },
     {
       // menuItem: (

@@ -56,7 +56,14 @@ router.get('/:id', (req, res, next) => {
     },
     include: [{
       all: true
-    }]
+    },
+    // {
+    //   model: User,
+    //   as: 'Requesters',
+    //   required: false,
+    //   include: [{model:Pets, required:false}]
+    // }
+  ]
   }).then(user => {
     res.json(user);
   })

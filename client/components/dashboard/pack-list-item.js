@@ -22,17 +22,14 @@ import {
 
 export const PackListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
-  console.log('props in list', props);
-  console.log('inside pack list item');
 
   return (
-    <div>
-      <Grid.Row columns={2}>
-        <Grid.Column width={4}>
-          <img style={{ width: '60px', borderRadius: '6em' }} src={imageUrl} />
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <Grid>
+    <Grid.Row columns={2} style={{padding: '1.5em 0px' }}>
+      <Grid.Column width={4}>
+        <img style={{ width: '60px', borderRadius: '6em' }} src={imageUrl} />
+      </Grid.Column>
+      <Grid.Column width={12}>
+        <Grid>
             <Grid.Row style={{ padding: '0' }}>
               <Header as="a">{fullName}</Header>
               <Image
@@ -42,18 +39,17 @@ export const PackListItem = props => {
               />
             </Grid.Row>
             <Grid.Row style={{ padding: '0' }}>
-              <Label
+              {address.location.distance && <Label
                 icon="globe"
                 content={`${address.location.distance} mi away`}
-              />
+              />}
               <Button size="tiny" name="add">
                 send request
               </Button>
             </Grid.Row>
           </Grid>
-        </Grid.Column>
-      </Grid.Row>
-    </div>
+      </Grid.Column>
+    </Grid.Row>
   );
 };
 

@@ -1,21 +1,39 @@
 const router = require('express').Router();
 const User = require('../db/models/user');
 const passport = require('passport');
-const { Address } = require('../db/models/');
+const {
+  Address,
+  Pet
+} = require('../db/models/');
 
 module.exports = router;
 
 router.post('/login', (req, res, next) => {
   User.findOne({
-    where: {
-      email: req.body.email,
-    },
-    include: [
-      {
-        all: true,
+      where: {
+        email: req.body.email,
       },
-    ],
-  })
+      include: [{
+          all: true,
+        },
+        // {
+        //   model: User,
+        //   as: 'Requesters',
+        //   required: false,
+        //   include: [{
+        //     all: true
+        //   }]
+        // },
+        // {
+        //   model: User,
+        //   as: 'Requestees',
+        //   required: false,
+        //   include: [{
+        //     all: true
+        //   }]
+        // }
+      ],
+    })
     .then(user => {
       if (!user) {
         console.log('No such user found:', req.body.email);
@@ -56,10 +74,26 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: [
-        {
+      include: [{
           all: true,
         },
+        // {
+        //   model: User,
+        //   as: 'Requesters',
+        //   required: false,
+        //   include: [{
+        //     model: Pet
+        //   }
+        // ]
+        // }, {
+        //   model: User,
+        //   as: 'Requestees',
+        //   required: false,
+        //   include: [{
+        //     model: Pet
+        //   }
+        // ]
+        // }
       ],
     }).then(user => {
       res.json(user);
