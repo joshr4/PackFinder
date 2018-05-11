@@ -40,14 +40,14 @@ export class UserHome extends Component {
     const { nearbyUsers, parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={2} centered style={{ padding: '2em' }}>
+        <Grid columns={2} centered style={{ padding: '2em'}}>
           <Grid.Column>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content>
-                {user && <PackList user={user} nearbyUsers={nearbyUsers} />}
+              <Card.Content style={{height: '500px'}}>
+                {user && <PackList className="pack-list" user={user} nearbyUsers={nearbyUsers} />}
               </Card.Content>
             </Card>
           </Grid.Column>

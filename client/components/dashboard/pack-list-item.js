@@ -10,6 +10,10 @@ import {
   Label,
   Menu,
   Tab,
+  Header,
+  Segment,
+  Divider,
+  Item,
 } from 'semantic-ui-react';
 
 /**
@@ -17,25 +21,62 @@ import {
  */
 
 export const PackListItem = props => {
-  const { imageUrl, address, firstName, pets  } = props.item;
-  console.log('props in list', props)
-  console.log('inside pack list item')
+  const { imageUrl, address, fullName, pets, id } = props.item;
+  console.log('props in list', props);
+  console.log('inside pack list item');
   return (
-    <Feed.Event>
-      <Feed.Label image={imageUrl} />
-      <Feed.Content>
-        {/* <Feed.Date content={`${address.location.distance} mi away`} /> */}
-        <Feed.Summary>{`${firstName}'s pack:`}</Feed.Summary>
-        <Feed.Extra images>
-          {/* <Image size="large" src={pets[0].imageUrls[0]} /> */}
-        </Feed.Extra>
-        <Feed.Extra>
+    <Item>
+      <Item.Image rounded size="tiny" src={imageUrl} />
+
+      <Item.Content>
+        <Item.Header as="a">{fullName}</Item.Header>
+        <Item.Meta>
+          {/* <span className="cinema">test</span> */}
+        </Item.Meta>
+        <Item.Description>
+          <Image size="tiny" rounded src={pets[0].imageUrls[0]} />
+        </Item.Description>
+        <Item.Extra>
+          <Label
+            icon="globe"
+            content={`${address.location.distance} mi away`}
+          />
           <Button size="tiny" name="add">
-            request friend
+            send request
           </Button>
-        </Feed.Extra>
-      </Feed.Content>
-    </Feed.Event>
+        </Item.Extra>
+      </Item.Content>
+    </Item>
+
+    // <Segment.Group>
+    //   <Segment vertical>
+    //     <Image style={{ width: '4em' }} src={imageUrl} />
+
+    //     <Button size="tiny" name="add" floated="right">
+    //       send request
+    //     </Button>
+    //   </Segment>
+    //   <Segment>
+    //     <Image size="tiny" rounded src={pets[0].imageUrls[0]} />
+    //   </Segment>
+    // </Segment.Group>
+
+    // {/* <Feed.Event>
+    //   <Feed.Label style={{ width: '4em' }} image={imageUrl} />
+    //   <Feed.Content>
+    //     <Feed.Date content={`${address.location.distance} mi away`} />
+    //     <Feed.Summary>{`${firstName}'s pups:`}</Feed.Summary>
+    //     {pets && (
+    //       <Feed.Extra images>
+    //         <Image size="tiny" rounded src={pets[0].imageUrls[0]} />
+    //       </Feed.Extra>
+    //     )}
+    //     <Feed.Extra>
+    //
+    //     </Feed.Extra>
+    //   </Feed.Content>
+    // </Feed.Event>
+    // <Divider /> */}
   );
 };
 

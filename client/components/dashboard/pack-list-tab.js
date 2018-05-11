@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Grid,
   Card,
-  Feed,
+  Item,
   Button,
   Image,
   Label,
@@ -18,7 +18,7 @@ import { PackListItem } from '../';
 
 export const PackListTab = props => {
   const { items } = props;
-  return <Feed>{items && items.map(item => <PackListItem key={item.id} item={item} />)}</Feed>;
+  return <Item.Group divided style={{height: '75vh', overflow: 'scroll'}}>{items && items.map(item => <PackListItem key={item.id} item={item} />)}</Item.Group>;
 };
 
 /**
