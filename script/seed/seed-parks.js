@@ -757,14 +757,6 @@ const parks = [
     location: { lat: 37.8132825, lng: -89.0154788 }
   },
   {
-    name: 'Fred Anderson Dog Park',
-    line_1: '1615 S Wabash Ave',
-    city: 'Chicago',
-    state: 'IL',
-    zipcode: '60616',
-    location: { lat: 41.8596269, lng: -87.6256316 }
-  },
-  {
     name: 'Hawk Hollow Preserve',
     line_1: 'Bittersweet Dr and Stearns Rd',
     city: 'Bartlett',
@@ -862,11 +854,11 @@ const parks = [
   },
   {
     name: 'Montrose Dog Beach',
-    line_1: 'W Lawrence Ave / W Wilson Dr',
+    line_1: 'W Lawrence Ave & W Wilson Dr',
     city: 'Chicago',
     state: 'IL',
     zipcode: '60640',
-    location: { lat: 41.968939, lng: -87.678082 }
+    location: { lat: 41.9667119, lng: -87.6428465 }
   },
   {
     name: 'Belmont Harbor Beach',
