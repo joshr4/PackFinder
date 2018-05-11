@@ -18,7 +18,7 @@ import { PackListItem } from '../';
 
 export const PackListTab = props => {
   const { items } = props;
-  return <Item.Group divided style={{height: '75vh', overflow: 'scroll'}}>{items && items.map(item => <PackListItem key={item.id} item={item} />)}</Item.Group>;
+  return <Grid divided style={{height: '75vh', overflow: 'scroll'}}>{items && items.map(item => <PackListItem key={item.id} item={item} />)}</Grid>;
 };
 
 /**
