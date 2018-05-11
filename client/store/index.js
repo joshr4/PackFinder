@@ -9,9 +9,9 @@ import location from './location'
 import pets from './pets'
 import friends from './friends'
 import events from './events'
-import nearbyUsers from './nearby-users'
+import friendsList from './friends-list-reducer'
 
-const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, nearbyUsers})
+const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, friendsList})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -27,3 +27,4 @@ export * from './pets'
 export * from './friends'
 export * from './events'
 export * from './nearby-users'
+export * from './friends-list-reducer'
