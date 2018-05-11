@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal } from '../index.js';
+import { Map, ParkListItem, EventM, EventModal, SingleParkMap } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -40,7 +40,11 @@ export class EventDetail extends Component {
     this.state = {
       showModal: false,
       isUpdateModal: false,
-      map: {}
+      map: {},
+      event: {
+        id: parseInt(props.match.params.id),
+      },
+
     };
     this.toggleModal = this.toggleModal.bind(this)
   }
@@ -50,17 +54,23 @@ export class EventDetail extends Component {
       showModal: !this.state.showModal,
     });
   }
+  mapLoaded(map) {
+    if (this.state.map !== null) {
+      return
+    }
+    this.setState({ map })
+  }
 
   render() {
-    let {addEvent, updateEvent, deleteEvent} = this.props
-    let {showModal, isUpdateModal} = this.state
+    let { addEvent, updateEvent, deleteEvent } = this.props
+    let { showModal, isUpdateModal } = this.state
     return (
       <div>
         <EventModal
-        onClose={this.toggleModal}
-        showModal={showModal}
-        onSubmit={isUpdateModal ? updateEvent : addEvent}
-        onDelete={deleteEvent}
+          onClose={this.toggleModal}
+          showModal={showModal}
+          onSubmit={isUpdateModal ? updateEvent : addEvent}
+          onDelete={deleteEvent}
         />
         <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
           <Container text style={{ marginBottom: '2em' }}>
@@ -86,16 +96,22 @@ export class EventDetail extends Component {
                 </Segment>
               </Grid.Column>
               <Grid.Column width={8}>
-                <p>MAP HERE</p>
+                <SingleParkMap
+                  zoom={15}
+                  center={{ lat: 41.8781, lng: -87.6298 }}
+                  mapLoaded={this.mapLoaded.bind(this)}
+                  containerElement={<div style={{ height: `100%` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={16}>
                 <Segment>
                   <h4>What goes here</h4>
-            <Button positive style={{marginRight: 20, marginTop: 20}} onClick={() => this.toggleModal()}>Add Event</Button>
-            <Button color="blue" style={{marginRight: 20, marginTop: 20}} onClick={() => updateEvent({id: 1, private: true, description: 'teafasfasd'})}>Edit Event</Button>
-            <Button negative style={{marginRight: 20, marginTop: 20}} onClick={() => deleteEvent({id: 3})}>Delete Event</Button>
+                  <Button positive style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Add Event</Button>
+                  <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => updateEvent({ id: 1, private: true, description: 'teafasfasd' })}>Edit Event</Button>
+                  <Button negative style={{ marginRight: 20, marginTop: 20 }} onClick={() => deleteEvent({ id: 3 })}>Delete Event</Button>
                 </Segment>
               </Grid.Column>
             </Grid.Row>
