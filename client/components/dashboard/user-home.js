@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { PackList, UserHomeCalendar, NearbyParks } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks } from '../';
 import {
   getParksAddresses,
   getGeolocation,
@@ -37,7 +37,7 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { nearbyUsers, parkList, user } = this.props;
+    const { parkList, user } = this.props;
     return (
       <div className="container">
         <Grid columns={2} centered style={{ padding: '2em'}}>
@@ -47,7 +47,7 @@ export class UserHome extends Component {
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
               <Card.Content style={{height: '500px'}}>
-                {user && <PackList className="pack-list" user={user} nearbyUsers={nearbyUsers} />}
+                {user && <FriendsList className="pack-list" user={user}  />}
               </Card.Content>
             </Card>
           </Grid.Column>

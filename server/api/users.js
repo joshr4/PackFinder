@@ -83,12 +83,14 @@ router.get('/:id/friends', (req, res, next) => {
 })
 
 router.get('/:id/sent-requests', async (req, res, next) => {
+  console.log('Got to the sent-requests')
   let user = await User.findById(req.params.id);
   let requestees = await user.getRequestees();
   res.json(requestees);
 })
 
 router.get('/:id/received-requests', async (req, res, next) => {
+  console.log('inside receive reqs')
   let user = await User.findById(req.params.id);
   let requesters = await user.getRequesters();
   res.json(requesters);

@@ -6,6 +6,7 @@ import history from '../../history';
  */
 const GET_RECEIVED_REQUESTS = 'GET_RECEIVED_REQUESTS';
 const REMOVE_RECEIVED_REQUEST = 'REMOVE_RECEIVED_REQUEST';
+const APPROVE_RECEIVED_REQUEST = 'APPROVE_RECEIVED_REQUEST';
 
 /**
  * INITIAL STATE
@@ -15,24 +16,26 @@ const defaultList = []
 /**
  * ACTION CREATORS
  */
-const get = user => ({
+const get = receivedRequests => ({
   type: GET_RECEIVED_REQUESTS,
-  user,
+  receivedRequests,
 });
 const remove = () => ({
   type: REMOVE_RECEIVED_REQUEST,
+});
+const approve = () => ({
+  type: APPROVE_RECEIVED_REQUEST,
 });
 
 /**
  * THUNK CREATORS
  */
 
-export const getRecivedRequests = (userId) => dispatch =>
+export const getReceivedRequests = (userId) => dispatch =>
 axios
   .get(`/api/users/${userId}/received-requests`)
   .then(res => dispatch(get(res.data)))
   .catch(err => console.log(err));
-
 
 /**
  * REDUCER
@@ -40,7 +43,7 @@ axios
 export default function(state = defaultList, action) {
   switch (action.type) {
     case GET_RECEIVED_REQUESTS:
-    return action.sentRequests;
+    return action.receivedRequests;
     default:
       return state;
   }

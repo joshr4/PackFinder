@@ -16,9 +16,9 @@ const defaultList = []
 /**
  * ACTION CREATORS
  */
-const get = user => ({
+const get = sentRequests => ({
   type: GET_SENT_REQUESTS,
-  user,
+  sentRequests,
 });
 const remove = () => ({
   type: REMOVE_SENT_REQUEST,
@@ -33,11 +33,13 @@ const send = () => ({
  * THUNK CREATORS
  */
 
-export const getSentRequests = (userId) => dispatch =>
-axios
-  .get(`/api/users/${userId}/sent-requests`)
-  .then(res => dispatch(get(res.data)))
-  .catch(err => console.log(err));
+export const getSentRequests = (userId) => dispatch => {
+  console.log('hitting thunk getSent')
+  return axios
+    .get(`/api/users/${userId}/sent-requests`)
+    .then(res => dispatch(get(res.data)))
+    .catch(err => console.log(err));
+}
 
 
 /**

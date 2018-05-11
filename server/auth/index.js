@@ -14,25 +14,8 @@ router.post('/login', (req, res, next) => {
         email: req.body.email,
       },
       include: [{
-          all: true,
-        },
-        // {
-        //   model: User,
-        //   as: 'Requesters',
-        //   required: false,
-        //   include: [{
-        //     all: true
-        //   }]
-        // },
-        // {
-        //   model: User,
-        //   as: 'Requestees',
-        //   required: false,
-        //   include: [{
-        //     all: true
-        //   }]
-        // }
-      ],
+        all: true,
+      } ],
     })
     .then(user => {
       if (!user) {
@@ -75,26 +58,8 @@ router.get('/me', (req, res) => {
         id: req.user.id,
       },
       include: [{
-          all: true,
-        },
-        // {
-        //   model: User,
-        //   as: 'Requesters',
-        //   required: false,
-        //   include: [{
-        //     model: Pet
-        //   }
-        // ]
-        // }, {
-        //   model: User,
-        //   as: 'Requestees',
-        //   required: false,
-        //   include: [{
-        //     model: Pet
-        //   }
-        // ]
-        // }
-      ],
+        all: true,
+      } ],
     }).then(user => {
       res.json(user);
     });

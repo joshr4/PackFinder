@@ -20,7 +20,7 @@ import {
  * COMPONENT
  */
 
-export const PackListItem = props => {
+export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
 
   return (
@@ -32,14 +32,14 @@ export const PackListItem = props => {
         <Grid>
             <Grid.Row style={{ padding: '0' }}>
               <Header as="a">{fullName}</Header>
-              <Image
+              {pets && <Image
                 style={{ height: '80px', width: '80px' }}
                 rounded
                 src={pets[0].imageUrls[0]}
-              />
+              />}
             </Grid.Row>
             <Grid.Row style={{ padding: '0' }}>
-              {address.location.distance && <Label
+              {address && address.location && <Label
                 icon="globe"
                 content={`${address.location.distance} mi away`}
               />}
@@ -73,12 +73,12 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(PackListItem);
+export default connect(mapState, mapDispatch)(FriendsListItem);
 
 /**
  * PROP TYPES
  */
-PackListItem.propTypes = {
+FriendsListItem.propTypes = {
   email: PropTypes.string,
 };
 
