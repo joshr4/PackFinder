@@ -7,6 +7,7 @@ import {
   getSentRequests,
   getFriendsList,
   getReceivedRequests,
+  approveRequest
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -45,7 +46,7 @@ export class FriendsList extends Component{
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      submitApproveRequest, 
+      submitApproveRequest,
       user
     } = this.props;
     const panes = [
@@ -131,7 +132,7 @@ const mapDispatch = dispatch => {
     },
     submitApproveRequest(userId, senderId) {
       console.log('INSIDE APPROVE REQUEST')
-      return dispatch(approveRequest(userId));
+      return dispatch(approveRequest(userId, senderId));
     },
   };
 };

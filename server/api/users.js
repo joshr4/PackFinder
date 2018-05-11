@@ -78,7 +78,7 @@ router.get('/:id/friends', (req, res, next) => {
       all: true
     }]
   }).then(user => {
-    res.json(user.friends);
+    res.json(user.Friends);
   })
 })
 router.get('/:id/received-requests', (req, res, next) => {
@@ -137,6 +137,7 @@ router.get('/:id/sent-requests', (req, res, next) => {
 // })
 
 router.put('/:id/approve-request', async (req, res, next) => {
+  console.log('input backend', req.body)
   let user = await User.findById(req.params.id);
   let friendId = req.body.friendId;
   let friendIduser = await User.findById(friendId);

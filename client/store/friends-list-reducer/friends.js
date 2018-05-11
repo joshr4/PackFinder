@@ -48,7 +48,7 @@ export default function(state = defaultList, action) {
     case GET_FRIENDS_LIST:
     return action.friendsList;
     case ADD_FRIEND:
-    return [...state.friends, action.friend];
+    return [...state, action.friend];
     default:
       return state;
   }
