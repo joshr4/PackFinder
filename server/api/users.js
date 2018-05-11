@@ -81,7 +81,26 @@ router.get('/:id/friends', (req, res, next) => {
     res.json(user.friends);
   })
 })
+router.get('/:id/sent-requests', (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [{
+      model: User,
 
+    }]
+  }).then(user => {
+    res.json(user.friends);
+  })
+})
+
+// router.get('/:id/sent-requests', async (req, res, next) => {
+//   console.log('Got to the sent-requests')
+//   let user = await User.findById(req.params.id);
+//   let requestees = await user.getRequestees();
+//   res.json(requestees);
+// })
 router.get('/:id/sent-requests', async (req, res, next) => {
   console.log('Got to the sent-requests')
   let user = await User.findById(req.params.id);
