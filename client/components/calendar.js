@@ -60,15 +60,15 @@ class Dnd extends React.Component {
       modalType: 'view',
       user: {},
     };
-  this.moveEvent = this.moveEvent.bind(this);
-  this.removeEvent = this.removeEvent.bind(this);
-  this.toggleModal = this.toggleModal.bind(this);
-  this.openModal = this.openModal.bind(this);
-  this.handleChange = this.handleChange.bind(this);
-  this.handleFieldChange = this.handleFieldChange.bind(this);
-  this.handleSliderChange = this.handleSliderChange.bind(this);
-  this.updateEvent = this.updateEvent.bind(this);
-  this.addEvent = this.addEvent.bind(this);
+    this.moveEvent = this.moveEvent.bind(this);
+    this.removeEvent = this.removeEvent.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleSliderChange = this.handleSliderChange.bind(this);
+    this.updateEvent = this.updateEvent.bind(this);
+    this.addEvent = this.addEvent.bind(this);
   }
 
   componentDidMount() {
@@ -81,9 +81,9 @@ class Dnd extends React.Component {
     });
   }
 
-  async openModal(event, type){
+  async openModal(event, type) {
     let selEvent = event
-    if (type === 'view'){
+    if (type === 'view') {
       let year = event.start.getFullYear();
       let month = event.start.getMonth();
       let day = event.start.getDate();
@@ -98,7 +98,7 @@ class Dnd extends React.Component {
         selectedEvent: selEvent,
       })
     }
-    if (type === 'add'){
+    if (type === 'add') {
       await this.setState({
         selectedEvent: {
           id: null,
@@ -155,7 +155,7 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('startvalid',this.state.startValid)
+    console.log('startvalid', this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -201,18 +201,18 @@ class Dnd extends React.Component {
   handleChange = e => {
 
     this.setState({
-      selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
-      () => { this.validateField(e.target.name, e.target.value) })
-  })
+      selectedEvent: Object.assign(this.state.selectedEvent, { [e.target.name]: e.target.value },
+        () => { this.validateField(e.target.name, e.target.value) })
+    })
   }
 
   handleFieldChange = data => {
     this.setState({
-        selectedEvent: Object.assign(this.state.selectedEvent, {park: data.value}),
+      selectedEvent: Object.assign(this.state.selectedEvent, { park: data.value }),
     })
   }
   handleSliderChange = e => {
-    this.setState({ slider: e.target.value})
+    this.setState({ slider: e.target.value })
   }
 
   validateField = (fieldName, value) => {
@@ -242,12 +242,13 @@ class Dnd extends React.Component {
       default:
         break;
     }
-    this.setState({formErrors: fieldValidationErrors,
-                    startValid: startValid,
-                    endValid: endValid,
-                    visitDateValid: visitDateValid,
-                    parkValid: parkValid,
-                  }, this.validateForm);
+    this.setState({
+      formErrors: fieldValidationErrors,
+      startValid: startValid,
+      endValid: endValid,
+      visitDateValid: visitDateValid,
+      parkValid: parkValid,
+    }, this.validateForm);
   }
 
   render() {
@@ -285,11 +286,11 @@ class Dnd extends React.Component {
           step={30}
           min={new Date(0, 0, 0, 6, 0)}
           max={new Date(0, 0, 0, 23, 0)}
-          // max={new Date(0, 0, 0, 23, 0)}
+        // max={new Date(0, 0, 0, 23, 0)}
         />
         <Grid>
-        <Button positive style={{margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
-        <p style={{marginTop: 30 }}>Double click an event on the calendar to edit/delete</p>
+          <Button positive style={{ margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
+          <p style={{ marginTop: 30 }}>Double click an event on the calendar to edit/delete</p>
         </Grid>
       </div>
     );
@@ -312,7 +313,7 @@ const mapState = state => {
     return newVisit
   })
   //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
-  let dropDownParks = state.parkList.map( park => {
+  let dropDownParks = state.parkList.map(park => {
     let newPark = {
       key: park.id,
       value: park.id,

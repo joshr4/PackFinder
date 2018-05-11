@@ -50,10 +50,24 @@ export class EventDetail extends Component {
     this.props.getEvents()
   }
 
-  toggleModal() {
+  toggleModal(type) {
     this.setState({
+      isUpdateModal: type === 'update',
       showModal: !this.state.showModal,
     });
+  }
+
+  handleSubmit = (event) => {
+    let stateEvent = event
+    let year = parseInt(stateEvent.date.split('-')[0]);
+    let month = parseInt(stateEvent.date.split('-')[1]) - 1;
+    let day = parseInt(stateEvent.date.split('-')[2]);
+    let fromHour = parseInt(stateEvent.startTime.split(':')[0]);
+    let fromMin = parseInt(stateEvent.startTime.split(':')[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let newEvent = Object.assign(stateEvent, {start: startTime})
+    if (this.props.isUpdateModal) this.props.updateEvent(newEvent)
+    else this.props.addEvent(newEvent)
   }
 
   mapLoaded(map) {
@@ -68,14 +82,13 @@ export class EventDetail extends Component {
     let { showModal, isUpdateModal } = this.state
 
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
-    console.log('event', displayEvent)
     return (
       displayEvent ?
         <div>
           <EventModal
             onClose={this.toggleModal}
             showModal={showModal}
-            onSubmit={isUpdateModal ? updateEvent : addEvent}
+            handleSubmit={this.handleSubmit}
             onDelete={deleteEvent}
             isUpdateModal={isUpdateModal}
             item={displayEvent}
@@ -119,8 +132,8 @@ export class EventDetail extends Component {
                 <Grid.Column width={16}>
                   <Segment>
                     <h4>What goes here</h4>
-                    <Button positive style={{ marginRight: 20, marginTop: 20 }} onClick={() => addEvent()}>Add Event</Button>
-                    <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+                    <Button positive style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('add')}>Add Event</Button>
+                    <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('update')}>Edit Event</Button>
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
@@ -141,7 +154,6 @@ const mapState = state => {
 };
 
 const mapDispatch = (dispatch, ownProps) => {
-  console.log(ownProps)
   return {
     addEvent(event) {
       dispatch(addEvent(event));
