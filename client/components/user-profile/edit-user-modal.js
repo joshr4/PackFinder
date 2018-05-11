@@ -46,6 +46,19 @@ class EditUserModal extends Component {
     else if (evt.target.name === 'description'){
       tempUser.description = evt.target.value
     }
+    else if (evt.target.name === 'line_1'){
+      tempUser.address.line_1 = evt.target.value
+    }
+    else if (evt.target.name === 'city'){
+      tempUser.address.city = evt.target.value
+    }
+    else if (evt.target.name === 'state'){
+      tempUser.address.state = evt.target.value
+    }
+    else if (evt.target.name === 'zipcode'){
+      tempUser.address.zipcode = evt.target.value
+    }
+
     this.setState({user: tempUser})
 
   }
@@ -56,7 +69,7 @@ class EditUserModal extends Component {
     console.log('props: ', this.props)
 
     const {
-      updateFormFields,
+      // updateFormFields,
       saveUserChanges,
       toggleModal,
       toggleNestedModal,
@@ -90,7 +103,7 @@ class EditUserModal extends Component {
                   name="firstName"
                   placeholder="First name"
                   onChange={this.onChangeHandler.bind(this)}
-                  defaultValue={this.state.user.firstName}
+                  value={this.state.user.firstName}
                 />
                 <Form.Field
                   fluid
@@ -123,17 +136,15 @@ class EditUserModal extends Component {
                   value={this.state.user.description}
                 />
               </Form.Group>
-              {/* <Form.Group widths="equal">
+              <Form.Group widths="equal">
                 <Form.Field
                   fluid
                   control={Input}
-                  label="line_1"
+                  label="Street Address"
                   name="line_1"
                   placeholder="Address"
-                  onChange={e =>
-                    updateFormFields(e.target.value, { address: e.target.name })
-                  }
-                  value={user.address && user.address.line_1}
+                  onChange={this.onChangeHandler.bind(this)}
+                  value={this.state.user.address && this.state.user.address.line_1}
                 />
               </Form.Group>
               <Form.Group widths="equal">
@@ -143,10 +154,8 @@ class EditUserModal extends Component {
                   label="City"
                   name="city"
                   placeholder="City"
-                  onChange={e =>
-                    updateFormFields(e.target.value, { address: e.target.name })
-                  }
-                  value={user.address && user.address.city}
+                  onChange={this.onChangeHandler.bind(this)}
+                  value={this.state.user.address && this.state.user.address.city}
                 />
                 <Form.Field
                   fluid
@@ -154,10 +163,8 @@ class EditUserModal extends Component {
                   label="state"
                   name="state"
                   placeholder="State"
-                  onChange={e =>
-                    updateFormFields(e.target.value, { address: e.target.name })
-                  }
-                  value={user.address && user.address.state}
+                  onChange={this.onChangeHandler.bind(this)}
+                  value={this.state.user.address && this.state.user.address.state}
                 />
                 <Form.Field
                   fluid
@@ -165,12 +172,10 @@ class EditUserModal extends Component {
                   label="zip"
                   name="zipcode"
                   placeholder="Zip"
-                  onChange={e =>
-                    updateFormFields(e.target.value, { address: e.target.name })
-                  }
-                  value={user.address && user.address.zipcode}
+                  onChange={this.onChangeHandler.bind(this)}
+                  value={this.state.user.address && this.state.user.address.zipcode}
                 />
-              </Form.Group> */}
+              </Form.Group>
             </Form>
           </Modal.Description>
         </Modal.Content>
@@ -200,9 +205,9 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    updateFormFields(value, type) {
-      dispatch(updateUserStore(value, type));
-    },
+    // updateFormFields(value, type) {
+    //   dispatch(updateUserStore(value, type));
+    // },
     saveUserChanges(userUpdate) {
       dispatch(submiteUserUpdate(userUpdate));
     },

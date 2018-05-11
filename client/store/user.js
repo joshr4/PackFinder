@@ -6,7 +6,7 @@ import history from '../history';
  */
 const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
-const UPDATE_USER = 'UPDATE_USER';
+// const UPDATE_USER = 'UPDATE_USER';
 const SAVE_USER_CHANGES = 'SAVE_USER_CHANGES';
 
 /**
@@ -21,16 +21,19 @@ const getUser = user => ({
   type: GET_USER,
   user,
 });
+
 const removeUser = () => ({
   type: REMOVE_USER,
 });
-const update = (value, type) => ({
-  type: UPDATE_USER,
-  update: {
-    type,
-    value,
-  },
-});
+
+// const update = (value, type) => ({
+//   type: UPDATE_USER,
+//   update: {
+//     type,
+//     value,
+//   },
+// });
+
 const save = userUpdate => ({
   type: SAVE_USER_CHANGES,
   userUpdate,
@@ -56,9 +59,9 @@ export const submiteUserUpdate = userUpdate => async dispatch => {
   }
 };
 
-export const updateUserStore = (value, type) => dispatch => {
-  dispatch(update(value, type));
-};
+// export const updateUserStore = (value, type) => dispatch => {
+//   dispatch(update(value, type));
+// };
 
 export const me = () => dispatch =>
   axios
@@ -106,19 +109,19 @@ export default function(state = defaultUser, action) {
       return action.user;
     case REMOVE_USER:
       return defaultUser;
-    case UPDATE_USER:
-      return typeof action.update.type === 'string'
-        ? {
-            ...state,
-            [action.update.type]: action.update.value,
-          }
-        : {
-            ...state,
-            address: {
-              ...state.address,
-              [action.update.type.address]: action.update.value,
-            },
-          };
+    // case UPDATE_USER:
+    //   return typeof action.update.type === 'string'
+    //     ? {
+    //         ...state,
+    //         [action.update.type]: action.update.value,
+    //       }
+    //     : {
+    //         ...state,
+    //         address: {
+    //           ...state.address,
+    //           [action.update.type.address]: action.update.value,
+    //         },
+    //       };
     case SAVE_USER_CHANGES:
       return action.userUpdate;
     default:
