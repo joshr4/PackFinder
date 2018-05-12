@@ -164,11 +164,11 @@ const mapDispatch = dispatch => {
       return dispatch(getReceivedRequests(userId));
     },
     submitApproveRequest(userId, senderId) {
-      console.log('INSIDE SUBMIT APPROVE REQUEST')
+      //console.log('INSIDE SUBMIT APPROVE REQUEST')
       return dispatch(approveRequest(userId, senderId));
     },
     sendFriendRequest(userId, senderId) {
-      console.log('INSIDE APPROVE REQUEST')
+      //console.log('INSIDE APPROVE REQUEST')
       return dispatch(addSentRequest(userId, senderId));
     },
     removeFriendRequest(userId, senderId) {
