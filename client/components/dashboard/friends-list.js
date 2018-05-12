@@ -9,7 +9,7 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-  sendfriendRequest
+  sendfriendRequest,
   removeSentRequest,
   removeFriend,
   declineRequest
