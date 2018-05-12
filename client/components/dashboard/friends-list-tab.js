@@ -15,6 +15,7 @@ export class FriendsListTab extends Component {
 
   render() {
     const { items, submit } = this.props;
+    console.log("submit: ", submit);
     return (
       <Grid divided style={{ height: '75vh', overflow: 'scroll' }}>
         {items &&
