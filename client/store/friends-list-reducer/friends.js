@@ -34,20 +34,19 @@ export const add = (friend) => ({
  * THUNK CREATORS
  */
 
-// export const addFriend = (friend) => dispatch => dispatch(add(friend))
 export const getFriendsList = (userId) => dispatch =>
   axios
   .get(`/api/users/${userId}/friends`)
   .then(res => dispatch(get(res.data || defaultList)))
   .catch(err => console.log(err));
 
-export const addFriend = (userId, friendId) => dispatch =>
-  axios
-  .put(`/api/users/${userId}/approve-request`, {
-    friendId
-  })
-  .then(res => dispatch(get(res.data || defaultList)))
-  .catch(err => console.log(err));
+// export const addFriend = (userId, friendId) => dispatch =>
+//   axios
+//   .put(`/api/users/${userId}/approve-request`, {
+//     friendId
+//   })
+//   .then(res => dispatch(get(res.data || defaultList)))
+//   .catch(err => console.log(err));
 
 export const removeFriend = (userId, friendId) => dispatch =>
   axios
