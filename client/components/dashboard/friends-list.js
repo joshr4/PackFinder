@@ -9,6 +9,7 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
+  sendfriendRequest
   removeSentRequest,
   removeFriend,
   declineRequest
@@ -26,7 +27,8 @@ export class FriendsList extends Component {
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      user,
+      sendfriendRequest,
+      user
     } = this.props;
     let loadFriendsList = [
       fetchFriendsList(user.id),
@@ -171,11 +173,11 @@ const mapDispatch = dispatch => {
       return dispatch(getReceivedRequests(userId));
     },
     submitApproveRequest(userId, senderId) {
-      // console.log('INSIDE APPROVE REQUEST')
+      //console.log('INSIDE SUBMIT APPROVE REQUEST')
       return dispatch(approveRequest(userId, senderId));
     },
     sendFriendRequest(userId, senderId) {
-      // console.log('INSIDE APPROVE REQUEST')
+      //console.log('INSIDE APPROVE REQUEST')
       return dispatch(addSentRequest(userId, senderId));
     },
     removeFriendRequest(userId, senderId) {
