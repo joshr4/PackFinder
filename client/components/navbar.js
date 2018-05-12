@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Header } from 'semantic-ui-react';
+import { Menu, Header, Responsive } from 'semantic-ui-react';
 import { SubNavbar } from '.';
 import history from '../history';
 // https://logomakr.com/4zlisz
@@ -67,30 +67,59 @@ export const Navbar = props => {
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}
-            <Menu.Item style={styles.menuItem} as={NavLink} name="home" to="/home" />
-            <Menu.Item style={styles.menuItem} onClick={handleClick} name="logout" to="/home" />
+            <NavLink to="/home">
+              <Responsive
+                as={Menu.Item}
+                minWidth={768}
+                style={styles.menuItem}
+                name="home"
+              />
+            </NavLink>
+            <NavLink to="/logout">
+              <Responsive
+                as={Menu.Item}
+                minWidth={768}
+                style={styles.menuItem}
+                onClick={handleClick}
+                name="logout"
+              />
+            </NavLink>
           </Menu.Menu>
         ) : (
-
           <Menu.Menu position="right">
             {/* The navbar will show these NavLinks before you log in */}
-            <Menu.Item style={styles.menuItem} as={NavLink} name="home" to="/parkList" />
-            <Menu.Item
-              style={styles.menuItem}
-              as={NavLink}
-              name="login"
-              to="/login"
-            />
-            <Menu.Item
-              style={styles.menuItem}
-              as={NavLink}
-              name="signup"
-              to="/signup"
-            />
+            <NavLink to="/parkList">
+              <Responsive
+                as={Menu.Item}
+                minWidth={768}
+                style={styles.menuItem}
+                name="home"
+              />
+            </NavLink>
+            <NavLink to="/login">
+              <Responsive
+                as={Menu.Item}
+                minWidth={768}
+                style={styles.menuItem}
+                name="login"
+              />
+            </NavLink>
+            <NavLink to="/signup">
+              <Responsive
+                as={Menu.Item}
+                minWidth={768}
+                style={styles.menuItem}
+                name="signup"
+              />
+            </NavLink>
           </Menu.Menu>
         )}
       </Menu>
-      {path !== '/' && isLoggedIn ? <SubNavbar /> : <div />}
+      {path !== '/' && isLoggedIn ? (
+        <Responsive as={SubNavbar} minWidth={768} />
+      ) : (
+        <div />
+      )}
     </div>
   );
 };
