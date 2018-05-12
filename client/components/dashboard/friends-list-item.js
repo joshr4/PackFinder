@@ -1,20 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Grid,
-  Card,
-  Feed,
-  Button,
-  Image,
-  Label,
-  Menu,
-  Tab,
-  Header,
-  Segment,
-  Divider,
-  Item,
-} from 'semantic-ui-react';
+import { Grid, Button, Image, Label, Header, Segment } from 'semantic-ui-react';
 
 /**
  * COMPONENT
@@ -22,41 +9,105 @@ import {
 
 export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
-  const { submit, user } = props;
-  // console.log('userID', user.id, 'senderID', id);
-
+  const { submit, user, remove } = props;
   return (
-    <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>
-      <Grid.Column width={4}>
-        <img style={{ width: '60px', borderRadius: '6em' }} src={imageUrl} />
-      </Grid.Column>
-      <Grid.Column width={12}>
-        <Grid>
-          <Grid.Row style={{ padding: '0' }}>
-            <Header as="a">{fullName}</Header>
-            {pets && (
-              <Image
-                style={{ height: '80px', width: '80px' }}
-                rounded
-                src={pets[0].imageUrls[0]}
+    <Segment style={{ margin: '0px', width: '100%' }}>
+      <Grid>
+        <Grid.Row style={{ padding: '0.25em', alignItems: 'center' }}>
+          <Header style={{ flex: 2, margin: '0' }} as="a">
+            {fullName}
+          </Header>
+          {address &&
+            address.location.distance && (
+              <Label
+                style={{ flex: 1, padding: '0.5em 0.5em' }}
+                icon="globe"
+                content={`${address.location.distance} mi away`}
               />
             )}
-          </Grid.Row>
-          <Grid.Row style={{ padding: '0' }}>
-            {address &&
-              address.location && (
-                <Label
-                  icon="globe"
-                  content={`${address.location.distance} mi away`}
+          <Button
+            style={{ flex: 1, padding: '0.5em 0.5em' }}
+            onClick={() => {
+              remove ? remove(user.id, id) : submit(user.id, id);
+            }}
+            size="tiny"
+            name="add"
+          >
+            {remove ? 'remove' : 'send Request'}
+          </Button>
+        </Grid.Row>
+        <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>
+          <Grid.Column width={4}>
+            <Grid.Row style={{ padding: '0' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  style={{ width: '60px', borderRadius: '6em' }}
+                  src={imageUrl}
                 />
-              )}
-            <Button onClick={() => submit(user.id, id)} size="tiny" name="add">
-              send request
-            </Button>
-          </Grid.Row>
-        </Grid>
-      </Grid.Column>
-    </Grid.Row>
+              </div>
+            </Grid.Row>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <Grid>
+              <Grid.Row style={{}}>
+                {pets &&
+                  pets.map(pet => (
+                    <div
+                      key={pet.id}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Image
+                        style={{
+                          height: '60px',
+                          width: '60px',
+                          borderRadius: '50%',
+                        }}
+                        rounded
+                        src={pet.imageUrls[0]}
+                      />
+                      <h4 style={{ margin: '0px' }}>{pet.name}</h4>
+                    </div>
+                  ))}
+              </Grid.Row>
+              {/* <Grid.Row
+                style={{
+                  padding: '0',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                {address &&
+                  address.location.distance && (
+                    <Label
+                      icon="globe"
+                      content={`${address.location.distance} mi away`}
+                    />
+                  )}
+                <Button
+                  onClick={() => {
+                    remove ? remove(user.id, id) : submit(user.id, id);
+                  }}
+                  size="tiny"
+                  name="add"
+                >
+                  {remove ? 'remove' : 'send Request'}
+                </Button>
+              </Grid.Row> */}
+            </Grid>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Segment>
   );
 };
 

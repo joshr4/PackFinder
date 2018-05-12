@@ -75,7 +75,12 @@ router.get('/:id/friends', (req, res, next) => {
       id: req.params.id
     },
     include: [{
-      all: true
+      model: User,
+      as: 'Friends',
+      required: false,
+      include: [{
+        all: true
+      }]
     }]
   }).then(user => {
     res.json(user.Friends);
@@ -140,7 +145,15 @@ router.put('/:id/approve-request', async (req, res, next) => {
   console.log('input backend', req.body)
   let user = await User.findById(req.params.id);
   let friendId = req.body.friendId;
-  let friendIduser = await User.findById(friendId);
+  let friendIduser = await User.findById(friendId, {
+    include: [{
+      model: Pet,
+      as: 'pets',
+      // include: [{
+      //   all: true
+      // }]
+    }]
+  });
   await user.removeRequester(friendIduser);
   await friendIduser.removeRequestee(user);
   await user.addFriend(friendIduser);
@@ -151,7 +164,12 @@ router.put('/:id/approve-request', async (req, res, next) => {
 router.post('/:id/friend-request', async (req, res, next) => {
   let friendId = req.body.friendId;
   let user = await User.findById(req.params.id);
-  let friendIduser = await User.findById(friendId);
+  let friendIduser = await User.findById(friendId, {
+    include: [{
+      model: Pet,
+      as: 'pets'
+    }]
+  });
   let reverseRequest = await user.getRequesters({
     where: {
       id: friendId
@@ -275,29 +293,27 @@ router.put('/:id/updateAddress', (req, res, next) => {
       user.address.updateAttributes(req.body.address).then((updated) => {
         res.send(updated)
       })
-    }
-
-    else {
+    } else {
 
       const newAddress = await Address.create(req.body.address)
 
       user.setAddress(newAddress)
-        // .then(async address => {
-        //   // console.log('address created', address)
-        //   await user.setAddress(address)
-        //   // console.log('updatedAddres', updatedAddress)
-        //   // let updatedUser = await user.update()
-        //   // console.log('user address set', user)
-        //   // .then(updatedUser => res.send(updatedUser))
-        //   // res.send(user)
-        //   return user
-        // })
-        // .then(updated => {
-        // // .then(updatedUser => res.send(updatedUser))
-        // //If I res.send(user) the addressId doesnt save, but if I dont it does
+      // .then(async address => {
+      //   // console.log('address created', address)
+      //   await user.setAddress(address)
+      //   // console.log('updatedAddres', updatedAddress)
+      //   // let updatedUser = await user.update()
+      //   // console.log('user address set', user)
+      //   // .then(updatedUser => res.send(updatedUser))
+      //   // res.send(user)
+      //   return user
+      // })
+      // .then(updated => {
+      // // .then(updatedUser => res.send(updatedUser))
+      // //If I res.send(user) the addressId doesnt save, but if I dont it does
 
-        res.send(newAddress)
-        // })
+      res.send(newAddress)
+      // })
     }
 
   })

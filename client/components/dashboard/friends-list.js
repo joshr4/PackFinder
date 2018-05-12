@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
   getNearByUsersInfo,
   getSentRequests,
@@ -9,7 +9,8 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-  // sendfriendRequest
+  sendfriendRequest
+  removeSentRequest,
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -17,9 +18,8 @@ import { FriendsListTab } from '../';
  * COMPONENT
  */
 
-export class FriendsList extends Component{
-
-  componentDidMount = () => {
+export class FriendsList extends Component {
+  componentDidMount = async () => {
     const {
       fetchFriendsList,
       fetchNearbyUsers,
@@ -28,16 +28,20 @@ export class FriendsList extends Component{
       sendfriendRequest,
       user
     } = this.props;
-    fetchFriendsList(user.id)
-    fetchReceivedRequests(user.id)
-    fetchSentRequests(user.id)
+    let loadFriendsList = [
+      fetchFriendsList(user.id),
+      fetchReceivedRequests(user.id),
+      fetchSentRequests(user.id),
+    ];
+    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
-  state = { activeIndex: 0 };
+  state = { activeIndex: 0, loading: true };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    // console.log('inside packList');
+    // console.log('state', this.state);
+
     const {
       nearbyUsers,
       friends,
@@ -50,12 +54,21 @@ export class FriendsList extends Component{
       fetchReceivedRequests,
       fetchSentRequests,
       submitApproveRequest,
-      sendfriendRequest,
-      user
+      sendFriendRequest,
+      removeFriendRequest,
+      user,
     } = this.props;
+    const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
+    const filteredNearbyUsers = nearbyUsers.filter(
+      nearbyUser => !sentRequestIds.includes(nearbyUser.id)
+    );
     const panes = [
       {
-        menuItem: { key: 'pack', content: 'pack' },
+        menuItem: (
+          <Menu.Item key="pack" style={{flex: '1', justifyContent: 'center'}}>
+            pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab fetchData={fetchFriendsList} items={friends} />
@@ -63,7 +76,11 @@ export class FriendsList extends Component{
         ),
       },
       {
-        menuItem: { key: 'requests', content: 'requests' },
+        menuItem: (
+          <Menu.Item key="requests" style={{flex: '1', justifyContent: 'center'}}>
+            requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -76,31 +93,33 @@ export class FriendsList extends Component{
         ),
       },
       {
-        menuItem: {
-          key: 'nearby users',
-          content: 'nearby users',
-        },
+        menuItem: (
+          <Menu.Item key="nearby users" style={{flex: '1', justifyContent: 'center'}}>
+            nearby users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab 
-            fetchData={fetchNearbyUsers} 
-            items={nearbyUsers} 
-            submit={sendfriendRequest}
-            user={user}
+            <FriendsListTab
+              fetchData={fetchNearbyUsers}
+              items={filteredNearbyUsers}
+              submit={sendFriendRequest}
             />
           </Tab.Pane>
         ),
       },
       {
-        menuItem: {
-          key: 'sent',
-          content: 'sent',
-        },
+        menuItem: (
+          <Menu.Item key="sent" style={{flex: '1', justifyContent: 'center'}}>
+            sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
               fetchData={fetchSentRequests}
               items={sentRequests}
+              remove={removeFriendRequest}
             />
           </Tab.Pane>
         ),
@@ -108,6 +127,11 @@ export class FriendsList extends Component{
     ];
     return (
       <Tab
+        // style={{alignItems: 'center' }}
+        menu={{ attached: true, tabular: false }}
+        renderActiveOnly
+        // onTabChange={(e, data ) => console.log('tab chg', e, 'data', data)}
+        loading={this.state.loading.toString()}
         panes={panes}
         activeIndex={this.state.activeIndex}
         onTabChange={this.handleTabChange}
@@ -139,13 +163,17 @@ const mapDispatch = dispatch => {
       // console.log('INSIDE FETCH RECEIVED REQS')
       return dispatch(getReceivedRequests(userId));
     },
-    sendfriendRequest(userId, senderId) {
-      console.log('INSIDE SEND FRIEND REQUESTs')
-      return dispatch(addSentRequest(userId, senderId));
-    },
     submitApproveRequest(userId, senderId) {
       console.log('INSIDE SUBMIT APPROVE REQUEST')
       return dispatch(approveRequest(userId, senderId));
+    },
+    sendFriendRequest(userId, senderId) {
+      console.log('INSIDE APPROVE REQUEST')
+      return dispatch(addSentRequest(userId, senderId));
+    },
+    removeFriendRequest(userId, senderId) {
+      // console.log('INSIDE CANCEL REQUEST');
+      return dispatch(removeSentRequest(userId, senderId));
     },
   };
 };
