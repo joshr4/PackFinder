@@ -22,7 +22,7 @@ const middleware = composeWithDevTools(applyMiddleware(
   createLogger({collapsed: true})
 ))
 const store = createStore(reducer, middleware)
-console.log("store.getState from store.js: ", store.getState());
+// console.log("store.getState from store.js: ", store.getState());
 
 export default store
 export * from './user'

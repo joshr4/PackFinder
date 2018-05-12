@@ -7,6 +7,7 @@ import {
   getSentRequests,
   getFriendsList,
   getReceivedRequests,
+  approveRequest
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -33,7 +34,7 @@ export class FriendsList extends Component{
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    console.log('inside packList');
+    // console.log('inside packList');
     const {
       nearbyUsers,
       friends,
@@ -45,7 +46,7 @@ export class FriendsList extends Component{
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      submitApproveRequest, 
+      submitApproveRequest,
       user
     } = this.props;
     const panes = [
@@ -130,8 +131,8 @@ const mapDispatch = dispatch => {
       return dispatch(getReceivedRequests(userId));
     },
     submitApproveRequest(userId, senderId) {
-      console.log('INSIDE APPROVE REQUEST')
-      return dispatch(approveRequest(userId));
+      // console.log('INSIDE APPROVE REQUEST')
+      return dispatch(approveRequest(userId, senderId));
     },
   };
 };
