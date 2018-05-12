@@ -29,20 +29,18 @@ const AddVisitForm = props => {
           />
       </Form.Field>
       {/* <Form.Field>
-        <label>To</label>
-        <Input
-          type="time"
-          name="end"
-          style={{ marginLeft: '0px' }}
-          defaultValue="20:00"
-          value={props.item.end}
-        />
-      </Form.Field> */}
-      <Form.Field>
         <div style={{marginTop: '25px'}} className="slidecontainer">
           <input type="range" min="1" max="6" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
           <p>{`Duration: ${props.slider * 30} minutes `}</p>
         </div>
+      </Form.Field> */}
+    </Form.Group>
+    <Form.Group widths="equal" >
+      <Form.Field>
+          <div style={{marginTop: '15px', width: '140px'}} className="slidecontainer">
+            <input type="range" min="1" max="6" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
+            <p>{`Duration: ${props.slider * 30} minutes `}</p>
+          </div>
       </Form.Field>
     </Form.Group>
     { props.noPark ? <div /> :
