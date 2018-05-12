@@ -21,11 +21,13 @@ const get = friendsList => ({
   type: GET_FRIENDS_LIST,
   friendsList,
 });
-const remove = () => ({
+const remove = (removed) => ({
   type: REMOVE_FRIEND,
+  removed
 });
 export const add = (friend) => ({
-  type: ADD_FRIEND, friend
+  type: ADD_FRIEND,
+  friend
 });
 
 /**
@@ -33,22 +35,41 @@ export const add = (friend) => ({
  */
 
 // export const addFriend = (friend) => dispatch => dispatch(add(friend))
-
 export const getFriendsList = (userId) => dispatch =>
-axios
+  axios
   .get(`/api/users/${userId}/friends`)
   .then(res => dispatch(get(res.data || defaultList)))
   .catch(err => console.log(err));
 
+export const addFriend = (userId, friendId) => dispatch =>
+  axios
+  .put(`/api/users/${userId}/approve-request`, {
+    friendId
+  })
+  .then(res => dispatch(get(res.data || defaultList)))
+  .catch(err => console.log(err));
+
+export const removeFriend = (userId, friendId) => dispatch =>
+  axios
+  .put(`/api/users/${userId}/friend-request/delete`, {
+    friendId
+  })
+  .then(res => dispatch(get(res.data || defaultList)))
+  .catch(err => console.log(err));
+
+// router.post('/:id/friend-request/delete', async (req, res, next) => {
+
 /**
  * REDUCER
  */
-export default function(state = defaultList, action) {
+export default function (state = defaultList, action) {
   switch (action.type) {
     case GET_FRIENDS_LIST:
-    return action.friendsList;
+      return action.friendsList;
     case ADD_FRIEND:
-    return [...state, action.friend];
+      return [...state, action.friend];
+    case REMOVE_FRIEND:
+      return state.filter(request => request.id !== action.removed.id);
     default:
       return state;
   }
