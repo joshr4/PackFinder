@@ -27,6 +27,13 @@ export {default as PetModal} from './user-profile/pet-modal'
 export {default as EditPetModal} from './user-profile/pet-modal'
 export {default as EditImageModal} from './user-profile/edit-image-modal'
 //Events stuff
+<<<<<<< HEAD
+=======
+// export {default as EditUserModal} from './edit-user-modal'
+// export {default as PetModal} from './pet-modal'
+// export {default as EditPetModal} from './pet-modal'
+// export {default as EditImageModal} from './edit-image-modal'
+>>>>>>> 9cf6db217e4bf53ceab417d7503a1118527e80fa
 export {default as EventDetail} from './events/event-detail'
 export {default as EventModal} from './events/event-modal'
 export {default as AddEventForm} from './events/event-form'

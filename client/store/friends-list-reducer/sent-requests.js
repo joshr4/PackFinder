@@ -65,7 +65,7 @@ export default function(state = defaultList, action) {
     case GET_SENT_REQUESTS:
       return action.sentRequests;
     case REMOVE_SENT_REQUEST:
-      return state.map(request => request.id != action.requestee.id);
+      return state.filter(request => request.id !== action.requestee.id);
     case SEND_REQUEST:
       return [...state, action.requestee]
     default:
