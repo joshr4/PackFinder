@@ -9,7 +9,6 @@ import { FriendsListItem } from '../';
 
 export class FriendsListTab extends Component {
   componentDidMount = () => {
-    // console.log('fetching data')
     const { fetchData, user } = this.props;
     fetchData(user.id);
   };
