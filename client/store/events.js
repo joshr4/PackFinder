@@ -18,7 +18,7 @@ const defaultEvents = [];
  * ACTION CREATORS
  */
 const getAllEvents = events => ({ type: GET_EVENTS, events });
-const delEvent = event => ({ type: DELETE_EVENT, event });
+const delEvent = eventId => ({ type: DELETE_EVENT, eventId });
 const updEvent = event => ({ type: UPDATE_EVENT, event });
 const addNewEvent = event => ({ type: ADD_EVENT, event });
 
@@ -31,10 +31,10 @@ export const getEvents = () => dispatch =>
     .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
     .catch(err => console.log(err));
 
-export const deleteEvent = event => dispatch =>
+export const deleteEvent = eventId => dispatch =>
   axios
-    .delete(`/api/events/${event.id}`)
-    .then(() => dispatch(delEvent(event || defaultEvents)))
+    .delete(`/api/events/${eventId}`)
+    .then(() => dispatch(delEvent(eventId || defaultEvents)))
     .catch(err => console.log(err));
 
 export const updateEvent = event => dispatch =>
@@ -46,7 +46,10 @@ export const updateEvent = event => dispatch =>
 export const addEvent = event => dispatch =>
   axios
     .post(`/api/events/`, event)
-    .then(res => dispatch(addNewEvent(res.data || defaultEvents)))
+    .then(res => {
+      dispatch(addNewEvent(res.data || defaultEvents))
+      history.push(`/event/${res.data.id}`)
+    })
     .catch(err => console.log(err));
 
 /**
@@ -61,7 +64,7 @@ export default function(state = defaultEvents, action) {
         event => (action.event.id !== event.id ? event : action.event)
       );
     case DELETE_EVENT:
-      return state.filter(event => action.event.id !== event.id);
+      return state.filter(event => action.eventId !== event.id);
     case ADD_EVENT:
       return [...state, action.event];
     default:
