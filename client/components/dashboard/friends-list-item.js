@@ -10,7 +10,6 @@ import { Grid, Button, Image, Label, Header, Segment } from 'semantic-ui-react';
 export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
   const { submit, user, activeIndex, decline } = props;
-  console.log('active friendslistitem', activeIndex);
   const buttonText = {
     0: 'Remove',
     1: 'Accept',
