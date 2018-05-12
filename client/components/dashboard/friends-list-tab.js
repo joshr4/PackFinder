@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Dimmer, Loader } from 'semantic-ui-react';
 import { FriendsListItem } from '../';
 /**
  * COMPONENT
@@ -9,19 +9,30 @@ import { FriendsListItem } from '../';
 
 export class FriendsListTab extends Component {
   componentDidMount = () => {
-    // const { fetchData, user } = this.props;
-    // fetchData(user.id);
+    // console.log('fetching data')
+    const { fetchData, user } = this.props;
+    fetchData(user.id);
   };
 
   render() {
-    const { items, submit, remove } = this.props;
+    const { items, submit, remove, loading } = this.props;
     if (!items) return <div />;
     return (
       <Grid divided style={{ height: '75vh', overflow: 'scroll' }}>
-        {items &&
+        {loading === 'true' ? (
+          <Dimmer active>
+            <Loader size="large">Loading</Loader>
+          </Dimmer>
+        ) : (
           items.map(item => (
-            <FriendsListItem remove={remove} submit={submit} key={item.id} item={item} />
-          ))}
+            <FriendsListItem
+              remove={remove}
+              submit={submit}
+              key={item.id}
+              item={item}
+            />
+          ))
+        )}
       </Grid>
     );
   }

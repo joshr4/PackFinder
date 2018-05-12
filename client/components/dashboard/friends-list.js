@@ -9,7 +9,7 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-  removeSentRequest
+  removeSentRequest,
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -18,7 +18,7 @@ import { FriendsListTab } from '../';
  */
 
 export class FriendsList extends Component {
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const {
       fetchFriendsList,
       fetchNearbyUsers,
@@ -26,14 +26,20 @@ export class FriendsList extends Component {
       fetchSentRequests,
       user,
     } = this.props;
-    fetchFriendsList(user.id);
-    fetchReceivedRequests(user.id);
-    fetchSentRequests(user.id);
+    let loadFriendsList = [
+      fetchFriendsList(user.id),
+      fetchReceivedRequests(user.id),
+      fetchSentRequests(user.id),
+    ];
+    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
-  state = { activeIndex: 0 };
+  state = { activeIndex: 0, loading: true };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
   render() {
+    // console.log('state', this.state);
+
     const {
       nearbyUsers,
       friends,
@@ -109,6 +115,9 @@ export class FriendsList extends Component {
     ];
     return (
       <Tab
+        renderActiveOnly
+        // onTabChange={(e, data ) => console.log('tab chg', e, 'data', data)}
+        loading={this.state.loading.toString()}
         panes={panes}
         activeIndex={this.state.activeIndex}
         onTabChange={this.handleTabChange}
@@ -149,7 +158,7 @@ const mapDispatch = dispatch => {
       return dispatch(addSentRequest(userId, senderId));
     },
     removeFriendRequest(userId, senderId) {
-      console.log('INSIDE CANCEL REQUEST')
+      // console.log('INSIDE CANCEL REQUEST');
       return dispatch(removeSentRequest(userId, senderId));
     },
   };
