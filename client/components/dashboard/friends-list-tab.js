@@ -9,14 +9,12 @@ import { FriendsListItem } from '../';
 
 export class FriendsListTab extends Component {
   componentDidMount = () => {
-    // console.log('fetching data')
     const { fetchData, user } = this.props;
     fetchData(user.id);
   };
 
   render() {
     const { items, submit, remove, loading } = this.props;
-    console.log("submit: ", submit);
     if (!items) return <div />;
     return (
       <Grid
