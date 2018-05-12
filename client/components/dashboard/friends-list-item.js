@@ -23,7 +23,7 @@ import {
 export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
   const { submit, user } = props;
-  console.log('userID', user.id, 'senderID', id);
+  // console.log('userID', user.id, 'senderID', id);
 
   return (
     <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>

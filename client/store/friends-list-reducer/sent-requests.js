@@ -33,7 +33,7 @@ const send = (requestee) => ({
  * THUNK CREATORS
  */
 export const getSentRequests = (userId) => dispatch => {
-  console.log('hitting thunk getSent')
+  // console.log('hitting thunk getSent')
   return axios
     .get(`/api/users/${userId}/sent-requests`)
     .then(res => dispatch(get(res.data)))
@@ -54,8 +54,8 @@ export const removeSentRequest = (userId, friendId) => dispatch => {
     .then(res => dispatch(remove(res.data)))
     .catch(err => console.log(err));
 }
-  
-  
+
+
 
 /**
  * REDUCER

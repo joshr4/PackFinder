@@ -34,7 +34,7 @@ export class FriendsList extends Component{
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    console.log('inside packList');
+    // console.log('inside packList');
     const {
       nearbyUsers,
       friends,
@@ -131,7 +131,7 @@ const mapDispatch = dispatch => {
       return dispatch(getReceivedRequests(userId));
     },
     submitApproveRequest(userId, senderId) {
-      console.log('INSIDE APPROVE REQUEST')
+      // console.log('INSIDE APPROVE REQUEST')
       return dispatch(approveRequest(userId, senderId));
     },
   };
