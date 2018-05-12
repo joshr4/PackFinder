@@ -18,7 +18,15 @@ export class FriendsListTab extends Component {
     const { items, submit, remove, loading } = this.props;
     if (!items) return <div />;
     return (
-      <Grid divided style={{ height: '75vh', overflow: 'scroll' }}>
+      <Grid
+        divided
+        style={{
+          height: '75vh',
+          overflow: 'scroll',
+          alignItems: 'baseline',
+          alignContent: 'baseline',
+        }}
+      >
         {loading === 'true' ? (
           <Dimmer active>
             <Loader size="large">Loading</Loader>
