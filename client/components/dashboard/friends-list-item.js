@@ -1,20 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Grid,
-  Card,
-  Feed,
-  Button,
-  Image,
-  Label,
-  Menu,
-  Tab,
-  Header,
-  Segment,
-  Divider,
-  Item,
-} from 'semantic-ui-react';
+import { Grid, Button, Image, Label, Header } from 'semantic-ui-react';
 
 /**
  * COMPONENT
@@ -22,9 +9,7 @@ import {
 
 export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
-  const { submit, user } = props;
-  // console.log('userID', user.id, 'senderID', id);
-
+  const { submit, user, remove } = props;
   return (
     <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>
       <Grid.Column width={4}>
@@ -50,8 +35,14 @@ export const FriendsListItem = props => {
                   content={`${address.location.distance} mi away`}
                 />
               )}
-            <Button onClick={() => submit(user.id, id)} size="tiny" name="add">
-              send request
+            <Button
+              onClick={() => {
+                remove ? remove(user.id, id) : submit(user.id, id);
+              }}
+              size="tiny"
+              name="add"
+            >
+              {remove ? 'remove' : 'send Request'}
             </Button>
           </Grid.Row>
         </Grid>

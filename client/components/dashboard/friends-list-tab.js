@@ -9,16 +9,19 @@ import { FriendsListItem } from '../';
 
 export class FriendsListTab extends Component {
   componentDidMount = () => {
-    const { fetchData, user } = this.props;
-    fetchData(user.id);
+    // const { fetchData, user } = this.props;
+    // fetchData(user.id);
   };
 
   render() {
-    const { items, submit } = this.props;
+    const { items, submit, remove } = this.props;
+    if (!items) return <div />;
     return (
       <Grid divided style={{ height: '75vh', overflow: 'scroll' }}>
         {items &&
-          items.map(item => <FriendsListItem submit={submit} key={item.id} item={item} />)}
+          items.map(item => (
+            <FriendsListItem remove={remove} submit={submit} key={item.id} item={item} />
+          ))}
       </Grid>
     );
   }
