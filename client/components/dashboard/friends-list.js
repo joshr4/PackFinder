@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
   getNearByUsersInfo,
   getSentRequests,
@@ -62,7 +62,11 @@ export class FriendsList extends Component {
     );
     const panes = [
       {
-        menuItem: { key: 'pack', content: 'pack' },
+        menuItem: (
+          <Menu.Item key="pack" style={{flex: '1', justifyContent: 'center'}}>
+            pack<Label floating>{friends.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab fetchData={fetchFriendsList} items={friends} />
@@ -70,7 +74,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: { key: 'requests', content: 'requests' },
+        menuItem: (
+          <Menu.Item key="requests" style={{flex: '1', justifyContent: 'center'}}>
+            requests<Label floating>{receivedRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -83,10 +91,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: {
-          key: 'nearby users',
-          content: 'nearby users',
-        },
+        menuItem: (
+          <Menu.Item key="nearby users" style={{flex: '1', justifyContent: 'center'}}>
+            nearby users<Label floating>{filteredNearbyUsers.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -98,10 +107,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: {
-          key: 'sent',
-          content: 'sent',
-        },
+        menuItem: (
+          <Menu.Item key="sent" style={{flex: '1', justifyContent: 'center'}}>
+            sent<Label floating>{sentRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -115,6 +125,8 @@ export class FriendsList extends Component {
     ];
     return (
       <Tab
+        // style={{alignItems: 'center' }}
+        menu={{ attached: true, tabular: false }}
         renderActiveOnly
         // onTabChange={(e, data ) => console.log('tab chg', e, 'data', data)}
         loading={this.state.loading.toString()}
