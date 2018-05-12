@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
   getNearByUsersInfo,
   getSentRequests,
@@ -9,7 +9,7 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-  removeSentRequest
+  removeSentRequest,
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -18,7 +18,7 @@ import { FriendsListTab } from '../';
  */
 
 export class FriendsList extends Component {
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const {
       fetchFriendsList,
       fetchNearbyUsers,
@@ -26,14 +26,20 @@ export class FriendsList extends Component {
       fetchSentRequests,
       user,
     } = this.props;
-    fetchFriendsList(user.id);
-    fetchReceivedRequests(user.id);
-    fetchSentRequests(user.id);
+    let loadFriendsList = [
+      fetchFriendsList(user.id),
+      fetchReceivedRequests(user.id),
+      fetchSentRequests(user.id),
+    ];
+    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
-  state = { activeIndex: 0 };
+  state = { activeIndex: 0, loading: true };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
   render() {
+    // console.log('state', this.state);
+
     const {
       nearbyUsers,
       friends,
@@ -56,7 +62,11 @@ export class FriendsList extends Component {
     );
     const panes = [
       {
-        menuItem: { key: 'pack', content: 'pack' },
+        menuItem: (
+          <Menu.Item key="pack" style={{flex: '1', justifyContent: 'center'}}>
+            pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab fetchData={fetchFriendsList} items={friends} />
@@ -64,7 +74,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: { key: 'requests', content: 'requests' },
+        menuItem: (
+          <Menu.Item key="requests" style={{flex: '1', justifyContent: 'center'}}>
+            requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -77,10 +91,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: {
-          key: 'nearby users',
-          content: 'nearby users',
-        },
+        menuItem: (
+          <Menu.Item key="nearby users" style={{flex: '1', justifyContent: 'center'}}>
+            nearby users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -92,10 +107,11 @@ export class FriendsList extends Component {
         ),
       },
       {
-        menuItem: {
-          key: 'sent',
-          content: 'sent',
-        },
+        menuItem: (
+          <Menu.Item key="sent" style={{flex: '1', justifyContent: 'center'}}>
+            sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
+          </Menu.Item>
+        ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
@@ -109,6 +125,11 @@ export class FriendsList extends Component {
     ];
     return (
       <Tab
+        // style={{alignItems: 'center' }}
+        menu={{ attached: true, tabular: false }}
+        renderActiveOnly
+        // onTabChange={(e, data ) => console.log('tab chg', e, 'data', data)}
+        loading={this.state.loading.toString()}
         panes={panes}
         activeIndex={this.state.activeIndex}
         onTabChange={this.handleTabChange}
@@ -149,7 +170,7 @@ const mapDispatch = dispatch => {
       return dispatch(addSentRequest(userId, senderId));
     },
     removeFriendRequest(userId, senderId) {
-      console.log('INSIDE CANCEL REQUEST')
+      // console.log('INSIDE CANCEL REQUEST');
       return dispatch(removeSentRequest(userId, senderId));
     },
   };
