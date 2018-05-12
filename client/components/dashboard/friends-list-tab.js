@@ -15,7 +15,8 @@ export class FriendsListTab extends Component {
   };
 
   render() {
-    const { items, submit, remove, loading } = this.props;
+    const { items, submit, decline, loading, activeIndex } = this.props;
+
     if (!items) return <div />;
     return (
       <Grid
@@ -34,7 +35,8 @@ export class FriendsListTab extends Component {
         ) : (
           items.map(item => (
             <FriendsListItem
-              remove={remove}
+              activeIndex={activeIndex}
+              decline={decline}
               submit={submit}
               key={item.id}
               item={item}
