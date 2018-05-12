@@ -40,14 +40,14 @@ export class UserHome extends Component {
     const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={2} centered style={{ padding: '2em'}}>
+        <Grid columns={2} centered style={{ padding: '0em 1em' }}>
           <Grid.Column>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{height: '500px'}}>
-                {user && <FriendsList className="pack-list" user={user}  />}
+              <Card.Content style={{ padding: '0px' }}>
+                {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
           </Grid.Column>
@@ -92,7 +92,7 @@ const mapStateToProps = state => {
     email: state.user.email.toString(),
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
-    user: state.user
+    user: state.user,
   };
 };
 

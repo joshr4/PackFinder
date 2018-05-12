@@ -64,7 +64,7 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="pack" style={{flex: '1', justifyContent: 'center'}}>
-            pack<Label floating>{friends.length}</Label>
+            pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -76,7 +76,7 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="requests" style={{flex: '1', justifyContent: 'center'}}>
-            requests<Label floating>{receivedRequests.length}</Label>
+            requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -93,7 +93,7 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="nearby users" style={{flex: '1', justifyContent: 'center'}}>
-            nearby users<Label floating>{filteredNearbyUsers.length}</Label>
+            nearby users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -109,7 +109,7 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="sent" style={{flex: '1', justifyContent: 'center'}}>
-            sent<Label floating>{sentRequests.length}</Label>
+            sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
