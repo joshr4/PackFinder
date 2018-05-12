@@ -15,7 +15,6 @@ const nearbyUsers = [];
  * ACTION CREATORS
  */
 const getNearbyUsers = users => ({ type: GET_NEARBY_USERS, users });
-
 /**
  * THUNK CREATORS
  */

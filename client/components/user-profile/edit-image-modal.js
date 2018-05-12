@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Icon, Form, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { updateUserStore } from '../store';
+import { updateUserStore } from '../../store';
 
 export const EditImageModal = props => {
   const { showNestedModal, toggleNestedModal, user, updateFormFields } = props;
