@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Header, Responsive } from 'semantic-ui-react';
+import { Menu, Header, Responsive, Icon } from 'semantic-ui-react';
 import { SubNavbar } from '.';
 import history from '../history';
 // https://logomakr.com/4zlisz
@@ -25,7 +25,7 @@ const styles = {
   },
   menuItem: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 25,
     fontFamily: 'Veradana, sans-serif',
     fontWeight: 500,
   },
@@ -39,11 +39,19 @@ const styles = {
     paddingTop: '10px',
     paddingLeft: '10px',
   },
+  hamburger: {
+    fontSize: 50,
+    color: '#55b9bf',
+    textShadow: '2px 5px 6px rgba(0,0,0,0.2)',
+    letterSpacing: '2px',
+    fontWeight: 100,
+    padding: '10px'
+  },
 };
 
 export const Navbar = props => {
   const path = history.location.pathname;
-  const { isLoggedIn, handleClick } = props;
+  const { isLoggedIn, handleClick, toggleSidebar } = props;
   if (path === '/') {
     styles.menu = {
       ...styles.menu,
@@ -56,7 +64,7 @@ export const Navbar = props => {
   }
   return (
     <div>
-      <Menu stackable style={styles.menu}>
+      <Menu style={styles.menu}>
         {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
         <NavLink to="/">
           <Header as="h1" style={styles.titleText}>
@@ -75,7 +83,7 @@ export const Navbar = props => {
                 name="home"
               />
             </NavLink>
-            <NavLink to="/logout">
+            <div>
               <Responsive
                 as={Menu.Item}
                 minWidth={768}
@@ -83,7 +91,14 @@ export const Navbar = props => {
                 onClick={handleClick}
                 name="logout"
               />
-            </NavLink>
+            </div>
+            <Responsive
+              as={Menu.Item}
+              maxWidth={768}
+              icon="sidebar"
+              style={styles.hamburger}
+              onClick={toggleSidebar}
+            />
           </Menu.Menu>
         ) : (
           <Menu.Menu position="right">
@@ -112,6 +127,13 @@ export const Navbar = props => {
                 name="signup"
               />
             </NavLink>
+            <Responsive
+              as={Menu.Item}
+              maxWidth={768}
+              icon="sidebar"
+              style={styles.hamburger}
+              onClick={toggleSidebar}
+            />
           </Menu.Menu>
         )}
       </Menu>
