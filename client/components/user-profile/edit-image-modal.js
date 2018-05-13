@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { updateUserStore } from '../../store';
 
 export const EditImageModal = props => {
-  const { showNestedModal, toggleNestedModal, user, updateFormFields } = props;
+  const { showNestedModal, toggleNestedModal, user, onChangeHandler } = props;
   return (
     <Modal dimmer={false} open={showNestedModal} size="small">
       <Modal.Header>Update Photo</Modal.Header>
@@ -16,7 +16,7 @@ export const EditImageModal = props => {
               control={Input}
               label="ImageURL"
               name="imageUrl"
-              onChange={e => updateFormFields(e.target.value, e.target.name)}
+              onChange={onChangeHandler}
               value={user.imageUrl}
             />
           </Form.Group>
@@ -34,13 +34,17 @@ export const EditImageModal = props => {
   );
 };
 
-const mapState = ({ user }) => ({ user });
+const mapStateToProps = state => {
+  return {
+
+  }
+};
 const mapDispatch = dispatch => {
   return {
-    updateFormFields(value, type) {
-      dispatch(updateUserStore(value, type));
-    },
+    // updateFormFields(value, type) {
+    //   dispatch(updateUserStore(value, type));
+    // },
   };
 };
 
-export default connect(mapState, mapDispatch)(EditImageModal);
+export default connect(mapStateToProps, mapDispatch)(EditImageModal);

@@ -37,7 +37,6 @@ class EditUserModal extends Component {
         zipcode: '60601',
       }
     }
-    console.log(evt.target.name)
 
     if (evt.target.name === 'firstName'){
       tempUser.firstName = evt.target.value
@@ -49,6 +48,10 @@ class EditUserModal extends Component {
 
     else if (evt.target.name === 'email'){
       tempUser.email = evt.target.value
+    }
+
+    else if (evt.target.name === 'imageUrl'){
+      tempUser.imageUrl = evt.target.value
     }
 
     else if (evt.target.name === 'description'){
@@ -73,9 +76,6 @@ class EditUserModal extends Component {
 
   render(){
 
-    console.log('state: ', this.state)
-    console.log('props: ', this.props)
-
     const {
       // updateFormFields,
       saveUserChanges,
@@ -95,6 +95,8 @@ class EditUserModal extends Component {
             <EditImageModal
               toggleNestedModal={toggleNestedModal}
               showNestedModal={showNestedModal}
+              onChangeHandler={this.onChangeHandler.bind(this)}
+              user={this.state.user}
             />
 
             <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
