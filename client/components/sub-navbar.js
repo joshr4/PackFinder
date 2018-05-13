@@ -15,11 +15,11 @@ const styles = {
     margin: 0,
     // backgroundColor: 'rgba(84, 184, 191)',
     position: 'fixed',
-    top: '15vh',
+    top: '12vh',
     zIndex: 1,
     width: '100vw',
     color: '#54B8BF',
-    height: '5vh'
+    height: '6vh'
   },
   menuItem: {
     color: '#fff',

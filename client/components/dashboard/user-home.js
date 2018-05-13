@@ -40,7 +40,7 @@ export class UserHome extends Component {
     const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={3} centered style={{ padding: '0em 1em' }}>
+        <Grid columns={3} centered style={{ padding: '0em 0em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
@@ -68,16 +68,28 @@ export class UserHome extends Component {
                   )}
                 </Feed>
               </Card.Content>
+
             </Card>
           </Grid.Column>
-          {/* <Grid.Column>
-            <Card>
+          <Grid.Column only={'computer'} tablet={8} computer={5}>
+            <Card style={{ width: '100%' }}>
               <Card.Content>
-                <Card.Header>Welcome , {this.props.email}</Card.Header>
-                <UserHomeCalendar />
+                <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
+              <Card.Content style={{ padding: '0px', height: '70vh' }}>
+                <Feed className="overflow-scroll" style={{ height: '70vh'}}>
+                  {parkList ? (
+                    parkList.map(park => (
+                      <NearbyParks key={park.id} park={park} />
+                    ))
+                  ) : (
+                    <div />
+                  )}
+                </Feed>
+              </Card.Content>
+
             </Card>
-          </Grid.Column> */}
+          </Grid.Column>
         </Grid>
       </div>
     );
