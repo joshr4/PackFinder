@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { logout } from '../store';
+import { logout, toggleSidebar } from '../store';
 import { Menu, Header, Responsive, Icon } from 'semantic-ui-react';
 import { SubNavbar } from '.';
 import history from '../history';
@@ -51,7 +51,7 @@ const styles = {
 
 export const Navbar = props => {
   const path = history.location.pathname;
-  const { isLoggedIn, handleClick, toggleSidebar } = props;
+  const { isLoggedIn, handleClick, handleToggle } = props;
   if (path === '/') {
     styles.menu = {
       ...styles.menu,
@@ -97,7 +97,7 @@ export const Navbar = props => {
               maxWidth={768}
               icon="sidebar"
               style={styles.hamburger}
-              onClick={toggleSidebar}
+              onClick={handleToggle}
             />
           </Menu.Menu>
         ) : (
@@ -132,7 +132,7 @@ export const Navbar = props => {
               maxWidth={768}
               icon="sidebar"
               style={styles.hamburger}
-              onClick={toggleSidebar}
+              onClick={handleToggle}
             />
           </Menu.Menu>
         )}
@@ -160,6 +160,10 @@ const mapDispatch = dispatch => {
   return {
     handleClick() {
       dispatch(logout());
+    },
+    handleToggle() {
+      console.log('INSIDE TOGGLE THUNK');
+      dispatch(toggleSidebar());
     },
   };
 };
