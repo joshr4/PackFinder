@@ -9,11 +9,11 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-<<<<<<< HEAD
-  // sendfriendRequest
-=======
   removeSentRequest,
->>>>>>> 9cf6db217e4bf53ceab417d7503a1118527e80fa
+  sendFriendRequest,
+  removeSentRequest,
+  removeFriend,
+  declineRequest
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -28,12 +28,8 @@ export class FriendsList extends Component {
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-<<<<<<< HEAD
-      sendfriendRequest,
+      sendFriendRequest,
       user
-=======
-      user,
->>>>>>> 9cf6db217e4bf53ceab417d7503a1118527e80fa
     } = this.props;
     let loadFriendsList = [
       fetchFriendsList(user.id),
@@ -61,14 +57,11 @@ export class FriendsList extends Component {
       fetchReceivedRequests,
       fetchSentRequests,
       submitApproveRequest,
-<<<<<<< HEAD
-      sendfriendRequest,
-      user
-=======
       sendFriendRequest,
       removeFriendRequest,
+      deleteFriend,
+      declineFriendRequest,
       user,
->>>>>>> 9cf6db217e4bf53ceab417d7503a1118527e80fa
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
     const filteredNearbyUsers = nearbyUsers.filter(
@@ -77,28 +70,33 @@ export class FriendsList extends Component {
     const panes = [
       {
         menuItem: (
-          <Menu.Item key="pack" style={{flex: '1', justifyContent: 'center'}}>
-            pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
-          </Menu.Item>
-        ),
-        render: () => (
-          <Tab.Pane>
-            <FriendsListTab fetchData={fetchFriendsList} items={friends} />
-          </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: (
-          <Menu.Item key="requests" style={{flex: '1', justifyContent: 'center'}}>
-            requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
+          <Menu.Item key="Your Pack" style={{flex: '1', justifyContent: 'center'}}>
+            Your Pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
+              activeIndex={this.state.activeIndex} fetchData={fetchFriendsList} items={friends}
+              submit={deleteFriend}
+              />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: (
+          <Menu.Item key="Requests" style={{flex: '1', justifyContent: 'center'}}>
+            Requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
+          </Menu.Item>
+        ),
+        render: () => (
+          <Tab.Pane>
+            <FriendsListTab
+              activeIndex={this.state.activeIndex}
               fetchData={fetchReceivedRequests}
               items={receivedRequests}
               submit={submitApproveRequest}
+              decline={declineFriendRequest}
               user={user}
             />
           </Tab.Pane>
@@ -106,13 +104,14 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="nearby users" style={{flex: '1', justifyContent: 'center'}}>
-            nearby users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
+          <Menu.Item key="Nearby Users" style={{flex: '1', justifyContent: 'center'}}>
+            Nearby Users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
+              activeIndex={this.state.activeIndex}
               fetchData={fetchNearbyUsers}
               items={filteredNearbyUsers}
               submit={sendFriendRequest}
@@ -122,16 +121,17 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="sent" style={{flex: '1', justifyContent: 'center'}}>
-            sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
+          <Menu.Item key="Sent" style={{flex: '1', justifyContent: 'center'}}>
+            Sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
+              activeIndex={this.state.activeIndex}
               fetchData={fetchSentRequests}
               items={sentRequests}
-              remove={removeFriendRequest}
+              submit={removeFriendRequest}
             />
           </Tab.Pane>
         ),
@@ -139,10 +139,8 @@ export class FriendsList extends Component {
     ];
     return (
       <Tab
-        // style={{alignItems: 'center' }}
         menu={{ attached: true, tabular: false }}
         renderActiveOnly
-        // onTabChange={(e, data ) => console.log('tab chg', e, 'data', data)}
         loading={this.state.loading.toString()}
         panes={panes}
         activeIndex={this.state.activeIndex}
@@ -175,21 +173,25 @@ const mapDispatch = dispatch => {
       // console.log('INSIDE FETCH RECEIVED REQS')
       return dispatch(getReceivedRequests(userId));
     },
-    sendfriendRequest(userId, senderId) {
-      console.log('INSIDE SEND FRIEND REQUESTs')
-      return dispatch(addSentRequest(userId, senderId));
-    },
     submitApproveRequest(userId, senderId) {
-      console.log('INSIDE SUBMIT APPROVE REQUEST')
+      //console.log('INSIDE SUBMIT APPROVE REQUEST')
       return dispatch(approveRequest(userId, senderId));
     },
     sendFriendRequest(userId, senderId) {
-      // console.log('INSIDE APPROVE REQUEST')
+      //console.log('INSIDE APPROVE REQUEST')
       return dispatch(addSentRequest(userId, senderId));
     },
     removeFriendRequest(userId, senderId) {
       // console.log('INSIDE CANCEL REQUEST');
       return dispatch(removeSentRequest(userId, senderId));
+    },
+    declineFriendRequest(userId, senderId) {
+      // console.log('INSIDE CANCEL REQUEST');
+      return dispatch(declineRequest(userId, senderId));
+    },
+    deleteFriend(userId, senderId) {
+      console.log('INSIDE DELETE FRIEND');
+      return dispatch(removeFriend(userId, senderId));
     },
   };
 };
