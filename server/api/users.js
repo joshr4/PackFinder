@@ -188,7 +188,7 @@ router.post('/:id/friend-request', async (req, res, next) => {
   res.json(friendIduser);
 })
 
-router.post('/:id/friend-request/delete', async (req, res, next) => {
+router.put('/:id/friend-request/delete', async (req, res, next) => {
   let friendId = req.body.friendId;
   let user = await User.findById(req.params.id);
   let friendIduser = await User.findById(friendId);

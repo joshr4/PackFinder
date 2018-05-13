@@ -9,7 +9,13 @@ import { Grid, Button, Image, Label, Header, Segment } from 'semantic-ui-react';
 
 export const FriendsListItem = props => {
   const { imageUrl, address, fullName, pets, id } = props.item;
-  const { submit, user, remove } = props;
+  const { submit, user, activeIndex, decline } = props;
+  const buttonText = {
+    0: 'Remove',
+    1: 'Accept',
+    2: 'Send Request',
+    3: 'Cancel',
+  };
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
@@ -25,15 +31,25 @@ export const FriendsListItem = props => {
                 content={`${address.location.distance} mi away`}
               />
             )}
+          {activeIndex === 1 ? (
+            <Button
+              style={{ flex: 1, padding: '0.5em 0.5em' }}
+              onClick={() => decline(user.id, id)}
+              size="tiny"
+              name="decline"
+            >
+              Decline
+            </Button>
+          ) : (
+            <div />
+          )}
           <Button
             style={{ flex: 1, padding: '0.5em 0.5em' }}
-            onClick={() => {
-              remove ? remove(user.id, id) : submit(user.id, id);
-            }}
+            onClick={() => submit(user.id, id)}
             size="tiny"
             name="add"
           >
-            {remove ? 'remove' : 'send Request'}
+            {buttonText[activeIndex]}
           </Button>
         </Grid.Row>
         <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>

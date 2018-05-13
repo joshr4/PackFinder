@@ -53,7 +53,7 @@ export const removeFriend = (userId, friendId) => dispatch =>
   .put(`/api/users/${userId}/friend-request/delete`, {
     friendId
   })
-  .then(res => dispatch(get(res.data || defaultList)))
+  .then(res => dispatch(remove(res.data || defaultList)))
   .catch(err => console.log(err));
 
 // router.post('/:id/friend-request/delete', async (req, res, next) => {
