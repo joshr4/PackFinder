@@ -42,7 +42,7 @@ const SubNavbar = ({ handleClick, isLoggedIn }) => (
   <Menu color="teal" style={styles.menu} inverted widths={4}>
     <Menu.Item as={Link} to="/parkList" name="parks" />
     <Menu.Item as={Link} to="/calendar" name="calendar" />
-    <Menu.Item name="friends" />
+    <Menu.Item name="Events" />
     <Menu.Item as={Link} to="/profile" name="Profile" />
   </Menu>
 );

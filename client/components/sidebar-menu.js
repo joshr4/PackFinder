@@ -16,10 +16,25 @@ import { NavLink, withRouter } from 'react-router-dom';
 
 const SidebarMenu = props => {
   const { visible, handleToggle, isLoggedIn, handleClick } = props;
+  const styles = {
+    sidebarMenuItem: {
+      color: '#fff',
+      fontSize: 25,
+      fontFamily: 'Veradana, sans-serif',
+      fontWeight: 500,
+    },
+    sidebarMenu: {
+      height: '100vh',
+      background: 'rgba(45, 66, 80, 0.8)',
+      color: '#54B8BF',
+      width: '50vw',
+      paddingTop: '15vh'
+    },
+  };
   return (
     <div>
-      <Button onClick={handleToggle}>Toggle Visibility</Button>
-      <Sidebar.Pushable as={Segment}>
+      {/* <Button onClick={handleToggle}>Toggle Visibility</Button> */}
+      <Sidebar.Pushable as={Segment} style={{border: '0'}}>
         <Sidebar
           as={Menu}
           animation="overlay"
@@ -28,56 +43,56 @@ const SidebarMenu = props => {
           icon="labeled"
           vertical
           inverted
+          style={styles.sidebarMenu}
         >
           {isLoggedIn ? (
             <Menu.Menu>
               {/* The navbar will show these links after you log in */}
+              {/* <Menu.Item
+                as={NavLink}
+                to="/home"
+                style={styles.sidebarMenuItem}
+                onClick={handleToggle}
+                name="home"
+              /> */}
               <Menu.Item
                 as={NavLink}
                 to="/home"
-                // style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-                name="home"
-              />
-              <Menu.Item
-                as={NavLink}
-                to="/friends"
-                name="Friends"
-                // style={styles.sidebarMenuItem}
+                name="Your Pack"
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/parkList"
                 name="Parks List"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
-                as={NavLink}
-                to="/events-list"
+                // as={NavLink}
+                // to="/events-list"
                 name="Events"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/calendar"
                 name="Calendar"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/profile"
                 name="Profile"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
-                // style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-                onClick={handleClick}
+                style={styles.sidebarMenuItem}
+                onClick={() => handleToggle(handleClick())}
                 name="logout"
               />
             </Menu.Menu>
@@ -87,21 +102,21 @@ const SidebarMenu = props => {
               <Menu.Item
                 as={NavLink}
                 to="/home"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
                 name="home"
               />
               <Menu.Item
                 as={NavLink}
                 to="/login"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
                 name="login"
               />
               <Menu.Item
                 as={NavLink}
                 to="/signup"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
                 name="signup"
               />
@@ -109,34 +124,35 @@ const SidebarMenu = props => {
                 as={NavLink}
                 to="/friends"
                 name="Friends"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/parks-list"
                 name="Parks List"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/events-list"
                 name="Events"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
                 as={NavLink}
                 to="/profile"
                 name="Profile"
-                // style={styles.sidebarMenuItem}
+                style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
             </Menu.Menu>
           )}
         </Sidebar>
         <Sidebar.Pusher>
+          {/* <Navbar /> */}
           <Routes />
         </Sidebar.Pusher>
       </Sidebar.Pushable>

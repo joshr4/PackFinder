@@ -6,6 +6,7 @@ import { logout, toggleSidebar } from '../store';
 import { Menu, Header, Responsive, Icon } from 'semantic-ui-react';
 import { SubNavbar } from '.';
 import history from '../history';
+import { relative } from 'path';
 // https://logomakr.com/4zlisz
 
 const styles = {
@@ -28,6 +29,7 @@ const styles = {
     fontSize: 25,
     fontFamily: 'Veradana, sans-serif',
     fontWeight: 500,
+    padding: '1em 0.5em'
   },
   titleText: {
     fontFamily: 'Pacifico, cursive',
@@ -45,7 +47,7 @@ const styles = {
     textShadow: '2px 5px 6px rgba(0,0,0,0.2)',
     letterSpacing: '2px',
     fontWeight: 100,
-    padding: '10px'
+    padding: '10px',
   },
 };
 
@@ -63,7 +65,7 @@ export const Navbar = props => {
     styles.menu = { ...styles.menu, backgroundColor: 'rgb(44, 66, 80)' };
   }
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <Menu style={styles.menu}>
         {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
         <NavLink to="/">
