@@ -20,9 +20,9 @@ export class FriendsListTab extends Component {
     return (
       <Grid
         divided
+        className="overflow-scroll"
         style={{
-          height: '75vh',
-          overflow: 'scroll',
+          height: '60.5vh',
           alignItems: 'baseline',
           alignContent: 'baseline',
         }}

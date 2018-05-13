@@ -40,13 +40,13 @@ export class UserHome extends Component {
     const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={3}  centered style={{ padding: '0em 1em' }}>
+        <Grid columns={3} centered style={{ padding: '0em 1em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0px' }}>
+              <Card.Content style={{ padding: '0px', height: '70vh' }}>
                 {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
@@ -57,8 +57,8 @@ export class UserHome extends Component {
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
-              <Card.Content>
-                <Feed>
+              <Card.Content style={{ padding: '0px', height: '70vh' }}>
+                <Feed className="overflow-scroll" style={{ height: '70vh'}}>
                   {parkList ? (
                     parkList.map(park => (
                       <NearbyParks key={park.id} park={park} />

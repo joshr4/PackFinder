@@ -3,8 +3,13 @@ body {
   background-color: #ffffff;
 }
 body .container {
-  padding-top: 20vh;
-  min-height: 100vh;
+  padding-top: 22vh;
+  min-height: 80vh;
+  background: #54b9bf;
+}
+.overflow-scroll {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 a {
   text-decoration: none;
