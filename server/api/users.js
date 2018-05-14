@@ -48,6 +48,19 @@ router.get('/simple/:id', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/search/:name', (req, res, next) => {
+  console.log(req.params)
+  User.findAll({
+    where: {
+      firstName: {
+        $ilike: `%${req.params.name}%`
+      }
+    }
+  })
+  .then(user => res.json(user))
+  .catch(next)
+})
+
 router.get('/:id', (req, res, next) => {
   User.findOne({
     where: {
