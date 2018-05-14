@@ -50,7 +50,7 @@ class EventAddModal extends Component {
     this.props.onClose()
   }
   render() {
-    let { onClose, showModal, onDelete, parkDropDownList } = this.props
+    let { onClose, showModal, onDelete, parkDropDownList, user } = this.props
     let { description, item, isDirty } = this.state
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
@@ -62,6 +62,7 @@ class EventAddModal extends Component {
             <h3> {description}</h3>
             <AddEventForm
               item={item}
+              friends={user.Friends}
               parkDropDownList={parkDropDownList}
               handleChange={this.handleChange}
               handleFieldChange={this.handleFieldChange}

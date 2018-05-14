@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Button, Form, Input, Dropdown, Checkbox } from 'semantic-ui-react';
+import { EventAttendees } from '../index.js';
 
 const AddEventForm = props => {
   let { description, startTime, date, id, parkId } = props.item;
@@ -57,6 +58,7 @@ const AddEventForm = props => {
       ) : (
         <div />
       )}
+      {props.friends ? (<EventAttendees users={props.friends}/>) : ( <div />)}
       <Form.Group widths="equal">
         <Form.Field>
           <label>Private Event</label>
