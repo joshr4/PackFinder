@@ -14,13 +14,13 @@ import {
   removeFriend,
   declineRequest,
 } from '../../store';
-import { FriendsListTab } from '../';
+import { EventsListTab } from '../';
 
 /**
  * COMPONENT
  */
 
-export class FriendsList extends Component {
+export class EventsList extends Component {
   componentDidMount = async () => {
     const {
       fetchFriendsList,
@@ -42,6 +42,9 @@ export class FriendsList extends Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
+    // console.log('state', this.state);
+    console.log('state events', this.state);
+    console.log('props events', this.props);
 
     const {
       nearbyUsers,
@@ -91,7 +94,7 @@ export class FriendsList extends Component {
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchFriendsList}
               items={friends}
@@ -113,7 +116,7 @@ export class FriendsList extends Component {
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchReceivedRequests}
               items={receivedRequests}
@@ -137,7 +140,7 @@ export class FriendsList extends Component {
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchNearbyUsers}
               items={filteredNearbyUsers}
@@ -154,7 +157,7 @@ export class FriendsList extends Component {
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchSentRequests}
               items={sentRequests}
@@ -223,11 +226,11 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(FriendsList);
+export default connect(mapState, mapDispatch)(EventsList);
 
 /**
  * PROP TYPES
  */
-FriendsList.propTypes = {
-  email: PropTypes.string,
-};
+// EventsList.propTypes = {
+//   email: PropTypes.string,
+// };
