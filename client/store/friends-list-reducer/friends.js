@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../../history';
+import socket from '../../socket';
 
 /**
  * ACTION TYPES
@@ -53,7 +54,11 @@ export const removeFriend = (userId, friendId) => dispatch =>
   .put(`/api/users/${userId}/friend-request/delete`, {
     friendId
   })
-  .then(res => dispatch(remove(res.data || defaultList)))
+  .then(res => {
+    dispatch(remove(res.data || defaultList))
+    //
+    socket.emit('delete-friend', {userId, friendId})
+  })
   .catch(err => console.log(err));
 
 // router.post('/:id/friend-request/delete', async (req, res, next) => {
