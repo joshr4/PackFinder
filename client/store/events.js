@@ -52,6 +52,32 @@ export const addEvent = event => dispatch =>
     })
     .catch(err => console.log(err));
 
+export const inviteUsers = (event, userIds) => dispatch => 
+  axios
+  .put(`/api/events/invite-users`, event, userIds)
+  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .catch(err => console.log(err));
+
+export const removeInvite = (event, userId) => dispatch => 
+  axios
+  .put(`/api/events/remove-invite`, event, userId)
+  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .catch(err => console.log(err));
+
+export const addAttendee = (event, userId) => dispatch => 
+  axios
+  .put(`/api/events/add-attendee`, event, userId)
+  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .catch(err => console.log(err));
+
+export const removeAttendee = (event, userId) => dispatch => 
+  axios
+  .put(`/api/events/remove-attendee`, event, userId)
+  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .catch(err => console.log(err));
+
+// Invite Users, Add User, Remove User, Retract Invite 
+
 /**
  * REDUCER
  */
