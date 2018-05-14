@@ -27,6 +27,7 @@ import {BarChart, LineChart} from 'react-d3-basic'
 import AddVisitForm from './addvisitform';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
+import {VictoryChart, VictoryBar, VictoryAxis} from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -262,7 +263,7 @@ export class DogPark extends Component {
         }
         let intervalEnd = new Date(intervalStart.getTime() + this.state.timePartition);
         let d3Elem = {
-          // time: intervalStart,
+          timeObj: intervalStart,
           time: stringFormat(intervalStart),
           date: dateDisplay(intervalStart),
           timeDisplay: timeDisplay(intervalStart),
@@ -451,7 +452,26 @@ export class DogPark extends Component {
     //     }
     //   }
     // ]
+    const testData = [
+      {time: 1, visits: 13000},
+      {time: 2, visits: 16500},
+      {time: 3, visits: 14250},
+      {time: 4, visits: 19000}
+    ];
+    const victoryData = [];
 
+    D3data.forEach(elem => {
+      let victoryObj = {
+        visits:elem.visits,
+      }
+      if (elem.timeObj) {
+        // victoryObj.time = elem.timeObj.getTime();
+        victoryObj.time = elem.timeObj;
+      } 
+      victoryData.push(victoryObj);
+    });
+    console.log("victoryData: ", victoryData);
+    
     return (
 
       <div>
@@ -542,6 +562,48 @@ export class DogPark extends Component {
           // yDomain= {yDomain}
           // yLabel = {yLabel}
           textAlign="center" />
+
+          <VictoryChart
+          // domainPadding will add space to each side of VictoryBar to
+          // prevent it from overlapping the axis
+          style={{labels: {fontSize:"10px", color:"red"}}}
+          domainPadding={20}
+        >
+        <VictoryAxis
+            // tickValues specifies both the number of ticks and where
+            // they are placed on the axis
+            scale="time"
+            style={{ 
+              tickLabels: {fontSize: "5px", padding: 5} 
+            }}            
+            label="Time"
+            // tickValues={[1, 2, 3, 4]}
+            // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+          />
+          <VictoryAxis
+            dependentAxis
+            // tickFormat specifies how ticks should be displayed
+            // tickFormat={(x) => (`$${x / 1000}k`)}
+            style={{ 
+              // axisLabel: {fontSize: "10px", padding: 30}, 
+              tickLabels: {fontSize: "5px", padding: 5} 
+            }}        
+            tickFormat={(x) => (` ${x} visits`)}
+            tickFormat={d3.format(",d")}
+            label="Visits"
+            // tickValues={[0, 1]}            
+          />
+          <VictoryBar
+            data={victoryData}
+            style={{ 
+              tickLabels: {fontSize: "10px", padding: 5} 
+            }}            
+            // style={{labels: {fontSize:"10px", color:"red"}}}
+            x="time"
+            y="visits"
+          />
+        </VictoryChart>          
+
           </Segment>
           </Grid.Column>
           </Grid.Row>

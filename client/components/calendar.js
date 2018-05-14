@@ -10,7 +10,12 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
 import { VisitModal } from './index';
-import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
+
+import { 
+  getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses, 
+  getEvents, updateEvent, deleteEvent } 
+from '../store';
+
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'
 import { isNull } from 'util';
@@ -59,6 +64,7 @@ class Dnd extends React.Component {
       showModal: false,
       modalType: 'view',
       user: {},
+      events: [],
     };
     this.moveEvent = this.moveEvent.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
@@ -70,9 +76,17 @@ class Dnd extends React.Component {
     this.updateEvent = this.updateEvent.bind(this);
     this.addEvent = this.addEvent.bind(this);
   }
-
+  
   componentDidMount() {
     this.props.getData();
+    axios.get('/api/events').then(response => {
+      console.log("events from api test...: ", response.data);
+      this.setState({
+        events:this.props.events.concat(response.data)
+      })
+      // this.props.events = this.props.events.concat(response.data);
+      console.log("New state.events: ", this.state.events);
+    })
   }
 
   toggleModal() {
@@ -82,6 +96,12 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
+    console.log("opening modal for: ", event);
+    if (event.isEvent) {
+      this.toggleModal()
+      // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
+      return
+    }
     let selEvent = event
     if (type === 'view') {
       let year = event.start.getFullYear();
@@ -127,6 +147,7 @@ class Dnd extends React.Component {
   }
 
   moveEvent({ event, start, end }) {
+    console.log("moving event: ", event);
     const { events } = this.props;
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
@@ -137,7 +158,12 @@ class Dnd extends React.Component {
       start,
       end,
     };
-    this.props.updateVisit(updatedEvent);
+    if (event.isEvent) {
+      this.props.updateEvent(updatedEvent);
+    }
+    else {
+      this.props.updateVisit(updatedEvent);
+    }
   }
 
   removeEvent(event) {
@@ -151,7 +177,12 @@ class Dnd extends React.Component {
     updatedEvent[0].start = start
     updatedEvent[0].end = end
     updatedEvent[0].id = event.id
-    this.props.updateVisit(updatedEvent[0])
+    if (event.isEvent) {
+      this.props.updateEvent(updatedEvent[0])
+    }
+    else {
+      this.props.updateVisit(updatedEvent[0])
+    }
   };
 
   addEvent = () => {
@@ -250,6 +281,21 @@ class Dnd extends React.Component {
       parkValid: parkValid,
     }, this.validateForm);
   }
+  eventStyleGetter = (event, start, end, isSelected) => {
+    console.log(event);
+    var backgroundColor = '#' + event.hexColor;
+    var style = {
+        backgroundColor: backgroundColor,
+        // borderRadius: '0px',
+        // opacity: 0.8,
+        // color: 'black',
+        // border: '0px',
+        // display: 'block'
+    };
+    return {
+        style: style
+    };
+  };    
 
   render() {
     return (
@@ -276,6 +322,7 @@ class Dnd extends React.Component {
           selectable
           culture="en-GB"
           events={this.props.events}
+          eventPropGetter={(this.eventStyleGetter)}
           //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
           onEventDrop={this.moveEvent}
           resizable
@@ -299,19 +346,32 @@ class Dnd extends React.Component {
 
 const mapState = state => {
   console.log("this user: ", state.user);
+  console.log("state.events (from mapState): ", state.events);
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
-  let calEvents = userVisits.map(visit => {
+  let calEvents = state.events.map(event => {
+    let calEvent = event;
+    calEvent.isEvent = true;
+    calEvent.title = event.description;
+    calEvent.start = new Date(event.start);
+    calEvent.end = new Date(event.end);
+    calEvent.hexColor = "5fc627";
+    return calEvent;
+  })
+  let calVisits = userVisits.map(visit => {
     let newVisit = {
       id: visit.id,
       title: visit.title,
       start: new Date(visit.start),
       end: new Date(visit.end),
       address: visit.park.address,
+      park: visit.parkId,
       userId: visit.userId,
-      park: visit.parkId
+      hexColor: "3174ad",
     }
     return newVisit
   })
+  console.log("calEvents vs calVisits: ", calEvents, calVisits);
+  let calItems = calEvents.concat(calVisits);
   //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
   let dropDownParks = state.parkList.map(park => {
     let newPark = {
@@ -322,7 +382,7 @@ const mapState = state => {
     return newPark
   })
   return {
-    events: calEvents,
+    events: calItems,
     user: state.user,
     parkList: dropDownParks
   };
@@ -332,6 +392,7 @@ const mapDispatch = dispatch => {
   return {
     getData() {
       dispatch(getVisits());
+      dispatch(getEvents());
       dispatch(getParksAddresses());
     },
     removeVisit(visit) {
@@ -345,6 +406,11 @@ const mapDispatch = dispatch => {
       await dispatch(addVisit(visit));
       dispatch(getVisits());
     },
+    async updateEvent(event) {
+      await dispatch(updateEvent(event));
+      dispatch(getEvents());
+
+    }
   };
 };
 

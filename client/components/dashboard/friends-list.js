@@ -11,7 +11,6 @@ import {
   addSentRequest,
   removeSentRequest,
   sendFriendRequest,
-  removeSentRequest,
   removeFriend,
   declineRequest
 } from '../../store';
