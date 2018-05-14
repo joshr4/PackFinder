@@ -61,33 +61,6 @@ class ChatRoom extends Component {
         this.unsubscribe();
     }
         
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     // return false;
-    //     // return true;
-    //     console.log("nextState: ", nextState, nextState.messages.length);
-    //     return (this.state.messages.length !== nextState.messages.length);
-    //     // if (this.state.messages === nextState.messages) {
-    //         //     return false;
-    //         // }
-    //     // else {
-    //         //     return true;
-    //     // }
-    //     // axios.get('/api/messages').then(response => {
-    //         //     console.log("setting state with messages: ", response.data);
-    //     //     this.setState({
-    //         //         messages:response.data
-    //         //     })
-    //     // })        
-    // }
-    // componentDidMount() {
-    //     console.log("line 46");
-    //     axios.get('/api/messages').then(response => {
-    //         console.log("setting state with messages: ", response.data);
-    //         this.setState({
-    //             messages:response.data
-    //         })
-    //     })
-    // }
     componentWillUpdate() {
         console.log("line 46");
         axios.get('/api/messages').then(response => {
@@ -115,7 +88,7 @@ class ChatRoom extends Component {
         let postBody = {
             sent: new Date(Date.now()),
             content: event.target.messageBody.value,
-            posterId: 1,
+            posterId: this.props.user.id,
             eventId: 1
         }
         this.props.addMessage(postBody);
@@ -168,7 +141,7 @@ class ChatRoom extends Component {
                     <Feed.Label image='https://react.semantic-ui.com/assets/images/avatar/small/elliot.jpg' />
                     <Feed.Content>
                       <Feed.Summary>
-                        <a>{message.posterId}</a> posted to the group
+                        <a>{message.poster.fullName}</a> posted to the group
                         <Feed.Date>{message.id} days ago</Feed.Date>
                       </Feed.Summary>
                       <Feed.Extra text>
@@ -193,15 +166,17 @@ const mapState = state => {
     console.log("state user: ", state.user);
     console.log("state.event: ", state.event);
     console.log("state.messages: ", state.messages);
+    let messages = state.messages.filter(message => (message.poster))
     return {
-      messages: state.messages
+      messages: state.messages,
+      user: state.user
     };
   };
 
 const mapDispatch = dispatch => {
 return {
-    getData() {
-        dispatch(getMessages());
+    async getData() {
+        await dispatch(getMessages());
         // dispatch()
     },
     addMessage(message) {

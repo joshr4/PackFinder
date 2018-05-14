@@ -48,8 +48,10 @@ export const updateEvent = event => dispatch =>
 export const addEvent = event => dispatch =>
   axios
     .post(`/api/events/`, event)
-    .then(res => {
-      dispatch(addNewEvent(res.data || defaultEvents))
+    .then(async res => {
+      console.log('before get', event)
+
+      await dispatch(getEvents())
       history.push(`/event/${res.data.id}`)
     })
     .catch(err => console.log(err));
@@ -104,9 +106,10 @@ export default function(state = defaultEvents, action) {
     case DELETE_EVENT:
       return state.filter(event => action.eventId !== event.id);
     case ADD_EVENT:
-      return [...state, action.event];
+      return [...state, action.event]; //we do a get all after adding a new event
     case GET_NEARBY_EVENTS:
       return action.nearbyEvents;
+
     default:
       return state;
   }

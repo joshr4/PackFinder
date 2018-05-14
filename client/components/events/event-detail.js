@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap } from '../index.js';
+import { Map, ParkListItem, EventM, EventEditModal, SingleParkMap } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -87,7 +87,7 @@ export class EventDetail extends Component {
     return (
       displayEvent ?
         <Container className="container">
-          <EventModal
+          <EventEditModal
             onClose={this.toggleModal}
             showModal={showModal}
             handleSubmit={this.handleSubmit}

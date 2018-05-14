@@ -11,9 +11,9 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
 import { VisitModal } from './index';
 
-import { 
-  getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses, 
-  getEvents, updateEvent, deleteEvent } 
+import {
+  getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
+  getEvents, updateEvent, deleteEvent }
 from '../store';
 
 import { connect } from 'react-redux';
@@ -76,16 +76,14 @@ class Dnd extends React.Component {
     this.updateEvent = this.updateEvent.bind(this);
     this.addEvent = this.addEvent.bind(this);
   }
-  
+
   componentDidMount() {
     this.props.getData();
     axios.get('/api/events').then(response => {
-      console.log("events from api test...: ", response.data);
       this.setState({
         events:this.props.events.concat(response.data)
       })
       // this.props.events = this.props.events.concat(response.data);
-      console.log("New state.events: ", this.state.events);
     })
   }
 
@@ -96,7 +94,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("opening modal for: ", event);
     if (event.isEvent) {
       this.toggleModal()
       // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
@@ -147,7 +144,6 @@ class Dnd extends React.Component {
   }
 
   moveEvent({ event, start, end }) {
-    console.log("moving event: ", event);
     const { events } = this.props;
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
@@ -186,7 +182,6 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('startvalid', this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -282,7 +277,6 @@ class Dnd extends React.Component {
     }, this.validateForm);
   }
   eventStyleGetter = (event, start, end, isSelected) => {
-    console.log(event);
     var backgroundColor = '#' + event.hexColor;
     var style = {
         backgroundColor: backgroundColor,
@@ -295,7 +289,7 @@ class Dnd extends React.Component {
     return {
         style: style
     };
-  };    
+  };
 
   render() {
     return (
@@ -375,8 +369,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("this user: ", state.user);
-  console.log("state.events (from mapState): ", state.events);
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
     let calEvent = event;
@@ -410,9 +402,7 @@ const mapState = state => {
     }
     return newVisit
   })
-  console.log("calEvents vs calVisits: ", calEvents, calVisits);
   let calItems = calEvents.concat(calVisits);
-  //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
   let dropDownParks = state.parkList.map(park => {
     let newPark = {
       key: park.id,

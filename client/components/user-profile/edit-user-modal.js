@@ -37,7 +37,6 @@ class EditUserModal extends Component {
         zipcode: '60601',
       }
     }
-    console.log(evt.target.name)
 
     if (evt.target.name === 'firstName'){
       tempUser.firstName = evt.target.value
