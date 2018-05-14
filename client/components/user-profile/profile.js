@@ -66,12 +66,10 @@ class Profile extends React.Component {
     this.togglePetModal()
   }
   handleUpdate = () => {
-    console.log('handleupdate');
     this.props.updatePet(this.state.selectedPet);
     this.togglePetModal();
   };
   handleDeletePet = () => {
-    console.log('handldelete');
     this.props.deletePet(this.state.selectedPet);
     this.togglePetModal();
   };

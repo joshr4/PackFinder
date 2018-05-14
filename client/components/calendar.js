@@ -155,7 +155,6 @@ class Dnd extends React.Component {
   };
 
   addEvent = () => {
-    console.log('startvalid', this.state.startValid)
     let stateVisit = this.state.selectedEvent
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
@@ -298,7 +297,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("this user: ", state.user);
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = userVisits.map(visit => {
     let newVisit = {

@@ -4,7 +4,6 @@ import { Button, Form, Input, Dropdown, Checkbox } from 'semantic-ui-react';
 
 const AddEventForm = props => {
   let { description, startTime, date, id } = props.item
-  console.log('form', typeof props.item.private)
   return (
 
     <Form onSubmit={props.handleSubmit} onChange={ e => props.handleChange(e)}>
