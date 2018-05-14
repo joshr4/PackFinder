@@ -22,7 +22,6 @@ export class EventList extends Component {
   }
 
   componentDidMount() {
-    this.props.getEvents()
   }
 
   toggleModal() {

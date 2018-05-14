@@ -46,7 +46,6 @@ export class EventDetail extends Component {
   }
 
   componentDidMount() {
-    this.props.getEvents()
   }
 
   toggleModal() {
@@ -81,8 +80,10 @@ export class EventDetail extends Component {
     let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     let isEventOwner = false
-    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    let coords = { lat: 41.8781, lng: -87.6298 } //grab these from displayEvent.park.address.location
+    //if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
+    let coords = displayEvent.park.address.location
+    isEventOwner = true
+
     return (
       displayEvent ?
         <Container className="container">
@@ -95,7 +96,7 @@ export class EventDetail extends Component {
           />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
             <Grid celled>
-              <Grid.Row>
+              <Grid.Row min-height="60%" >
                 <Grid.Column width={8}>
                 {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
                   <Segment attached>
@@ -119,7 +120,7 @@ export class EventDetail extends Component {
                   />
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row>
+              <Grid.Row min-height="40%">
                 <Grid.Column width={16}>
                   <h4>Description:</h4><p>{displayEvent.description}</p>
                   {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>

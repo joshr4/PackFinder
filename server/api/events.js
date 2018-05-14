@@ -4,17 +4,31 @@ const {
   Address,
   Park,
   Visit,
-  Event
+  Event,
+  Pet
 } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
   Event.findAll({
       include: [{
-          all: true
-        }
-        //   {model: Park, required:false, include:[Address]},
-        //   {model: User, required:false}
+          all: true,
+          //include:[{all: true}]
+        },
+        {model: Park, required: false, include: [
+          {
+            model: Address,
+            required: false,
+          }
+        ]},
+        {model: User, as: 'attendees', required: false, include:[
+          {
+            model: Pet,
+            as: 'pets',
+            required: false,
+          }
+        ]},
+          // {model: User, required:false}
       ]
     })
     .then(events => res.json(events))
