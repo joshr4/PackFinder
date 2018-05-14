@@ -73,9 +73,6 @@ class EditUserModal extends Component {
 
   render(){
 
-    console.log('state: ', this.state)
-    console.log('props: ', this.props)
-
     const {
       // updateFormFields,
       saveUserChanges,

@@ -27,19 +27,6 @@ const removeUser = () => ({
   type: REMOVE_USER,
 });
 
-// const update = (value, type) => ({
-//   type: UPDATE_USER,
-//   update: {
-//     type,
-//     value,
-//   },
-// });
-
-const save = userUpdate => ({
-  type: SAVE_USER_CHANGES,
-  userUpdate,
-});
-
 const updatedAddress = address => ({
   type: UPDATED_USER_ADDRESS,
   address,
@@ -69,30 +56,6 @@ export const updateUserInfo = (userUpdate) => dispatch =>
     .then(res => dispatch(updatedUser(res.data)))
     .catch(err => console.log(err));
 }
-
-// export const updateUser = (userData) => {
-//   return dispatch => (Promise.all([updatedAddress(userData),
-//   updateUserInfo(userData)]))
-// }
-// export const submiteUserUpdate = userUpdate => async dispatch => {
-//   try {
-//     await axios.put(
-//       `/api/users/${userUpdate.id}/updateAddress`,
-//       userUpdate.address
-//     );
-//     const updatedUser = await axios.put(
-//       `/api/users/${userUpdate.id}/updateUser`,
-//       userUpdate
-//     );
-//     dispatch(save(updatedUser.data || defaultUser));
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// export const updateUserStore = (value, type) => dispatch => {
-//   dispatch(update(value, type));
-// };
 
 export const me = () => dispatch =>
   axios
@@ -140,19 +103,6 @@ export default function(state = defaultUser, action) {
       return action.user;
     case REMOVE_USER:
       return defaultUser;
-    // case UPDATE_USER:
-    //   return typeof action.update.type === 'string'
-    //     ? {
-    //         ...state,
-    //         [action.update.type]: action.update.value,
-    //       }
-    //     : {
-    //         ...state,
-    //         address: {
-    //           ...state.address,
-    //           [action.update.type.address]: action.update.value,
-    //         },
-    //       };
     case SAVE_USER_CHANGES:
       return action.userUpdate;
     case UPDATED_USER_ADDRESS:

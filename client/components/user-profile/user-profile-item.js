@@ -17,7 +17,7 @@ export class UserProfileItem extends React.Component {
     this.setState({ showNestedModal: !this.state.showNestedModal });
   };
   render() {
-    const { user, updateFormFields } = this.props;
+    const { user, updateFormFields, readOnly, selectedUser } = this.props;
     return (
       <Grid.Row>
         {user && (
@@ -30,10 +30,23 @@ export class UserProfileItem extends React.Component {
           />
         )}
         <Grid.Column width="4">
-          <Image size="small" src={user.imageUrl} circular />
+        { readOnly ?
+          <Image size="small" src={selectedUser.imageUrl} circular /> :
+          <Image size="small" src={user.imageUrl} circular /> }
         </Grid.Column>
         <Grid.Column width="12">
-          <Segment>
+          {readOnly ?
+            <Segment>
+            {selectedUser && (
+              <List>
+                <List.Item>Name: {selectedUser.fullName}</List.Item>
+                <List.Item>Email: {selectedUser.email}</List.Item>
+                <List.Item>Bio: {selectedUser.description}</List.Item>
+              </List>
+            )}
+          </Segment>
+            :
+            <Segment>
             {user && (
               <List>
                 <List.Item>Name: {user.fullName}</List.Item>
@@ -42,8 +55,9 @@ export class UserProfileItem extends React.Component {
                 {user.address && <List.Item>Address: {user.address.fullAddress}</List.Item>}
               </List>
             )}
-          </Segment>
-          <Button onClick={this.toggleEditUserModal}>Edit</Button>
+          </Segment>}
+          {readOnly ? null :
+            <Button onClick={this.toggleEditUserModal}>Edit</Button>}
         </Grid.Column>
       </Grid.Row>
     );
