@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList } from '../';
 import {
   getParksAddresses,
   getGeolocation,
@@ -75,10 +75,15 @@ export class UserHome extends Component {
               </Card.Content>
             </Card>
           </Grid.Column>
-          <Grid.Column only={'computer'} computer={5} largeScreen={5}>
+          <Grid.Column only={'computer'} tablet={8} computer={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
-                <Card.Header>Suggested Parks</Card.Header>
+                <Card.Header>Upcoming Events</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Feed>
+                  <EventList />
+                </Feed>
               </Card.Content>
               <Card.Content style={{ padding: '0px', height: '70vh' }}>
                 <Feed className="overflow-scroll dashboard-feed">
