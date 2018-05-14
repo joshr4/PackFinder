@@ -72,7 +72,6 @@ class EditUserModal extends Component {
 
   render(){
 
-
     const {
       // updateFormFields,
       saveUserChanges,

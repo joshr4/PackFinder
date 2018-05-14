@@ -16,7 +16,9 @@ const PetProfileItem = props => {
           </Grid.Column>
           <Grid.Column width="12">
             <Segment>
-              <Button color="teal" onClick={() => props.openPetModal(props.info, 'edit', true)}>Edit</Button>
+              {props.readOnly ?
+                null :
+                <Button color="teal" onClick={() => props.openPetModal(props.info, 'edit', true)}>Edit</Button>}
               <List>
                 <List.Item>Name: {name}</List.Item>
                 <List.Item>Breed: {breed}</List.Item>

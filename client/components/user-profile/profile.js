@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Segment, Grid, Header, Button } from 'semantic-ui-react';
 import { PetProfileItem, UserProfileItem, PetModal } from '../index.js';
-import { getPets, deletePet, updatePet, addPet } from '../../store';
+import { getPets, deletePet, updatePet, addPet, getSelectedUser } from '../../store';
 
 /**
  * COMPONENT
@@ -26,15 +26,31 @@ class Profile extends React.Component {
       },
       user: {},
       isUpdatePet: false,
+      readOnly: false,
+      friendId: null,
+
     };
     this.togglePetModal = this.togglePetModal.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.openPetModal = this.openPetModal.bind(this);
+
+
+
   }
   componentDidMount() {
+
+    if (this.props.match.params.userId !== undefined) {
+      console.log('this is read only');
+      console.log(this.props.match.params.userId)
+      this.setState({ friendId: +this.props.match.params.userId, readOnly: true}, () => {
+        this.props.getSelectedUserInfo(this.state.friendId)
+      });
+    }
+
     this.props.getData();
   }
+
   openPetModal = (pet, edit = true) => {
     let selPet = {};
     if (edit) selPet = Object.assign({}, pet);
@@ -62,9 +78,9 @@ class Profile extends React.Component {
     });
   };
   handleAdd = () => {
-    this.props.addNewPet(this.state.selectedPet)
-    this.togglePetModal()
-  }
+    this.props.addNewPet(this.state.selectedPet);
+    this.togglePetModal();
+  };
   handleUpdate = () => {
     this.props.updatePet(this.state.selectedPet);
     this.togglePetModal();
@@ -81,52 +97,65 @@ class Profile extends React.Component {
     });
   };
   render() {
+    const { userPets, user, selectedUser } = this.props;
 
-    const { userPets } = this.props;
+    let petsList = []
+
+    if (this.state.readOnly){
+      petsList = selectedUser.pets
+    }
+    else {
+      petsList = userPets
+    }
+
     return (
-      <div>
-        <PetModal
-          show={this.state.showPetModal}
-          onClose={this.togglePetModal}
-          item={this.state.selectedPet}
-          handleAdd={this.handleAdd}
-          handleChange={this.handleChange}
-          handleUpdate={this.handleUpdate}
-          handleDelete={this.handleDeletePet}
-          isUpdatePet={this.state.isUpdatePet}
-        />
-        <Container className="container">
+      <div className="container">
+        <Segment>
+          <PetModal
+            show={this.state.showPetModal}
+            onClose={this.togglePetModal}
+            item={this.state.selectedPet}
+            handleAdd={this.handleAdd}
+            handleChange={this.handleChange}
+            handleUpdate={this.handleUpdate}
+            handleDelete={this.handleDeletePet}
+            isUpdatePet={this.state.isUpdatePet}
+          />
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
-            <UserProfileItem />
+            <UserProfileItem readOnly={this.state.readOnly} selectedUser={selectedUser} />
             <Grid.Row>
               <Grid.Column width="4">
                 <Header as="h3">Dogs:</Header>
               </Grid.Column>
               <Grid.Column width="12">
-                <Button
+                {this.state.readOnly ? null
+                  : <Button
                   color="teal"
                   onClick={() => this.openPetModal(null, false)}
                 >
                   Add a dog
-                </Button>
+                </Button>}
               </Grid.Column>
             </Grid.Row>
-            {userPets ? (
-              userPets.map((pet, i) => {
+
+
+            {petsList ? (
+              petsList.map((pet, i) => {
                 return (
                   <PetProfileItem
                     key={i}
                     info={pet}
                     openPetModal={this.openPetModal}
+                    readOnly={this.state.readOnly}
                   />
                 );
               })
             ) : (
-              <h3>Add a dog to your profile!</h3>
+              <h3>I can't find any dogs here!</h3>
             )}
           </Grid>
-        </Container>
+        </Segment>
       </div>
     );
   }
@@ -135,10 +164,11 @@ class Profile extends React.Component {
 /**
  * CONTAINER
  */
-const mapState = ({ user, pets }) => {
+const mapState = ({ user, pets, selectedUser }) => {
   return {
     user,
     userPets: pets.filter(pet => pet.userId === user.id),
+    selectedUser,
   };
 };
 
@@ -156,6 +186,9 @@ const mapDispatch = dispatch => {
     addNewPet(pet) {
       dispatch(addPet(pet));
     },
+    getSelectedUserInfo(userId) {
+      dispatch(getSelectedUser(userId))
+    }
   };
 };
 

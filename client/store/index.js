@@ -13,7 +13,8 @@ import events from './events'
 import messages from './messages'
 import friendsList from './friends-list-reducer'
 import sidebar from './sidebar'
-const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, messages, friendsList, sidebar})
+import selectedUser from './selectedUser'
+const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, messages, friendsList, sidebar, selectedUser})
 
 // const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, friendsList})
 
@@ -35,3 +36,4 @@ export * from './events'
 export * from './messages'
 export * from './friends-list-reducer'
 export * from './sidebar'
+export * from './selectedUser'
