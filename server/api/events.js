@@ -88,7 +88,13 @@ router.put('/:id', (req, res, next) => {
       //   {model: User, required:false}
       {
         all: true
-      }
+      },
+      {model: Park, required: false, include: [
+        {
+          model: Address,
+          required: false,
+        }
+      ]},
     ]
   }).then(events => {
     console.log('req.body', req.body)
