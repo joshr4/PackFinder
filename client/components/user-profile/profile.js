@@ -26,6 +26,7 @@ class Profile extends React.Component {
       },
       user: {},
       isUpdatePet: false,
+
     };
     this.togglePetModal = this.togglePetModal.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
