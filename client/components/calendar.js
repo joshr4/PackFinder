@@ -80,12 +80,10 @@ class Dnd extends React.Component {
   componentDidMount() {
     this.props.getData();
     axios.get('/api/events').then(response => {
-      console.log("events from api test...: ", response.data);
       this.setState({
         events:this.props.events.concat(response.data)
       })
       // this.props.events = this.props.events.concat(response.data);
-      console.log("New state.events: ", this.state.events);
     })
   }
 
@@ -96,7 +94,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("opening modal for: ", event);
     if (event.isEvent) {
       this.toggleModal()
       // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
@@ -147,7 +144,6 @@ class Dnd extends React.Component {
   }
 
   moveEvent({ event, start, end }) {
-    console.log("moving event: ", event);
     const { events } = this.props;
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
@@ -281,7 +277,6 @@ class Dnd extends React.Component {
     }, this.validateForm);
   }
   eventStyleGetter = (event, start, end, isSelected) => {
-    console.log(event);
     var backgroundColor = '#' + event.hexColor;
     var style = {
         backgroundColor: backgroundColor,

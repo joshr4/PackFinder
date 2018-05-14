@@ -467,11 +467,10 @@ export class DogPark extends Component {
       if (elem.timeObj) {
         // victoryObj.time = elem.timeObj.getTime();
         victoryObj.time = elem.timeObj;
-      } 
+      }
       victoryData.push(victoryObj);
     });
-    console.log("victoryData: ", victoryData);
-    
+
     return (
 
       <div>
@@ -575,9 +574,9 @@ export class DogPark extends Component {
             // tickValues specifies both the number of ticks and where
             // they are placed on the axis
             scale="time"
-            style={{ 
-              tickLabels: {fontSize: "5px", padding: 5} 
-            }}            
+            style={{
+              tickLabels: {fontSize: "5px", padding: 5}
+            }}
             label="Time"
             // tickValues={[1, 2, 3, 4]}
             // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
@@ -586,25 +585,25 @@ export class DogPark extends Component {
             dependentAxis
             // tickFormat specifies how ticks should be displayed
             // tickFormat={(x) => (`$${x / 1000}k`)}
-            style={{ 
-              // axisLabel: {fontSize: "10px", padding: 30}, 
-              tickLabels: {fontSize: "5px", padding: 5} 
-            }}        
+            style={{
+              // axisLabel: {fontSize: "10px", padding: 30},
+              tickLabels: {fontSize: "5px", padding: 5}
+            }}
             tickFormat={(x) => (` ${x} visits`)}
             tickFormat={d3.format(",d")}
             label="Visits"
-            // tickValues={[0, 1]}            
+            // tickValues={[0, 1]}
           />
           <VictoryBar
             data={victoryData}
-            style={{ 
-              tickLabels: {fontSize: "10px", padding: 5} 
-            }}            
+            style={{
+              tickLabels: {fontSize: "10px", padding: 5}
+            }}
             // style={{labels: {fontSize:"10px", color:"red"}}}
             x="time"
             y="visits"
           />
-        </VictoryChart>          
+        </VictoryChart>
 
           </Segment>
           </Grid.Column>
