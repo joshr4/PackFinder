@@ -40,7 +40,6 @@ export class EventDetail extends Component {
     super(props);
     this.state = {
       showModal: false,
-      isUpdateModal: true,
       map: {},
     };
     this.toggleModal = this.toggleModal.bind(this)
@@ -50,9 +49,9 @@ export class EventDetail extends Component {
     this.props.getEvents()
   }
 
-  toggleModal(type) {
+  toggleModal() {
+
     this.setState({
-      isUpdateModal: type === 'update',
       showModal: !this.state.showModal,
     });
   }
@@ -65,9 +64,9 @@ export class EventDetail extends Component {
     let fromHour = parseInt(stateEvent.startTime.split(':')[0]);
     let fromMin = parseInt(stateEvent.startTime.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let newEvent = Object.assign(stateEvent, {start: startTime})
-    if (this.props.isUpdateModal) this.props.updateEvent(newEvent)
-    else this.props.addEvent(newEvent)
+    let newEvent = Object.assign(stateEvent, { start: startTime, id: event.id })
+    this.props.updateEvent(newEvent)
+    this.toggleModal()
   }
 
   mapLoaded(map) {
@@ -78,30 +77,27 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { addEvent, updateEvent, deleteEvent, match, allEvents } = this.props
-    let { showModal, isUpdateModal } = this.state
-
+    let { addEvent, updateEvent, deleteEvent, match, allEvents, user } = this.props
+    let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
+    let isEventOwner = false
+    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
+    let coords = { lat: 41.8781, lng: -87.6298 } //grab these from displayEvent.park.address.location
     return (
       displayEvent ?
-        <div>
+        <Container className="container">
           <EventModal
             onClose={this.toggleModal}
             showModal={showModal}
             handleSubmit={this.handleSubmit}
             onDelete={deleteEvent}
-            isUpdateModal={isUpdateModal}
             item={displayEvent}
           />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-            <Container text style={{ marginBottom: '2em' }}>
-              <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
-                {}
-              </Header>
-            </Container>
             <Grid celled>
               <Grid.Row>
                 <Grid.Column width={8}>
+                {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
                   <Segment attached>
                     <b>
                       Park Name: {displayEvent.park.name}<br />
@@ -112,16 +108,11 @@ export class EventDetail extends Component {
                       Date: {moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}<br />
                     </b>
                   </Segment>
-                  <Segment attached>
-                    <b>
-                      Description: {displayEvent.description}<br />
-                    </b>
-                  </Segment>
                 </Grid.Column>
                 <Grid.Column width={8}>
                   <SingleParkMap
                     zoom={15}
-                    center={{ lat: 41.8781, lng: -87.6298 }}
+                    center={coords}
                     mapLoaded={this.mapLoaded.bind(this)}
                     containerElement={<div style={{ height: `100%` }} />}
                     mapElement={<div style={{ height: `100%` }} />}
@@ -130,17 +121,15 @@ export class EventDetail extends Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <Segment>
-                    <h4>What goes here</h4>
-                    <Button positive style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('add')}>Add Event</Button>
-                    <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('update')}>Edit Event</Button>
-                  </Segment>
+                  <h4>Description:</h4><p>{displayEvent.description}</p>
+                  {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+                  : <div />}
                 </Grid.Column>
               </Grid.Row>
             </Grid>
             <br /> <br /> <br />
           </Segment>
-        </div>
+        </Container>
         :
         <div />
     );
@@ -150,6 +139,7 @@ const mapState = state => {
   return {
     allEvents: state.events,
     attendees: [],
+    user: state.user
   };
 };
 
