@@ -46,6 +46,7 @@ export class EventDetail extends Component {
   }
 
   componentDidMount() {
+    this.props.getEvents()
   }
 
   toggleModal() {
