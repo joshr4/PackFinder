@@ -34,9 +34,27 @@ User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignK
 
 
 Event.belongsTo(User, {as:'creator'});
+
 Event.belongsToMany(User, {through: 'eventParticipants',
-as:'attendees', foreignKey:'eventId', otherKey:'userId'});
-User.belongsToMany(Event, {through:'eventParticipants'});
+as:'attendees', foreignKey:'eventId', otherKey:'userId', 
+// onDelete: 'CASCADE'
+});
+User.belongsToMany(Event, {through:'eventParticipants',
+as:'attendingEvents',
+// onDelete: 'CASCADE'
+});
+
+Event.belongsToMany(User, {through: 'eventInvitees',
+as:'invitees',
+// onDelete: 'CASCADE'
+});
+User.belongsToMany(Event, {through:'eventInvitees',
+as:'invitedEvents',
+// onDelete: 'CASCADE'
+});
+
+
+
 Event.belongsTo(Park);
 
 Message.belongsTo(User, {as:'from', foreignKey:'fromId'});

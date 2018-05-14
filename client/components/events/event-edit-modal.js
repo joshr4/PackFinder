@@ -3,7 +3,7 @@ import { Button, Header, Image, Modal, Grid, Form } from 'semantic-ui-react';
 import moment from 'moment'
 import { AddEventForm } from '../index';
 
-class EventModal extends Component {
+class EventEditModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,4 +51,4 @@ class EventModal extends Component {
     )
   }
 }
-export default EventModal;
+export default EventEditModal;
