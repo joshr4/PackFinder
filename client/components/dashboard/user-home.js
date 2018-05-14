@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini} from '../';
 
 import {
   getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
+  getNearByEventsInfo,
 } from '../../store';
 
 /**
@@ -35,6 +36,8 @@ export class UserHome extends Component {
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
+    this.props.getNearByEvents(this.state.location, 8046)
+    // console.log(this.props)
   }
 
   render() {
@@ -127,6 +130,9 @@ const mapDispatch = dispatch => {
     },
     getNearByUsers(location) {
       dispatch(getNearByUsersInfo(location));
+    },
+    getNearByEvents(location, dist) {
+      dispatch(getNearByEventsInfo(location, dist));
     },
   };
 };
