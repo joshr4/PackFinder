@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap } from '../index.js';
+import { Map, ParkListItem, EventM, EventModal, SingleParkMap, ChatRoom } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -46,10 +46,10 @@ export class EventDetail extends Component {
   }
 
   componentDidMount() {
+    this.props.getEvents();
   }
 
   toggleModal() {
-
     this.setState({
       showModal: !this.state.showModal,
     });
@@ -82,11 +82,13 @@ export class EventDetail extends Component {
     let isEventOwner = false
     if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
     let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent.park.address) coords = displayEvent.park.address.location
+    if (displayEvent 
+    && displayEvent.park && 
+    displayEvent.park.address) coords = displayEvent.park.address.location
     isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
     return (
       displayEvent ?
-        <Container className="container">
+        <Container className="container" style={{"overflow-y":"scroll"}}>
           <EventModal
             onClose={this.toggleModal}
             showModal={showModal}
@@ -126,6 +128,12 @@ export class EventDetail extends Component {
                   {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
                   : <div />}
                 </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column width={16}>
+                <Header>Event Chat</Header>
+                <ChatRoom height={674} eventId={parseInt(this.props.match.params.id)}/>
+              </Grid.Column>
               </Grid.Row>
             </Grid>
             <br /> <br /> <br />
