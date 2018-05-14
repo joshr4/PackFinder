@@ -19,7 +19,19 @@ router.get('/approved', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/', (req, res, next) => {
-    Message.create(req.body).then((message) => res.json(message));
+router.post('/', async (req, res, next) => {
+    let newMessage = await Message.create(req.body);
+    let resMessage = Message.findOne({
+        where: {
+            id:newMessage.id,
+        },
+        include: [{
+            all: true
+        }]              
+    })
+    .then(resMessage => {
+        res.json(resMessage)
+    } 
+    );
 })
 // 
