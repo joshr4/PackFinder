@@ -4,8 +4,8 @@ body {
 }
 body .container {
   padding-top: 20vh;
-  min-height: 80vh;
-  background: #54b9bf;
+  /* min-height: 80vh; */
+  /* background: #54b9bf; */
 }
 .overflow-scroll {
   overflow-y: scroll;

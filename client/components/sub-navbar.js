@@ -18,7 +18,7 @@ const styles = {
     top: '12vh',
     zIndex: 1,
     width: '100vw',
-    color: '#54B8BF',
+    background: '#54B8BF',
     height: '6vh'
   },
   menuItem: {
@@ -40,7 +40,7 @@ const styles = {
 };
 
 const SubNavbar = ({ handleClick, isLoggedIn }) => (
-  <Menu color="teal" style={styles.menu} inverted widths={4}>
+  <Menu style={styles.menu} inverted widths={4}>
     <Menu.Item as={Link} to="/parkList" name="parks" />
     <Menu.Item as={Link} to="/calendar" name="calendar" />
     <Menu.Item name="Events" />

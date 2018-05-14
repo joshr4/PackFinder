@@ -40,8 +40,8 @@ export class UserHome extends Component {
     const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={3} centered style={{ padding: '0em 0em' }}>
-          <Grid.Column mobile={16} tablet={8} computer={5}>
+        <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
+          <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
@@ -52,7 +52,7 @@ export class UserHome extends Component {
             </Card>
           </Grid.Column>
 
-          <Grid.Column only={'computer'} tablet={8} computer={5}>
+          <Grid.Column only={'computer'} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
@@ -71,7 +71,7 @@ export class UserHome extends Component {
 
             </Card>
           </Grid.Column>
-          <Grid.Column only={'computer'} tablet={8} computer={5}>
+          <Grid.Column only={'computer'} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>

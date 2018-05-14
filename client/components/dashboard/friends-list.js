@@ -70,6 +70,9 @@ export class FriendsList extends Component {
       menuLabels: {
         zIndex: '0',
         marginLeft: '0.3em',
+        position: 'absolute',
+        top: '-10px',
+        right: '-3px',
       },
       menuItem: {
         padding: '1em 0.5em',
@@ -104,7 +107,7 @@ export class FriendsList extends Component {
             key="Requests"
             style={styles.menuItem}
           >
-            Requests<Label style={styles.labels}>
+            Requests<Label style={styles.menuLabels}>
               {receivedRequests.length}
             </Label>
           </Menu.Item>
@@ -128,7 +131,7 @@ export class FriendsList extends Component {
             key="Nearby Users"
             style={styles.menuItem}
           >
-            Nearby Users<Label style={styles.labels}>
+            Nearby Users<Label style={styles.menuLabels}>
               {filteredNearbyUsers.length}
             </Label>
           </Menu.Item>
@@ -147,7 +150,7 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Sent" style={styles.menuItem}>
-            Sent<Label style={styles.labels}>{sentRequests.length}</Label>
+            Sent<Label style={styles.menuLabels}>{sentRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
