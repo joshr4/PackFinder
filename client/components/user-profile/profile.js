@@ -33,6 +33,10 @@ class Profile extends React.Component {
     this.openPetModal = this.openPetModal.bind(this);
   }
   componentDidMount() {
+    if (Object.hasOwnProperty(this.props.match.params)) {
+      console.log('profile has params');
+      this.setState({ friendId: this.props.match.params });
+    }
     this.props.getData();
   }
   openPetModal = (pet, edit = true) => {
@@ -84,6 +88,8 @@ class Profile extends React.Component {
   };
   render() {
     const { userPets } = this.props;
+    console.log('profile match params uerId', this.props.match.params);
+    console.log('current state', this.state);
     return (
       <div className="container">
         <Segment>
