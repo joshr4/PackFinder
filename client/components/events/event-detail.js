@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap } from '../index.js';
+import { Map, ParkListItem, EventM, EventEditModal, SingleParkMap } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -79,6 +79,7 @@ export class EventDetail extends Component {
     let { addEvent, updateEvent, deleteEvent, match, allEvents, user } = this.props
     let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
+    console.log('displayevent',displayEvent)
     let isEventOwner = false
     if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
     let coords = {lat: 41.954629, lng: -87.6572544}
@@ -87,7 +88,7 @@ export class EventDetail extends Component {
     return (
       displayEvent ?
         <Container className="container">
-          <EventModal
+          <EventEditModal
             onClose={this.toggleModal}
             showModal={showModal}
             handleSubmit={this.handleSubmit}

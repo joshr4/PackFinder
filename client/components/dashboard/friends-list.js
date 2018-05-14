@@ -9,8 +9,8 @@ import {
   getReceivedRequests,
   approveRequest,
   addSentRequest,
-  sendfriendRequest,
   removeSentRequest,
+  sendFriendRequest,
   removeFriend,
   declineRequest,
 } from '../../store';
