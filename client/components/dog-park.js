@@ -491,9 +491,7 @@ export class DogPark extends Component {
           noPark={true}
         />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-          <Container text style={{marginBottom: '2em'}}>
           <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">{this.state.park.name}</Header>
-          </Container>
           <Grid celled>
           <Grid.Row>
         <Grid.Column width={8}>
