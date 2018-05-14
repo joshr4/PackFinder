@@ -129,6 +129,7 @@ class EditUserModal extends Component {
                 <Form.Field
                   fluid
                   control={Input}
+                  type="email"
                   label="Email"
                   name="email"
                   placeholder="email@domain.com"
