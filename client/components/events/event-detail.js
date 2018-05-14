@@ -95,6 +95,7 @@ export class EventDetail extends Component {
             <Grid celled>
               <Grid.Row>
                 <Grid.Column width={8}>
+                {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
                   <Segment attached>
                     <b>
                       Park Name: {displayEvent.park.name}<br />
