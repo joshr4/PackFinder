@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini } from '../';
+
 import {
   getParksAddresses,
   getGeolocation,
@@ -37,7 +38,7 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { parkList, user } = this.props;
+    const { parkList, user, events } = this.props;
     return (
       <div className="container">
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
@@ -69,8 +70,8 @@ export class UserHome extends Component {
                       <NearbyParks key={park.id} park={park} />
                     ))
                   ) : (
-                    <div />
-                  )}
+                      <div />
+                    )}
                 </Feed>
               </Card.Content>
             </Card>
@@ -82,18 +83,14 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  <EventList />
-                </Feed>
-              </Card.Content>
-              <Card.Content style={{ padding: '0px', height: '70vh' }}>
-                <Feed className="overflow-scroll dashboard-feed">
-                  {parkList ? (
-                    parkList.map(park => (
-                      <NearbyParks key={park.id} park={park} />
+                  {events ? (
+                    events.map(event => (
+                      <EventMini key={event.id} item={event} />
                     ))
                   ) : (
-                    <div />
-                  )}
+                      <div />
+                    )
+                  }
                 </Feed>
               </Card.Content>
             </Card>
@@ -113,6 +110,7 @@ const mapStateToProps = state => {
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
+    events: state.events
   };
 };
 

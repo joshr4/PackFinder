@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash,
 ChatRoom, EventDetail, EventList} from './components'
 
-import {me} from './store'
+import {me, getEvents} from './store'
 
 /**
  * COMPONENT
@@ -64,7 +64,7 @@ const mapDispatch = (dispatch) => {
   return {
     loadInitialData () {
       dispatch(me())
-
+      dispatch(getEvents())
     }
   }
 }
