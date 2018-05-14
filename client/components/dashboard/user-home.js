@@ -10,6 +10,7 @@ import {
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
+  findUsersByName,
 } from '../../store';
 
 /**
@@ -40,6 +41,7 @@ export class UserHome extends Component {
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
+    // this.props.findUsers('ricky li')
   }
 
   render() {
@@ -118,7 +120,8 @@ const mapStateToProps = state => {
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
-    events: state.events
+    events: state.events,
+    usersList: state.usersList
   };
 };
 
@@ -136,6 +139,9 @@ const mapDispatch = dispatch => {
     getNearByUsers(location) {
       dispatch(getNearByUsersInfo(location));
     },
+    // findUsers(name){
+    //   dispatch(findUsersByName(name));
+    // }
   };
 };
 

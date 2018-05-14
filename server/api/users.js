@@ -49,14 +49,37 @@ router.get('/simple/:id', (req, res, next) => {
 })
 
 router.get('/search/:name', (req, res, next) => {
-  console.log(req.params)
-  User.findAll({
-    where: {
-      firstName: {
-        $ilike: `%${req.params.name}%`
-      }
-    }
+  const names = req.params.name.split('+')
+  console.log(names)
+  names.forEach((name, index, arr) => {
+    arr[index] =  name + '%'
   })
+
+  User.findAll({
+    attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl', 'description'],
+    where: {
+        $or: [
+      {
+        firstName: {
+          $ilike: names[0]
+        }
+      },
+      {
+        lastName: {
+          $ilike: names[names.length - 1]
+        }
+      }
+        ]
+    },
+    include: [
+      {
+        model: Pet,
+        required: false,
+        as: 'pets'
+      },
+    ]
+  })
+
   .then(user => res.json(user))
   .catch(next)
 })
