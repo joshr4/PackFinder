@@ -40,7 +40,6 @@ export class EventDetail extends Component {
     super(props);
     this.state = {
       showModal: false,
-      isUpdateModal: true,
       map: {},
     };
     this.toggleModal = this.toggleModal.bind(this)
@@ -50,9 +49,9 @@ export class EventDetail extends Component {
     this.props.getEvents()
   }
 
-  toggleModal(type) {
+  toggleModal() {
+
     this.setState({
-      isUpdateModal: type === 'update',
       showModal: !this.state.showModal,
     });
   }
@@ -65,9 +64,10 @@ export class EventDetail extends Component {
     let fromHour = parseInt(stateEvent.startTime.split(':')[0]);
     let fromMin = parseInt(stateEvent.startTime.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let newEvent = Object.assign(stateEvent, {start: startTime})
-    if (this.props.isUpdateModal) this.props.updateEvent(newEvent)
-    else this.props.addEvent(newEvent)
+    let newEvent = Object.assign(stateEvent, {start: startTime, id: event.id})
+    console.log('submit', newEvent)
+    this.props.updateEvent(newEvent)
+    this.toggleModal()
   }
 
   mapLoaded(map) {
@@ -79,8 +79,7 @@ export class EventDetail extends Component {
 
   render() {
     let { addEvent, updateEvent, deleteEvent, match, allEvents } = this.props
-    let { showModal, isUpdateModal } = this.state
-
+    let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     return (
       displayEvent ?
@@ -90,7 +89,6 @@ export class EventDetail extends Component {
             showModal={showModal}
             handleSubmit={this.handleSubmit}
             onDelete={deleteEvent}
-            isUpdateModal={isUpdateModal}
             item={displayEvent}
           />
           <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
@@ -132,8 +130,7 @@ export class EventDetail extends Component {
                 <Grid.Column width={16}>
                   <Segment>
                     <h4>What goes here</h4>
-                    <Button positive style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('add')}>Add Event</Button>
-                    <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal('update')}>Edit Event</Button>
+                    <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
                   </Segment>
                 </Grid.Column>
               </Grid.Row>

@@ -60,10 +60,11 @@ router.put('/:id', (req, res, next) => {
     include:[
     //   {model: Park, required: false, include:[Address]},
     //   {model: User, required:false}
+    { all: true }
     ]
   }
   ).then(events => {
-    console.log('req.body',req.body)
+    console.log('req.body', req.body)
     events.update(req.body).then((updated) => {
       res.send(updated);
     })

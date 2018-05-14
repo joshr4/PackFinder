@@ -7,34 +7,33 @@ class EventModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDirty: false,
       item: {
         description: props.item.description,
         date: moment(props.item.start).format('YYYY-MM-DD'),
         startTime: moment(props.item.start).format('HH:mm'),
         parkId: props.item.parkId,
         private: props.item.private,
+        id: props.item.id
       }
     };
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmitModal = this.handleSubmitModal.bind(this)
   }
 
   handleChange = (e) => {
     let variable = e.target.name
     let value = e.target.value
-    this.setState({ item: Object.assign(this.state.item, { [variable]: value }) })
+    this.setState({ isDirty: true, item: Object.assign(this.state.item, { [variable]: value }) })
   }
 
-  handleSubmitModal = () => this.props.handleSubmit(this.state.item)
-
   render() {
-    let { onClose, showModal, onDelete } = this.props
-    let { description, item } = this.state
+    let { onClose, showModal, onDelete, handleSubmit, toggleModal } = this.props
+    let { description, item, isDirty } = this.state
     return (
-      <Modal open={showModal} onClose={onClose} style={{ width: 'console' }} >
+      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
         <Grid>
           <Button color="blue" style={{ marginLeft: 35, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
-          <Button negative style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(item.id)}>Delete Event</Button>
+          <Button negative style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button>
         </Grid>
         <Modal.Content image>
 
@@ -43,7 +42,7 @@ class EventModal extends Component {
             <AddEventForm
               item={item}
               handleChange={this.handleChange}
-              handleSubmit={this.handleSubmitModal}
+              handleSubmit={() => isDirty ? handleSubmit(item) : onClose() }
             />
           </Modal.Description>
         </Modal.Content>

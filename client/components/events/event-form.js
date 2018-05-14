@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { Button, Form, Input, Dropdown } from 'semantic-ui-react';
-//import { countryOptions } from '../common'
 
 const AddEventForm = props => {
   let { description, startTime, date } = props.item
@@ -15,7 +14,6 @@ const AddEventForm = props => {
             type="text"
             name="description"
             style={{ marginLeft: '0px' }}
-            //defaultValue={props.nowString}
             value={description}
           />
         </Form.Field>
@@ -27,7 +25,6 @@ const AddEventForm = props => {
             type="date"
             name="date"
             style={{ marginLeft: '0px' }}
-            //defaultValue={props.nowString}
             value={date}
           />
         </Form.Field>
@@ -42,7 +39,7 @@ const AddEventForm = props => {
             value={startTime}
           />
         </Form.Field>
-        <Button color="blue" style={{ marginLeft: 35, marginTop: 20 }} onClick={() => props.handleSubmit()}>Save</Button>
+        <Button color="blue" style={{ marginLeft: 35, marginTop: 20 }} >Save</Button>
       </Form.Group>
     </Form>
   )
