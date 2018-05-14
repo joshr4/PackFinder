@@ -43,7 +43,6 @@ export const approveRequest = (userId, friendId) => dispatch => {
       friendId,
     })
     .then(res => {
-      console.log('res.data inside approve rew', res.data);
       dispatch(remove(friendId));
       dispatch(add(res.data));
       socket.emit('accept-request', {
