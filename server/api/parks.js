@@ -53,7 +53,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
         return a - b;
       })
 
-      res.json(sortedParks)})
+      res.json(sortedParks.slice(0, 20))})
     .catch(next)
 })
 
@@ -76,7 +76,7 @@ router.get('/:id/visits', (req, res, next) => {
         },
         include:[
             {model: Visit, required:false,
-                include:[{model:User}]                
+                include:[{model:User}]
             },
         ]
         }).then((park) => {res.json(park.visits)});
