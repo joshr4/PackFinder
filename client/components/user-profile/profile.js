@@ -62,9 +62,9 @@ class Profile extends React.Component {
     });
   };
   handleAdd = () => {
-    this.props.addNewPet(this.state.selectedPet)
-    this.togglePetModal()
-  }
+    this.props.addNewPet(this.state.selectedPet);
+    this.togglePetModal();
+  };
   handleUpdate = () => {
     console.log('handleupdate');
     this.props.updatePet(this.state.selectedPet);
@@ -83,21 +83,20 @@ class Profile extends React.Component {
     });
   };
   render() {
-
     const { userPets } = this.props;
     return (
-      <div>
-        <PetModal
-          show={this.state.showPetModal}
-          onClose={this.togglePetModal}
-          item={this.state.selectedPet}
-          handleAdd={this.handleAdd}
-          handleChange={this.handleChange}
-          handleUpdate={this.handleUpdate}
-          handleDelete={this.handleDeletePet}
-          isUpdatePet={this.state.isUpdatePet}
-        />
-        <Container className="container">
+      <div className="container">
+        <Segment>
+          <PetModal
+            show={this.state.showPetModal}
+            onClose={this.togglePetModal}
+            item={this.state.selectedPet}
+            handleAdd={this.handleAdd}
+            handleChange={this.handleChange}
+            handleUpdate={this.handleUpdate}
+            handleDelete={this.handleDeletePet}
+            isUpdatePet={this.state.isUpdatePet}
+          />
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
             <UserProfileItem />
@@ -128,7 +127,7 @@ class Profile extends React.Component {
               <h3>Add a dog to your profile!</h3>
             )}
           </Grid>
-        </Container>
+        </Segment>
       </div>
     );
   }
