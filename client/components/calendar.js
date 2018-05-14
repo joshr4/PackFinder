@@ -293,12 +293,34 @@ class Dnd extends React.Component {
 
   render() {
     return (
+      <div className="container" style={{"overflow-y":"scroll"}}>
       <Grid>
       <Grid.Row>
-      <Grid.Column width={1}>
+      <Grid.Column width={4}>
       </Grid.Column>
-      <Grid.Column width={14}>
-      <Grid.Row style={{paddingTop:"150px", height:"700px"}}>
+      <Grid.Column width={12} style={{paddingRight:"25px", paddingBottom:"50px"}}>
+      <Segment.Group horizontal>
+            <Segment>
+            <Button positive style={{ margin: 0}} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
+            </Segment>
+            <Segment>
+            <b>Calendar</b>
+            </Segment>
+            <Segment>
+            <Label circular color="blue">Scheduled Check-Ins</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="yellow">Events Nearby</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="green">Events You're Attending</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="teal">Events You're Coordinating</Label>            
+            </Segment>
+      </Segment.Group>
+      <Grid.Row style={{height:"670px"}}>
+      Double click an event on the calendar to edit.
       <DragAndDropCalendar
       // className="no-scroll"
       selectable
@@ -318,7 +340,7 @@ class Dnd extends React.Component {
       // max={new Date(0, 0, 0, 23, 0)}
       />       
       </Grid.Row>            
-      <Grid.Row style={{paddingTop:"10px"}}>
+      <Grid.Row style={{paddingTop:"10px", height:"300px"}}>
       
         <Segment.Group>
           <Segment.Group horizontal>
@@ -339,12 +361,8 @@ class Dnd extends React.Component {
             </Segment>
           </Segment.Group>          
         </Segment.Group>          
-
-          <Button positive style={{ margin: 0, marginTop:10 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
-          <p style={{ marginTop: 10 }}>Double click an event on the calendar to edit/delete</p>
       </Grid.Row>
-      </Grid.Column>
-      <Grid.Column width={1}>
+      
       </Grid.Column>
         <VisitModal
           modalType={this.state.modalType}
@@ -364,6 +382,7 @@ class Dnd extends React.Component {
         />        
       </Grid.Row>
         </Grid>
+    </div>
     );
   }
 }
