@@ -41,7 +41,7 @@ export const getSentRequests = (userId) => dispatch => {
     .catch(err => console.log(err));
 }
 export const addSentRequest = (userId, friendId) => dispatch => {
-  console.log('hitting thunk addSentRequest')
+  // console.log('hitting thunk addSentRequest')
   return axios
     .post(`/api/users/${userId}/friend-request`, {
       friendId
@@ -56,11 +56,20 @@ export const removeSentRequest = (userId, friendId) => dispatch => {
     .put(`/api/users/${userId}/cancel-request`, {
       friendId
     })
-    .then(res => dispatch(remove(res.data.id)))
+    .then(res => {
+      dispatch(remove(res.data.id))
+      socket.emit('cancel-sent-request', {
+        friendId,
+        userId
+      })
+    })
     .catch(err => console.log(err));
 }
-export const removeSentRequestSocket = (requestId) => dispatch => dispatch(remove(requestId))
-
+export const removeSentRequestSocket = (requestId) => dispatch =>
+  axios
+  .get(`/api/users/simple/${requestId}`)
+  .then(res => dispatch(remove(res.data.id)))
+  .catch(err => console.log(err));
 
 
 /**

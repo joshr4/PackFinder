@@ -47,14 +47,16 @@ export const approveRequest = (userId, friendId) => dispatch => {
       dispatch(remove(friendId));
       dispatch(add(res.data));
       socket.emit('accept-request', {
-        friend: res.data,
-        friendId
+        friendId,
+        userId
       })
     });
 };
-export const acceptRequestSocket = (friend) => dispatch => dispatch(add(friend))
-
-// .get(`/api/users/${userId}/received-requests`)
+export const acceptRequestSocket = (userId) => dispatch =>
+  axios
+  .get(`/api/users/simple/${userId}`)
+  .then(res => dispatch(add(res.data)))
+  .catch(err => console.log(err));
 
 export const getReceivedRequests = userId => dispatch =>
   axios
@@ -67,7 +69,19 @@ export const declineRequest = (userId, friendId) => dispatch =>
   .put(`/api/users/${friendId}/cancel-request`, {
     friendId: userId
   })
-  .then(() => dispatch(remove(friendId)))
+  .then(() => {
+    dispatch(remove(friendId))
+    socket.emit('decline-request', {
+      friendId,
+      userId
+    })
+  })
+  .catch(err => console.log(err));
+
+export const declineRequestSocket = (requestId) => dispatch =>
+  axios
+  .get(`/api/users/simple/${requestId}`)
+  .then(res => dispatch(remove(res.data.id)))
   .catch(err => console.log(err));
 
 /**

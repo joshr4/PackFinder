@@ -18,7 +18,6 @@ module.exports = (io) => {
       socket.broadcast.emit('new-message', message);
     });
     socket.on('delete-friend', data => {
-      console.log('BACKEND UPDATE FRIEND', data);
       if (currentUsers[data.friendId]) {
         io.to(currentUsers[data.friendId]).emit('delete-friend', {
           friendToDeleteId: data.userId
@@ -26,10 +25,23 @@ module.exports = (io) => {
       }
     });
     socket.on('accept-request', data => {
-      console.log('BACKEND UPDATE accept-request');
       if (currentUsers[data.friendId]) {
         io.to(currentUsers[data.friendId]).emit('accept-request', {
-          friend: data.friend
+          userId: data.userId
+        })
+      }
+    });
+    socket.on('decline-request', data => {
+      if (currentUsers[data.friendId]) {
+        io.to(currentUsers[data.friendId]).emit('decline-request', {
+          userId: data.userId
+        })
+      }
+    });
+    socket.on('cancel-sent-request', data => {
+      if (currentUsers[data.friendId]) {
+        io.to(currentUsers[data.friendId]).emit('cancel-sent-request', {
+          userId: data.userId
         })
       }
     });
