@@ -22,7 +22,7 @@ const styles = {
     zIndex: 1,
     width: '100vw',
     color: '#54B8BF',
-    height: '85px',
+    height: '12vh',
   },
   menuItem: {
     color: '#fff',
