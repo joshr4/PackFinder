@@ -33,7 +33,7 @@ const SidebarMenu = props => {
   };
   return (
     <div>
-      <Sidebar.Pushable as={Segment} style={{border: '0'}}>
+      <Sidebar.Pushable as={Segment} style={{border: '0'}} className="sidebar-height">
         <Sidebar
           as={Menu}
           animation="overlay"

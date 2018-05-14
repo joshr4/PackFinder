@@ -5,7 +5,7 @@ body {
 
 body .container {
   padding-top: 20vh;
-  /* min-height: 80vh; */
+  height: 100vh
   /* background: #54b9bf; */
 }
 
@@ -15,20 +15,40 @@ body .container {
   align-content: baseline;
 }
 
-@media only screen and (max-width: 600px) {
-  body .container {
-    padding-top: 12vh;
-  }
-  .friends-list {
-    height: 75vh;
-    align-items: baseline;
-    align-content: baseline;
-  }
+.view-height {
+  height: 100vh;
 }
 
 .overflow-scroll {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+.dashboard-card {
+  padding: 0;
+  height: 80vh;
+}
+
+.dashboard-feed {
+  height: 70vh;
+}
+
+@media only screen and (max-width: 768px) {
+  body .container {
+    padding-top: 12vh;
+  }
+  .friends-list {
+    height: 77vh;
+    align-items: baseline;
+    align-content: baseline;
+  }
+  .dashboard-feed {
+    height: 82vh;
+  }
+  .dashboard-card {
+    padding: 0;
+    height: 82vh;
+  }
 }
 
 a {

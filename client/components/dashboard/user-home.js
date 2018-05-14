@@ -46,19 +46,24 @@ export class UserHome extends Component {
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0px', height: '70vh' }}>
+              <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
           </Grid.Column>
 
-          <Grid.Column only={'computer'} tablet={8} computer={5} largeScreen={5}>
+          <Grid.Column
+            only={'computer'}
+            tablet={8}
+            computer={5}
+            largeScreen={5}
+          >
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0px', height: '70vh' }}>
-                <Feed className="overflow-scroll" style={{ height: '70vh'}}>
+              <Card.Content className="dashboard-card">
+                <Feed className="overflow-scroll dashboard-feed">
                   {parkList ? (
                     parkList.map(park => (
                       <NearbyParks key={park.id} park={park} />
@@ -68,7 +73,6 @@ export class UserHome extends Component {
                   )}
                 </Feed>
               </Card.Content>
-
             </Card>
           </Grid.Column>
           <Grid.Column only={'computer'} computer={5} largeScreen={5}>
@@ -77,7 +81,7 @@ export class UserHome extends Component {
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
               <Card.Content style={{ padding: '0px', height: '70vh' }}>
-                <Feed className="overflow-scroll" style={{ height: '70vh'}}>
+                <Feed className="overflow-scroll dashboard-feed">
                   {parkList ? (
                     parkList.map(park => (
                       <NearbyParks key={park.id} park={park} />
@@ -87,7 +91,6 @@ export class UserHome extends Component {
                   )}
                 </Feed>
               </Card.Content>
-
             </Card>
           </Grid.Column>
         </Grid>
