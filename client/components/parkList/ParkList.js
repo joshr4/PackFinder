@@ -46,7 +46,6 @@ class ParkList extends Component {
   }
 
   zoomChanged(){
-    console.log('zoomChanged: ', this.state.map.getZoom())
   }
 
   mapLoaded(map){

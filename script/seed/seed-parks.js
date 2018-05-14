@@ -1239,7 +1239,6 @@ async function geocode(park) {
 
   )
     .catch(err => console.log(err))
-    // console.log('tempResult ',tempResult)
     return tempResult
   }
   else {
@@ -1274,7 +1273,6 @@ function createParks(addresses) {
   );
 }
 // createParks(parks).then(data => console.log('this is it', data));
-// console.log('FGGGGGGGGcreated addresses', createParks(parks));
 
 async function seed() {
   console.log('Syncing parks');

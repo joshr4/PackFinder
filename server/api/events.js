@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   let relatedPark = await Park.findById(req.body.parkId);
-  let creatorUser = await User.findById(req.body.userId);
+  let creatorUser = await User.findById(req.body.creatorId);
   let newEvent = await Event.create({
     start: req.body.start,
     end: req.body.end,

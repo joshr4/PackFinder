@@ -195,7 +195,6 @@ class Dnd extends React.Component {
   }
 
   handleChange = e => {
-    console.log(e)
     this.setState({
       selectedEvent: Object.assign(this.state.selectedEvent, {[e.target.name]: e.target.value},
       () => { this.validateField(e.target.name, e.target.value) })
