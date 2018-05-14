@@ -39,7 +39,6 @@ export class UserHome extends Component {
 
   render() {
     const { parkList, user, events } = this.props;
-    console.log('props events', events)
     return (
       <div className="container">
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
