@@ -297,6 +297,9 @@ class Dnd extends React.Component {
       <Grid>
       <Grid.Row>
       <Grid.Column width={4}>
+        {
+          //JOSH YOUR EVENT DASHBOARD GOES HERE
+        }
       </Grid.Column>
       <Grid.Column width={12} style={{paddingRight:"25px", paddingBottom:"50px"}}>
       <Segment.Group horizontal>
@@ -304,7 +307,10 @@ class Dnd extends React.Component {
             <Button positive style={{ margin: 0}} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
             </Segment>
             <Segment>
-            <b>Calendar</b>
+            <Button primary style={{ margin: 0}} onClick={() => console.log("Create Event")}>Create Public Event</Button>
+            {
+              //JOSH YOUR CREATE EVENT MODAL GETS TRIGGERED HERE 
+            }
             </Segment>
             <Segment>
             <Label circular color="blue">Scheduled Check-Ins</Label>            
@@ -340,29 +346,6 @@ class Dnd extends React.Component {
       // max={new Date(0, 0, 0, 23, 0)}
       />       
       </Grid.Row>            
-      <Grid.Row style={{paddingTop:"10px", height:"300px"}}>
-      
-        <Segment.Group>
-          <Segment.Group horizontal>
-            <Segment>
-            <b>Calendar Legend</b>
-            </Segment>
-            <Segment>
-            <Label circular color="blue">Scheduled Check-Ins</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="yellow">Events Nearby</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="green">Events You're Attending</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="teal">Events You're Coordinating</Label>            
-            </Segment>
-          </Segment.Group>          
-        </Segment.Group>          
-      </Grid.Row>
-      
       </Grid.Column>
         <VisitModal
           modalType={this.state.modalType}
