@@ -28,6 +28,7 @@ export {default as EditPetModal} from './user-profile/pet-modal'
 export {default as EditImageModal} from './user-profile/edit-image-modal'
 //Events stuff
 export {default as EventDetail} from './events/event-detail'
+export {default as EventAttendees} from './events/event-attendees'
 export {default as EventMini} from './dashboard/event-mini'
 export {default as EventList} from './events/event-list'
 export {default as EventItem} from './events/event-item'
