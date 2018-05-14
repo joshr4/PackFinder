@@ -108,7 +108,11 @@ router.put('/:id/invite-users', async (req, res, next) => {
     }
   });
   await event.addInvitees(req.body.userIds);
-  // await event.addAttendees(req.body.userIds);
+  for (let i = 0; i < req.body.userIds.length; i ++) {
+    let id = req.body.userIds[i];
+    user = await User.findById(id);
+    user.addAttendingEvent(event);    
+  }
   res.json(event);
 })
 
@@ -118,7 +122,9 @@ router.put('/:id/remove-invite', async(req, res, next) => {
       id:req.params.id,
     }
   });
+  let user = await User.findById(req.body.userId);
   await event.removeInvitee(req.body.userId);
+  await user.removeInvitedEvent(event);
   res.json(event);
 });
 
@@ -128,7 +134,9 @@ router.put('/:id/add-attendee', async(req, res, next) => {
       id:req.params.id,
     }
   });
+  let user = await User.findById(req.body.userId);
   await event.addAttendee(req.body.userId);
+  await user.addAttendingEvent(event);
   res.json(event);
 });
 
@@ -139,5 +147,6 @@ router.put('/:id/remove-attendee', async(req, res, next) => {
     }
   });
   await event.removeAttendee(req.body.userId);
+  await user.removeAttendingEvent(event);
   res.json(event);
 });
