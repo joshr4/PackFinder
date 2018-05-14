@@ -57,10 +57,6 @@ router.put('/:id', (req, res, next) => {
     where: {
       id: req.params.id
     },
-    include:[
-    //   {model: Park, required: false, include:[Address]},
-    //   {model: User, required:false}
-    ]
   }
   ).then(events => {
     console.log('req.body',req.body)
@@ -70,21 +66,44 @@ router.put('/:id', (req, res, next) => {
   })
 })
 
-router.put('/:id/invite', async (req, res, next) => {
+router.put('/:id/invite-users', async (req, res, next) => {
   let event = await Event.findOne({
     where: {
       id:req.params.id,
     }
   });
-  await event.addAttendees(req.body.userIds);
+  await event.addInvitees(req.body.userIds);
+  // await event.addAttendees(req.body.userIds);
   res.json(event);
 })
 
-router.post('/add-user', async (req, res, next) => {
-  let relatedPark = await Park.findById(req.body.parkId);
-  let addUser = await User.findById(req.body.userId);
-  await relatedPark.addAttendee(addUser);
-  res.json(relatedPark);
+router.put('/:id/remove-invite', async(req, res, next) => {
+  let event = await Event.findOne({
+    where: {
+      id:req.params.id,
+    }
+  });
+  await event.removeInvitee(req.body.userId);
+  res.json(event);
+});
 
+router.put('/:id/add-attendee', async(req, res, next) => {
+  let event = await Event.findOne({
+    where: {
+      id:req.params.id,
+    }
+  });
+  await event.addAttendee(req.body.userId);
+  res.json(event);
+});
 
-})
+router.put('/:id/remove-attendee', async(req, res, next) => {
+  let event = await Event.findOne({
+    where: {
+      id:req.params.id,
+    }
+  });
+  await event.removeAttendee(req.body.userId);
+  res.json(event);
+});
+
