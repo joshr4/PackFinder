@@ -33,8 +33,7 @@ const SidebarMenu = props => {
   };
   return (
     <div>
-      {/* <Button onClick={handleToggle}>Toggle Visibility</Button> */}
-      <Sidebar.Pushable as={Segment} style={{border: '0', height: '100vh'}}>
+      <Sidebar.Pushable as={Segment} style={{border: '0'}} className="sidebar-height">
         <Sidebar
           as={Menu}
           animation="overlay"
