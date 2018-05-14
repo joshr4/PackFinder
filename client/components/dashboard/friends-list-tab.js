@@ -20,12 +20,12 @@ export class FriendsListTab extends Component {
     return (
       <Grid
         divided
-        className="overflow-scroll"
-        style={{
-          height: '60.5vh',
-          alignItems: 'baseline',
-          alignContent: 'baseline',
-        }}
+        className="overflow-scroll friends-list"
+        // style={{
+        //   height: '60.5vh',
+        //   alignItems: 'baseline',
+        //   alignContent: 'baseline',
+        // }}
       >
         {loading === 'true' ? (
           <Dimmer active>

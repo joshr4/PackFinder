@@ -25,16 +25,16 @@ const SidebarMenu = props => {
     },
     sidebarMenu: {
       height: '100vh',
-      background: 'rgba(45, 66, 80, 0.8)',
+      background: 'rgba(45, 66, 80, 0.9)',
       color: '#54B8BF',
-      width: '50vw',
+      width: '80vw',
       paddingTop: '15vh'
     },
   };
   return (
     <div>
       {/* <Button onClick={handleToggle}>Toggle Visibility</Button> */}
-      <Sidebar.Pushable as={Segment} style={{border: '0'}}>
+      <Sidebar.Pushable as={Segment} style={{border: '0', height: '100vh'}}>
         <Sidebar
           as={Menu}
           animation="overlay"

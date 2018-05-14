@@ -2,48 +2,75 @@ body {
   font-family: sans-serif;
   background-color: #ffffff;
 }
+
 body .container {
   padding-top: 20vh;
   /* min-height: 80vh; */
   /* background: #54b9bf; */
 }
+
+.friends-list {
+  height: 60.5vh;
+  align-items: baseline;
+  align-content: baseline;
+}
+
+@media only screen and (max-width: 600px) {
+  body .container {
+    padding-top: 12vh;
+  }
+  .friends-list {
+    height: 75vh;
+    align-items: baseline;
+    align-content: baseline;
+  }
+}
+
 .overflow-scroll {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
+
 a {
   text-decoration: none;
 }
+
 label {
   display: block;
 }
+
 nav a {
   display: inline-block;
   margin: 1em;
 }
+
 form div {
   /* margin: 1em; */
   display: inline-block;
 }
+
 .login-signup * {
   min-width: 300px;
   max-width: 300px;
 }
-.login-signup > button {
+
+.login-signup>button {
   margin: 1em;
   display: inline-block;
 }
+
 .title-text {
   font-family: 'Pacifico', cursive;
   font-size: 30;
 }
+
 .login-signup {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.login-signup > form {
+.login-signup>form {
   align-items: center;
   width: 33.33vw;
   justify-content: center;
@@ -57,6 +84,7 @@ form div {
   background-attachment: fixed;
   background-position: top;
 }
+
 .splash-block-1 {
   padding: 20;
   position: absolute;
@@ -66,6 +94,7 @@ form div {
   font-size: 40px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
 .splash-bg-3 {
   min-height: 100vh;
   height: 100vh;
@@ -77,37 +106,57 @@ form div {
 /* Pet Visit Duration Slider below */
 
 /* The slider itself */
+
 .slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
+  -webkit-appearance: none;
+  /* Override default CSS styles */
   appearance: none;
-  width: 100%; /* Full-width */
-  height: 15px; /* Specified height */
+  width: 100%;
+  /* Full-width */
+  height: 15px;
+  /* Specified height */
   border-radius: 5px;
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  background: #d3d3d3;
+  /* Grey background */
+  outline: none;
+  /* Remove outline */
+  opacity: 0.7;
+  /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s;
+  /* 0.2 seconds transition on hover */
   transition: opacity .2s;
 }
 
 /* Mouse-over effects */
+
 .slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+  opacity: 1;
+  /* Fully shown on mouse-over */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
+  /* Override default look */
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: rgb(66, 175, 142); /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: rgb(66, 175, 142);
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
 }
 
 .slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 25px;
+  /* Set a specific slider handle width */
+  height: 25px;
+  /* Slider handle height */
+  background: #4CAF50;
+  /* Green background */
+  cursor: pointer;
+  /* Cursor on hover */
 }
