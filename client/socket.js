@@ -1,6 +1,9 @@
 import io from 'socket.io-client'
 import store, {
-  getMessages
+  getMessages,
+  removeFriendSocket,
+  acceptRequestSocket,
+  removeSentRequestSocket
 } from './store';
 
 const socket = io(window.location.origin)
@@ -14,8 +17,13 @@ socket.on('connect', () => {
   });
 
   socket.on('delete-friend', data => {
-    alert(data.friend);
-    //   call the thunk to remove use from friendlist
+    console.log('CLIENT SIDE DELETE-FRIEND', data)
+    store.dispatch(removeFriendSocket(data.friendToDeleteId))
+  })
+  socket.on('accept-request', data => {
+    console.log('CLIENT SIDE ACCEPT-FRIEND', data)
+    store.dispatch(acceptRequestSocket(data.friend))
+    store.dispatch(removeSentRequestSocket(data.friend))
   })
 })
 

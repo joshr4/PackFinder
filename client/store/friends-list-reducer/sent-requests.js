@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../../history';
+import socket from '../../socket';
 
 /**
  * ACTION TYPES
@@ -54,6 +55,7 @@ export const removeSentRequest = (userId, friendId) => dispatch => {
     .then(res => dispatch(remove(res.data)))
     .catch(err => console.log(err));
 }
+export const removeSentRequestSocket = (request) => dispatch => dispatch(remove(request))
 
 
 

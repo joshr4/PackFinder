@@ -1,6 +1,9 @@
 import axios from 'axios';
 import history from '../../history';
-import { add } from './';
+import {
+  add
+} from './';
+import socket from '../../socket';
 
 /**
  * ACTION TYPES
@@ -43,26 +46,34 @@ export const approveRequest = (userId, friendId) => dispatch => {
       console.log('res.data inside approve rew', res.data);
       dispatch(remove(friendId));
       dispatch(add(res.data));
+      socket.emit('accept-request', {
+        friend: res.data,
+        friendId
+      })
     });
 };
+export const acceptRequestSocket = (friend) => dispatch => dispatch(add(friend))
+
 // .get(`/api/users/${userId}/received-requests`)
 
 export const getReceivedRequests = userId => dispatch =>
   axios
-    .get(`/api/users/${userId}/received-requests`)
-    .then(res => dispatch(get(res.data)))
-    .catch(err => console.log(err));
+  .get(`/api/users/${userId}/received-requests`)
+  .then(res => dispatch(get(res.data)))
+  .catch(err => console.log(err));
 
 export const declineRequest = (userId, friendId) => dispatch =>
   axios
-    .put(`/api/users/${friendId}/cancel-request`, { friendId: userId })
-    .then(() => dispatch(remove(friendId)))
-    .catch(err => console.log(err));
+  .put(`/api/users/${friendId}/cancel-request`, {
+    friendId: userId
+  })
+  .then(() => dispatch(remove(friendId)))
+  .catch(err => console.log(err));
 
 /**
  * REDUCER
  */
-export default function(state = defaultList, action) {
+export default function (state = defaultList, action) {
   switch (action.type) {
     case GET_RECEIVED_REQUESTS:
       return action.receivedRequests;
