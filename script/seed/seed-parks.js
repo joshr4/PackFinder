@@ -26,6 +26,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
+    imageUrl: 'https://photos.bringfido.com/photo/2016/03/12/20160306_155456-1.jpg',
     location: { lat: 41.859734, lng: -87.625156 }
   },
   {
@@ -34,15 +35,8 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60607',
+    imageUrl: 'https://images.dog.ceo/breeds/rottweiler/n02106550_12642.jpg',
     location: { lat: 41.879807, lng: -87.650484 }
-  },
-  {
-    name: 'Belmont Harbor Beach DFA',
-    line_1: 'Belmont & Lake Shore Drive',
-    city: 'Chicago',
-    state: 'IL',
-    zipcode: '60614',
-    location: { lat: 41.9402557, lng: -87.6388012 }
   },
   {
     name: 'Bryn Mawr Dog Friendly Area - TEMPORARY',
@@ -58,6 +52,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60613',
+    imageUrl: 'https://photos.bringfido.com/attractions/1/2/1/2121/2121_27849.jpg',
     location: { lat: 41.954629, lng: -87.6572544 }
   },
   {
@@ -66,6 +61,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
+    imageUrl: 'https://photos.bringfido.com/attractions/7/5/1/2157/2157_25121.jpg',
     location: { lat: 41.9143687, lng: -87.6770674 }
   },
   {
@@ -82,6 +78,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60605',
+    imageUrl: 'https://photos.bringfido.com/attractions/4/9/1/2194/2194_32152.jpg',
     location: { lat: 41.8621523, lng: -87.6261511 }
   },
   {
@@ -90,6 +87,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/Grant_Bark_Park.jpg',
     location: { lat: 41.8731553, lng: -87.6205775 }
   },
   {
@@ -98,6 +96,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60618',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/1205502706_3b97697122.jpg',
     location: { lat: 41.9370863, lng: -87.6805212 }
   },
   {
@@ -106,6 +105,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
+    imageUrl: 'https://images.dog.ceo/breeds/otterhound/n02091635_2011.jpg',
     location: {lat: 41.8858918, lng: -87.6175994}
   },
   {
@@ -122,6 +122,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/img_6038.jpg',
     location: { lat: 41.9305329, lng: -87.653434 }
   },
   {
@@ -138,6 +139,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60611',
+    imageUrl: 'https://photos.bringfido.com/attractions/3/8/1/3183/3183_22857.jpg',
     location: { lat: 41.8883428, lng: -87.6435451 }
   },
   {
@@ -154,6 +156,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60607',
+    imageUrl :'https://images.dog.ceo/breeds/dane-great/n02109047_12569.jpg',
     location: { lat: 41.8802737, lng: -87.6609671 }
   },
   {
@@ -186,6 +189,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60625',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/10/17/photo_.jpg',
     location: { lat: 41.9739995, lng: -87.7019812 }
   },
   {
@@ -194,6 +198,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
+    imageUrl: 'https://media.bringfido.com/images/thumbs/Walsh.jpg',
     location: { lat: 41.9131819, lng: -87.6678591 }
   },
   {
@@ -202,6 +207,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60606',
+    imageUrl: 'https://images.dog.ceo/breeds/groenendael/n02105056_6474.jpg',
     location: { lat: 41.8936415, lng: -87.6419353 }
   },
   {
@@ -210,6 +216,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60622',
+    imageUrl: 'https://photos.bringfido.com/attractions/9/9/7/3799/3799_24546.jpg',
     location: { lat: 41.9080486, lng: -87.676738 }
   },
   {
@@ -250,6 +257,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60625',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/dog_final.JPG',
     location: { lat: 41.9744269, lng: -87.6793603 }
   },
   {
@@ -298,6 +306,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60637',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/03/13/Jackson_Bark.jpg',
     location: { lat: 41.7900692, lng: -87.5790999 }
   },
   {
@@ -330,6 +339,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60641',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/o.jpg',
     location: { lat: 41.9553018, lng: -87.7635554 }
   },
   {
@@ -450,6 +460,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60611',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/289112.jpg',
     location: { lat: 41.8972899, lng: -87.6198355 }
   },
   {
@@ -554,6 +565,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60640',
+    imageUrl: 'https://photos.bringfido.com/attractions/2924/29352_2924.jpg',
     location: { lat: 41.972088, lng: -87.6497743 }
   },
   {
@@ -578,6 +590,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60649',
+    imagueUrl: 'https://media.bringfido.com/images/thumbs/Promontory_Point.jpg',
     location: { lat: 41.7734862, lng: -87.5668031 }
   },
   {
@@ -626,6 +639,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60645',
+    imageUrl: 'https://photos.bringfido.com/attractions/2/4/7/3742/3742_23418.jpg',
     location: { lat: 42.0021787, lng: -87.6890062 }
   },
   {
@@ -746,6 +760,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60631',
+    imageUrl: 'https://photos.bringfido.com/attractions/2/5/9/12952/12952_23255.jpg',
     location: { lat: 41.9866925, lng: -87.7934494 }
   },
   {
@@ -858,6 +873,7 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60640',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/07/31/11817059_10204262416830255_4859781733853204155_n.jpg',
     location: { lat: 41.9667119, lng: -87.6428465 }
   },
   {
@@ -866,10 +882,336 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60675',
+    imageUrl: 'https://photos.bringfido.com/attractions/7/4/7/9747/9747_24646.jpg',
     location: { lat: 41.9396378, lng: -87.6372193 }
   },
-
-
+  {
+    name: 'Sirius Dog Run',
+    line_1: '385 S End Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '72758',
+    imageUrl: 'https://photos.bringfido.com/photo/2012/06/10/IMG_1839.JPG',
+    location: { lat: 40.7114022, lng: -74.0161478 }
+  },
+  {
+    name: 'Central Park',
+    line_1: '455 Central Park W',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10025',
+    imageUrl: 'https://photos.bringfido.com/attractions/3/3/7/733/733_35969.jpg',
+    location: { lat: 40.7978157, lng: -73.9608256 }
+  },
+  {
+    name: 'West 72nd Street Dog Run',
+    line_1: 'W 72nd St & Riverside Dr',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10023',
+    imageUrl: 'https://photos.bringfido.com/photo/2010/05/06/P4240011.JPG',
+    location: { lat: 40.7803211, lng: -73.9857008 }
+  },
+  {
+    name: 'Stuyvesant Park Dog Run',
+    line_1: '2nd Ave & E 17th St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10003',
+    imageUrl: 'https://photos.bringfido.com/photo/2014/11/30/IMG_0071.JPG',
+    location: { lat: 40.734242, lng: -73.9835512 }
+  },
+  {
+    name: 'Madison Square Park Dog Run',
+    line_1: '23rd St & Madison Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10010',
+    location: { lat: 40.7408761, lng: -73.9879814 }
+  },
+  {
+    name: 'Carl Schurz Dog Park',
+    line_1: '157 East End Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10028',
+    imageUrl: 'https://photos.bringfido.com/attractions/4/8/0/2084/2084_22701.jpg',
+    location: { lat: 40.7748145, lng: -73.9448786 }
+  },
+  {
+    name: 'Pug Hill',
+    line_1: '5th Ave & E 74th St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10021',
+    location: { lat: 40.7737839, lng: -73.966075 }
+  },
+  {
+    name: 'Union Square Dog Run',
+    line_1: '15th St & Union Square W',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10003',
+    imageUrl: 'https://photos.bringfido.com/attractions/0/7/4/470/470_22744.jpg',
+    location: { lat: 40.7358984, lng: -73.9912281 }
+  },
+  {
+    name: 'Robert Moses Dog Park',
+    line_1: '1st Ave & E 42nd St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10017',
+    imageUrl: 'https://photos.bringfido.com/attractions/2/8/3/3382/3382_28590.jpg',
+    location: { lat: 40.7488173, lng: -73.9696915 }
+  },
+  {
+    name: 'Tompkins Square Dog Run NYC',
+    line_1: '500 E 9th St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10009',
+    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/9853.jpg',
+    location:  { lat: 40.7272618, lng: -73.9826618 }
+  },
+  {
+    name: 'East River Park Esplanade',
+    line_1: 'E River Bikeway',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10016',
+    imageUrl: 'https://photos.bringfido.com/attractions/3/6/3/2363/2363_32060.jpg',
+    location: { lat: 40.7099616, lng: -73.9898305 }
+  },
+  {
+    name: 'North Chelsea Dog Park',
+    line_1: '175 11th Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10011',
+    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/Hudson-River-dog-park-North-chelsea-11.jpg',
+    location: { lat: 40.7486657, lng: -74.0071944 }
+  },
+  {
+    name: 'Manhattan Beach Park Dog Run',
+    line_1: '819 Oriental Blvd',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '11235',
+    imageUrl: 'https://photos.bringfido.com/attractions/7/1/9/2917/2917_20384.jpg',
+    location: { lat: 40.5779472, lng: -73.9457408 }
+  },
+  {
+    name: 'De Witt Clinton Dog Park',
+    line_1: 'W 52nd St & 11th Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10019',
+    imageUrl: 'https://photos.bringfido.com/photo/2014/09/05/image.jpg',
+    location: { lat: 40.7671242, lng: -73.9937185 }
+  },
+  {
+    name: 'St. Nicholas Dog Park',
+    line_1: 'St Nicholas Ave & W 135th',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10027',
+    imageUrl: 'https://photos.bringfido.com/attractions/7/3/5/3537/3537_28653.jpg',
+    location: { lat: 40.817922, lng: -73.949734 }
+  },
+  {
+    name: 'Leroy Street Dog Park',
+    line_1: 'Leroy St & Pier 40',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10014',
+    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/ny311-15097.jpg',
+    location: { lat: 40.7294924, lng: -74.0114995 }
+  },
+  {
+    name: 'Inwood Hill Park and Dog Run',
+    line_1: 'W 215th St & Seaman Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10034',
+    imageUrl: 'https://photos.bringfido.com/attractions/8/0/7/2708/2708_22179.jpg',
+    location: { lat: 40.8714786, lng: -73.9185691 }
+  },
+  {
+    name: 'Marcus Garvey Dog Park',
+    line_1: '18 Mt Morris Park W',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10027',
+    location: { lat: 40.8050093, lng: -73.9448633 }
+  },
+  {
+    name: 'Fort Tryon Dog Run (Sir Williams Run)',
+    line_1: '6672 Margaret Corbin Dr',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10033',
+    imageUrl: 'https://photos.bringfido.com/attractions/2474/27011_2474.jpg',
+    location: { lat: 40.8607169, lng: -73.9324757 }
+  },
+  {
+    name: 'Chelsea Waterside Park and Dog Run',
+    line_1: '11th Ave & W 22nd St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10011',
+    imageUrl: 'https://photos.bringfido.com/attractions/2131/26510_2131.jpg',
+    location: { lat: 40.7481803, lng: -74.0074286 }
+  },
+  {
+    name: 'Fish Bridge Dog Run',
+    line_1: 'Dover St & Water St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10038',
+    imageUrl: 'https://photos.bringfido.com/attractions/9/3/4/2439/2439_22920.jpg',
+    location: { lat: 40.7088079, lng: -74.0008619 }
+  },
+  {
+    name: 'Peter Detmold Park and Dog Run',
+    line_1: '454 E 51st St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10022',
+    imageUrl: 'https://photos.bringfido.com/attractions/0/4/2/3240/3240_28517.jpg',
+    location: { lat: 40.753123, lng: -73.96409 }
+  },
+  {
+    name: 'Cooper Dog Park',
+    line_1: '104 Olive St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '11211',
+    imageUrl: 'https://photos.bringfido.com/attractions/3/1/2/2213/2213_32517.jpg',
+    location: { lat: 40.7160634, lng: -73.9390187 }
+  },
+  {
+    name: 'Washington Square Dog Park',
+    line_1: '5th Ave & Waverly Pl',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10014',
+    imageUrl: 'https://photos.bringfido.com/attractions/8/4/7/3748/3748_21082.jpg',
+    location: { lat: 40.7706426, lng: -73.0272999 }
+  },
+  {
+    name: 'Morningside Park and Dog Run',
+    line_1: '6 Morningside Dr',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10025',
+    location: { lat: 40.8021997, lng: -73.9609461 }
+  },
+  {
+    name: 'Doughboy Plaza and Dog Run',
+    line_1: 'Woodside Ave & 56th St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '11377',
+    imageUrl: 'https://photos.bringfido.com/attractions/1/3/3/2331/2331_27932.jpg',
+    location: { lat: 40.7461827, lng: -73.9081131 }
+  },
+  {
+    name: 'Thomas Jefferson Dog Park',
+    line_1: '2180 1st Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10029',
+    location: { lat: 40.7937613, lng: -73.936671 }
+  },
+  {
+    name: 'Theodore Roosevelt Park',
+    line_1: '200 Central Park W',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10024',
+    imageUrl: 'https://photos.bringfido.com/attractions/7/2/6/3627/3627_28717.jpg',
+    location: { lat: 40.7812654, lng: -73.9738201 }
+  },
+  {
+    name: 'J. Hood Wright Dog Park',
+    line_1: '720 W 173rd St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10033',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/08/31/photo_.jpg',
+    location: { lat: 40.8457587, lng: -73.9418144 }
+  },
+  {
+    name: 'Ewen Park Dog Run',
+    line_1: '3199 Riverdale Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10463',
+    imageUrl: 'https://photos.bringfido.com/attractions/5/1/4/2415/2415_31836.jpg',
+    location: { lat: 40.8806454, lng: -73.9104023 }
+  },
+  {
+    name: 'Coleman Square Playground and Dog Run',
+    line_1: '45 Monroe St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10002',
+    location: { lat: 40.7117368, lng: -73.9939988 }
+  },
+  {
+    name: 'Highbridge Dog Park',
+    line_1: 'Amsterdam Ave & Fort George Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10040',
+    imageUrl: 'https://media.bringfido.com/images/thumbs/Highbridge_Dog_Park.jpg',
+    location:  { lat: 40.8564588, lng: -73.9248061 }
+  },
+  {
+    name: 'Riverside Park Dog Runs',
+    line_1: '224 W 72nd St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10023',
+    imageUrl: 'https://photos.bringfido.com/attractions/2/6/3/3362/3362_21747.jpg',
+    location: { lat: 40.7789161, lng: -73.9830144 }
+  },
+  {
+    name: 'Seton Dog Park',
+    line_1: 'W 232nd St & Independence Ave',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10463',
+    imageUrl: 'https://photos.bringfido.com/attractions/3469/27618_3469.jpg',
+    location: { lat: 40.8849205, lng: -73.9163268 }
+  },
+  {
+    name: 'TriBeCa Dog Run',
+    line_1: 'Pier 26 & West St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10014',
+    imageUrl: 'https://photos.bringfido.com/photo/2015/07/27/photo_____.jpg',
+    location: { lat: 40.7211627, lng: -74.0142773 }
+  },
+  {
+    name: 'Bull Moose Dog Run',
+    line_1: '1 W 81st St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10024',
+    imageUrl: 'https://photos.bringfido.com/attractions/1/0/5/11501/11501_20808.jpg',
+    location: { lat: 40.7823822, lng: -73.9720258 }
+  },
+  {
+    name: 'Battery Park',
+    line_1: '17 State St',
+    city: 'New York',
+    state: 'NY',
+    zipcode: '10024',
+    imageUrl: 'https://photos.bringfido.com/attractions/4/3/9/1934/1934_27761.jpg',
+    location: { lat: 40.702795, lng: -74.01412 }
+  },
 ];
 
 async function geocode(park) {
@@ -897,7 +1239,6 @@ async function geocode(park) {
 
   )
     .catch(err => console.log(err))
-    // console.log('tempResult ',tempResult)
     return tempResult
   }
   else {
@@ -924,6 +1265,7 @@ function createParks(addresses) {
         name: park.name,
         rating: 5,
         description: faker.lorem.paragraph(),
+        imageUrl: park.imageUrl,
         schedule: {},
         addressId: address.id,
       }).then(newPark => newPark);
@@ -931,7 +1273,6 @@ function createParks(addresses) {
   );
 }
 // createParks(parks).then(data => console.log('this is it', data));
-// console.log('FGGGGGGGGcreated addresses', createParks(parks));
 
 async function seed() {
   console.log('Syncing parks');

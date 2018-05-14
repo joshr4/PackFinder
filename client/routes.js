@@ -24,7 +24,8 @@ class Routes extends Component {
         <Route exact path="/" component={Splash} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/profile" component={Profile} />
+        <Route exact path="/profile" component={Profile} />
+        <Route path="/profile/:userId" component={Profile} />
         <Route exact path="/dog-park" component={SinglePark} />
         <Route path="/dog-park/:id" component={DogPark} />
         <Route path="/dog-park-graph" component={ParkGraph} />

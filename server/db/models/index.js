@@ -34,9 +34,19 @@ User.belongsToMany(User, { as: 'Requesters', through: 'friendRequests', foreignK
 
 
 Event.belongsTo(User, {as:'creator'});
+
 Event.belongsToMany(User, {through: 'eventParticipants',
 as:'attendees', foreignKey:'eventId', otherKey:'userId'});
 User.belongsToMany(Event, {through:'eventParticipants'});
+
+Event.belongsToMany(User, {through: 'eventInvitees',
+as:'invitees'
+  // , foreignKey:'eventId', otherKey:'userId'
+});
+User.belongsToMany(Event, {through:'eventInvitees'});
+
+
+
 Event.belongsTo(Park);
 
 Message.belongsTo(User, {as:'from', foreignKey:'fromId'});

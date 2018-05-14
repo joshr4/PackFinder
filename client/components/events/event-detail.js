@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap } from '../index.js';
+import { Map, ParkListItem, EventM, EventEditModal, SingleParkMap } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -85,11 +85,10 @@ export class EventDetail extends Component {
     let coords = {lat: 41.954629, lng: -87.6572544}
     if (displayEvent.park.address) coords = displayEvent.park.address.location
     isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
-
     return (
       displayEvent ?
         <Container className="container">
-          <EventModal
+          <EventEditModal
             onClose={this.toggleModal}
             showModal={showModal}
             handleSubmit={this.handleSubmit}

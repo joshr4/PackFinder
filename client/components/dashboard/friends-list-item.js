@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {NavLink} from 'react-router-dom'
 import { Grid, Button, Image, Label, Header, Segment } from 'semantic-ui-react';
 
 /**
@@ -20,7 +21,7 @@ export const FriendsListItem = props => {
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
         <Grid.Row style={{ padding: '0.25em', alignItems: 'center' }}>
-          <Header style={{ flex: 2, margin: '0' }} as="a">
+          <Header style={{ flex: 2, margin: '0' }} as={NavLink} to={`/profile/${id}`}>
             {fullName}
           </Header>
           {address &&
@@ -95,30 +96,6 @@ export const FriendsListItem = props => {
                     </div>
                   ))}
               </Grid.Row>
-              {/* <Grid.Row
-                style={{
-                  padding: '0',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                }}
-              >
-                {address &&
-                  address.location.distance && (
-                    <Label
-                      icon="globe"
-                      content={`${address.location.distance} mi away`}
-                    />
-                  )}
-                <Button
-                  onClick={() => {
-                    remove ? remove(user.id, id) : submit(user.id, id);
-                  }}
-                  size="tiny"
-                  name="add"
-                >
-                  {remove ? 'remove' : 'send Request'}
-                </Button>
-              </Grid.Row> */}
             </Grid>
           </Grid.Column>
         </Grid.Row>

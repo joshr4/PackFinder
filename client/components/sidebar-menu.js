@@ -174,7 +174,6 @@ const mapDispatch = dispatch => {
       dispatch(logout());
     },
     handleToggle() {
-      console.log('INSIDE TOGGLE THUNK');
       dispatch(toggleSidebar());
     },
   };

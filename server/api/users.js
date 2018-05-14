@@ -25,27 +25,26 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/simple', (req, res, next) => {
-  console.log('here i am')
-  User.findAll({
+router.get('/simple/:id', (req, res, next) => {
+  User.findOne({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
 
-      attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl'], // add name latter
-      include: [{
-          model: Address,
-          required: true
-        },
+
+      attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl', 'description'],
+      where: {
+        id: req.params.id
+      },
+      include: [
         {
           model: Pet,
           required: false,
           as: 'pets'
         },
-
       ]
     })
-    .then(users => res.json(users))
+    .then(user => res.json(user))
     .catch(next)
 })
 
@@ -333,7 +332,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
         },
       ]
     })
-    .then(users => {
+    .then(users => { //Filter out users out of range
       const filteredUsers = users.filter(user =>
         geolib.isPointInCircle({
             latitude: user.address.location.lat,
@@ -345,7 +344,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
           req.params.distance)
       );
 
-      filteredUsers.forEach(user => {
+      filteredUsers.forEach(user => { //add calculated distance to each user
         user.address.location.distance = geolib.convertUnit('mi', geolib.getDistanceSimple({
           latitude: user.address.location.lat,
           longitude: user.address.location.lng
@@ -355,7 +354,7 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
         }), 2)
       })
 
-      let sortedUsers = filteredUsers.sort((a, b) => {
+      let sortedUsers = filteredUsers.sort((a, b) => { //sort from nearest to furthest
         var a = (a.address.location.distance)
         var b = (b.address.location.distance)
 
