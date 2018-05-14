@@ -13,6 +13,7 @@ import {
   sendFriendRequest,
   removeFriend,
   declineRequest,
+  getNearByEventsInfo
 } from '../../store';
 import { EventsListTab } from '../';
 
@@ -35,6 +36,7 @@ export class EventsList extends Component {
       fetchReceivedRequests(user.id),
       fetchSentRequests(user.id),
     ];
+    getNearByEventsInfo()
     Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
@@ -65,7 +67,9 @@ export class EventsList extends Component {
       deleteFriend,
       declineFriendRequest,
       user,
-      userEvents
+      userEvents,
+      attendingEvents,
+      invitedEvents
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
     const filteredNearbyUsers = nearbyUsers.filter(
@@ -193,8 +197,9 @@ const mapState = state => {
     friendsList: state.friendsList,
     userEvents: state.events.filter(event => event.creatorId === state.user.id),
     user: state.user,
-    //attendingEvents: state.events.filter(event => event.attendees.filter(attendee => attendee.id===state.user.id))
-
+    attendingEvents: state.user.attendingEvents,
+    invitedEvents: state.user.invitedEvents,
+    nearbyEvents: state.nearbyEvents
   };
 }
 
@@ -236,6 +241,9 @@ const mapDispatch = dispatch => {
       // console.log('INSIDE DELETE FRIEND');
       return dispatch(removeFriend(userId, senderId));
     },
+    getNearByEventsInfo(){
+      return dispatch(getNearByEventsInfo());
+    }
   };
 };
 

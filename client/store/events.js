@@ -79,6 +79,7 @@ export const removeAttendee = (event, userId) => dispatch =>
 
 // Invite Users, Add User, Remove User, Retract Invite
 
+
 /**
  * REDUCER
  */
@@ -93,7 +94,7 @@ export default function(state = defaultEvents, action) {
     case DELETE_EVENT:
       return state.filter(event => action.eventId !== event.id);
     case ADD_EVENT:
-      return [...state, action.event]; //we do a get all after adding a new event
+      return [...state, action.event]; //must do a get all after adding a new event
     default:
       return state;
   }

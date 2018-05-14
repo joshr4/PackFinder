@@ -23,12 +23,12 @@ async function createEvents() {
     //let startT2 = new Date(2018, 4, 7, 15, 0);
     //let endT2 = new Date(2018, 4, 7, 18, 0);
     // for (let i = 0; i < allUsers.length; i ++) {
-    for (let i = 0; i < 5; i ++) {
+    for (let i = 0; i < 15; i ++) {
         let thisUser = allUsers[i];
         let parkIndex = i % nParks;
         let thisPark = allParks[parkIndex];
-        let thisDescription = eventDescriptions[i + 1];
-        console.log("i: ", i);
+        let thisDescription = eventDescriptions[(i % 5) + 1];
+        // console.log("i: ", i);
         //console.log("thisUser: ", thisUser.id);
         //console.log("thisPark: ", thisPark.id);
         let startHour = chance.integer({min:0, max:20})
@@ -39,11 +39,22 @@ async function createEvents() {
             description: thisDescription,
         })
         await event.setCreator(thisUser);
+        await event.addAttendee(thisUser);
         await event.setPark(thisPark);
-        for (let x = 0; x < 3; x++) {
+        for (let x = 0; x < 6; x++) {
             let randomUserIndex = parseInt(Math.floor(Math.random()*(nUsers - 1)));
             let randomUser = allUsers[randomUserIndex];
-            await event.addAttendee(randomUser);
+            if (randomUser.id == thisUser.id) {
+                continue;
+            }
+            if (x <= 4) {
+                await event.addInvitee(randomUser);
+                await randomUser.addInvitedEvent(event);
+            }
+            else {
+                await event.addAttendee(randomUser);
+                await randomUser.addAttendingEvent(event);
+            }
         }
             // console.log("randomUserIndex: ", randomUserIndex);
             // console.log("random user: ", allUsers[randomUserIndex]);
