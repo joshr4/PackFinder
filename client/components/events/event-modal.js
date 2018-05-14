@@ -14,7 +14,7 @@ class EventModal extends Component {
         startTime: moment(props.item.start).format('HH:mm'),
         parkId: props.item.parkId,
         private: props.item.private,
-        id: props.item.id
+        id: props.item.id,
       }
     };
     this.handleChange = this.handleChange.bind(this)
@@ -22,19 +22,20 @@ class EventModal extends Component {
 
   handleChange = (e) => {
     let variable = e.target.name
-    let value = e.target.value
+    let value
+    if (variable === 'private') value = !this.state.item.private
+    else value = e.target.value
     this.setState({ isDirty: true, item: Object.assign(this.state.item, { [variable]: value }) })
   }
 
   render() {
-    let { onClose, showModal, onDelete, handleSubmit, toggleModal } = this.props
+    let { onClose, showModal, onDelete, handleSubmit } = this.props
     let { description, item, isDirty } = this.state
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
-        <Grid>
-          <Button color="blue" style={{ marginLeft: 35, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
-          <Button negative style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button>
-        </Grid>
+        <Button color="blue" style={{ marginLeft: 20, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
+
+        <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button>
         <Modal.Content image>
 
           <Modal.Description>
