@@ -88,13 +88,13 @@ class Profile extends React.Component {
     });
   };
   render() {
-    const { userPets } = this.props;
+    const { userPets, user } = this.props;
     console.log('profile match params uerId', this.props.match.params);
     console.log('current state', this.state);
     return (
       <div className="container">
         <Segment>
-          <PetModal
+          {this.props.match.params === user.id && <PetModal
             show={this.state.showPetModal}
             onClose={this.togglePetModal}
             item={this.state.selectedPet}
@@ -103,7 +103,7 @@ class Profile extends React.Component {
             handleUpdate={this.handleUpdate}
             handleDelete={this.handleDeletePet}
             isUpdatePet={this.state.isUpdatePet}
-          />
+          />}
           <Grid columns={2} divided>
             <Header as="h3">Owner:</Header>
             <UserProfileItem />
