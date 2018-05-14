@@ -26,7 +26,7 @@ module.exports = (io) => {
       }
     });
     socket.on('accept-request', data => {
-      console.log('BACKEND UPDATE accept-request', data);
+      console.log('BACKEND UPDATE accept-request');
       if (currentUsers[data.friendId]) {
         io.to(currentUsers[data.friendId]).emit('accept-request', {
           friend: data.friend

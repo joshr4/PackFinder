@@ -23,7 +23,7 @@ socket.on('connect', () => {
   socket.on('accept-request', data => {
     console.log('CLIENT SIDE ACCEPT-FRIEND', data)
     store.dispatch(acceptRequestSocket(data.friend))
-    store.dispatch(removeSentRequestSocket(data.friend))
+    store.dispatch(removeSentRequestSocket(data.friend.id))
   })
 })
 
