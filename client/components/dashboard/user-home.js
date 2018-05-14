@@ -40,25 +40,30 @@ export class UserHome extends Component {
     const { parkList, user } = this.props;
     return (
       <div className="container">
-        <Grid columns={3}  centered style={{ padding: '0em 1em' }}>
-          <Grid.Column mobile={16} tablet={8} computer={5}>
+        <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
+          <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0px' }}>
+              <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
           </Grid.Column>
 
-          <Grid.Column only={'computer'} tablet={8} computer={5}>
+          <Grid.Column
+            only={'computer'}
+            tablet={8}
+            computer={5}
+            largeScreen={5}
+          >
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
-              <Card.Content>
-                <Feed>
+              <Card.Content className="dashboard-card">
+                <Feed className="overflow-scroll dashboard-feed">
                   {parkList ? (
                     parkList.map(park => (
                       <NearbyParks key={park.id} park={park} />
