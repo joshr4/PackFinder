@@ -52,6 +52,8 @@ export class EventsList extends Component {
       receivedRequests,
       sentRequests,
     } = this.props.friendsList;
+
+
     const {
       fetchFriendsList,
       fetchNearbyUsers,
@@ -63,6 +65,7 @@ export class EventsList extends Component {
       deleteFriend,
       declineFriendRequest,
       user,
+      userEvents
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
     const filteredNearbyUsers = nearbyUsers.filter(
@@ -86,10 +89,10 @@ export class EventsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Your Pack"
+            key="Your Events"
             style={styles.menuItem}
           >
-            Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
+            Your Events<Label style={styles.menuLabels}>{userEvents.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -97,7 +100,7 @@ export class EventsList extends Component {
             <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchFriendsList}
-              items={friends}
+              items={userEvents}
               submit={deleteFriend}
             />
           </Tab.Pane>
@@ -106,10 +109,10 @@ export class EventsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Requests"
+            key="Nearby Events"
             style={styles.menuItem}
           >
-            Requests<Label style={styles.menuLabels}>
+            Nearby<Label style={styles.menuLabels}>
               {receivedRequests.length}
             </Label>
           </Menu.Item>
@@ -130,10 +133,10 @@ export class EventsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Nearby Users"
+            key="Attending"
             style={styles.menuItem}
           >
-            Nearby Users<Label style={styles.menuLabels}>
+            Attending<Label style={styles.menuLabels}>
               {filteredNearbyUsers.length}
             </Label>
           </Menu.Item>
@@ -151,8 +154,8 @@ export class EventsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="Sent" style={styles.menuItem}>
-            Sent<Label style={styles.menuLabels}>{sentRequests.length}</Label>
+          <Menu.Item key="Invited" style={styles.menuItem}>
+            Invited<Label style={styles.menuLabels}>{sentRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -183,7 +186,17 @@ export class EventsList extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({ friendsList, user }) => ({ friendsList, user });
+// const mapState = ({ friendsList, user, events }) => ({ friendsList, user, events });
+
+const mapState = state => {
+  return {
+    friendsList: state.friendsList,
+    userEvents: state.events.filter(event => event.creatorId === state.user.id),
+    user: state.user,
+    //attendingEvents: state.events.filter(event => event.attendees.filter(attendee => attendee.id===state.user.id))
+
+  };
+}
 
 const mapDispatch = dispatch => {
   return {
