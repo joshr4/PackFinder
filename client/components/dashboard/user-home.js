@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
 import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini } from '../';
+
 import {
   getParksAddresses,
   getGeolocation,

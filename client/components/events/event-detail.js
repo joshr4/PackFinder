@@ -84,7 +84,6 @@ export class EventDetail extends Component {
     let coords = {lat: 41.954629, lng: -87.6572544}
     if (displayEvent.park.address) coords = displayEvent.park.address.location
     isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
-
     return (
       displayEvent ?
         <Container className="container">
