@@ -11,8 +11,8 @@ class ParkList extends Component {
     this.state = {
       map: null,
       location: {
-        lat: 41.895266,
-        lng: -87.6412237
+        lat: 41.8781,
+        lng: -87.6298
       },
       isHover: -1,
       range: 3218 // 2 miles

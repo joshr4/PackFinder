@@ -12,7 +12,7 @@ import {
   removeSentRequest,
   sendFriendRequest,
   removeFriend,
-  declineRequest
+  declineRequest,
 } from '../../store';
 import { FriendsListTab } from '../';
 
@@ -27,8 +27,8 @@ export class FriendsList extends Component {
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      sendFriendRequest,
-      user
+      sendfriendRequest,
+      user,
     } = this.props;
     let loadFriendsList = [
       fetchFriendsList(user.id),
@@ -66,26 +66,50 @@ export class FriendsList extends Component {
     const filteredNearbyUsers = nearbyUsers.filter(
       nearbyUser => !sentRequestIds.includes(nearbyUser.id)
     );
+    const styles = {
+      menuLabels: {
+        zIndex: '0',
+        marginLeft: '0.3em',
+        position: 'absolute',
+        top: '-10px',
+        right: '-3px',
+      },
+      menuItem: {
+        padding: '1em 0.5em',
+        flex: '1',
+        justifyContent: 'center',
+      },
+    };
     const panes = [
       {
         menuItem: (
-          <Menu.Item key="Your Pack" style={{flex: '1', justifyContent: 'center'}}>
-            Your Pack<Label floating style={{zIndex: '0'}}>{friends.length}</Label>
+          <Menu.Item
+            key="Your Pack"
+            style={styles.menuItem}
+          >
+            Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
             <FriendsListTab
-              activeIndex={this.state.activeIndex} fetchData={fetchFriendsList} items={friends}
+              activeIndex={this.state.activeIndex}
+              fetchData={fetchFriendsList}
+              items={friends}
               submit={deleteFriend}
-              />
+            />
           </Tab.Pane>
         ),
       },
       {
         menuItem: (
-          <Menu.Item key="Requests" style={{flex: '1', justifyContent: 'center'}}>
-            Requests<Label floating style={{zIndex: '0'}}>{receivedRequests.length}</Label>
+          <Menu.Item
+            key="Requests"
+            style={styles.menuItem}
+          >
+            Requests<Label style={styles.menuLabels}>
+              {receivedRequests.length}
+            </Label>
           </Menu.Item>
         ),
         render: () => (
@@ -103,8 +127,13 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="Nearby Users" style={{flex: '1', justifyContent: 'center'}}>
-            Nearby Users<Label floating style={{zIndex: '0'}}>{filteredNearbyUsers.length}</Label>
+          <Menu.Item
+            key="Nearby Users"
+            style={styles.menuItem}
+          >
+            Nearby Users<Label style={styles.menuLabels}>
+              {filteredNearbyUsers.length}
+            </Label>
           </Menu.Item>
         ),
         render: () => (
@@ -120,8 +149,8 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="Sent" style={{flex: '1', justifyContent: 'center'}}>
-            Sent<Label floating style={{zIndex: '0'}}>{sentRequests.length}</Label>
+          <Menu.Item key="Sent" style={styles.menuItem}>
+            Sent<Label style={styles.menuLabels}>{sentRequests.length}</Label>
           </Menu.Item>
         ),
         render: () => (
