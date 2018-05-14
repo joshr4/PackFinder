@@ -519,7 +519,9 @@ export class DogPark extends Component {
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
           />
-          <Image size="big"  centered={true} src={this.state.park.imageUrl} />
+
+          {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
+
         </Grid.Column>
         </Grid.Row>
         <Grid.Row>

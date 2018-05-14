@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini } from '../';
+
 import {
   getParksAddresses,
   getGeolocation,
@@ -37,47 +38,63 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { parkList, user } = this.props;
+    const { parkList, user, events } = this.props;
     return (
       <div className="container">
-        <Grid columns={3}  centered style={{ padding: '0em 1em' }}>
-          <Grid.Column mobile={16} tablet={8} computer={5}>
+        <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
+          <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0px' }}>
+              <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
           </Grid.Column>
 
-          <Grid.Column only={'computer'} tablet={8} computer={5}>
+          <Grid.Column
+            only={'computer'}
+            tablet={8}
+            computer={5}
+            largeScreen={5}
+          >
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Suggested Parks</Card.Header>
               </Card.Content>
-              <Card.Content>
-                <Feed>
+              <Card.Content className="dashboard-card">
+                <Feed className="overflow-scroll dashboard-feed">
                   {parkList ? (
                     parkList.map(park => (
                       <NearbyParks key={park.id} park={park} />
                     ))
                   ) : (
-                    <div />
-                  )}
+                      <div />
+                    )}
                 </Feed>
               </Card.Content>
             </Card>
           </Grid.Column>
-          {/* <Grid.Column>
-            <Card>
+          <Grid.Column only={'computer'} tablet={8} computer={5}>
+            <Card style={{ width: '100%' }}>
               <Card.Content>
-                <Card.Header>Welcome , {this.props.email}</Card.Header>
-                <UserHomeCalendar />
+                <Card.Header>Upcoming Events</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Feed>
+                  {events ? (
+                    events.map(event => (
+                      <EventMini key={event.id} item={event} />
+                    ))
+                  ) : (
+                      <div />
+                    )
+                  }
+                </Feed>
               </Card.Content>
             </Card>
-          </Grid.Column> */}
+          </Grid.Column>
         </Grid>
       </div>
     );
@@ -93,6 +110,7 @@ const mapStateToProps = state => {
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
+    events: state.events
   };
 };
 

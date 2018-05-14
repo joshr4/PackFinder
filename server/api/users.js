@@ -25,27 +25,26 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/simple', (req, res, next) => {
-  console.log('here i am')
-  User.findAll({
+router.get('/simple/:id', (req, res, next) => {
+  User.findOne({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
 
-      attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl'], // add name latter
-      include: [{
-          model: Address,
-          required: true
-        },
+
+      attributes: ['id', 'fullName', 'firstName', 'lastName', 'email', 'imageUrl', 'description'],
+      where: {
+        id: req.params.id
+      },
+      include: [
         {
           model: Pet,
           required: false,
           as: 'pets'
         },
-
       ]
     })
-    .then(users => res.json(users))
+    .then(user => res.json(user))
     .catch(next)
 })
 
