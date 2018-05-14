@@ -77,9 +77,11 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { addEvent, updateEvent, deleteEvent, match, allEvents } = this.props
+    let { addEvent, updateEvent, deleteEvent, match, allEvents, user } = this.props
     let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
+    let isEventOwner = false
+    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
     let coords = { lat: 41.8781, lng: -87.6298 } //grab these from displayEvent.park.address.location
     return (
       displayEvent ?
@@ -120,7 +122,8 @@ export class EventDetail extends Component {
               <Grid.Row>
                 <Grid.Column width={16}>
                   <h4>Description:</h4><p>{displayEvent.description}</p>
-                  <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+                  {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+                  : <div />}
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -136,6 +139,7 @@ const mapState = state => {
   return {
     allEvents: state.events,
     attendees: [],
+    user: state.user
   };
 };
 
