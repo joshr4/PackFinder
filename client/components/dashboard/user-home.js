@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini, EventAddModal } from '../';
 
 import {
   getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
+  getNearByEventsInfo,
 } from '../../store';
 
 /**
@@ -26,21 +27,30 @@ export class UserHome extends Component {
         lng: -87.6412237,
       },
       isHover: -1,
+      showAddEventModal: false,
     };
+    this.toggleModal = this.toggleModal.bind(this)
   }
 
+  toggleModal() {
+    this.setState({ showAddEventModal: !this.state.showAddEventModal })
+  }
   componentDidMount() {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
+    this.props.getNearByEvents(this.state.location, 8046)
+    // console.log(this.props)
   }
 
   render() {
     const { parkList, user, events } = this.props;
+    const { showAddEventModal } = this.state;
     return (
       <div className="container">
+        <EventAddModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
@@ -80,6 +90,7 @@ export class UserHome extends Component {
             <Card style={{ width: '100%' }}>
               <Card.Content>
                 <Card.Header>Upcoming Events</Card.Header>
+                <Button positive floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={this.toggleModal}>+</Button>
               </Card.Content>
               <Card.Content>
                 <Feed>
@@ -127,6 +138,9 @@ const mapDispatch = dispatch => {
     },
     getNearByUsers(location) {
       dispatch(getNearByUsersInfo(location));
+    },
+    getNearByEvents(location, dist) {
+      dispatch(getNearByEventsInfo(location, dist));
     },
   };
 };

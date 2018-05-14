@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap, EventItem } from '../index.js';
+import { Map, ParkListItem, EventM, EventEditModal, SingleParkMap, EventItem } from '../index.js';
 import moment from 'moment';
 import { Button, Container, Divider, Grid, Header, Icon, Image, List, Menu, Responsive, Segment, Sidebar, Visibility, Card, Item, Label, Embed, Form, Input, Radio, Select, TextArea, Checkbox } from 'semantic-ui-react';
 import axios from 'axios';

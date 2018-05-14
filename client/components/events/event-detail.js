@@ -80,6 +80,8 @@ export class EventDetail extends Component {
     let { showModal } = this.state
     let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     let isEventOwner = false
+    console.log('user',user)
+    console.log('displayEvent',displayEvent)
     if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
     let coords = {lat: 41.954629, lng: -87.6572544}
     if (displayEvent 
