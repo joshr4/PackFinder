@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Grid, Segment, Label } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -299,7 +299,59 @@ class Dnd extends React.Component {
 
   render() {
     return (
-      <div className="container" style={{ height: '700px', padding: 10, paddingTop: 130 }}>
+      <Grid>
+      <Grid.Row>
+      <Grid.Column width={1}>
+      </Grid.Column>
+      <Grid.Column width={14}>
+      <Grid.Row style={{paddingTop:"150px", height:"700px"}}>
+      <DragAndDropCalendar
+      // className="no-scroll"
+      selectable
+      culture="en-GB"
+      events={this.props.events}
+      eventPropGetter={(this.eventStyleGetter)}
+      //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
+      onEventDrop={this.moveEvent}
+      resizable
+      onDoubleClickEvent={event => this.openModal(event, 'view')}
+      onEventResize={this.resizeEvent}
+      defaultView="week"
+      defaultDate={moment().toDate()}
+      step={30}
+      min={new Date(0, 0, 0, 6, 0)}
+      max={new Date(0, 0, 0, 23, 0)}
+      // max={new Date(0, 0, 0, 23, 0)}
+      />       
+      </Grid.Row>            
+      <Grid.Row style={{paddingTop:"10px"}}>
+      
+        <Segment.Group>
+          <Segment.Group horizontal>
+            <Segment>
+            <b>Calendar Legend</b>
+            </Segment>
+            <Segment>
+            <Label circular color="blue">Scheduled Check-Ins</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="yellow">Events Nearby</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="green">Events You're Attending</Label>            
+            </Segment>
+            <Segment>
+            <Label circular color="teal">Events You're Coordinating</Label>            
+            </Segment>
+          </Segment.Group>          
+        </Segment.Group>          
+
+          <Button positive style={{ margin: 0, marginTop:10 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
+          <p style={{ marginTop: 10 }}>Double click an event on the calendar to edit/delete</p>
+      </Grid.Row>
+      </Grid.Column>
+      <Grid.Column width={1}>
+      </Grid.Column>
         <VisitModal
           modalType={this.state.modalType}
           show={this.state.showModal}
@@ -315,31 +367,9 @@ class Dnd extends React.Component {
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
           noPark={false}
-        />
-
-        <DragAndDropCalendar
-          // className="no-scroll"
-          selectable
-          culture="en-GB"
-          events={this.props.events}
-          eventPropGetter={(this.eventStyleGetter)}
-          //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
-          onEventDrop={this.moveEvent}
-          resizable
-          onDoubleClickEvent={event => this.openModal(event, 'view')}
-          onEventResize={this.resizeEvent}
-          defaultView="week"
-          defaultDate={moment().toDate()}
-          step={30}
-          min={new Date(0, 0, 0, 6, 0)}
-          max={new Date(0, 0, 0, 23, 0)}
-        // max={new Date(0, 0, 0, 23, 0)}
-        />
-        <Grid>
-          <Button positive style={{ margin: 20 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Add Visit</Button>
-          <p style={{ marginTop: 30 }}>Double click an event on the calendar to edit/delete</p>
+        />        
+      </Grid.Row>
         </Grid>
-      </div>
     );
   }
 }
@@ -354,7 +384,17 @@ const mapState = state => {
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
-    calEvent.hexColor = "5fc627";
+    if (event.creator.id == state.user.id) {
+      calEvent.hexColor = "00b5ad";      
+    }
+    else {
+      calEvent.hexColor = "fbbd08";
+    }
+    calEvent.attendees.forEach(attendee => {
+      if (attendee.id == state.user.id) {
+        calEvent.hexColor = "21ba45";
+      }
+    })
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
@@ -366,7 +406,7 @@ const mapState = state => {
       address: visit.park.address,
       park: visit.parkId,
       userId: visit.userId,
-      hexColor: "3174ad",
+      hexColor: "2185d0",
     }
     return newVisit
   })
