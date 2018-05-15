@@ -66,6 +66,8 @@ class EventEditModal extends Component {
   }
 
   render() {
+    console.log('item prop', this.props.item)
+    console.log('edit item', this.state.item)
     let { onClose, showModal, onDelete, parkDropDownList } = this.props
     let { description, item, isDirty, slider } = this.state
     return (
