@@ -39,7 +39,7 @@ class AddAttendeeModal extends Component {
       // userFriends
     } = this.state
     userFriends = (userFriends) ? (userFriends) : []; 
-    console.log("attendeeModal userFriends: ", this.props.userFriends);
+
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
         <Modal.Content image>
