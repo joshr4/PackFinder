@@ -3,7 +3,7 @@ import { Button, Header, Image, Modal, Grid, Form } from 'semantic-ui-react';
 import moment from 'moment'
 import { AddEventForm } from '../index';
 import { connect } from 'react-redux';
-import { addEvent } from '../../store';
+import { addEvent, addAttendee } from '../../store';
 
 class EventAddModal extends Component {
   constructor(props) {
@@ -100,8 +100,10 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    addEvent(event) {
-      dispatch(addEvent(event));
+    async addEvent(event) {
+      await dispatch(addEvent(event));
+      //console.log('addEvent',event, event.creatorId)
+      //dispatch(addAttendee(event, {userId: event.creatorId}))
     },
     getUserLocation() {
       dispatch(getGeolocation());

@@ -10,24 +10,26 @@ import {
   approveRequest,
   addSentRequest,
   removeSentRequest,
-  sendFriendRequest,
   removeFriend,
   declineRequest,
+  getNearByEventsInfo,
+  deleteEvent,
+  addAttendee,
+  removeAttendee,
+  getEvents
 } from '../../store';
-import { FriendsListTab } from '../';
+import { EventsListTab } from '../';
 
 /**
  * COMPONENT
  */
 
-export class FriendsList extends Component {
+export class EventsList extends Component {
   componentDidMount = async () => {
     const {
       fetchFriendsList,
-      fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      sendfriendRequest,
       user,
     } = this.props;
     let loadFriendsList = [
@@ -35,6 +37,7 @@ export class FriendsList extends Component {
       fetchReceivedRequests(user.id),
       fetchSentRequests(user.id),
     ];
+    getNearByEventsInfo()
     Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
@@ -42,29 +45,32 @@ export class FriendsList extends Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
+    // console.log('state', this.state);
+    // console.log('state events', this.state);
+    console.log('props events', this.props);
 
     const {
       nearbyUsers,
-      friends,
-      receivedRequests,
       sentRequests,
     } = this.props.friendsList;
+
+
     const {
       fetchFriendsList,
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      submitApproveRequest,
-      sendFriendRequest,
-      removeFriendRequest,
-      deleteFriend,
       declineFriendRequest,
       user,
+      userEvents,
+      nearbyEvents,
+      attendingEvents,
+      invitedEvents,
+      deleteEvent,
+      addAttendee,
+      removeAttendee,
+
     } = this.props;
-    const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
-    const filteredNearbyUsers = nearbyUsers.filter(
-      nearbyUser => !sentRequestIds.includes(nearbyUser.id)
-    );
     const styles = {
       menuLabels: {
         zIndex: '0',
@@ -83,19 +89,19 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Your Pack"
+            key="Your Events"
             style={styles.menuItem}
           >
-            Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
+            Your Events<Label style={styles.menuLabels}>{userEvents.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchFriendsList}
-              items={friends}
-              submit={deleteFriend}
+              items={userEvents}
+              submit={deleteEvent}
             />
           </Tab.Pane>
         ),
@@ -103,21 +109,21 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Requests"
+            key="Nearby Events"
             style={styles.menuItem}
           >
-            Requests<Label style={styles.menuLabels}>
-              {receivedRequests.length}
+            Nearby<Label style={styles.menuLabels}>
+              {nearbyEvents.length}
             </Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchReceivedRequests}
-              items={receivedRequests}
-              submit={submitApproveRequest}
+              items={nearbyEvents}
+              submit={addAttendee}
               decline={declineFriendRequest}
               user={user}
             />
@@ -127,38 +133,38 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item
-            key="Nearby Users"
+            key="Attending"
             style={styles.menuItem}
           >
-            Nearby Users<Label style={styles.menuLabels}>
-              {filteredNearbyUsers.length}
+            Attending<Label style={styles.menuLabels}>
+              {attendingEvents.length}
             </Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchNearbyUsers}
-              items={filteredNearbyUsers}
-              submit={sendFriendRequest}
+              items={attendingEvents}
+              submit={removeAttendee}
             />
           </Tab.Pane>
         ),
       },
       {
         menuItem: (
-          <Menu.Item key="Sent" style={styles.menuItem}>
-            Sent<Label style={styles.menuLabels}>{sentRequests.length}</Label>
+          <Menu.Item key="Invited" style={styles.menuItem}>
+            Invited<Label style={styles.menuLabels}>{invitedEvents.length}</Label>
           </Menu.Item>
         ),
         render: () => (
           <Tab.Pane>
-            <FriendsListTab
+            <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchSentRequests}
-              items={sentRequests}
-              submit={removeFriendRequest}
+              items={invitedEvents}
+              submit={addAttendee}
             />
           </Tab.Pane>
         ),
@@ -180,7 +186,18 @@ export class FriendsList extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({ friendsList, user }) => ({ friendsList, user });
+// const mapState = ({ friendsList, user, events }) => ({ friendsList, user, events });
+
+const mapState = state => {
+  return {
+    friendsList: state.friendsList,
+    userEvents: state.events.filter(event => event.creatorId === state.user.id),
+    user: state.user,
+    attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
+    invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
+  };
+}
 
 const mapDispatch = dispatch => {
   return {
@@ -192,42 +209,23 @@ const mapDispatch = dispatch => {
       // console.log('INSIDE FETCH FRIENDS')
       return dispatch(getFriendsList(userId));
     },
-    fetchSentRequests(userId) {
-      // console.log('INSIDE FETCH SENT REQS ')
-      return dispatch(getSentRequests(userId));
+    removeAttendee(event, userId) {
+      dispatch(removeAttendee(event, userId));
     },
-    fetchReceivedRequests(userId) {
-      // console.log('INSIDE FETCH RECEIVED REQS')
-      return dispatch(getReceivedRequests(userId));
+    async addAttendee(event, userId) {
+      await dispatch(addAttendee(event, {userId: userId}));
+      dispatch(getEvents())
     },
-    submitApproveRequest(userId, senderId) {
-      //console.log('INSIDE SUBMIT APPROVE REQUEST')
-      return dispatch(approveRequest(userId, senderId));
+    removeInvite(event, userId) {
+      //dispatch(removeInvite(event, userId));
     },
-    sendFriendRequest(userId, senderId) {
-      //console.log('INSIDE APPROVE REQUEST')
-      return dispatch(addSentRequest(userId, senderId));
+    deleteEvent(event, userId) {
+      dispatch(deleteEvent(event.id));
     },
-    removeFriendRequest(userId, senderId) {
-      // console.log('INSIDE CANCEL REQUEST');
-      return dispatch(removeSentRequest(userId, senderId));
-    },
-    declineFriendRequest(userId, senderId) {
-      // console.log('INSIDE CANCEL REQUEST');
-      return dispatch(declineRequest(userId, senderId));
-    },
-    deleteFriend(userId, senderId) {
-      // console.log('INSIDE DELETE FRIEND');
-      return dispatch(removeFriend(userId, senderId));
-    },
+    getNearByEventsInfo() {
+      return dispatch(getNearByEventsInfo());
+    }
   };
 };
 
-export default connect(mapState, mapDispatch)(FriendsList);
-
-/**
- * PROP TYPES
- */
-FriendsList.propTypes = {
-  email: PropTypes.string,
-};
+export default connect(mapState, mapDispatch)(EventsList);

@@ -87,6 +87,7 @@ export class EventDetail extends Component {
       && displayEvent.park && 
     displayEvent.park.address) coords = displayEvent.park.address.location
     isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
+
     return (
       displayEvent ?
         <Container className="container" style={{"overflowY":"scroll"}}>
