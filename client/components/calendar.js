@@ -92,7 +92,6 @@ class Dnd extends React.Component {
     })
   }
   async toggleEventModal(event, editable = false) {
-    console.log("event line 95: ", event)
     let thisEvent = event;
     if (event) {
       let year = event.start.getFullYear();
@@ -116,9 +115,12 @@ class Dnd extends React.Component {
     await this.setState({
       editableEvent: editable,
       eventToModal: thisEvent,
-      showAddEventModal: !this.state.showAddEventModal,
     });
+    this.setState({
+      showAddEventModal: !this.state.showAddEventModal
+    })
   }
+
   toggleModal(editable) {
     this.setState({
       showModal: !this.state.showModal,
@@ -128,7 +130,6 @@ class Dnd extends React.Component {
   async openModal(event, type) {
     if (event.isEvent) {
       if (event.editable) {
-        console.log("editable event: ", event);
         this.toggleEventModal(event, true)
       }
       return
