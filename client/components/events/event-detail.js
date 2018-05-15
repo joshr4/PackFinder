@@ -114,7 +114,7 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { displayEvent, isOwner, coords, user } = this.props
+    let { displayEvent, isOwner, coords, user, deleteEvent } = this.props
     let { showModal, showAttendeeModal } = this.state
     let attendees = [];
     let invitees = [];
@@ -129,7 +129,6 @@ export class EventDetail extends Component {
         <EventEditModal
         onClose={this.toggleModal}
         showModal={showModal}
-        handleSubmit={this.handleSubmit}
         onDelete={deleteEvent}
         item={displayEvent}
         handleEvent={this.props.updateEvent}

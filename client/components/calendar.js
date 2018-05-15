@@ -321,8 +321,6 @@ class Dnd extends React.Component {
                     <EventEditModal
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
-                      onDelete={() => { }}
-                      handleSubmit={() => { }}
                       parkDropDownList={parkList}
                       user={user}
                       handleEvent={addEvent}

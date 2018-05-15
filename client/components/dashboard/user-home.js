@@ -64,7 +64,7 @@ export class UserHome extends Component {
     const { showAddEventModal } = this.state;
     return (
       <div className="container">
-        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
+        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>

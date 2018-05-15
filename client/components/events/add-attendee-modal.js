@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Header, Image, Modal, Grid, Form, List, Input } from 'semantic-ui-react';
 import moment from 'moment'
 import axios from 'axios'
+import history from '../../history'
 import { AddEventForm } from '../index';
 
 class AddAttendeeModal extends Component {
@@ -47,9 +48,9 @@ class AddAttendeeModal extends Component {
           <h3>Invite Friends</h3>
           <Grid style={{width:"100%"}}>
           <Grid.Row columns={16}>
-              {userFriends.map(friend => {
+              {userFriends.length ? userFriends.map(friend => {
                 return (
-                  <Grid.Column width={5}>
+                  <Grid.Column width={5} key={friend.id} >
                   <Form.Field name={"friend-" + friend.id} value={{}} control='input' type='checkbox' style={{marginRight:"10px"}} />
                   <List.Item style={{paddingBottom:"10px"}}>
                   <Image avatar src={friend.imageUrl}/>
@@ -59,7 +60,10 @@ class AddAttendeeModal extends Component {
                 </List.Item>
                 </Grid.Column>
               )
-              })}
+              }) :
+              <div style={{padding: '5px'}}><h4>You have no friends, add some from the Home page!</h4>
+              <Button color="blue" onClick={() => history.push(`/home`)}> Home Page </Button>
+              </div>}
 
           </Grid.Row>
           </Grid>
