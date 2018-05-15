@@ -50,7 +50,6 @@ router.get('/simple/:id', (req, res, next) => {
 
 router.get('/search/:name', (req, res, next) => {
   const names = req.params.name.split('+')
-  console.log(names)
   names.forEach((name, index, arr) => {
     arr[index] =  name + '%'
   })

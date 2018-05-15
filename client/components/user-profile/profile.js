@@ -41,8 +41,6 @@ class Profile extends React.Component {
   componentDidMount() {
 
     if (this.props.match.params.userId !== undefined) {
-      console.log('this is read only');
-      console.log(this.props.match.params.userId)
       this.setState({ friendId: +this.props.match.params.userId, readOnly: true}, () => {
         this.props.getSelectedUserInfo(this.state.friendId)
       });
