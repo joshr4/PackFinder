@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventsList, EventMini, EventEditModal } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParksList, EventsList, EventMini, EventEditModal } from '../';
 
 import {
   getParksAddresses,
@@ -73,17 +73,11 @@ export class UserHome extends Component {
           >
             <Card style={{ width: '100%' }}>
               <Card.Content>
-                <Card.Header>Suggested Parks</Card.Header>
+                <Card.Header>Nearby Parks</Card.Header>
               </Card.Content>
-              <Card.Content className="dashboard-card">
+              <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 <Feed className="overflow-scroll dashboard-feed">
-                  {parkList ? (
-                    parkList.map(park => (
-                      <NearbyParks key={park.id} park={park} />
-                    ))
-                  ) : (
-                      <div />
-                    )}
+                {parkList && <NearbyParksList className="pack-list" parkList={parkList} />}
                 </Feed>
               </Card.Content>
             </Card>
@@ -94,10 +88,10 @@ export class UserHome extends Component {
                 <Card.Header>Upcoming Events</Card.Header>
                 <Button positive floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={this.toggleModal}>+</Button>
               </Card.Content>
-              <Card.Content>
-                <Feed>
+              <Card.Content style={{ padding: '0' }} className="dashboard-card">
+                {/* <Feed> */}
                   {user && <EventsList className="event-list" user={user} />}
-                </Feed>
+                {/* </Feed> */}
               </Card.Content>
             </Card>
           </Grid.Column>

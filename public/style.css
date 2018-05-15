@@ -31,6 +31,9 @@ body .container {
 .dashboard-feed {
   height: 70vh;
 }
+::-webkit-scrollbar {
+  height: 0px;  /* remove scrollbar space */
+}
 
 @media only screen and (max-width: 768px) {
   body .container {
