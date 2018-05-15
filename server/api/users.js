@@ -177,7 +177,7 @@ router.get('/:id/sent-requests', (req, res, next) => {
 // })
 
 router.put('/:id/approve-request', async (req, res, next) => {
-  console.log('input backend', req.body)
+  // console.log('input backend', req.body)
   let user = await User.findById(req.params.id);
   let friendId = req.body.friendId;
   let friendIduser = await User.findById(friendId, {

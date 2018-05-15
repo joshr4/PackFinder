@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../../history';
+import socket from '../../socket';
 
 /**
  * ACTION TYPES
@@ -22,9 +23,9 @@ const get = friendsList => ({
   type: GET_FRIENDS_LIST,
   friendsList,
 });
-const remove = (removed) => ({
+const remove = (removeId) => ({
   type: REMOVE_FRIEND,
-  removed
+  removeId
 });
 export const add = (friend) => ({
   type: ADD_FRIEND,
@@ -58,8 +59,17 @@ export const removeFriend = (userId, friendId) => dispatch =>
   .put(`/api/users/${userId}/friend-request/delete`, {
     friendId
   })
-  .then(res => dispatch(remove(res.data || defaultList)))
+  .then(res => {
+    dispatch(remove(res.data.id || defaultList))
+    //
+    socket.emit('delete-friend', {
+      userId,
+      friendId
+    })
+  })
   .catch(err => console.log(err));
+export const removeFriendSocket = (friendId) => dispatch => dispatch(remove(friendId))
+
 
   export const findUsersByName = (name) => dispatch =>{
     name = name.split(' ').join('+')
