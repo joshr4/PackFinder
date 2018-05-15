@@ -13,8 +13,9 @@ import {
   sendFriendRequest,
   removeFriend,
   declineRequest,
+  findUsersByName
 } from '../../store';
-import { FriendsListTab } from '../';
+import { FriendsListTab, FriendsListSearch } from '../';
 
 /**
  * COMPONENT
@@ -48,6 +49,7 @@ export class FriendsList extends Component {
       friends,
       receivedRequests,
       sentRequests,
+      search
     } = this.props.friendsList;
     const {
       fetchFriendsList,
@@ -59,6 +61,7 @@ export class FriendsList extends Component {
       removeFriendRequest,
       deleteFriend,
       declineFriendRequest,
+      searchUsers,
       user,
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
@@ -155,6 +158,23 @@ export class FriendsList extends Component {
           </Tab.Pane>
         ),
       },
+      {
+        menuItem: (
+          <Menu.Item key="Search" style={styles.menuItem}>
+            Search<Label style={styles.menuLabels}>{search.length}</Label>
+          </Menu.Item>
+        ),
+        render: () => (
+          <Tab.Pane>
+            <FriendsListSearch
+              activeIndex={this.state.activeIndex}
+              fetchData={fetchSentRequests}
+              items={search}
+              searchUsers={searchUsers}
+            />
+          </Tab.Pane>
+        ),
+      },
     ];
     return (
       <Tab
@@ -211,6 +231,10 @@ const mapDispatch = dispatch => {
     deleteFriend(userId, senderId) {
       // console.log('INSIDE DELETE FRIEND');
       return dispatch(removeFriend(userId, senderId));
+    },
+    searchUsers(searchString) {
+      // console.log('INSIDE DELETE FRIEND');
+      return dispatch(findUsersByName(searchString));
     },
   };
 };
