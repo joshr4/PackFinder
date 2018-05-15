@@ -26,7 +26,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
-    imageUrl: 'https://photos.bringfido.com/photo/2016/03/12/20160306_155456-1.jpg',
     location: { lat: 41.859734, lng: -87.625156 }
   },
   {
@@ -35,7 +34,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60607',
-    imageUrl: 'https://images.dog.ceo/breeds/rottweiler/n02106550_12642.jpg',
     location: { lat: 41.879807, lng: -87.650484 }
   },
   {
@@ -52,7 +50,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60613',
-    imageUrl: 'https://photos.bringfido.com/attractions/1/2/1/2121/2121_27849.jpg',
     location: { lat: 41.954629, lng: -87.6572544 }
   },
   {
@@ -61,7 +58,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
-    imageUrl: 'https://photos.bringfido.com/attractions/7/5/1/2157/2157_25121.jpg',
     location: { lat: 41.9143687, lng: -87.6770674 }
   },
   {
@@ -78,7 +74,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60605',
-    imageUrl: 'https://photos.bringfido.com/attractions/4/9/1/2194/2194_32152.jpg',
     location: { lat: 41.8621523, lng: -87.6261511 }
   },
   {
@@ -87,7 +82,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/Grant_Bark_Park.jpg',
     location: { lat: 41.8731553, lng: -87.6205775 }
   },
   {
@@ -96,7 +90,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60618',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/1205502706_3b97697122.jpg',
     location: { lat: 41.9370863, lng: -87.6805212 }
   },
   {
@@ -105,7 +98,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60601',
-    imageUrl: 'https://images.dog.ceo/breeds/otterhound/n02091635_2011.jpg',
     location: {lat: 41.8858918, lng: -87.6175994}
   },
   {
@@ -122,7 +114,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/img_6038.jpg',
     location: { lat: 41.9305329, lng: -87.653434 }
   },
   {
@@ -139,7 +130,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60611',
-    imageUrl: 'https://photos.bringfido.com/attractions/3/8/1/3183/3183_22857.jpg',
     location: { lat: 41.8883428, lng: -87.6435451 }
   },
   {
@@ -156,7 +146,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60607',
-    imageUrl :'https://images.dog.ceo/breeds/dane-great/n02109047_12569.jpg',
     location: { lat: 41.8802737, lng: -87.6609671 }
   },
   {
@@ -189,7 +178,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60625',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/10/17/photo_.jpg',
     location: { lat: 41.9739995, lng: -87.7019812 }
   },
   {
@@ -198,7 +186,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60614',
-    imageUrl: 'https://media.bringfido.com/images/thumbs/Walsh.jpg',
     location: { lat: 41.9131819, lng: -87.6678591 }
   },
   {
@@ -207,7 +194,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60606',
-    imageUrl: 'https://images.dog.ceo/breeds/groenendael/n02105056_6474.jpg',
     location: { lat: 41.8936415, lng: -87.6419353 }
   },
   {
@@ -216,7 +202,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60622',
-    imageUrl: 'https://photos.bringfido.com/attractions/9/9/7/3799/3799_24546.jpg',
     location: { lat: 41.9080486, lng: -87.676738 }
   },
   {
@@ -257,7 +242,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60625',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/dog_final.JPG',
     location: { lat: 41.9744269, lng: -87.6793603 }
   },
   {
@@ -306,7 +290,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60637',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/03/13/Jackson_Bark.jpg',
     location: { lat: 41.7900692, lng: -87.5790999 }
   },
   {
@@ -339,7 +322,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60641',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/o.jpg',
     location: { lat: 41.9553018, lng: -87.7635554 }
   },
   {
@@ -460,7 +442,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60611',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/01/02/289112.jpg',
     location: { lat: 41.8972899, lng: -87.6198355 }
   },
   {
@@ -565,7 +546,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60640',
-    imageUrl: 'https://photos.bringfido.com/attractions/2924/29352_2924.jpg',
     location: { lat: 41.972088, lng: -87.6497743 }
   },
   {
@@ -590,7 +570,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60649',
-    imagueUrl: 'https://media.bringfido.com/images/thumbs/Promontory_Point.jpg',
     location: { lat: 41.7734862, lng: -87.5668031 }
   },
   {
@@ -639,7 +618,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60645',
-    imageUrl: 'https://photos.bringfido.com/attractions/2/4/7/3742/3742_23418.jpg',
     location: { lat: 42.0021787, lng: -87.6890062 }
   },
   {
@@ -760,7 +738,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60631',
-    imageUrl: 'https://photos.bringfido.com/attractions/2/5/9/12952/12952_23255.jpg',
     location: { lat: 41.9866925, lng: -87.7934494 }
   },
   {
@@ -873,7 +850,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60640',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/07/31/11817059_10204262416830255_4859781733853204155_n.jpg',
     location: { lat: 41.9667119, lng: -87.6428465 }
   },
   {
@@ -882,7 +858,6 @@ const parks = [
     city: 'Chicago',
     state: 'IL',
     zipcode: '60675',
-    imageUrl: 'https://photos.bringfido.com/attractions/7/4/7/9747/9747_24646.jpg',
     location: { lat: 41.9396378, lng: -87.6372193 }
   },
   {
@@ -891,7 +866,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '72758',
-    imageUrl: 'https://photos.bringfido.com/photo/2012/06/10/IMG_1839.JPG',
     location: { lat: 40.7114022, lng: -74.0161478 }
   },
   {
@@ -900,7 +874,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10025',
-    imageUrl: 'https://photos.bringfido.com/attractions/3/3/7/733/733_35969.jpg',
     location: { lat: 40.7978157, lng: -73.9608256 }
   },
   {
@@ -909,7 +882,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10023',
-    imageUrl: 'https://photos.bringfido.com/photo/2010/05/06/P4240011.JPG',
     location: { lat: 40.7803211, lng: -73.9857008 }
   },
   {
@@ -918,7 +890,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10003',
-    imageUrl: 'https://photos.bringfido.com/photo/2014/11/30/IMG_0071.JPG',
     location: { lat: 40.734242, lng: -73.9835512 }
   },
   {
@@ -935,7 +906,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10028',
-    imageUrl: 'https://photos.bringfido.com/attractions/4/8/0/2084/2084_22701.jpg',
     location: { lat: 40.7748145, lng: -73.9448786 }
   },
   {
@@ -952,7 +922,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10003',
-    imageUrl: 'https://photos.bringfido.com/attractions/0/7/4/470/470_22744.jpg',
     location: { lat: 40.7358984, lng: -73.9912281 }
   },
   {
@@ -961,7 +930,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10017',
-    imageUrl: 'https://photos.bringfido.com/attractions/2/8/3/3382/3382_28590.jpg',
     location: { lat: 40.7488173, lng: -73.9696915 }
   },
   {
@@ -970,7 +938,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10009',
-    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/9853.jpg',
     location:  { lat: 40.7272618, lng: -73.9826618 }
   },
   {
@@ -979,7 +946,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10016',
-    imageUrl: 'https://photos.bringfido.com/attractions/3/6/3/2363/2363_32060.jpg',
     location: { lat: 40.7099616, lng: -73.9898305 }
   },
   {
@@ -988,7 +954,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10011',
-    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/Hudson-River-dog-park-North-chelsea-11.jpg',
     location: { lat: 40.7486657, lng: -74.0071944 }
   },
   {
@@ -997,7 +962,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '11235',
-    imageUrl: 'https://photos.bringfido.com/attractions/7/1/9/2917/2917_20384.jpg',
     location: { lat: 40.5779472, lng: -73.9457408 }
   },
   {
@@ -1006,7 +970,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10019',
-    imageUrl: 'https://photos.bringfido.com/photo/2014/09/05/image.jpg',
     location: { lat: 40.7671242, lng: -73.9937185 }
   },
   {
@@ -1015,7 +978,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10027',
-    imageUrl: 'https://photos.bringfido.com/attractions/7/3/5/3537/3537_28653.jpg',
     location: { lat: 40.817922, lng: -73.949734 }
   },
   {
@@ -1024,7 +986,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10014',
-    imageUrl: 'https://photos.bringfido.com/photo/2014/12/29/ny311-15097.jpg',
     location: { lat: 40.7294924, lng: -74.0114995 }
   },
   {
@@ -1033,7 +994,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10034',
-    imageUrl: 'https://photos.bringfido.com/attractions/8/0/7/2708/2708_22179.jpg',
     location: { lat: 40.8714786, lng: -73.9185691 }
   },
   {
@@ -1050,7 +1010,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10033',
-    imageUrl: 'https://photos.bringfido.com/attractions/2474/27011_2474.jpg',
     location: { lat: 40.8607169, lng: -73.9324757 }
   },
   {
@@ -1059,7 +1018,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10011',
-    imageUrl: 'https://photos.bringfido.com/attractions/2131/26510_2131.jpg',
     location: { lat: 40.7481803, lng: -74.0074286 }
   },
   {
@@ -1068,7 +1026,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10038',
-    imageUrl: 'https://photos.bringfido.com/attractions/9/3/4/2439/2439_22920.jpg',
     location: { lat: 40.7088079, lng: -74.0008619 }
   },
   {
@@ -1077,7 +1034,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10022',
-    imageUrl: 'https://photos.bringfido.com/attractions/0/4/2/3240/3240_28517.jpg',
     location: { lat: 40.753123, lng: -73.96409 }
   },
   {
@@ -1086,7 +1042,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '11211',
-    imageUrl: 'https://photos.bringfido.com/attractions/3/1/2/2213/2213_32517.jpg',
     location: { lat: 40.7160634, lng: -73.9390187 }
   },
   {
@@ -1095,7 +1050,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10014',
-    imageUrl: 'https://photos.bringfido.com/attractions/8/4/7/3748/3748_21082.jpg',
     location: { lat: 40.7706426, lng: -73.0272999 }
   },
   {
@@ -1112,7 +1066,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '11377',
-    imageUrl: 'https://photos.bringfido.com/attractions/1/3/3/2331/2331_27932.jpg',
     location: { lat: 40.7461827, lng: -73.9081131 }
   },
   {
@@ -1129,7 +1082,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10024',
-    imageUrl: 'https://photos.bringfido.com/attractions/7/2/6/3627/3627_28717.jpg',
     location: { lat: 40.7812654, lng: -73.9738201 }
   },
   {
@@ -1138,7 +1090,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10033',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/08/31/photo_.jpg',
     location: { lat: 40.8457587, lng: -73.9418144 }
   },
   {
@@ -1147,7 +1098,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10463',
-    imageUrl: 'https://photos.bringfido.com/attractions/5/1/4/2415/2415_31836.jpg',
     location: { lat: 40.8806454, lng: -73.9104023 }
   },
   {
@@ -1164,7 +1114,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10040',
-    imageUrl: 'https://media.bringfido.com/images/thumbs/Highbridge_Dog_Park.jpg',
     location:  { lat: 40.8564588, lng: -73.9248061 }
   },
   {
@@ -1173,7 +1122,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10023',
-    imageUrl: 'https://photos.bringfido.com/attractions/2/6/3/3362/3362_21747.jpg',
     location: { lat: 40.7789161, lng: -73.9830144 }
   },
   {
@@ -1182,7 +1130,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10463',
-    imageUrl: 'https://photos.bringfido.com/attractions/3469/27618_3469.jpg',
     location: { lat: 40.8849205, lng: -73.9163268 }
   },
   {
@@ -1191,7 +1138,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10014',
-    imageUrl: 'https://photos.bringfido.com/photo/2015/07/27/photo_____.jpg',
     location: { lat: 40.7211627, lng: -74.0142773 }
   },
   {
@@ -1200,7 +1146,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10024',
-    imageUrl: 'https://photos.bringfido.com/attractions/1/0/5/11501/11501_20808.jpg',
     location: { lat: 40.7823822, lng: -73.9720258 }
   },
   {
@@ -1209,7 +1154,6 @@ const parks = [
     city: 'New York',
     state: 'NY',
     zipcode: '10024',
-    imageUrl: 'https://photos.bringfido.com/attractions/4/3/9/1934/1934_27761.jpg',
     location: { lat: 40.702795, lng: -74.01412 }
   },
 ];
@@ -1248,10 +1192,20 @@ async function geocode(park) {
 
 
 function createParks(addresses) {
+
+  let counter = 1;
+
   return Promise.all(
     addresses.map(async park => {
 
       let tempLocation = await geocode(park)
+
+      let tempImageArr = []
+
+      for (let i = 0; i < 5; i++){
+        tempImageArr.push(`/images/ParkImages/dogPark_${counter % 770}.jpg`)
+        counter++;
+      }
 
 
       const address = await Address.create({
@@ -1265,7 +1219,7 @@ function createParks(addresses) {
         name: park.name,
         rating: 5,
         description: faker.lorem.paragraph(),
-        imageUrl: park.imageUrl,
+        imageUrls: tempImageArr,
         schedule: {},
         addressId: address.id,
       }).then(newPark => newPark);
