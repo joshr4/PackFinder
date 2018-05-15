@@ -77,16 +77,8 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { addEvent, updateEvent, deleteEvent, match, allEvents, user } = this.props
+    let { displayEvent, isOwner, coords } = this.props
     let { showModal } = this.state
-    let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
-    let isEventOwner = false
-    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent 
-      && displayEvent.park && 
-    displayEvent.park.address) coords = displayEvent.park.address.location
-    isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
     return (
       displayEvent ?
         <Container className="container" style={{"overflowY":"scroll"}}>
@@ -126,7 +118,7 @@ export class EventDetail extends Component {
           <Grid.Row min-height="40%">
             <Grid.Column width={16}>
               <h4>Description:</h4><p>{displayEvent.description}</p>
-              {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
               : <div />}
             </Grid.Column>
           </Grid.Row>
@@ -145,11 +137,22 @@ export class EventDetail extends Component {
     );
   }
 }
-const mapState = state => {
+const mapState = (state, ownProps) => {
+  let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
+  let isOwner = false
+  let coords = {lat: 41.954629, lng: -87.6572544}
+  if (eventDetail) isOwner = eventDetail.creator.id === state.user.id
+  if (eventDetail) coords = eventDetail.park.address.location
+
+  isOwner = true //FOR TESTING - REMOVE LATER
+
   return {
     allEvents: state.events,
     attendees: [],
-    user: state.user
+    user: state.user,
+    displayEvent: eventDetail,
+    isOwner: isOwner,
+    coords: coords
   };
 };
 
