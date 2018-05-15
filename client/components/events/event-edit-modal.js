@@ -5,10 +5,10 @@ import { AddEventForm } from '../index';
 
 class EventEditModal extends Component {
   constructor(props) {
-    console.log('EventEditModal: ', props);
     super(props);
     this.state = {
       isDirty: false,
+      isItemSet: false,
       item: props.item ? {
         description: props.item.description,
         date: moment(props.item.start).format('YYYY-MM-DD'),
@@ -16,7 +16,7 @@ class EventEditModal extends Component {
         parkId: props.item.parkId,
         private: props.item.private,
         id: props.item.id,
-      } : 
+      } :
       {
           description: '',
           date: moment().format('YYYY-MM-DD'),
@@ -26,7 +26,6 @@ class EventEditModal extends Component {
       },
       slider: 0
     };
-    console.log("this.state.item: ", this.state.item);
     this.handleChange = this.handleChange.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -71,12 +70,11 @@ class EventEditModal extends Component {
   render() {
     // console.log('item prop', this.props.item)
     // console.log('edit item', this.state.item)
-    let { onClose, showModal, onDelete, parkDropDownList, item } = this.props
-    let { description, isDirty, slider } = this.state
-    console.log("item being passed into AddEventForm: ", item);
+    let { onClose, showModal, onDelete, parkDropDownList } = this.props
+    let { description, isDirty, slider, item } = this.state
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
-        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} 
+        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }}
         onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
         <Modal.Content image>
           <Modal.Description>
