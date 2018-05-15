@@ -29,7 +29,7 @@ export const NearbyParksListItem = props => {
     'https://photos.bringfido.com/photo/2015/10/17/photo_.jpg',
   ];
   return (
-    <Segment style={{ margin: '0px', width: '100%' }}>
+    <Segment stacked style={{ margin: '0px', width: '100%' }}>
       <Grid>
         <Grid.Row
           style={{ padding: '0.25em', alignItems: 'center', display: 'flex' }}
