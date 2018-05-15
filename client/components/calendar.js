@@ -127,7 +127,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("openModal event/type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
         console.log("editable event: ", event);
@@ -335,7 +334,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, updateEvent, events } = this.props
+    let { isLoggedIn, parkList, user, addEvent, events } = this.props
     let { showAddEventModal, editableEvent } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
@@ -361,6 +360,7 @@ class Dnd extends React.Component {
                       onDelete={editableEvent ? deleteEvent : null}
                       user={user}
                       item={editableEvent ? this.state.eventToModal : false}
+                      editing={editableEvent}
                       handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}
