@@ -35,7 +35,7 @@ class EventEditModal extends Component {
   }
 
   render() {
-    let { onClose, showModal, onDelete, handleSubmit } = this.props
+    let { onClose, showModal, onDelete, handleSubmit, parkDropDownList } = this.props
     let { description, item, isDirty } = this.state
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
@@ -50,6 +50,7 @@ class EventEditModal extends Component {
               item={item}
               handleChange={this.handleChange}
               handleSubmit={() => isDirty ? handleSubmit(item) : onClose()}
+              parkDropDownList={parkDropDownList}
             />
           </Modal.Description>
         </Modal.Content>

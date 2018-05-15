@@ -299,7 +299,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn } = this.props
+    let { isLoggedIn, parkList } = this.props
     let { showAddEventModal } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
@@ -322,7 +322,8 @@ class Dnd extends React.Component {
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
                       onDelete={() => { }}
-                      handleSubmit={() => { }} />
+                      handleSubmit={() => { }}
+                      parkDropDownList={parkList} />
                     : <div />}
                 </Segment>
                 <Segment>
