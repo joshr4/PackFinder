@@ -8,11 +8,31 @@ import { FriendsListItem } from '../';
  */
 
 export class FriendsListSearch extends Component {
-  state = { currentSearch: '' };
+  state = { currentSearch: '',  WAIT_INTERVAL : 1000};
 
-  handleSearchChange = searchString => {
-    this.props.searchUsers(searchString);
-    this.setState({ currentSearch: searchString });
+
+  timeout = null;
+
+  handleSearchChange = evt => {
+    // this.props.searchUsers(searchString);
+    // this.setState({ currentSearch: searchString }, () => {
+
+    //   console.log(searchString)
+    // });
+    clearTimeout(this.timeout)
+    // console.log(evt.target.value)
+    // console.log(this.timeout)
+
+    let tempVar = evt.target.value
+
+    if (tempVar.length){
+    this.timeout = setTimeout(() => {
+      console.log(tempVar)
+      this.props.searchUsers(tempVar)
+      this.setState({ currentSearch: tempVar })
+    }, 500)
+    }
+
   };
 
   componentDidMount = () => {
@@ -46,9 +66,10 @@ export class FriendsListSearch extends Component {
         // }}
       >
         <Search
-          onSearchChange={e => this.handleSearchChange(e.target.value)}
-          value={this.state.currentSearch}
+          onKeyUp={this.handleSearchChange}
+          showNoResults={false}
         />
+
         {loading === 'true' ? (
           <Dimmer active>
             <Loader size="large">Loading</Loader>

@@ -63,6 +63,7 @@ export class FriendsList extends Component {
       declineFriendRequest,
       searchUsers,
       user,
+      userPosition,
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
     const filteredNearbyUsers = nearbyUsers.filter(
@@ -134,6 +135,8 @@ export class FriendsList extends Component {
           <Tab.Pane>
             <FriendsListTab
               activeIndex={this.state.activeIndex}
+              mode={'fetchNearbyUsers'}
+              userPosition={userPosition}
               fetchData={fetchNearbyUsers}
               items={filteredNearbyUsers}
               submit={sendFriendRequest}
@@ -193,7 +196,17 @@ export class FriendsList extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({ friendsList, user }) => ({ friendsList, user });
+const mapState = state => {
+
+  // ({ friendsList, user }) => ({ friendsList, user });
+
+  return {
+    friendsList: state.friendsList,
+    user: state.user,
+    userPosition: state.location.coords
+  }
+};
+
 
 const mapDispatch = dispatch => {
   return {
