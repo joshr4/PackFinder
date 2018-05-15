@@ -15,7 +15,8 @@ class ParkList extends Component {
         lng: -87.6298
       },
       isHover: -1,
-      range: 3218 // 2 miles
+      range: 3218, // 2 miles
+      slider: 1
     }
 
   }
@@ -65,6 +66,27 @@ class ParkList extends Component {
     this.setState({isHover: -1})
   }
 
+  sliderChangeHandler(evt){
+    let range = 0
+    let tempValue = Number(evt.target.value)
+
+    if (tempValue === 0){
+      range = 1609
+    }
+    else if (tempValue === 1){
+      range = 3218
+    }
+    else if (tempValue === 2){
+      range = 6437
+    }
+    else if (tempValue === 3){
+      range = 8046
+    }
+
+    this.setState({ slider: tempValue, range }, () => {
+      this.props.getNearbyParks(this.state.location, this.state.range)
+    })
+  }
 
 
   handleContextRef = contextRef => this.setState({ contextRef });
@@ -73,6 +95,20 @@ class ParkList extends Component {
 
     const markers = this.props.nearbyParks
     const { contextRef } = this.state;
+
+    let distance = 0
+    if (this.state.slider === 0){
+      distance = 1
+    }
+    else if (this.state.slider === 1){
+      distance = 2
+    }
+    else if (this.state.slider === 2){
+      distance = 4
+    }
+    else if (this.state.slider === 3){
+      distance = 5
+    }
 
     // const markers = [{
     //   location: {lat: 41.895266, lng: -87.641223}
@@ -83,6 +119,12 @@ class ParkList extends Component {
 
     return (
       <div className="container" ref={this.handleContextRef}>
+
+      <div style={{marginLeft: '15px', marginTop: '15px', marginBottom: '15px', width: '140px'}} className="slidecontainer">
+      <input type="range" min="0" max="3" className="slider" id="viewDistance" value={this.state.slider} onChange={this.sliderChangeHandler.bind(this)} />
+      <p>{`Distance: ${distance} miles `}</p>
+    </div>
+
       <Grid columns={2}>
 
       <Grid.Column width={9}>
