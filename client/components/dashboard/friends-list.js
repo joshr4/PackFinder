@@ -73,6 +73,7 @@ export class FriendsList extends Component {
         position: 'absolute',
         top: '-10px',
         right: '-3px',
+        background: '#54b9bf',
       },
       menuItem: {
         padding: '1em 0.5em',
@@ -83,10 +84,7 @@ export class FriendsList extends Component {
     const panes = [
       {
         menuItem: (
-          <Menu.Item
-            key="Your Pack"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Your Pack" style={styles.menuItem}>
             Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
           </Menu.Item>
         ),
@@ -103,10 +101,7 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item
-            key="Requests"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Requests" style={styles.menuItem}>
             Requests<Label style={styles.menuLabels}>
               {receivedRequests.length}
             </Label>
@@ -127,10 +122,7 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item
-            key="Nearby Users"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Nearby Users" style={styles.menuItem}>
             Nearby Users<Label style={styles.menuLabels}>
               {filteredNearbyUsers.length}
             </Label>

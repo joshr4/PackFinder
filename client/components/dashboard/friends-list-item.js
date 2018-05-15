@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {NavLink} from 'react-router-dom'
-import { Grid, Button, Image, Label, Header, Segment } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
+import {
+  Grid,
+  Button,
+  Image,
+  Label,
+  Header,
+  Segment,
+  Icon,
+} from 'semantic-ui-react';
 
 /**
  * COMPONENT
@@ -21,7 +29,11 @@ export const FriendsListItem = props => {
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
         <Grid.Row style={{ padding: '0.25em', alignItems: 'center' }}>
-          <Header style={{ flex: 2, margin: '0' }} as={NavLink} to={`/profile/${id}`}>
+          <Header
+            style={{ flex: 2, margin: '0', fontSize: '2em' }}
+            as={NavLink}
+            to={`/profile/${id}`}
+          >
             {fullName}
           </Header>
           {address &&
@@ -53,9 +65,9 @@ export const FriendsListItem = props => {
             {buttonText[activeIndex]}
           </Button>
         </Grid.Row>
-        <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>
+        <Grid.Row columns={2} style={{ padding: '0.25em 1em' }}>
           <Grid.Column width={4}>
-            <Grid.Row style={{ padding: '0' }}>
+            <Grid.Row style={{}}>
               <div
                 style={{
                   display: 'flex',
@@ -63,16 +75,31 @@ export const FriendsListItem = props => {
                   alignItems: 'center',
                 }}
               >
-                <img
-                  style={{ width: '60px', borderRadius: '6em' }}
-                  src={imageUrl}
-                />
+                <div>
+                  <img
+                    style={{ width: '80px', borderRadius: '6em' }}
+                    src={imageUrl}
+                  />
+                  <Label
+                    icon="user"
+                    style={{
+                      position: 'absolute',
+                      top: '-5px',
+                      left: '-8px',
+                      backgroundColor: 'transparent',
+                      padding: '0px',
+                      fontSize: '2.5em',
+                      // color: 'rgba(82, 178, 184, 1)',
+                      color: 'rgb(69, 187, 187)',
+                    }}
+                  />
+                </div>
               </div>
             </Grid.Row>
           </Grid.Column>
           <Grid.Column width={12}>
             <Grid>
-              <Grid.Row style={{}}>
+              <Grid.Row style={{ padding: '1rem 1rem' }}>
                 {pets &&
                   pets.map(pet => (
                     <div
@@ -83,15 +110,29 @@ export const FriendsListItem = props => {
                         alignItems: 'center',
                       }}
                     >
-                      <Image
-                        style={{
-                          height: '60px',
-                          width: '60px',
-                          borderRadius: '50%',
-                        }}
-                        rounded
-                        src={pet.imageUrls[0]}
-                      />
+                      <div>
+                        <img
+                          style={{
+                            width: '80px',
+                            height: '80px',
+                            borderRadius: '50%',
+                          }}
+                          src={pet.imageUrls[0]}
+                        />
+                        <Label
+                          icon="paw"
+                          style={{
+                            position: 'absolute',
+                            top: '9px',
+                            left: '0px',
+                            backgroundColor: 'transparent',
+                            padding: '0px',
+                            fontSize: '2.5em',
+                            // color: 'rgba(82, 178, 184, 1)',
+                            color: 'rgb(69, 187, 187)',
+                          }}
+                        />
+                      </div>
                       <h4 style={{ margin: '0px' }}>{pet.name}</h4>
                     </div>
                   ))}
