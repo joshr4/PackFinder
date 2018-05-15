@@ -102,7 +102,10 @@ class Dnd extends React.Component {
 
   async openModal(event, type) {
     if (event.isEvent) {
-      this.toggleModal()
+      if (event.editable) {
+        // Open event modal here
+      }
+      // this.toggleModal()
       // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
       return
     }
@@ -399,18 +402,19 @@ const mapState = state => {
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
-    calEvent.hexColor = "00b5ad";
-    if (event.creator.id == state.user.id) {
-      calEvent.hexColor = "00b5ad";
-    }
-    else {
-      calEvent.hexColor = "fbbd08";
-    }
+    // calEvent.hexColor = "00b5ad";
     calEvent.attendees.forEach(attendee => {
       if (attendee.id == state.user.id) {
         calEvent.hexColor = "21ba45";
       }
     })
+    if (event.creator.id == state.user.id) {
+      calEvent.hexColor = "00b5ad";
+      calEvent.editable = true;
+    }
+    else {
+      calEvent.hexColor = "fbbd08";
+    }
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
