@@ -335,7 +335,7 @@ class Dnd extends React.Component {
 
   render() {
     let { isLoggedIn, parkList, user, addEvent, events } = this.props
-    let { showAddEventModal } = this.state
+    let { showAddEventModal, editableEvent } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -360,6 +360,7 @@ class Dnd extends React.Component {
                       onDelete={editableEvent ? deleteEvent : null}
                       user={user}
                       item={editableEvent ? this.state.eventToModal : false}
+                      editing={editableEvent}
                       handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}
