@@ -77,14 +77,14 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { displayEvent, isOwner, coords } = this.props
+    let { displayEvent, isOwner, coords, allEvents } = this.props
     let { showModal } = this.state
-    let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
+    displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     let isEventOwner = false
     if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent 
-      && displayEvent.park && 
+    coords = {lat: 41.954629, lng: -87.6572544}
+    if (displayEvent
+      && displayEvent.park &&
     displayEvent.park.address) coords = displayEvent.park.address.location
     isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
 
