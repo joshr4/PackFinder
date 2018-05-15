@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
-  getNearByUsersInfo,
-  getFriendsList,
   getNearByEventsInfo,
   deleteEvent,
   addAttendee,
@@ -18,32 +16,14 @@ import { EventsListTab } from '../';
  */
 
 export class EventsList extends Component {
-  componentDidMount = async () => {
-    const {
-      fetchFriendsList,
-      fetchReceivedRequests,
-      fetchSentRequests,
-      user,
-    } = this.props;
-    let loadFriendsList = [
-      fetchFriendsList(user.id),
-      fetchReceivedRequests(user.id),
-      fetchSentRequests(user.id),
-    ];
-    getNearByEventsInfo()
-    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
-  };
+  componentDidMount = () => getNearByEventsInfo()
 
-  state = { activeIndex: 0, loading: true };
+  state = { activeIndex: 0, loading: false };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
 
     const {
-      fetchFriendsList,
-      fetchNearbyUsers,
-      fetchReceivedRequests,
-      fetchSentRequests,
       declineFriendRequest,
       user,
       userEvents,
@@ -83,7 +63,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchFriendsList}
               items={userEvents}
               submit={deleteEvent}
             />
@@ -105,7 +84,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchReceivedRequests}
               items={nearbyEvents}
               submit={addAttendee}
               decline={declineFriendRequest}
@@ -129,7 +107,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchNearbyUsers}
               items={attendingEvents}
               submit={removeAttendee}
             />
@@ -146,7 +123,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchSentRequests}
               items={invitedEvents}
               submit={addAttendee}
             />
@@ -170,7 +146,6 @@ export class EventsList extends Component {
 /**
  * CONTAINER
  */
-// const mapState = ({ friendsList, user, events }) => ({ friendsList, user, events });
 
 const mapState = state => {
   return {
@@ -185,14 +160,6 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchNearbyUsers(location) {
-      // console.log('INSIDE FETCH NEARBY USERS')
-      return dispatch(getNearByUsersInfo(location));
-    },
-    fetchFriendsList(userId) {
-      // console.log('INSIDE FETCH FRIENDS')
-      return dispatch(getFriendsList(userId));
-    },
     removeAttendee(event, userId) {
       dispatch(removeAttendee(event, userId));
     },

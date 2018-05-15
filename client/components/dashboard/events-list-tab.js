@@ -9,8 +9,6 @@ import { EventsListItem } from '../';
 
 export class EventsListTab extends Component {
   componentDidMount = () => {
-    const { fetchData, user } = this.props;
-    fetchData(user.id);
   };
 
   render() {
