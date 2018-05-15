@@ -16,7 +16,6 @@ import { EventsListTab } from '../';
  */
 
 export class EventsList extends Component {
-  componentDidMount = () => getNearByEventsInfo()
 
   state = { activeIndex: 0, loading: false };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
@@ -154,7 +153,7 @@ const mapState = state => {
     user: state.user,
     attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
     invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
-    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id !== state.user.id))
   };
 }
 
