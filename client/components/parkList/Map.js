@@ -26,13 +26,13 @@ class Map extends Component {
       let icon = {}
       if (this.props.isHover === i){
         icon = {
-          url: `/../../../images/markers/marker_yellow${i+1}.png`,
+          url: `/images/markers/marker_yellow${i+1}.png`,
           scaledSize: {width: 33, height: 60}
         }
       }
       else {
         icon = {
-          url: `/../../../images/markers/marker_red${i+1}.png`
+          url: `/images/markers/marker_red${i+1}.png`
         }
       }
 
