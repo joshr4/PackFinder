@@ -50,6 +50,10 @@ class EditUserModal extends Component {
       tempUser.email = evt.target.value
     }
 
+    else if (evt.target.name === 'imageUrl'){
+      tempUser.imageUrl = evt.target.value
+    }
+
     else if (evt.target.name === 'description'){
       tempUser.description = evt.target.value
     }
@@ -91,6 +95,8 @@ class EditUserModal extends Component {
             <EditImageModal
               toggleNestedModal={toggleNestedModal}
               showNestedModal={showNestedModal}
+              onChangeHandler={this.onChangeHandler.bind(this)}
+              user={this.state.user}
             />
 
             <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
@@ -123,6 +129,7 @@ class EditUserModal extends Component {
                 <Form.Field
                   fluid
                   control={Input}
+                  type="email"
                   label="Email"
                   name="email"
                   placeholder="email@domain.com"

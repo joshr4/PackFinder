@@ -13,8 +13,9 @@ import {
   sendFriendRequest,
   removeFriend,
   declineRequest,
+  findUsersByName
 } from '../../store';
-import { FriendsListTab } from '../';
+import { FriendsListTab, FriendsListSearch } from '../';
 
 /**
  * COMPONENT
@@ -42,13 +43,13 @@ export class FriendsList extends Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    // console.log('state', this.state);
 
     const {
       nearbyUsers,
       friends,
       receivedRequests,
       sentRequests,
+      search
     } = this.props.friendsList;
     const {
       fetchFriendsList,
@@ -60,6 +61,7 @@ export class FriendsList extends Component {
       removeFriendRequest,
       deleteFriend,
       declineFriendRequest,
+      searchUsers,
       user,
     } = this.props;
     const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
@@ -73,6 +75,7 @@ export class FriendsList extends Component {
         position: 'absolute',
         top: '-10px',
         right: '-3px',
+        background: '#54b9bf',
       },
       menuItem: {
         padding: '1em 0.5em',
@@ -83,10 +86,7 @@ export class FriendsList extends Component {
     const panes = [
       {
         menuItem: (
-          <Menu.Item
-            key="Your Pack"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Your Pack" style={styles.menuItem}>
             Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
           </Menu.Item>
         ),
@@ -103,10 +103,7 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item
-            key="Requests"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Requests" style={styles.menuItem}>
             Requests<Label style={styles.menuLabels}>
               {receivedRequests.length}
             </Label>
@@ -127,10 +124,7 @@ export class FriendsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item
-            key="Nearby Users"
-            style={styles.menuItem}
-          >
+          <Menu.Item key="Nearby Users" style={styles.menuItem}>
             Nearby Users<Label style={styles.menuLabels}>
               {filteredNearbyUsers.length}
             </Label>
@@ -160,6 +154,24 @@ export class FriendsList extends Component {
               fetchData={fetchSentRequests}
               items={sentRequests}
               submit={removeFriendRequest}
+            />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: (
+          <Menu.Item key="Search" style={styles.menuItem}>
+            Search<Label style={styles.menuLabels}>{search.length}</Label>
+          </Menu.Item>
+        ),
+        render: () => (
+          <Tab.Pane>
+            <FriendsListSearch
+              activeIndex={this.state.activeIndex}
+              fetchData={fetchSentRequests}
+              items={search}
+              submit={sendFriendRequest}
+              searchUsers={searchUsers}
             />
           </Tab.Pane>
         ),
@@ -218,8 +230,12 @@ const mapDispatch = dispatch => {
       return dispatch(declineRequest(userId, senderId));
     },
     deleteFriend(userId, senderId) {
-      console.log('INSIDE DELETE FRIEND');
+      // console.log('INSIDE DELETE FRIEND');
       return dispatch(removeFriend(userId, senderId));
+    },
+    searchUsers(searchString) {
+      // console.log('INSIDE DELETE FRIEND');
+      return dispatch(findUsersByName(searchString));
     },
   };
 };

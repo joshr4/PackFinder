@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Map, ParkListItem, EventM, EventModal, SingleParkMap, ChatRoom } from '../index.js';
+//  ewafofweifjwpoaiefjapwoiej
+import { Map, ParkListItem, EventEditModal, SingleParkMap, ChatRoom, AddAttendeeModal } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -40,9 +41,11 @@ export class EventDetail extends Component {
     super(props);
     this.state = {
       showModal: false,
+      showAttendeeModal: false,
       map: {},
     };
     this.toggleModal = this.toggleModal.bind(this)
+    this.toggleAttendeeModal = this.toggleAttendeeModal.bind(this)
   }
 
   componentDidMount() {
@@ -55,6 +58,12 @@ export class EventDetail extends Component {
     });
   }
 
+  toggleAttendeeModal() {
+    this.setState({
+      showAttendeeModal: !this.state.showAttendeeModal,
+    })
+  }
+
   handleSubmit = (event) => {
     let stateEvent = event
     let year = parseInt(stateEvent.date.split('-')[0]);
@@ -63,9 +72,13 @@ export class EventDetail extends Component {
     let fromHour = parseInt(stateEvent.startTime.split(':')[0]);
     let fromMin = parseInt(stateEvent.startTime.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let newEvent = Object.assign(stateEvent, { start: startTime, id: event.id })
-    this.props.updateEvent(newEvent)
-    this.toggleModal()
+    let newEvent = Object.assign(stateEvent, { start: startTime, id: event.id });
+    this.props.updateEvent(newEvent);
+    this.toggleModal();
+  }
+
+  handleAttendeeSubmit = (event) => {
+
   }
 
   mapLoaded(map) {
@@ -76,81 +89,136 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { addEvent, updateEvent, deleteEvent, match, allEvents, user } = this.props
-    let { showModal } = this.state
-    let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
-    let isEventOwner = false
-    console.log('user',user)
-    console.log('displayEvent',displayEvent)
-    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent 
-    && displayEvent.park && 
-    displayEvent.park.address) coords = displayEvent.park.address.location
-    isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
+    let { displayEvent, isOwner, coords, user } = this.props
+    let { showModal, showAttendeeModal } = this.state
+    let attendees = [];
+    let invitees = [];
+    if (displayEvent) {
+      attendees = displayEvent.attendees;
+      invitees = displayEvent.invitees;
+    }
+
     return (
       displayEvent ?
-        <Container className="container" style={{"overflow-y":"scroll"}}>
-          <EventModal
-            onClose={this.toggleModal}
-            showModal={showModal}
-            handleSubmit={this.handleSubmit}
-            onDelete={deleteEvent}
-            item={displayEvent}
-          />
-          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-            <Grid celled>
-              <Grid.Row min-height="60%" >
-                <Grid.Column width={8}>
-                {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
-                  <Segment attached>
-                    <b>
-                      Park Name: {displayEvent.park.name}<br />
-                    </b>
-                  </Segment>
-                  <Segment attached>
-                    <b>
-                      Date: {moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}<br />
-                    </b>
-                  </Segment>
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <SingleParkMap
-                    zoom={15}
-                    center={coords}
-                    mapLoaded={this.mapLoaded.bind(this)}
-                    containerElement={<div style={{ height: `100%` }} />}
-                    mapElement={<div style={{ height: `100%` }} />}
-                  />
-                </Grid.Column>
+        <Container className="container" style={{"overflowY":"scroll"}}>
+        <EventEditModal
+        onClose={this.toggleModal}
+        showModal={showModal}
+        handleSubmit={this.handleSubmit}
+        onDelete={deleteEvent}
+        item={displayEvent}
+      />
+      <AddAttendeeModal
+        onClose={this.toggleAttendeeModal}
+        showModal={showAttendeeModal}
+        handleSubmit={this.handleAttendeeSubmit}
+        item={displayEvent}
+        user={user}
+        userFriends={user.Friends}
+      />
+      <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
+        <Grid celled>
+          <Grid.Row min-height="60%" >
+            <Grid.Column width={8}>
+            {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
+              <Segment attached>
+                <b>
+                  Park Name: {displayEvent.park.name}<br />
+                </b>
+              </Segment>
+              <Segment attached>
+                <b>
+                  Date: {moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}<br />
+                </b>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <SingleParkMap
+                zoom={15}
+                center={coords}
+                mapLoaded={this.mapLoaded.bind(this)}
+                containerElement={<div style={{ height: `100%` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row min-height="40%">
+            <Grid.Column width={8}>
+              <h4>Description:</h4><p>{displayEvent.description}</p>
+              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+              : <div />}
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <h4>Going:</h4>
+              <Grid>
+              <Grid.Row columns={16}>
+                  {attendees.map(attendee => {
+                    return (
+                      <Grid.Column width={5}>
+                      <List.Item style={{paddingBottom:"10px"}}>
+                      <Image avatar src={attendee.imageUrl}/>
+                      <List.Content>
+                        <List.Header style={{fontSize:"13px"}}><b>{attendee.fullName}</b></List.Header>
+                      </List.Content>
+                    </List.Item>
+                    </Grid.Column>
+                  )
+                  })}
               </Grid.Row>
-              <Grid.Row min-height="40%">
-                <Grid.Column width={16}>
-                  <h4>Description:</h4><p>{displayEvent.description}</p>
-                  {isEventOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
-                  : <div />}
-                </Grid.Column>
+              </Grid>
+              <h4>Invited:</h4>
+              <Grid>
+              <Grid.Row columns={16}>
+                  {invitees.map(invitee => {
+                    return (
+                      <Grid.Column width={5}>
+                      <List.Item style={{paddingBottom:"10px"}}>
+                      <Image avatar src={invitee.imageUrl}/>
+                      <List.Content>
+                        <List.Header style={{fontSize:"13px"}}><b>{invitee.fullName}</b></List.Header>
+                      </List.Content>
+                    </List.Item>
+                    </Grid.Column>
+                  )
+                  })}
               </Grid.Row>
-              <Grid.Row>
-              <Grid.Column width={16}>
-                <Header>Event Chat</Header>
-                <ChatRoom height={674} eventId={parseInt(this.props.match.params.id)}/>
-              </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            <br /> <br /> <br />
-          </Segment>
-        </Container>
+              </Grid>
+
+              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
+              : <div />}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+          <Grid.Column width={16}>
+            <Header>Event Chat</Header>
+            <ChatRoom height={674} eventId={parseInt(this.props.match.params.id)}/>
+          </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <br /> <br /> <br />
+      </Segment>
+    </Container>
         :
         <div />
     );
   }
 }
-const mapState = state => {
+const mapState = (state, ownProps) => {
+  let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
+  let isOwner = false
+  let coords = {lat: 41.954629, lng: -87.6572544}
+  if (eventDetail) isOwner = eventDetail.creator.id === state.user.id
+  if (eventDetail) coords = eventDetail.park.address.location
+
+  isOwner = true //FOR TESTING - REMOVE LATER
+
   return {
     allEvents: state.events,
     attendees: [],
-    user: state.user
+    user: state.user,
+    displayEvent: eventDetail,
+    isOwner: isOwner,
+    coords: coords
   };
 };
 

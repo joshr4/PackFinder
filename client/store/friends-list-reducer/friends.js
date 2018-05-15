@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../../history';
+import socket from '../../socket';
 
 /**
  * ACTION TYPES
@@ -8,6 +9,7 @@ import history from '../../history';
 const GET_FRIENDS_LIST = 'GET_FRIENDS_LIST';
 const REMOVE_FRIEND = 'REMOVE_FRIEND';
 const ADD_FRIEND = 'ADD_FRIEND';
+
 
 /**
  * INITIAL STATE
@@ -21,9 +23,9 @@ const get = friendsList => ({
   type: GET_FRIENDS_LIST,
   friendsList,
 });
-const remove = (removed) => ({
+const remove = (removeId) => ({
   type: REMOVE_FRIEND,
-  removed
+  removeId
 });
 export const add = (friend) => ({
   type: ADD_FRIEND,
@@ -53,14 +55,25 @@ export const removeFriend = (userId, friendId) => dispatch =>
   .put(`/api/users/${userId}/friend-request/delete`, {
     friendId
   })
-  .then(res => dispatch(remove(res.data || defaultList)))
+  .then(res => {
+    dispatch(remove(res.data.id || defaultList))
+    //
+    socket.emit('delete-friend', {
+      userId,
+      friendId
+    })
+  })
   .catch(err => console.log(err));
+export const removeFriendSocket = (friendId) => dispatch => dispatch(remove(friendId))
+
+
 
 // router.post('/:id/friend-request/delete', async (req, res, next) => {
 
 /**
  * REDUCER
  */
+
 export default function (state = defaultList, action) {
   switch (action.type) {
     case GET_FRIENDS_LIST:
@@ -68,7 +81,7 @@ export default function (state = defaultList, action) {
     case ADD_FRIEND:
       return [...state, action.friend];
     case REMOVE_FRIEND:
-      return state.filter(request => request.id !== action.removed.id);
+  return state.filter(request => request.id !== action.removeId);
     default:
       return state;
   }

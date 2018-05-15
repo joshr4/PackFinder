@@ -1,15 +1,42 @@
 import io from 'socket.io-client'
-import store, { getMessages } from './store';
+import store, {
+  getMessages,
+  removeFriendSocket,
+  acceptRequestSocket,
+  removeSentRequestSocket,
+  declineRequestSocket,
+  addRequestSocket
+} from './store';
 
 const socket = io(window.location.origin)
 // this is front-end
 socket.on('connect', () => {
-    console.log('SOCKET CONNECTED TO SERVER!!!');
-    socket.on('new-message', message => {
-        console.log("new-message received in socket.js!!: ", 
-        message);
-      store.dispatch(getMessages(message));
-    });
+  socket.on('new-message', message => {
+    store.dispatch(getMessages(message));
+  });
+
+  // **************************
+  // FRIENDS LIST SOCKETS
+  // **************************
+
+  socket.on('delete-friend', data => {
+    store.dispatch(removeFriendSocket(data.friendToDeleteId))
+  })
+  socket.on('accept-request', data => {
+    store.dispatch(acceptRequestSocket(data.userId))
+    store.dispatch(removeSentRequestSocket(data.userId))
+  })
+  socket.on('decline-request', data => {
+    store.dispatch(declineRequestSocket(data.userId))
+    store.dispatch(removeSentRequestSocket(data.userId))
+  })
+  socket.on('cancel-sent-request', data => {
+    store.dispatch(declineRequestSocket(data.userId))
+    store.dispatch(removeSentRequestSocket(data.userId))
+  })
+  socket.on('add-sent-request', data => {
+    store.dispatch(addRequestSocket(data.userId))
+  })
 })
 
 export default socket
