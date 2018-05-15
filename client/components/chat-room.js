@@ -44,12 +44,14 @@ class ChatRoom extends Component {
         console.log("CHATROOM PROPS: ", props);
         this.state = {
             messages:[],
+            chatValue:"",
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         // this.state.messages = getAllMessages();
         this.state = store.getState();
         console.log("store state: ", this.state);
         console.log("store messages: ", this.state.messages);
+        this.chatChange = this.chatChange.bind(this);
     }
 
     componentDidMount () {
@@ -93,6 +95,9 @@ class ChatRoom extends Component {
             posterId: this.props.user.id,
             eventId: this.props.eventId
         }
+        this.setState({
+            chatValue:"",
+        })
         this.props.addMessage(postBody);
         // axios.post('/api/messages', postBody).then(response => {
         //     console.log("created new message: ", response.data);
@@ -100,6 +105,11 @@ class ChatRoom extends Component {
         //         messages:[response.data].concat(this.state.messages),
         //     })
         // })
+    }
+    chatChange(e) {
+        this.setState({
+            chatValue:e.target.value,
+        })
     }
     render() {
         console.log("rendering line 67");
@@ -132,7 +142,9 @@ class ChatRoom extends Component {
         return (
             <div className="container" style={{ padding: 10, border: "1px solid black", height:"670px", "overflow-y":"scroll"}}>
             <Form onSubmit={this.handleSubmit}>
-            <TextArea style={{marginBottom:"10px"}} autoHeight placeholder='Write message' name="messageBody"/>
+            <TextArea style={{marginBottom:"10px"}} autoHeight placeholder='Write message' name="messageBody"
+            value={this.state.chatValue} onChange={this.chatChange}
+            />
             <Button type="submit" positive>Post</Button>
             </Form>
               <Feed>
@@ -181,16 +193,11 @@ const mapState = (state, ownProps) => {
         let shortTime = month + " " + date + " " + timeString;
         if (timeObj.getDate() == new Date(Date.now()).getDate()) {
             message.timeString = shortTime;
-            // message.timeString = timeString;            
-            // message.timeString = month + " " + date + " " + timeString;
         }
         else {
             message.timeString = longTime;
-            // message.timeString = month + " " + date + " " + timeString;
-            // message.time = DoW + " " + month + " " + date + " " + year + " " + timeString;           
         }
         console.log("message.time: ", message.time);
-        // message.timeString = message.time;            
     })
     return {
       messages: messages,
