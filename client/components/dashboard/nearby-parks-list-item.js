@@ -19,17 +19,15 @@ import history from '../../history';
  */
 
 export const NearbyParksListItem = props => {
-  const { id, name, address, imageUrl } = props.park;
-  const parkPhotos = [
-    'https://photos.bringfido.com/photo/2016/03/12/20160306_155456-1.jpg',
-    'https://images.dog.ceo/breeds/rottweiler/n02106550_12642.jpg',
-    'https://photos.bringfido.com/photo/2015/01/02/1205502706_3b97697122.jpg',
-    'https://photos.bringfido.com/attractions/4/9/1/2194/2194_32152.jpg',
-    'https://images.dog.ceo/breeds/otterhound/n02091635_2011.jpg',
-    'https://photos.bringfido.com/photo/2015/10/17/photo_.jpg',
-  ];
+  const { id, name, address, imageUrls } = props.park;
+  const styles = {
+    dashboardList: {
+      boxShadow:
+        '-2px 0px 5px rgba(0,0,0,0.3), 2px 0px 5px rgba(0,0,0,0.3), 0px 2px 5px rgba(0,0,0,0.3)',
+    },
+  };
   return (
-    <Segment stacked style={{ margin: '0px', width: '100%' }}>
+    <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
         <Grid.Row
           style={{ padding: '0.25em', alignItems: 'center', display: 'flex' }}
@@ -87,7 +85,7 @@ export const NearbyParksListItem = props => {
                     height: '10rem',
                   }}
                 >
-                  {parkPhotos.map(imageUrl => (
+                  {imageUrls.map(imageUrl => (
                     <div style={{ width: '100%' }} key={imageUrl}>
                       <img
                         style={{ height: '100%', borderRadius: '0.2em' }}
@@ -118,21 +116,6 @@ export const NearbyParksListItem = props => {
         </Grid.Row>
       </Grid>
     </Segment>
-    // <Feed.Event>
-    //   <Feed.Content>
-    //   <Feed.Summary>{`${park.name}`}</Feed.Summary>
-    //     <Feed.Date content={`Address: ${park.address.fullAddress}`} />
-    //     <Feed.Summary>{`${park.description}`}</Feed.Summary>
-    //     {/* <Feed.Extra images>
-    //       <Image size="large" src={pet.image} />
-    //     </Feed.Extra> */}
-    //     <Feed.Extra>
-    //       <Button size="tiny" name="add" onClick={() => history.push(`/dog-park/${park.id}`)} >
-    //         Park Details
-    //       </Button>
-    //     </Feed.Extra>
-    //   </Feed.Content>
-    // </Feed.Event>
   );
 };
 
