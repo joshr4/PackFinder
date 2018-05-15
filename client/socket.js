@@ -5,7 +5,8 @@ import store, {
   acceptRequestSocket,
   removeSentRequestSocket,
   declineRequestSocket,
-  addRequestSocket
+  addRequestSocket,
+  inviteUsersOnSocket
 } from './store';
 
 const socket = io(window.location.origin)
@@ -42,9 +43,12 @@ socket.on('connect', () => {
   // EVENTS SOCKETS
   // **************************
 
-  // socket.on('delete-friend', data => {
-  //   store.dispatch(removeFriendSocket(data.friendToDeleteId))
-  // })
+  socket.on('event-invite', data => {
+    console.log('Rx socket', data)
+    let id = data.id
+    let userId = data.userId
+    store.dispatch(inviteUsersOnSocket({id}, [userId]))
+  })
   // socket.on('accept-request', data => {
   //   store.dispatch(acceptRequestSocket(data.userId))
   //   store.dispatch(removeSentRequestSocket(data.userId))
