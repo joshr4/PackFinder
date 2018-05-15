@@ -11,9 +11,10 @@ const numUsers = 50;
 async function seedFriends() {
     let allUsers = await User.findAll();
     let nUsers = allUsers.length;
+    let Matt = await User.findOne({where:{username:"matt@matt.com"}});
     for (let i = 0; i < allUsers.length; i ++) {
         let thisUser = allUsers[i];
-        for (let x = 0; x < 3; x++) {
+        for (let x = 0; x < 10; x++) {
             let randomUserIndex = parseInt(Math.floor(Math.random()*(nUsers - 1)));
             // console.log("randomUserIndex: ", randomUserIndex);
             // console.log("random user: ", allUsers[randomUserIndex]);
@@ -38,7 +39,7 @@ async function seedFriends() {
                 }
             });
             if (reverseRequest.length > 0) {
-                console.log("existing request found! ", thisUser.id, randomUser.id);
+                // console.log("existing request found! ", thisUser.id, randomUser.id);
                 await thisUser.removeRequester(randomUser);
                 await randomUser.removeRequestee(thisUser);
                 // existingRequests[0].destroy();                

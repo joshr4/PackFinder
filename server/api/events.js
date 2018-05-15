@@ -96,7 +96,7 @@ router.put('/:id', (req, res, next) => {
           model: Address,
           required: false,
         }
-      ]},
+      ]},      
     ]
   }).then(events => {
     events.update(req.body).then((updated) => {
@@ -106,16 +106,31 @@ router.put('/:id', (req, res, next) => {
 })
 
 router.put('/:id/invite-users', async (req, res, next) => {
+  console.log("invite-users api route: ", req.body);
   let event = await Event.findOne({
     where: {
       id: req.params.id,
-    }
+    },
+    include: [
+    {
+      all:true,
+    },
+    {
+      model: Park, required: false, 
+      include: [
+        {
+          model: Address,
+          required: false,
+        }
+      ]
+    },
+  ]
   });
   await event.addInvitees(req.body.userIds);
   for (let i = 0; i < req.body.userIds.length; i ++) {
     let id = req.body.userIds[i];
     user = await User.findById(id);
-    user.addAttendingEvent(event);
+    user.addInvitedEvent(event);
   }
   res.json(event);
 })
