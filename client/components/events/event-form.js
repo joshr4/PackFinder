@@ -4,7 +4,7 @@ import { Button, Form, Input, Dropdown, Checkbox } from 'semantic-ui-react';
 import { EventAttendees } from '../index.js';
 
 const AddEventForm = props => {
-  let { description, startTime, date, id, parkId } = props.item;
+  let { description, startTime, date, parkId } = props.item;
   return (
     <Form onSubmit={props.handleSubmit} onChange={e => props.handleChange(e)}>
       <Form.Group widths="equal">
@@ -64,7 +64,7 @@ const AddEventForm = props => {
           <label>Private Event</label>
           <Checkbox
             toggle
-            id={id}
+            id="isPrivateEvent"
             name="private"
             checked={props.item.private}
           />

@@ -97,14 +97,6 @@ export class EventDetail extends Component {
       attendees = displayEvent.attendees;
       invitees = displayEvent.invitees;
     }
-    // let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
-    let isEventOwner = false
-    if (this.props.user.id && displayEvent && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    // let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent 
-      && displayEvent.park && 
-    displayEvent.park.address) coords = displayEvent.park.address.location
-    isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
 
     return (
       displayEvent ?
