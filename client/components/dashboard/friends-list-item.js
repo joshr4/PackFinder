@@ -24,6 +24,7 @@ export const FriendsListItem = props => {
     1: 'Accept',
     2: 'Send Request',
     3: 'Cancel',
+    4: 'Send Request',
   };
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>

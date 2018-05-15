@@ -45,5 +45,12 @@ module.exports = (io) => {
         })
       }
     });
+    socket.on('add-sent-request', data => {
+      if (currentUsers[data.friendId]) {
+        io.to(currentUsers[data.friendId]).emit('add-sent-request', {
+          userId: data.userId
+        })
+      }
+    });
   })
 }

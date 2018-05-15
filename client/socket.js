@@ -4,7 +4,8 @@ import store, {
   removeFriendSocket,
   acceptRequestSocket,
   removeSentRequestSocket,
-  declineRequestSocket
+  declineRequestSocket,
+  addRequestSocket
 } from './store';
 
 const socket = io(window.location.origin)
@@ -28,6 +29,9 @@ socket.on('connect', () => {
   socket.on('cancel-sent-request', data => {
     store.dispatch(declineRequestSocket(data.userId))
     store.dispatch(removeSentRequestSocket(data.userId))
+  })
+  socket.on('add-sent-request', data => {
+    store.dispatch(addRequestSocket(data.userId))
   })
 })
 

@@ -170,6 +170,7 @@ export class FriendsList extends Component {
               activeIndex={this.state.activeIndex}
               fetchData={fetchSentRequests}
               items={search}
+              submit={sendFriendRequest}
               searchUsers={searchUsers}
             />
           </Tab.Pane>

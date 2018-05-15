@@ -10,10 +10,10 @@ import { FriendsListItem } from '../';
 export class FriendsListSearch extends Component {
   state = { currentSearch: '' };
 
-  handleSearchChange = (searchString) => {
-    this.props.searchUsers(searchString)
-    this.setState({currentSearch: searchString})
-  }
+  handleSearchChange = searchString => {
+    this.props.searchUsers(searchString);
+    this.setState({ currentSearch: searchString });
+  };
 
   componentDidMount = () => {
     const { fetchData, user } = this.props;
@@ -28,10 +28,13 @@ export class FriendsListSearch extends Component {
       loading,
       activeIndex,
       search,
-      searchUsers,
+      sentRequests
     } = this.props;
 
     if (!items) return <div />;
+    const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
+    const filteredSearch = search.filter(
+      user => !sentRequestIds.includes(user.id))
     return (
       <Grid
         divided
@@ -42,13 +45,16 @@ export class FriendsListSearch extends Component {
         //   alignContent: 'baseline',
         // }}
       >
-        <Search onSearchChange={e => this.handleSearchChange(e.target.value)} value={this.state.currentSearch} />
+        <Search
+          onSearchChange={e => this.handleSearchChange(e.target.value)}
+          value={this.state.currentSearch}
+        />
         {loading === 'true' ? (
           <Dimmer active>
             <Loader size="large">Loading</Loader>
           </Dimmer>
         ) : (
-          search.map(item => (
+          filteredSearch.map(item => (
             <FriendsListItem
               activeIndex={activeIndex}
               decline={decline}
@@ -69,6 +75,7 @@ export class FriendsListSearch extends Component {
 const mapState = ({ friendsList, user }) => ({
   user,
   search: friendsList.search,
+  sentRequests: friendsList.sentRequests,
 });
 
 const mapDispatch = null;
