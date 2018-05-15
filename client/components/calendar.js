@@ -316,7 +316,7 @@ class Dnd extends React.Component {
                   <Button positive style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
                 <Segment>
-                  <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Public Event</Button>
+                  <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Event</Button>
                   {isLoggedIn ?
                     <EventEditModal
                       onClose={this.toggleEventModal}
