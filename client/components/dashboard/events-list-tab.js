@@ -15,7 +15,6 @@ export class EventsListTab extends Component {
 
   render() {
     const { items, submit, decline, loading, activeIndex } = this.props;
-    console.log('tab props', this.props)
     if (!items) return <div />;
     return (
       <Grid

@@ -47,7 +47,6 @@ export class EventsList extends Component {
   render() {
     // console.log('state', this.state);
     // console.log('state events', this.state);
-    console.log('props events', this.props);
 
     const {
       nearbyUsers,

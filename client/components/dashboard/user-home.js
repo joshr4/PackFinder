@@ -12,6 +12,7 @@ import {
   getNearByUsersInfo,
   findUsersByName,
   getNearByEventsInfo,
+  addEvent
 } from '../../store';
 
 /**
@@ -48,11 +49,11 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { parkList, user, events } = this.props;
+    const { parkList, user, dropDownParks } = this.props;
     const { showAddEventModal } = this.state;
     return (
       <div className="container">
-        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} />
+        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
@@ -111,9 +112,18 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapStateToProps = state => {
+  let dropDownParks = state.parkList.map(park => {
+    let newPark = {
+      key: park.id,
+      value: park.id,
+      text: park.name
+    }
+    return newPark
+  })
   return {
     email: state.user.email.toString(),
     parkList: state.parkList,
+    dropDownParks: dropDownParks,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
@@ -140,6 +150,9 @@ const mapDispatch = dispatch => {
     // }
     getNearByEvents(location, dist) {
       dispatch(getNearByEventsInfo(location, dist));
+    },
+    addEvent(event) {
+      dispatch(addEvent(event));
     },
   };
 };

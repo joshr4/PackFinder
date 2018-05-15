@@ -24,7 +24,6 @@ export const EventsListItem = props => {
     2: 'Leave',
     3: 'Accept',
   };
-  console.log('activeindex', activeIndex)
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
