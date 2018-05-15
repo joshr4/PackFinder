@@ -91,12 +91,34 @@ class Dnd extends React.Component {
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-  toggleEventModal(editable = false, event) {
-    this.setState({
+  async toggleEventModal(editable = false, event) {
+    console.log("event line 95: ", event)
+    let thisEvent = event;
+    if (event) {
+      let year = event.start.getFullYear();
+      let month = event.start.getMonth();
+      let day = event.start.getDate();
+      let month0 = ''
+      let day0 = ''
+      if (month < 9) month0 = '0'
+      if (day < 10) day0 = '0'
+      thisEvent.startTime = timeDisplay(event.start, true);
+      thisEvent.date = `${year}-${month0}${month + 1}-${day0}${day}`;
+    }
+    // let month0 = ''
+    // let day0 = ''
+    // if (month < 9) month0 = '0'
+    // if (day < 10) day0 = '0'
+    // selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
+    // selEvent.start = timeDisplay(event.start, true)
+    // selEvent.end = timeDisplay(event.end, true)
+
+    await this.setState({
       editableEvent: editable,
-      eventToModal: event ? event : null,
+      eventToModal: thisEvent,
       showAddEventModal: !this.state.showAddEventModal,
     });
+    console.log("eventToModal (line 100): ", this.state.eventToModal);
   }
   toggleModal(editable) {
     this.setState({
@@ -108,6 +130,7 @@ class Dnd extends React.Component {
     console.log("openModal event/type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
+        console.log("editable event: ", event);
         this.toggleEventModal(true, event)
       }
       return
@@ -337,7 +360,7 @@ class Dnd extends React.Component {
                       parkDropDownList={parkList}
                       onDelete={editableEvent ? deleteEvent : null}
                       user={user}
-                      item={editableEvent ? this.state.eventToModal : null}
+                      item={editableEvent ? this.state.eventToModal : false}
                       handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}

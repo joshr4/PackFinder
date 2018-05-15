@@ -80,7 +80,7 @@ export class EventDetail extends Component {
     this.toggleModal();
   }
 
-  handleAttendeeSubmit = (e) => {
+  handleAttendeeSubmit = async (e) => {
     // console.log('handleAttendeeSubmit from event-detail.js');
     // console.log("submitting add attendee modal: ", e.target);
     let friendIDs = [];
@@ -107,7 +107,7 @@ export class EventDetail extends Component {
       invitedClicked:true,
       invitedClickedText
     })
-    this.props.inviteUsers(this.props.displayEvent, friendIDs);
+    await this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
     //   {userIds: friendIDs}
@@ -287,8 +287,8 @@ const mapState = (state, ownProps) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    inviteUsers(event, userIds) {
-      dispatch(inviteUsers(event, userIds));
+    async inviteUsers(event, userIds) {
+      await dispatch(inviteUsers(event, userIds));
     },
     addEvent(event) {
       dispatch(addEvent(event));

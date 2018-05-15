@@ -5,6 +5,7 @@ import { AddEventForm } from '../index';
 
 class EventEditModal extends Component {
   constructor(props) {
+    console.log('EventEditModal: ', props);
     super(props);
     this.state = {
       isDirty: false,
@@ -15,15 +16,17 @@ class EventEditModal extends Component {
         parkId: props.item.parkId,
         private: props.item.private,
         id: props.item.id,
-      } : {
+      } : 
+      {
           description: '',
           date: moment().format('YYYY-MM-DD'),
           startTime: moment().format('HH:mm'),
           parkId: 1,
           private: false,
-        },
+      },
       slider: 0
     };
+    console.log("this.state.item: ", this.state.item);
     this.handleChange = this.handleChange.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -66,17 +69,16 @@ class EventEditModal extends Component {
   }
 
   render() {
-    console.log('item prop', this.props.item)
-    console.log('edit item', this.state.item)
-    let { onClose, showModal, onDelete, parkDropDownList } = this.props
-    let { description, item, isDirty, slider } = this.state
+    // console.log('item prop', this.props.item)
+    // console.log('edit item', this.state.item)
+    let { onClose, showModal, onDelete, parkDropDownList, item } = this.props
+    let { description, isDirty, slider } = this.state
+    console.log("item being passed into AddEventForm: ", item);
     return (
-      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
-        <Button color="blue" style={{ marginLeft: 20, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
-
-        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
+      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
+        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} 
+        onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
         <Modal.Content image>
-
           <Modal.Description>
             <h3> {description}</h3>
             <AddEventForm
