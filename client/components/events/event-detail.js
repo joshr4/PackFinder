@@ -32,7 +32,8 @@ import {
   addEvent,
   updateEvent,
   deleteEvent,
-  getEvents
+  getEvents,
+  inviteUsers
 } from '../../store';
 import { connect } from 'react-redux';
 
@@ -77,8 +78,33 @@ export class EventDetail extends Component {
     this.toggleModal();
   }
 
-  handleAttendeeSubmit = (event) => {
-
+  handleAttendeeSubmit = (e) => {
+    // console.log('handleAttendeeSubmit from event-detail.js');
+    // console.log("submitting add attendee modal: ", e.target);
+    let friendIDs = [];
+    for (let K in e.target) {
+      if (e.target[K] && e.target[K].value && K != "classList"
+        // && ('checked' in event.target[K])
+      ) {
+        // console.log("K: ", K);
+        // console.log("value: ", e.target[K].value);
+        // console.log("checked: ", e.target[K].checked);
+        if (typeof parseInt(K) == "number" && e.target[K].checked) {
+          let relatedId = this.props.user.Friends[K].id;
+          // console.log("relatedId: ", relatedId);
+          friendIDs.push(relatedId);
+        }
+      }
+    }
+    console.log("friendIDs: ", friendIDs);
+    //axios.put here
+    this.props.inviteUsers(this.props.displayEvent, friendIDs);
+    this.toggleAttendeeModal();
+    // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`, 
+    //   {userIds: friendIDs}
+    // ).then(response => {
+    //   this.toggleAttendeeModal();
+    // })
   }
 
   mapLoaded(map) {
@@ -212,10 +238,11 @@ export class EventDetail extends Component {
   }
 }
 const mapState = (state, ownProps) => {
+  console.log("updated state: ", state);
   let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
   let isOwner = false
   let coords = {lat: 41.954629, lng: -87.6572544}
-  if (eventDetail) isOwner = eventDetail.creator.id === state.user.id
+  if (eventDetail) isOwner = eventDetail.creatorId === state.user.id
   if (eventDetail) coords = eventDetail.park.address.location
 
   isOwner = true //FOR TESTING - REMOVE LATER
@@ -232,6 +259,9 @@ const mapState = (state, ownProps) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
+    inviteUsers(event, userIds) {
+      dispatch(inviteUsers(event, userIds));
+    },
     addEvent(event) {
       dispatch(addEvent(event));
     },

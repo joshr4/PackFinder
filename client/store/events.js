@@ -46,27 +46,28 @@ export const addEvent = event => dispatch =>
   axios
     .post(`/api/events/`, event)
     .then(async res => {
-
       await dispatch(getEvents())
       //history.push(`/event/${res.data.id}`)
     })
     .catch(err => console.log(err));
 
-export const inviteUsers = (event, userIds) => dispatch =>
-  axios
-  .put(`/api/events/invite-users`, event, userIds)
-  .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
+export const inviteUsers = (event, userIds) => dispatch => {
+  console.log("inviteUsers event.js store: ", userIds);
+  return axios
+  .put(`/api/events/${event.id}/invite-users`, {userIds})
+  .then(res => dispatch(updEvent(res.data || defaultEvents)))
   .catch(err => console.log(err));
+}
 
 export const removeInvite = (event, userId) => dispatch =>
   axios
-  .put(`/api/events/remove-invite`, event, userId)
+  .put(`/api/events/${event.id}/remove-invite`, {userId})
   .then(res => dispatch(updEvent(res.data || defaultEvents)))
   .catch(err => console.log(err));
 
 export const addAttendee = (event, userId) => dispatch =>
   axios
-  .put(`/api/events/${event.id}/add-attendee`, userId)
+  .put(`/api/events/${event.id}/add-attendee`, {userId})
   .then(res => dispatch(updEvent(res.data || defaultEvents)))
   .catch(err => console.log(err));
 
