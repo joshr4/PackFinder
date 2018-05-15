@@ -97,17 +97,6 @@ export class EventDetail extends Component {
       attendees = displayEvent.attendees;
       invitees = displayEvent.invitees;
     }
-<<<<<<< HEAD
-    // let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
-    let isEventOwner = false
-    if (this.props.user.id && displayEvent && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    // let coords = {lat: 41.954629, lng: -87.6572544}
-    if (displayEvent
-      && displayEvent.park &&
-    displayEvent.park.address) coords = displayEvent.park.address.location
-    isEventOwner = true //OVERRIDING TO TRUE FOR TESTING
-=======
->>>>>>> fc0fcaf203f4d7926fb46db0dca5460db1c7b1fc
 
     return (
       displayEvent ?
@@ -197,7 +186,7 @@ export class EventDetail extends Component {
 
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
-            </Grid.Column>            
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row>
           <Grid.Column width={16}>
