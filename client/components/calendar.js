@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { VisitModal } from './index';
+import { VisitModal, EventsList } from './index';
 
 import {
   getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
@@ -297,6 +297,9 @@ class Dnd extends React.Component {
       <Grid>
       <Grid.Row>
       <Grid.Column width={4}>
+
+        {this.props.user && <EventsList className="event-list" user={this.props.user} />}
+
       </Grid.Column>
       <Grid.Column width={12} style={{paddingRight:"25px", paddingBottom:"50px"}}>
       <Segment.Group horizontal>
@@ -304,19 +307,22 @@ class Dnd extends React.Component {
             <Button positive style={{ margin: 0}} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
             </Segment>
             <Segment>
-            <b>Calendar</b>
+            <Button primary style={{ margin: 0}} onClick={() => console.log("Create Event")}>Create Public Event</Button>
+            {
+              //JOSH YOUR CREATE EVENT MODAL GETS TRIGGERED HERE 
+            }
             </Segment>
             <Segment>
-            <Label circular color="blue">Scheduled Check-Ins</Label>            
+            <Label circular color="blue">Scheduled Check-Ins</Label>
             </Segment>
             <Segment>
-            <Label circular color="yellow">Events Nearby</Label>            
+            <Label circular color="yellow">Events Nearby</Label>
             </Segment>
             <Segment>
-            <Label circular color="green">Events You're Attending</Label>            
+            <Label circular color="green">Events You're Attending</Label>
             </Segment>
             <Segment>
-            <Label circular color="teal">Events You're Coordinating</Label>            
+            <Label circular color="teal">Events You're Coordinating</Label>
             </Segment>
       </Segment.Group>
       <Grid.Row style={{height:"670px"}}>
@@ -338,31 +344,9 @@ class Dnd extends React.Component {
       min={new Date(0, 0, 0, 6, 0)}
       max={new Date(0, 0, 0, 23, 0)}
       // max={new Date(0, 0, 0, 23, 0)}
+
       />       
       </Grid.Row>            
-      <Grid.Row style={{paddingTop:"10px", height:"300px"}}>
-      
-        <Segment.Group>
-          <Segment.Group horizontal>
-            <Segment>
-            <b>Calendar Legend</b>
-            </Segment>
-            <Segment>
-            <Label circular color="blue">Scheduled Check-Ins</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="yellow">Events Nearby</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="green">Events You're Attending</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="teal">Events You're Coordinating</Label>            
-            </Segment>
-          </Segment.Group>          
-        </Segment.Group>          
-      </Grid.Row>
-      
       </Grid.Column>
         <VisitModal
           modalType={this.state.modalType}
@@ -379,7 +363,7 @@ class Dnd extends React.Component {
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
           noPark={false}
-        />        
+        />
       </Grid.Row>
         </Grid>
     </div>
@@ -396,7 +380,7 @@ const mapState = state => {
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
     if (event.creator.id == state.user.id) {
-      calEvent.hexColor = "00b5ad";      
+      calEvent.hexColor = "00b5ad";
     }
     else {
       calEvent.hexColor = "fbbd08";

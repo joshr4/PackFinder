@@ -41,13 +41,28 @@ async function createEvents() {
         await event.setCreator(thisUser);
         await event.addAttendee(thisUser);
         await event.setPark(thisPark);
-        for (let x = 0; x < 6; x++) {
+
+        let testUser = await User.findOne({
+            where:{
+                email:"josh@josh.com"
+            }
+        })
+        if (i <= 8) {
+            await event.addInvitee(testUser);
+            await testUser.addInvitedEvent(event);
+        }
+        else {
+            await event.addAttendee(testUser);
+            await testUser.addAttendingEvent(event);
+        }
+        
+        for (let x = 0; x < 10; x++) {
             let randomUserIndex = parseInt(Math.floor(Math.random()*(nUsers - 1)));
             let randomUser = allUsers[randomUserIndex];
             if (randomUser.id == thisUser.id) {
                 continue;
             }
-            if (x <= 4) {
+            if (x <= 5) {
                 await event.addInvitee(randomUser);
                 await randomUser.addInvitedEvent(event);
             }

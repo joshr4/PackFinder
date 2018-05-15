@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini, EventAddModal } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventsList, EventMini, EventAddModal } from '../';
 
 import {
   getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
+  findUsersByName,
   getNearByEventsInfo,
 } from '../../store';
 
@@ -41,6 +42,7 @@ export class UserHome extends Component {
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
+    // this.props.findUsers('ricky li')
     this.props.getNearByEvents(this.state.location, 8046)
     // console.log(this.props)
   }
@@ -94,14 +96,7 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {events ? (
-                    events.map(event => (
-                      <EventMini key={event.id} item={event} />
-                    ))
-                  ) : (
-                      <div />
-                    )
-                  }
+                  {user && <EventsList className="event-list" user={user} />}
                 </Feed>
               </Card.Content>
             </Card>
@@ -121,7 +116,8 @@ const mapStateToProps = state => {
     parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
-    events: state.events
+    events: state.events,
+    usersList: state.usersList
   };
 };
 
@@ -139,6 +135,9 @@ const mapDispatch = dispatch => {
     getNearByUsers(location) {
       dispatch(getNearByUsersInfo(location));
     },
+    // findUsers(name){
+    //   dispatch(findUsersByName(name));
+    // }
     getNearByEvents(location, dist) {
       dispatch(getNearByEventsInfo(location, dist));
     },

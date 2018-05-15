@@ -10,6 +10,7 @@ const GET_FRIENDS_LIST = 'GET_FRIENDS_LIST';
 const REMOVE_FRIEND = 'REMOVE_FRIEND';
 const ADD_FRIEND = 'ADD_FRIEND';
 
+
 /**
  * INITIAL STATE
  */
@@ -66,11 +67,13 @@ export const removeFriend = (userId, friendId) => dispatch =>
 export const removeFriendSocket = (friendId) => dispatch => dispatch(remove(friendId))
 
 
+
 // router.post('/:id/friend-request/delete', async (req, res, next) => {
 
 /**
  * REDUCER
  */
+
 export default function (state = defaultList, action) {
   switch (action.type) {
     case GET_FRIENDS_LIST:
@@ -78,7 +81,7 @@ export default function (state = defaultList, action) {
     case ADD_FRIEND:
       return [...state, action.friend];
     case REMOVE_FRIEND:
-      return state.filter(request => request.id !== action.removeId);
+      return state.filter(request => request.id !== action.removed.id);
     default:
       return state;
   }
