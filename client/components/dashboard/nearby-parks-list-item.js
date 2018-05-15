@@ -20,12 +20,6 @@ import history from '../../history';
 
 export const NearbyParksListItem = props => {
   const { id, name, address, imageUrls } = props.park;
-  const styles = {
-    dashboardList: {
-      boxShadow:
-        '-2px 0px 5px rgba(0,0,0,0.3), 2px 0px 5px rgba(0,0,0,0.3), 0px 2px 5px rgba(0,0,0,0.3)',
-    },
-  };
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
@@ -74,7 +68,7 @@ export const NearbyParksListItem = props => {
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  alignItems: 'center',
+                  alignItems: 'flex-start',
                 }}
               >
                 <div

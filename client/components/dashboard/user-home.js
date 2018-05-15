@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParksList, EventsList, EventMini, EventEditModal } from '../';
+import {
+  FriendsList,
+  UserHomeCalendar,
+  NearbyParksList,
+  EventsList,
+  EventMini,
+  EventEditModal,
+} from '../';
 
 import {
   getParksAddresses,
@@ -12,7 +19,7 @@ import {
   getNearByUsersInfo,
   findUsersByName,
   getNearByEventsInfo,
-  addEvent
+  addEvent,
 } from '../../store';
 
 /**
@@ -31,11 +38,11 @@ export class UserHome extends Component {
       isHover: -1,
       showAddEventModal: false,
     };
-    this.toggleModal = this.toggleModal.bind(this)
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   toggleModal() {
-    this.setState({ showAddEventModal: !this.state.showAddEventModal })
+    this.setState({ showAddEventModal: !this.state.showAddEventModal });
   }
 
   componentDidMount() {
@@ -44,34 +51,56 @@ export class UserHome extends Component {
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
     // this.props.findUsers('ricky li')
-    this.props.getNearByEvents(this.state.location, 8046)
+    this.props.getNearByEvents(this.state.location, 8046);
     this.props.getUserLocation();
     // console.log(this.props)
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.userPosition !== this.props.userPosition){
-      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
-        this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
-        this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
-        this.props.getNearByEvents(this.state.location, 8046)
-      })
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.userPosition !== this.props.userPosition) {
+      this.setState(
+        {
+          location: {
+            lat: nextProps.userPosition.latitude,
+            lng: nextProps.userPosition.longitude,
+          },
+        },
+        () => {
+          this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+          this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
+          this.props.getNearByEvents(this.state.location, 8046);
+        }
+      );
     }
   }
 
   render() {
     const { parkList, user, dropDownParks } = this.props;
     const { showAddEventModal } = this.state;
+    const styles = {
+      dashboardList: {
+        boxShadow:
+          '-2px 0px 5px rgba(0,0,0,0.3), 2px 0px 5px rgba(0,0,0,0.3), 0px 2px 5px rgba(0,0,0,0.3)',
+        width: '100%',
+      },
+    };
     return (
       <div className="container">
-        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
+        <EventEditModal
+          onClose={this.toggleModal}
+          showModal={showAddEventModal}
+          handleSubmit={() => {}}
+          parkDropDownList={dropDownParks}
+          handleEvent={this.props.addEvent}
+          user={user}
+        />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
-            <Card style={{ width: '100%' }}>
+            <Card style={styles.dashboardList}>
               <Card.Content>
                 <Card.Header>Pack List</Card.Header>
               </Card.Content>
-              <Card.Content style={{ padding: '0' }} className="dashboard-card">
+              <Card.Content style={{ padding: '0' }}>
                 {user && <FriendsList className="pack-list" user={user} />}
               </Card.Content>
             </Card>
@@ -83,26 +112,43 @@ export class UserHome extends Component {
             computer={5}
             largeScreen={5}
           >
-            <Card style={{ width: '100%' }}>
+            <Card style={styles.dashboardList}>
               <Card.Content>
                 <Card.Header>Nearby Parks</Card.Header>
               </Card.Content>
               <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 <Feed className="overflow-scroll dashboard-feed">
-                {parkList && <NearbyParksList className="pack-list" parkList={parkList} />}
+                  {parkList && (
+                    <NearbyParksList
+                      className="pack-list"
+                      parkList={parkList}
+                    />
+                  )}
                 </Feed>
               </Card.Content>
             </Card>
           </Grid.Column>
           <Grid.Column only={'computer'} tablet={8} computer={5}>
-            <Card style={{ width: '100%' }}>
+            <Card
+              style={styles.dashboardList}
+              className="dashboard-list-shadow"
+            >
               <Card.Content>
-                <Card.Header>Upcoming Events</Card.Header>
-                <Button positive floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={this.toggleModal}>+</Button>
+                <div style={{display: 'flex'}}>
+                  <Card.Header>Upcoming Events</Card.Header>
+                  <Button
+                    positive
+                    floated="right"
+                    // style={{ marginRight: 20, marginTop: 20 }}
+                    onClick={this.toggleModal}
+                  >
+                    +
+                  </Button>{' '}
+                </div>
               </Card.Content>
               <Card.Content style={{ padding: '0' }} className="dashboard-card">
                 {/* <Feed> */}
-                  {user && <EventsList className="event-list" user={user} />}
+                {user && <EventsList className="event-list" user={user} />}
                 {/* </Feed> */}
               </Card.Content>
             </Card>
@@ -121,10 +167,10 @@ const mapStateToProps = state => {
     let newPark = {
       key: park.id,
       value: park.id,
-      text: park.name
-    }
-    return newPark
-  })
+      text: park.name,
+    };
+    return newPark;
+  });
   return {
     email: state.user.email.toString(),
     parkList: state.parkList,
@@ -133,7 +179,7 @@ const mapStateToProps = state => {
     user: state.user,
     events: state.events,
     usersList: state.usersList,
-    userPosition: state.location.coords
+    userPosition: state.location.coords,
   };
 };
 

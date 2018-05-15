@@ -14,6 +14,11 @@ body .container {
   align-items: baseline;
   align-content: baseline;
 }
+.events-list {
+  height: 66.5vh;
+  align-items: baseline;
+  align-content: baseline;
+}
 
 .view-height {
   height: 100vh;
@@ -33,7 +38,7 @@ body .container {
 }
 
 .dashboard-feed {
-  height: 70vh;
+  height: 71vh;
 }
 
 ::-webkit-scrollbar {
