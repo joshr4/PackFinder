@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //  ewafofweifjwpoaiefjapwoiej
-import { Map, ParkListItem, EventEditModal, SingleParkMap, ChatRoom } from '../index.js';
+import { Map, ParkListItem, EventEditModal, SingleParkMap, ChatRoom, AddAttendeeModal } from '../index.js';
 import moment from 'moment';
 import {
   Button,
@@ -41,9 +41,11 @@ export class EventDetail extends Component {
     super(props);
     this.state = {
       showModal: false,
+      showAttendeeModal: false,
       map: {},
     };
     this.toggleModal = this.toggleModal.bind(this)
+    this.toggleAttendeeModal = this.toggleAttendeeModal.bind(this)
   }
 
   componentDidMount() {
@@ -54,6 +56,12 @@ export class EventDetail extends Component {
     this.setState({
       showModal: !this.state.showModal,
     });
+  }
+
+  toggleAttendeeModal() {
+    this.setState({
+      showAttendeeModal: !this.state.showAttendeeModal,
+    })
   }
 
   handleSubmit = (event) => {
@@ -69,6 +77,10 @@ export class EventDetail extends Component {
     this.toggleModal();
   }
 
+  handleAttendeeSubmit = (event) => {
+
+  }
+
   mapLoaded(map) {
     if (this.state.map !== null) {
       return
@@ -77,12 +89,13 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { displayEvent, isOwner, coords } = this.props
-    console.log("displayEvent: ", displayEvent);
-    let { showModal } = this.state
+    let { displayEvent, isOwner, coords, user } = this.props
+    let { showModal, showAttendeeModal } = this.state
     let attendees = [];
+    let invitees = [];
     if (displayEvent) {
       attendees = displayEvent.attendees;
+      invitees = displayEvent.invitees;
     }
     // let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     let isEventOwner = false
@@ -102,6 +115,14 @@ export class EventDetail extends Component {
         handleSubmit={this.handleSubmit}
         onDelete={deleteEvent}
         item={displayEvent}
+      />
+      <AddAttendeeModal
+        onClose={this.toggleAttendeeModal}
+        showModal={showAttendeeModal}
+        handleSubmit={this.handleAttendeeSubmit}
+        item={displayEvent}
+        user={user}
+        userFriends={user.Friends}
       />
       <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
         <Grid celled>
@@ -137,9 +158,43 @@ export class EventDetail extends Component {
             </Grid.Column>
             <Grid.Column width={8}>
               <h4>Going:</h4>
-              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+              <Grid>
+              <Grid.Row columns={16}>
+                  {attendees.map(attendee => {
+                    return (
+                      <Grid.Column width={5}>
+                      <List.Item style={{paddingBottom:"10px"}}>
+                      <Image avatar src={attendee.imageUrl}/>
+                      <List.Content>
+                        <List.Header style={{fontSize:"13px"}}><b>{attendee.fullName}</b></List.Header>
+                      </List.Content>
+                    </List.Item>
+                    </Grid.Column>
+                  )
+                  })}
+              </Grid.Row>
+              </Grid>
+              <h4>Invited:</h4>
+              <Grid>
+              <Grid.Row columns={16}>
+                  {invitees.map(invitee => {
+                    return (
+                      <Grid.Column width={5}>
+                      <List.Item style={{paddingBottom:"10px"}}>
+                      <Image avatar src={invitee.imageUrl}/>
+                      <List.Content>
+                        <List.Header style={{fontSize:"13px"}}><b>{invitee.fullName}</b></List.Header>
+                      </List.Content>
+                    </List.Item>
+                    </Grid.Column>
+                  )
+                  })}
+              </Grid.Row>
+              </Grid>
+
+              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
-            </Grid.Column>
+            </Grid.Column>            
           </Grid.Row>
           <Grid.Row>
           <Grid.Column width={16}>
