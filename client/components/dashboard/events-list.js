@@ -10,10 +10,13 @@ import {
   approveRequest,
   addSentRequest,
   removeSentRequest,
-  sendFriendRequest,
   removeFriend,
   declineRequest,
-  getNearByEventsInfo
+  getNearByEventsInfo,
+  deleteEvent,
+  addAttendee,
+  removeAttendee,
+  getEvents
 } from '../../store';
 import { EventsListTab } from '../';
 
@@ -25,10 +28,8 @@ export class EventsList extends Component {
   componentDidMount = async () => {
     const {
       fetchFriendsList,
-      fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      sendfriendRequest,
       user,
     } = this.props;
     let loadFriendsList = [
@@ -45,13 +46,11 @@ export class EventsList extends Component {
 
   render() {
     // console.log('state', this.state);
-    console.log('state events', this.state);
+    // console.log('state events', this.state);
     console.log('props events', this.props);
 
     const {
       nearbyUsers,
-      friends,
-      receivedRequests,
       sentRequests,
     } = this.props.friendsList;
 
@@ -61,20 +60,17 @@ export class EventsList extends Component {
       fetchNearbyUsers,
       fetchReceivedRequests,
       fetchSentRequests,
-      submitApproveRequest,
-      sendFriendRequest,
-      removeFriendRequest,
-      deleteFriend,
       declineFriendRequest,
       user,
       userEvents,
+      nearbyEvents,
       attendingEvents,
-      invitedEvents
+      invitedEvents,
+      deleteEvent,
+      addAttendee,
+      removeAttendee,
+
     } = this.props;
-    const sentRequestIds = sentRequests.map(sentRequest => sentRequest.id);
-    const filteredNearbyUsers = nearbyUsers.filter(
-      nearbyUser => !sentRequestIds.includes(nearbyUser.id)
-    );
     const styles = {
       menuLabels: {
         zIndex: '0',
@@ -105,7 +101,7 @@ export class EventsList extends Component {
               activeIndex={this.state.activeIndex}
               fetchData={fetchFriendsList}
               items={userEvents}
-              submit={deleteFriend}
+              submit={deleteEvent}
             />
           </Tab.Pane>
         ),
@@ -117,7 +113,7 @@ export class EventsList extends Component {
             style={styles.menuItem}
           >
             Nearby<Label style={styles.menuLabels}>
-              {receivedRequests.length}
+              {nearbyEvents.length}
             </Label>
           </Menu.Item>
         ),
@@ -126,8 +122,8 @@ export class EventsList extends Component {
             <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchReceivedRequests}
-              items={receivedRequests}
-              submit={submitApproveRequest}
+              items={nearbyEvents}
+              submit={addAttendee}
               decline={declineFriendRequest}
               user={user}
             />
@@ -141,7 +137,7 @@ export class EventsList extends Component {
             style={styles.menuItem}
           >
             Attending<Label style={styles.menuLabels}>
-              {filteredNearbyUsers.length}
+              {attendingEvents.length}
             </Label>
           </Menu.Item>
         ),
@@ -150,8 +146,8 @@ export class EventsList extends Component {
             <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchNearbyUsers}
-              items={filteredNearbyUsers}
-              submit={sendFriendRequest}
+              items={attendingEvents}
+              submit={removeAttendee}
             />
           </Tab.Pane>
         ),
@@ -159,7 +155,7 @@ export class EventsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Invited" style={styles.menuItem}>
-            Invited<Label style={styles.menuLabels}>{sentRequests.length}</Label>
+            Invited<Label style={styles.menuLabels}>{invitedEvents.length}</Label>
           </Menu.Item>
         ),
         render: () => (
@@ -167,8 +163,8 @@ export class EventsList extends Component {
             <EventsListTab
               activeIndex={this.state.activeIndex}
               fetchData={fetchSentRequests}
-              items={sentRequests}
-              submit={removeFriendRequest}
+              items={invitedEvents}
+              submit={addAttendee}
             />
           </Tab.Pane>
         ),
@@ -197,9 +193,9 @@ const mapState = state => {
     friendsList: state.friendsList,
     userEvents: state.events.filter(event => event.creatorId === state.user.id),
     user: state.user,
-    attendingEvents: state.user.attendingEvents,
-    invitedEvents: state.user.invitedEvents,
-    nearbyEvents: state.nearbyEvents
+    attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
+    invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
   };
 }
 
@@ -213,45 +209,23 @@ const mapDispatch = dispatch => {
       // console.log('INSIDE FETCH FRIENDS')
       return dispatch(getFriendsList(userId));
     },
-    fetchSentRequests(userId) {
-      // console.log('INSIDE FETCH SENT REQS ')
-      return dispatch(getSentRequests(userId));
+    removeAttendee(event, userId) {
+      dispatch(removeAttendee(event, userId));
     },
-    fetchReceivedRequests(userId) {
-      // console.log('INSIDE FETCH RECEIVED REQS')
-      return dispatch(getReceivedRequests(userId));
+    async addAttendee(event, userId) {
+      await dispatch(addAttendee(event, {userId: userId}));
+      dispatch(getEvents())
     },
-    submitApproveRequest(userId, senderId) {
-      //console.log('INSIDE SUBMIT APPROVE REQUEST')
-      return dispatch(approveRequest(userId, senderId));
+    removeInvite(event, userId) {
+      //dispatch(removeInvite(event, userId));
     },
-    sendFriendRequest(userId, senderId) {
-      //console.log('INSIDE APPROVE REQUEST')
-      return dispatch(addSentRequest(userId, senderId));
+    deleteEvent(event, userId) {
+      dispatch(deleteEvent(event.id));
     },
-    removeFriendRequest(userId, senderId) {
-      // console.log('INSIDE CANCEL REQUEST');
-      return dispatch(removeSentRequest(userId, senderId));
-    },
-    declineFriendRequest(userId, senderId) {
-      // console.log('INSIDE CANCEL REQUEST');
-      return dispatch(declineRequest(userId, senderId));
-    },
-    deleteFriend(userId, senderId) {
-      // console.log('INSIDE DELETE FRIEND');
-      return dispatch(removeFriend(userId, senderId));
-    },
-    getNearByEventsInfo(){
+    getNearByEventsInfo() {
       return dispatch(getNearByEventsInfo());
     }
   };
 };
 
 export default connect(mapState, mapDispatch)(EventsList);
-
-/**
- * PROP TYPES
- */
-// EventsList.propTypes = {
-//   email: PropTypes.string,
-// };

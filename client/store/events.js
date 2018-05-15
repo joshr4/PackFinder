@@ -46,17 +46,16 @@ export const addEvent = event => dispatch =>
   axios
     .post(`/api/events/`, event)
     .then(async res => {
-      console.log('before get', event)
 
       await dispatch(getEvents())
-      history.push(`/event/${res.data.id}`)
+      //history.push(`/event/${res.data.id}`)
     })
     .catch(err => console.log(err));
 
 export const inviteUsers = (event, userIds) => dispatch =>
   axios
   .put(`/api/events/invite-users`, event, userIds)
-  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
   .catch(err => console.log(err));
 
 export const removeInvite = (event, userId) => dispatch =>
@@ -67,15 +66,17 @@ export const removeInvite = (event, userId) => dispatch =>
 
 export const addAttendee = (event, userId) => dispatch =>
   axios
-  .put(`/api/events/add-attendee`, event, userId)
+  .put(`/api/events/${event.id}/add-attendee`, userId)
   .then(res => dispatch(updEvent(res.data || defaultEvents)))
   .catch(err => console.log(err));
 
 export const removeAttendee = (event, userId) => dispatch =>
+{
   axios
-  .put(`/api/events/remove-attendee`, event, userId)
+  .put(`/api/events/${event.id}/remove-attendee`, {event, userId})
   .then(res => dispatch(updEvent(res.data || defaultEvents)))
   .catch(err => console.log(err));
+}
 
 // Invite Users, Add User, Remove User, Retract Invite
 
