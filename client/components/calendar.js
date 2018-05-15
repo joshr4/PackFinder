@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Segment, Label } from 'semantic-ui-react';
+import { Button, Grid, Segment, Label, Header } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -91,8 +91,7 @@ class Dnd extends React.Component {
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-  async toggleEventModal(editable = false, event) {
-    console.log("event line 95: ", event)
+  async toggleEventModal(event, editable = false) {
     let thisEvent = event;
     if (event) {
       let year = event.start.getFullYear();
@@ -116,10 +115,12 @@ class Dnd extends React.Component {
     await this.setState({
       editableEvent: editable,
       eventToModal: thisEvent,
-      showAddEventModal: !this.state.showAddEventModal,
     });
-    console.log("eventToModal (line 100): ", this.state.eventToModal);
+    this.setState({
+      showAddEventModal: !this.state.showAddEventModal
+    })
   }
+
   toggleModal(editable) {
     this.setState({
       showModal: !this.state.showModal,
@@ -127,11 +128,9 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("openModal event/type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
-        console.log("editable event: ", event);
-        this.toggleEventModal(true, event)
+        this.toggleEventModal(event, true)
       }
       return
     }
@@ -210,7 +209,7 @@ class Dnd extends React.Component {
     if (event.isEvent && !event.editable) {
       return
     }
-    
+
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -274,6 +273,10 @@ class Dnd extends React.Component {
         () => { this.validateField(e.target.name, e.target.value) })
     })
   }
+  handleDelete = eventId => {
+    this.props.deleteEvent(eventId)
+    this.toggleEventModal()
+  }
 
   handleFieldChange = data => {
     this.setState({
@@ -335,19 +338,20 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, updateEvent, events } = this.props
+    let { isLoggedIn, parkList, user, addEvent, events, deleteEvent } = this.props
     let { showAddEventModal, editableEvent } = this.state
+    
     return (
-      <div className="container" style={{ "overflow-y": "scroll" }}>
+      <div className="container" style={{ "overflowY": "scroll" }}>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={4}>
-
+            <Grid.Column width={4} style={{ paddingLeft: "50px"}}>
+            <Header>Upcoming Events</Header>                    
               {this.props.user && <EventsList className="event-list" user={this.props.user} />}
-
             </Grid.Column>
-            <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
-              <Segment.Group horizontal>
+            <Grid.Column width={12} style={{ paddingRight: "50px", paddingBottom: "50px" }}>
+              <Header>Calendar</Header>                    
+              <Segment.Group horizontal style={{marginTop:"0px"}}>
                 <Segment>
                   <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
@@ -358,9 +362,10 @@ class Dnd extends React.Component {
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
                       parkDropDownList={parkList}
-                      onDelete={editableEvent ? deleteEvent : null}
+                      onDelete={editableEvent ? this.handleDelete : null}
                       user={user}
                       item={editableEvent ? this.state.eventToModal : false}
+                      editing={editableEvent}
                       handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}
@@ -376,7 +381,7 @@ class Dnd extends React.Component {
                 </Segment>
                 <Segment>
                   <Label circular color="yellow">Events Near You</Label>
-                </Segment>                
+                </Segment>
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
@@ -451,7 +456,7 @@ const mapState = state => {
     //     calEvent.hexColor = "21ba45";
     //   }
     // })
-    
+
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
@@ -510,13 +515,15 @@ const mapDispatch = dispatch => {
       dispatch(getVisits());
     },
     async updateEvent(event) {
-      console.log('event', event)
       await dispatch(updateEvent(event));
       dispatch(getEvents());
     },
     async addEvent(event) {
       await dispatch(addEvent(event));
       dispatch(getEvents());
+    },
+    deleteEvent(eventId) {
+      dispatch(deleteEvent(eventId));
     }
   };
 };

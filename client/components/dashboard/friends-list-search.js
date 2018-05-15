@@ -27,7 +27,6 @@ export class FriendsListSearch extends Component {
 
     if (tempVar.length){
     this.timeout = setTimeout(() => {
-      console.log(tempVar)
       this.props.searchUsers(tempVar)
       this.setState({ currentSearch: tempVar })
     }, 500)

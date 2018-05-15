@@ -473,7 +473,7 @@ export class DogPark extends Component {
 
     return (
 
-      <div>
+      <div className="container">
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}

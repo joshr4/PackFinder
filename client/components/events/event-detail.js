@@ -81,19 +81,13 @@ export class EventDetail extends Component {
   }
 
   handleAttendeeSubmit = async (e) => {
-    // console.log('handleAttendeeSubmit from event-detail.js');
-    // console.log("submitting add attendee modal: ", e.target);
     let friendIDs = [];
     for (let K in e.target) {
       if (e.target[K] && e.target[K].value && K != "classList"
         // && ('checked' in event.target[K])
       ) {
-        // console.log("K: ", K);
-        // console.log("value: ", e.target[K].value);
-        // console.log("checked: ", e.target[K].checked);
         if (typeof parseInt(K) == "number" && e.target[K].checked) {
           let relatedId = this.props.user.Friends[K].id;
-          // console.log("relatedId: ", relatedId);
           friendIDs.push(relatedId);
         }
       }
@@ -125,17 +119,9 @@ export class EventDetail extends Component {
 
   render() {
     let { displayEvent, isOwner, coords, user, attendees, invitees } = this.props
-    console.log("this.props (updated): ", this.props);
-    console.log("uninvited friends: ", this.props.uninvitedFriends);
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
-    // let friendstoInvite = this.props.user.friends;
-    // let attendees = [];
-    // let invitees = [];
-    // if (displayEvent) {
-    //   attendees = displayEvent.attendees;
-    //   invitees = displayEvent.invitees;
-    // }
+
     return (
       displayEvent ?
         <Container className="container" style={{"overflowY":"scroll"}}>
@@ -298,7 +284,6 @@ const mapDispatch = (dispatch, ownProps) => {
       ownProps.history.push('/home')
     },
     updateEvent(event) {
-      console.log('event', event)
       dispatch(updateEvent(event));
     },
     getEvents() {
