@@ -11,7 +11,7 @@ const numUsers = 50;
 async function seedFriends() {
     let allUsers = await User.findAll();
     let nUsers = allUsers.length;
-    let Matt = await User.findOne({where:{username:"matt@matt.com"}});
+    let Matt = await User.findOne({where:{email:"matt@matt.com"}});
     for (let i = 0; i < allUsers.length; i ++) {
         let thisUser = allUsers[i];
         for (let x = 0; x < 10; x++) {

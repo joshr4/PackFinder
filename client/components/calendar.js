@@ -299,8 +299,11 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent } = this.props
+    let { isLoggedIn, parkList, user, addEvent, events } = this.props
     let { showAddEventModal } = this.state
+    console.log("props.user: ", user);
+    console.log("props.events: ", events);
+    console.log("calendar props: ", this.props);
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -313,10 +316,10 @@ class Dnd extends React.Component {
             <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
               <Segment.Group horizontal>
                 <Segment>
-                  <Button positive style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
+                  <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
                 <Segment>
-                  <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Event</Button>
+                  <Button positive style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Event</Button>
                   {isLoggedIn ?
                     <EventEditModal
                       onClose={this.toggleEventModal}
@@ -328,10 +331,10 @@ class Dnd extends React.Component {
                     : <div />}
                 </Segment>
                 <Segment>
-                  <Label circular color="blue">Scheduled Check-Ins</Label>
+                  <Label circular color="blue">Your Check-Ins</Label>
                 </Segment>
                 <Segment>
-                  <Label circular color="yellow">Events Nearby</Label>
+                  <Label circular color="yellow">Event Near You</Label>
                 </Segment>
                 <Segment>
                   <Label circular color="green">Events You're Attending</Label>
@@ -342,7 +345,7 @@ class Dnd extends React.Component {
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
-      <DragAndDropCalendar
+                <DragAndDropCalendar
                   // className="no-scroll"
                   selectable
                   culture="en-GB"
@@ -387,6 +390,8 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
+  console.log("state.visits & state.events: ", state.visits.length, state.visits.events);
+
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
     let calEvent = event;
@@ -394,6 +399,7 @@ const mapState = state => {
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
+    calEvent.hexColor = "00b5ad";
     if (event.creator.id == state.user.id) {
       calEvent.hexColor = "00b5ad";
     }
@@ -433,7 +439,14 @@ const mapState = state => {
     events: calItems,
     user: state.user,
     parkList: dropDownParks,
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    // Pasted from events-list
+    friendsList: state.friendsList,
+    userEvents: state.events.filter(event => event.creatorId === state.user.id),
+    attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
+    invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
+    
   };
 };
 
