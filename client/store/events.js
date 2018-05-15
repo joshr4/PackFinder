@@ -31,11 +31,14 @@ export const getEvents = () => dispatch =>
     .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
     .catch(err => console.log(err));
 
-export const deleteEvent = eventId => dispatch =>
+export const deleteEvent = eventId => dispatch =>{
+
+console.log('delete',eventId)
   axios
     .delete(`/api/events/${eventId}`)
     .then(() => dispatch(delEvent(eventId || defaultEvents)))
     .catch(err => console.log(err));
+}
 
 export const updateEvent = event => dispatch =>
   axios

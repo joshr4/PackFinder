@@ -91,7 +91,7 @@ class Dnd extends React.Component {
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-  async toggleEventModal(editable = false, event) {
+  async toggleEventModal(event, editable = false) {
     console.log("event line 95: ", event)
     let thisEvent = event;
     if (event) {
@@ -118,7 +118,6 @@ class Dnd extends React.Component {
       eventToModal: thisEvent,
       showAddEventModal: !this.state.showAddEventModal,
     });
-    console.log("eventToModal (line 100): ", this.state.eventToModal);
   }
   toggleModal(editable) {
     this.setState({
@@ -130,7 +129,7 @@ class Dnd extends React.Component {
     if (event.isEvent) {
       if (event.editable) {
         console.log("editable event: ", event);
-        this.toggleEventModal(true, event)
+        this.toggleEventModal(event, true)
       }
       return
     }
@@ -273,6 +272,10 @@ class Dnd extends React.Component {
         () => { this.validateField(e.target.name, e.target.value) })
     })
   }
+  handleDelete = eventId => {
+    this.props.deleteEvent(eventId)
+    this.toggleEventModal()
+  }
 
   handleFieldChange = data => {
     this.setState({
@@ -334,7 +337,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, events } = this.props
+    let { isLoggedIn, parkList, user, addEvent, events, deleteEvent } = this.props
     let { showAddEventModal, editableEvent } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
@@ -357,7 +360,7 @@ class Dnd extends React.Component {
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
                       parkDropDownList={parkList}
-                      onDelete={editableEvent ? deleteEvent : null}
+                      onDelete={editableEvent ? this.handleDelete : null}
                       user={user}
                       item={editableEvent ? this.state.eventToModal : false}
                       editing={editableEvent}
@@ -510,13 +513,15 @@ const mapDispatch = dispatch => {
       dispatch(getVisits());
     },
     async updateEvent(event) {
-      console.log('event', event)
       await dispatch(updateEvent(event));
       dispatch(getEvents());
     },
     async addEvent(event) {
       await dispatch(addEvent(event));
       dispatch(getEvents());
+    },
+    deleteEvent(eventId) {
+      dispatch(deleteEvent(eventId));
     }
   };
 };

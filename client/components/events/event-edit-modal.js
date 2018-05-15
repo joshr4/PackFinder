@@ -68,8 +68,6 @@ class EventEditModal extends Component {
   }
 
   render() {
-    // console.log('item prop', this.props.item)
-    // console.log('edit item', this.state.item)
     let { onClose, showModal, onDelete, parkDropDownList} = this.props
     let { description, isDirty, slider, item, isItemSet } = this.state
     if (this.props.editing && !isItemSet) {
@@ -77,10 +75,9 @@ class EventEditModal extends Component {
       item: this.props.item, isItemSet: true
       })
     }
-    console.log("item being passed into AddEventForm: ", item);
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
-        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }}
+        {onDelete ? <Button negative floated='right' style={{ marginRight: 20, marginTop: 20 }}
         onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
         <Modal.Content image>
           <Modal.Description>
