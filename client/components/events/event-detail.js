@@ -77,12 +77,17 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { displayEvent, isOwner, coords, allEvents } = this.props
+    let { displayEvent, isOwner, coords } = this.props
+    console.log("displayEvent: ", displayEvent);
     let { showModal } = this.state
-    displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
+    let attendees = [];
+    if (displayEvent) {
+      attendees = displayEvent.attendees;
+    }
+    // let displayEvent = allEvents.filter(event => event.id === Number(match.params.id))[0]
     let isEventOwner = false
-    if (user.id && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
-    coords = {lat: 41.954629, lng: -87.6572544}
+    if (this.props.user.id && displayEvent && displayEvent.creator.id) isEventOwner = displayEvent.creator.id === this.props.user.id
+    // let coords = {lat: 41.954629, lng: -87.6572544}
     if (displayEvent
       && displayEvent.park &&
     displayEvent.park.address) coords = displayEvent.park.address.location
@@ -125,8 +130,13 @@ export class EventDetail extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row min-height="40%">
-            <Grid.Column width={16}>
+            <Grid.Column width={8}>
               <h4>Description:</h4><p>{displayEvent.description}</p>
+              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
+              : <div />}
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <h4>Going:</h4>
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
               : <div />}
             </Grid.Column>
