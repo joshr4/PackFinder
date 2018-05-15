@@ -39,14 +39,14 @@ export const FriendsListItem = props => {
           {address &&
             address.location.distance && (
               <Label
-                style={{ flex: 1, padding: '0.5em 0.5em' }}
+                style={{ flex: 0.5, padding: '0.5em 0.5em' }}
                 icon="globe"
                 content={`${address.location.distance} mi away`}
               />
             )}
           {activeIndex === 1 ? (
             <Button
-              style={{ flex: 1, padding: '0.5em 0.5em' }}
+              style={{ flex: 0.5, padding: '0.5em 0.5em' }}
               onClick={() => decline(user.id, id)}
               size="tiny"
               name="decline"
@@ -57,7 +57,7 @@ export const FriendsListItem = props => {
             <div />
           )}
           <Button
-            style={{ flex: 1, padding: '0.5em 0.5em' }}
+            style={{ flex: 0.5, padding: '0.5em 0.5em' }}
             onClick={() => submit(user.id, id)}
             size="tiny"
             name="add"
