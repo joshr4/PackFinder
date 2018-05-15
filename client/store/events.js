@@ -51,6 +51,13 @@ export const addEvent = event => dispatch =>
     })
     .catch(err => console.log(err));
 
+// export const getuninvitedFriends(event, userId) => dispatch =>
+//   axios
+//   .get(`/api/events/${event.id}/`)
+//   .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
+//   .catch(err => console.log(err));
+
+
 export const inviteUsers = (event, userIds) => dispatch => {
   console.log("inviteUsers event.js store: ", userIds);
   return axios

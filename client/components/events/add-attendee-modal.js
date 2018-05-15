@@ -20,7 +20,6 @@ class AddAttendeeModal extends Component {
       },
       user: props.user,
       userFriends:props.userFriends,
-      invitedClicked: false,
     };
     this.handleChange = this.handleChange.bind(this)
     // this.handleSubmit = this.handleSubmit.bind(this)
@@ -40,8 +39,8 @@ class AddAttendeeModal extends Component {
       // userFriends 
     } = this.state
     userFriends = (userFriends) ? (userFriends) : []; 
-
     console.log("attendeeModal userFriends: ", this.props.userFriends);
+    
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
         <Modal.Content image>
@@ -61,8 +60,7 @@ class AddAttendeeModal extends Component {
                 </List.Item>
                 </Grid.Column>
               )
-              })}
-              
+              })} 
           </Grid.Row>
           </Grid>
           <Button positive floated="right" type="submit" style={{ marginRight: 20}}>Invite Selected Friends</Button>
