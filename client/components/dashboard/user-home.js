@@ -36,6 +36,7 @@ export class UserHome extends Component {
   toggleModal() {
     this.setState({ showAddEventModal: !this.state.showAddEventModal })
   }
+
   componentDidMount() {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
@@ -45,6 +46,16 @@ export class UserHome extends Component {
     // this.props.findUsers('ricky li')
     this.props.getNearByEvents(this.state.location, 8046)
     // console.log(this.props)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.userPosition !== this.props.userPosition){
+      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
+        this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+        this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
+        this.props.getNearByEvents(this.state.location, 8046)
+      })
+    }
   }
 
   render() {
@@ -117,7 +128,8 @@ const mapStateToProps = state => {
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
-    usersList: state.usersList
+    usersList: state.usersList,
+    userPosition: state.location.coords
   };
 };
 
