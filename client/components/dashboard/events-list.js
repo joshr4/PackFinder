@@ -4,14 +4,7 @@ import { connect } from 'react-redux';
 import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
   getNearByUsersInfo,
-  getSentRequests,
   getFriendsList,
-  getReceivedRequests,
-  approveRequest,
-  addSentRequest,
-  removeSentRequest,
-  removeFriend,
-  declineRequest,
   getNearByEventsInfo,
   deleteEvent,
   addAttendee,
@@ -45,14 +38,6 @@ export class EventsList extends Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    // console.log('state', this.state);
-    // console.log('state events', this.state);
-
-    const {
-      nearbyUsers,
-      sentRequests,
-    } = this.props.friendsList;
-
 
     const {
       fetchFriendsList,

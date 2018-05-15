@@ -64,7 +64,7 @@ class EventEditModal extends Component {
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
         <Button color="blue" style={{ marginLeft: 20, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
 
-        <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button>
+        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
         <Modal.Content image>
 
           <Modal.Description>
