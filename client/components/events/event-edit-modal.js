@@ -31,7 +31,6 @@ class EventEditModal extends Component {
     let value
     if (variable === 'private') value = !this.state.item.private
     else value = e.target.value
-    console.log('val',value)
     this.setState({ isDirty: true, item: Object.assign(this.state.item, { [variable]: value }) })
   }
 
