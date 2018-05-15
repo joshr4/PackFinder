@@ -125,8 +125,6 @@ export class EventDetail extends Component {
 
   render() {
     let { displayEvent, isOwner, coords, user, attendees, invitees } = this.props
-    console.log("this.props (updated): ", this.props);
-    console.log("uninvited friends: ", this.props.uninvitedFriends);
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
     // let friendstoInvite = this.props.user.friends;

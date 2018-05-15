@@ -127,7 +127,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("openModal event/type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
         console.log("editable event: ", event);
@@ -210,7 +209,7 @@ class Dnd extends React.Component {
     if (event.isEvent && !event.editable) {
       return
     }
-    
+
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -335,8 +334,8 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, updateEvent, events } = this.props
-    let { showAddEventModal, editableEvent } = this.state
+    let { isLoggedIn, parkList, user, addEvent, events } = this.props
+    let { showAddEventModal } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -376,7 +375,7 @@ class Dnd extends React.Component {
                 </Segment>
                 <Segment>
                   <Label circular color="yellow">Events Near You</Label>
-                </Segment>                
+                </Segment>
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
@@ -451,7 +450,7 @@ const mapState = state => {
     //     calEvent.hexColor = "21ba45";
     //   }
     // })
-    
+
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
