@@ -24,12 +24,6 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
-    validate: {
-      isEmail: {
-        arg: true,
-        msg: 'Your email address is invalid'
-    }
-  }
   },
   password: {
     type: Sequelize.STRING,
@@ -56,9 +50,6 @@ const User = db.define('user', {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    validate: {
-      isUrl: true
-    }
   },
   description: {
     type: Sequelize.TEXT,
