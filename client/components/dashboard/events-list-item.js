@@ -24,6 +24,12 @@ export const EventsListItem = props => {
     2: 'Leave',
     3: 'Accept',
   };
+  const buttonColor = {
+    0: 'red',
+    1: 'green',
+    2: 'red',
+    3: 'green',
+  }
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
       <Grid>
@@ -31,6 +37,14 @@ export const EventsListItem = props => {
           <Header style={{ flex: 2, margin: '0' }} as="a">
             {description}
           </Header>
+          <Button
+            style={{ flex: 1, padding: '0.5em 0.5em', backgroundColor: '#54B8BF', color: 'white'}}
+            onClick={() => history.push(`/event/${id}`)}
+            size="tiny"
+            name="add"
+          >
+            View Details
+          </Button>
           <Button
             style={{ flex: 1, padding: '0.5em 0.5em' }}
             onClick={() => history.push(`/dog-park/${park.id}`)}
@@ -41,11 +55,12 @@ export const EventsListItem = props => {
           </Button>
         </Grid.Row>
         <Grid.Row columns={2} style={{ padding: '1.5em 0px' }}>
+        <Grid.Column width={13}>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              // alignItems: 'center',
             }}
           >
             {moment(start).format('MMMM Do YYYY, h:mm a')}
@@ -54,18 +69,23 @@ export const EventsListItem = props => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              // alignItems: 'center',
             }}
           >
             {`${attendees.length} packs planning to attend`}
           </div>
-          <Button color="green"
+          </Grid.Column>
+          <Grid.Column width={3}>
+          <Button color={buttonColor[activeIndex]}
             style={{ flex: 1, padding: '0.5em 0.5em' }}
             onClick={() => submit(item, user.id)}
             size="tiny"
+            floated="right"
             name="add"
-          >{buttonText[activeIndex]}
+            >
+          {buttonText[activeIndex]}
           </Button>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </Segment>
