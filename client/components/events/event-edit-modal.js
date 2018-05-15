@@ -50,6 +50,7 @@ class EventEditModal extends Component {
   }
 
   handleChange = (e) => {
+    console.log(e.target.value, e.target.name)
     let variable = e.target.name
     let value
     if (variable === 'private') value = !this.state.item.private
