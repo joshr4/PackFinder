@@ -128,7 +128,7 @@ router.put('/:id/invite-users', async (req, res, next) => {
   for (let i = 0; i < req.body.userIds.length; i ++) {
     let id = req.body.userIds[i];
     user = await User.findById(id);
-    user.addInvitedEvent(event);
+    await user.addInvitedEvent(event);
   }
   res.json(event);
 })

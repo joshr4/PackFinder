@@ -63,6 +63,8 @@ class Dnd extends React.Component {
       formValid: false,
       slider: 1,
       showModal: false,
+      editableEvent: false,
+      eventToModal: null,
       showAddEventModal: false,
       modalType: 'view',
       user: {},
@@ -89,25 +91,48 @@ class Dnd extends React.Component {
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-  toggleEventModal() {
-    this.setState({
+  async toggleEventModal(editable = false, event) {
+    console.log("event line 95: ", event)
+    let thisEvent = event;
+    if (event) {
+      let year = event.start.getFullYear();
+      let month = event.start.getMonth();
+      let day = event.start.getDate();
+      let month0 = ''
+      let day0 = ''
+      if (month < 9) month0 = '0'
+      if (day < 10) day0 = '0'
+      thisEvent.startTime = timeDisplay(event.start, true);
+      thisEvent.date = `${year}-${month0}${month + 1}-${day0}${day}`;
+    }
+    // let month0 = ''
+    // let day0 = ''
+    // if (month < 9) month0 = '0'
+    // if (day < 10) day0 = '0'
+    // selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
+    // selEvent.start = timeDisplay(event.start, true)
+    // selEvent.end = timeDisplay(event.end, true)
+
+    await this.setState({
+      editableEvent: editable,
+      eventToModal: thisEvent,
       showAddEventModal: !this.state.showAddEventModal,
     });
+    console.log("eventToModal (line 100): ", this.state.eventToModal);
   }
-  toggleModal() {
+  toggleModal(editable) {
     this.setState({
       showModal: !this.state.showModal,
     });
   }
 
   async openModal(event, type) {
-    console.log("open modal event/view: ", event, type);
+    console.log("openModal event/type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
-        // Open event modal here
+        console.log("editable event: ", event);
+        this.toggleEventModal(true, event)
       }
-      // this.toggleModal()
-      // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
       return
     }
     let selEvent = event
@@ -310,11 +335,8 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, events } = this.props
-    let { showAddEventModal } = this.state
-    console.log("props.user: ", user);
-    console.log("props.events: ", events);
-    console.log("calendar props: ", this.props);
+    let { isLoggedIn, parkList, user, addEvent, updateEvent, events } = this.props
+    let { showAddEventModal, editableEvent } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -336,8 +358,10 @@ class Dnd extends React.Component {
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
                       parkDropDownList={parkList}
+                      onDelete={editableEvent ? deleteEvent : null}
                       user={user}
-                      handleEvent={addEvent}
+                      item={editableEvent ? this.state.eventToModal : false}
+                      handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}
                 </Segment>
@@ -401,12 +425,13 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("state.visits & state.events: ", state.visits.length, state.visits.events);
 
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
     let calEvent = event;
+    calEvent.id = event.id
     calEvent.isEvent = true;
+    calEvent.description = event.description;
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
@@ -462,7 +487,7 @@ const mapState = state => {
     attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
     invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
     nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
-    
+
   };
 };
 
@@ -485,6 +510,7 @@ const mapDispatch = dispatch => {
       dispatch(getVisits());
     },
     async updateEvent(event) {
+      console.log('event', event)
       await dispatch(updateEvent(event));
       dispatch(getEvents());
     },

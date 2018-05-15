@@ -43,7 +43,7 @@ export class EventDetail extends Component {
     this.state = {
       showModal: false,
       showAttendeeModal: false,
-      invitedClicked: false,      
+      invitedClicked: false,
       invitedClickedText: "",
       map: {},
     };
@@ -80,7 +80,7 @@ export class EventDetail extends Component {
     this.toggleModal();
   }
 
-  handleAttendeeSubmit = (e) => {
+  handleAttendeeSubmit = async (e) => {
     // console.log('handleAttendeeSubmit from event-detail.js');
     // console.log("submitting add attendee modal: ", e.target);
     let friendIDs = [];
@@ -107,7 +107,7 @@ export class EventDetail extends Component {
       invitedClicked:true,
       invitedClickedText
     })
-    this.props.inviteUsers(this.props.displayEvent, friendIDs);
+    await this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
     //   {userIds: friendIDs}
@@ -220,15 +220,15 @@ export class EventDetail extends Component {
                   )
                   })}
               </Grid.Row>
-              
+
               </Grid>
 
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
-              {this.state.invitedClicked ? 
-                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>) 
-              : null}             
-              
+              {this.state.invitedClicked ?
+                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>)
+              : null}
+
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -253,7 +253,7 @@ const mapState = (state, ownProps) => {
   let attendees = [];
   let invitees = [];
   let uninvitedFriends = [];
-  
+
   if (eventDetail) {
     isOwner = eventDetail.creatorId === state.user.id;
     coords = eventDetail.park.address.location;
@@ -262,7 +262,7 @@ const mapState = (state, ownProps) => {
     if (state.user.Friends) {
       let InvitedandAttendingIds = [];
       attendees.forEach(attendee => {InvitedandAttendingIds.push(parseInt(attendee.id))});
-      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});    
+      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});
       state.user.Friends.forEach(friend => {
         if (!InvitedandAttendingIds.includes(friend.id)) {
           uninvitedFriends.push(friend);
@@ -287,8 +287,8 @@ const mapState = (state, ownProps) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    inviteUsers(event, userIds) {
-      dispatch(inviteUsers(event, userIds));
+    async inviteUsers(event, userIds) {
+      await dispatch(inviteUsers(event, userIds));
     },
     addEvent(event) {
       dispatch(addEvent(event));
@@ -298,6 +298,7 @@ const mapDispatch = (dispatch, ownProps) => {
       ownProps.history.push('/home')
     },
     updateEvent(event) {
+      console.log('event', event)
       dispatch(updateEvent(event));
     },
     getEvents() {
