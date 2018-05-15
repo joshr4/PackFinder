@@ -34,7 +34,7 @@ const AddEventForm = props => {
           <label>Time</label>
           <Input
             type="time"
-            name="start"
+            name="startTime"
             style={{ marginLeft: '0px' }}
             value={startTime}
           />
@@ -54,6 +54,12 @@ const AddEventForm = props => {
               onChange={(e, data) => props.handleFieldChange(data)}
             />
           </Form.Field>
+          <Form.Field>
+          <div style={{marginTop: '15px', width: '140px'}} className="slidecontainer">
+            <input type="range" min="1" max="6" value={props.slider} className="slider" id="visitLength" onChange={(e) => props.handleSliderChange(e)} />
+            <p>{`Duration: ${props.slider * 30} minutes `}</p>
+          </div>
+      </Form.Field>
         </Form.Group>
       ) : (
         <div />
@@ -69,7 +75,7 @@ const AddEventForm = props => {
             checked={props.item.private}
           />
         </Form.Field>
-        <Button color="blue" style={{ marginLeft: 35, marginTop: 20 }}>
+        <Button inverted color="green" style={{ marginLeft: 35, marginTop: 20 }}>
           Save
         </Button>
       </Form.Group>

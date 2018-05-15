@@ -3,15 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tab, Menu, Label } from 'semantic-ui-react';
 import {
-  getNearByUsersInfo,
-  getSentRequests,
-  getFriendsList,
-  getReceivedRequests,
-  approveRequest,
-  addSentRequest,
-  removeSentRequest,
-  removeFriend,
-  declineRequest,
   getNearByEventsInfo,
   deleteEvent,
   addAttendee,
@@ -25,41 +16,13 @@ import { EventsListTab } from '../';
  */
 
 export class EventsList extends Component {
-  componentDidMount = async () => {
-    const {
-      fetchFriendsList,
-      fetchReceivedRequests,
-      fetchSentRequests,
-      user,
-    } = this.props;
-    let loadFriendsList = [
-      fetchFriendsList(user.id),
-      fetchReceivedRequests(user.id),
-      fetchSentRequests(user.id),
-    ];
-    getNearByEventsInfo()
-    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
-  };
 
-  state = { activeIndex: 0, loading: true };
+  state = { activeIndex: 0, loading: false };
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-    // console.log('state', this.state);
-    // console.log('state events', this.state);
-    console.log('props events', this.props);
 
     const {
-      nearbyUsers,
-      sentRequests,
-    } = this.props.friendsList;
-
-
-    const {
-      fetchFriendsList,
-      fetchNearbyUsers,
-      fetchReceivedRequests,
-      fetchSentRequests,
       declineFriendRequest,
       user,
       userEvents,
@@ -99,7 +62,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchFriendsList}
               items={userEvents}
               submit={deleteEvent}
             />
@@ -121,7 +83,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchReceivedRequests}
               items={nearbyEvents}
               submit={addAttendee}
               decline={declineFriendRequest}
@@ -145,7 +106,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchNearbyUsers}
               items={attendingEvents}
               submit={removeAttendee}
             />
@@ -162,7 +122,6 @@ export class EventsList extends Component {
           <Tab.Pane>
             <EventsListTab
               activeIndex={this.state.activeIndex}
-              fetchData={fetchSentRequests}
               items={invitedEvents}
               submit={addAttendee}
             />
@@ -186,7 +145,6 @@ export class EventsList extends Component {
 /**
  * CONTAINER
  */
-// const mapState = ({ friendsList, user, events }) => ({ friendsList, user, events });
 
 const mapState = state => {
   return {
@@ -195,25 +153,17 @@ const mapState = state => {
     user: state.user,
     attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
     invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
-    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id !== state.user.id))
   };
 }
 
 const mapDispatch = dispatch => {
   return {
-    fetchNearbyUsers(location) {
-      // console.log('INSIDE FETCH NEARBY USERS')
-      return dispatch(getNearByUsersInfo(location));
-    },
-    fetchFriendsList(userId) {
-      // console.log('INSIDE FETCH FRIENDS')
-      return dispatch(getFriendsList(userId));
-    },
     removeAttendee(event, userId) {
       dispatch(removeAttendee(event, userId));
     },
     async addAttendee(event, userId) {
-      await dispatch(addAttendee(event, {userId: userId}));
+      await dispatch(addAttendee(event, userId));
       dispatch(getEvents())
     },
     removeInvite(event, userId) {

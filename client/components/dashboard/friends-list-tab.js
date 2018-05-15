@@ -9,8 +9,16 @@ import { FriendsListItem } from '../';
 
 export class FriendsListTab extends Component {
   componentDidMount = () => {
-    const { fetchData, user } = this.props;
-    fetchData(user.id);
+
+    const { fetchData, user, userPosition } = this.props;
+
+    if (this.props.mode && this.props.mode === 'fetchNearbyUsers'){
+      // fetchData(userPosition)
+    }
+
+    else {
+      // fetchData(user.id);
+    }
   };
 
   render() {

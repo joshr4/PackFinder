@@ -41,7 +41,6 @@ import socket from '../socket';
 class ChatRoom extends Component {
     constructor(props) {
         super(props)
-        console.log("CHATROOM PROPS: ", props);
         this.state = {
             messages:[],
             chatValue:"",
@@ -49,24 +48,20 @@ class ChatRoom extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         // this.state.messages = getAllMessages();
         this.state = store.getState();
-        console.log("store state: ", this.state);
-        console.log("store messages: ", this.state.messages);
         this.chatChange = this.chatChange.bind(this);
     }
 
     componentDidMount () {
         this.props.getData();
-        console.log("this.props: ", this.props);
         // console.log("this.props.match.params.id: ", this.props.match.params.id);
         this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
     }
-    
+
     componentWillUnmount () {
         this.unsubscribe();
     }
-        
+
     componentWillUpdate() {
-        console.log("line 46");
         axios.get('/api/messages').then(response => {
             // console.log("response.data: ", response.data, response.data.length);
             // console.log("this.state.messages: ", this.state.messages, this.state.messages.length);
@@ -84,9 +79,7 @@ class ChatRoom extends Component {
         return
     }
     handleSubmit(event) {
-        console.log("SUBMITTING MESSAGE: (socket flow starts here)");
-        console.log("message Body: ", event.target.messageBody.value);
-        // socket.emit('new-message', 
+        // socket.emit('new-message',
         //     {"message content":event.target.messageBody.value}
         // );
         let postBody = {
@@ -112,8 +105,6 @@ class ChatRoom extends Component {
         })
     }
     render() {
-        console.log("rendering line 67");
-        console.log("rendering props: ", this.props);
         let messages = [
             {id: 1,
             username: "username1",
@@ -137,7 +128,7 @@ class ChatRoom extends Component {
             username: "username5",
             content: "message content 5",
             // timestring: (this.id + "Days ago"),
-            likes:5},        
+            likes:5},
         ]
         return (
             <div className="container" style={{ padding: 10, border: "1px solid black", height:"670px", "overflow-y":"scroll"}}>
@@ -165,19 +156,15 @@ class ChatRoom extends Component {
                         </Feed.Like>
                       </Feed.Meta>
                     </Feed.Content>
-                  </Feed.Event>                      
-                )                
+                  </Feed.Event>
+                )
             })}
-          </Feed>        
+          </Feed>
     </div>)
     }
 }
 
 const mapState = (state, ownProps) => {
-    console.log("ownProps: ", ownProps);
-    console.log("state user: ", state.user);
-    console.log("state.event: ", state.event);
-    console.log("state.messages: ", state.messages);
     let messages = state.messages.filter(message => (message.poster))
     messages = messages.filter(message => message.event.id == ownProps.eventId);
     messages.forEach(message => {
@@ -197,7 +184,6 @@ const mapState = (state, ownProps) => {
         else {
             message.timeString = longTime;
         }
-        console.log("message.time: ", message.time);
     })
     return {
       messages: messages,
@@ -218,5 +204,5 @@ return {
       },
   };
 };
-  
-export default connect(mapState, mapDispatch)(ChatRoom);  
+
+export default connect(mapState, mapDispatch)(ChatRoom);

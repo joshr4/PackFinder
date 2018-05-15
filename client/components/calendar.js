@@ -13,7 +13,7 @@ import { VisitModal, EventsList, EventEditModal } from './index';
 
 import {
   getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
-  getEvents, updateEvent, deleteEvent
+  getEvents, updateEvent, deleteEvent, addEvent
 }
   from '../store';
 
@@ -101,8 +101,12 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
+    console.log("open modal event/view: ", event, type);
     if (event.isEvent) {
-      this.toggleModal()
+      if (event.editable) {
+        // Open event modal here
+      }
+      // this.toggleModal()
       // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
       return
     }
@@ -151,6 +155,9 @@ class Dnd extends React.Component {
   }
 
   moveEvent({ event, start, end }) {
+    if (event.isEvent && !event.editable) {
+      return
+    }
     const { events } = this.props;
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
@@ -175,6 +182,10 @@ class Dnd extends React.Component {
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
+    if (event.isEvent && !event.editable) {
+      return
+    }
+    
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -299,8 +310,11 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn } = this.props
+    let { isLoggedIn, parkList, user, addEvent, events } = this.props
     let { showAddEventModal } = this.state
+    console.log("props.user: ", user);
+    console.log("props.events: ", events);
+    console.log("calendar props: ", this.props);
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -313,34 +327,36 @@ class Dnd extends React.Component {
             <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
               <Segment.Group horizontal>
                 <Segment>
-                  <Button positive style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
+                  <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
                 <Segment>
-                  <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Public Event</Button>
+                  <Button positive style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Event</Button>
                   {isLoggedIn ?
                     <EventEditModal
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
-                      onDelete={() => { }}
-                      handleSubmit={() => { }} />
+                      parkDropDownList={parkList}
+                      user={user}
+                      handleEvent={addEvent}
+                      />
                     : <div />}
                 </Segment>
                 <Segment>
-                  <Label circular color="blue">Scheduled Check-Ins</Label>
+                  <Label circular color="blue">Your Check-Ins</Label>
                 </Segment>
                 <Segment>
-                  <Label circular color="yellow">Events Nearby</Label>
+                  <Label circular color="teal">Events You're Coordinating</Label>
                 </Segment>
                 <Segment>
                   <Label circular color="green">Events You're Attending</Label>
                 </Segment>
                 <Segment>
-                  <Label circular color="teal">Events You're Coordinating</Label>
-                </Segment>
+                  <Label circular color="yellow">Events Near You</Label>
+                </Segment>                
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
-      <DragAndDropCalendar
+                <DragAndDropCalendar
                   // className="no-scroll"
                   selectable
                   culture="en-GB"
@@ -385,6 +401,8 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
+  console.log("state.visits & state.events: ", state.visits.length, state.visits.events);
+
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
     let calEvent = event;
@@ -392,17 +410,23 @@ const mapState = state => {
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
-    if (event.creator.id == state.user.id) {
-      calEvent.hexColor = "00b5ad";
-    }
-    else {
-      calEvent.hexColor = "fbbd08";
-    }
+    // calEvent.hexColor = "00b5ad";
+    calEvent.hexColor = "fbbd08";
     calEvent.attendees.forEach(attendee => {
       if (attendee.id == state.user.id) {
         calEvent.hexColor = "21ba45";
       }
     })
+    if (event.creator.id == state.user.id) {
+      calEvent.hexColor = "00b5ad";
+      calEvent.editable = true;
+    }
+    // calEvent.attendees.forEach(attendee => {
+    //   if (attendee.id == state.user.id) {
+    //     calEvent.hexColor = "21ba45";
+    //   }
+    // })
+    
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
@@ -431,7 +455,14 @@ const mapState = state => {
     events: calItems,
     user: state.user,
     parkList: dropDownParks,
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    // Pasted from events-list
+    friendsList: state.friendsList,
+    userEvents: state.events.filter(event => event.creatorId === state.user.id),
+    attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
+    invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
+    nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
+    
   };
 };
 
@@ -456,7 +487,10 @@ const mapDispatch = dispatch => {
     async updateEvent(event) {
       await dispatch(updateEvent(event));
       dispatch(getEvents());
-
+    },
+    async addEvent(event) {
+      await dispatch(addEvent(event));
+      dispatch(getEvents());
     }
   };
 };

@@ -9,13 +9,10 @@ import { EventsListItem } from '../';
 
 export class EventsListTab extends Component {
   componentDidMount = () => {
-    const { fetchData, user } = this.props;
-    fetchData(user.id);
   };
 
   render() {
     const { items, submit, decline, loading, activeIndex } = this.props;
-    console.log('tab props', this.props)
     if (!items) return <div />;
     return (
       <Grid

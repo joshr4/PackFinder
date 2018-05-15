@@ -31,19 +31,17 @@ export const getMessages = () => dispatch =>
     .catch(err => console.log(err));
 
 export const addMessage = event => dispatch => {
-    console.log("addMessage from STORE");
     return axios
     .post(`/api/messages/`, event)
     .then(res => {
         let newMessage = res.data;
         const action = postMessage(newMessage || defaultMessages);
-        console.log("res.data from addMessage: ", res.data);
         dispatch(action);
         // socket.emit('new-message', event);
-        socket.emit('new-message', 
+        socket.emit('new-message',
             {"message content":newMessage.content}
         );
-    } 
+    }
     // dispatch(postMessage(res.data || defaultMessages))
     )
     // .then(res => dispatch(getAllMessages(res.data || defaultMessages)))
@@ -62,7 +60,6 @@ export default function(state = defaultMessages, action) {
     case GET_MESSAGES:
       return action.messages;
     case POST_MESSAGE:
-        console.log("action.message: ", action.message);
       return [action.message, ...state];
     default:
       return state;

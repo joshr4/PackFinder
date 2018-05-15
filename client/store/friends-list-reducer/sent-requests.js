@@ -57,7 +57,6 @@ export const addSentRequest = (userId, friendId) => dispatch => {
 };
 
 export const removeSentRequest = (userId, friendId) => dispatch => {
-  console.log('hitting thunk removeSentRequest');
   return axios
     .put(`/api/users/${userId}/cancel-request`, {
       friendId,

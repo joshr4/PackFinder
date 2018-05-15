@@ -37,6 +37,29 @@ socket.on('connect', () => {
   socket.on('add-sent-request', data => {
     store.dispatch(addRequestSocket(data.userId))
   })
+
+  // **************************
+  // EVENTS SOCKETS
+  // **************************
+
+  // socket.on('delete-friend', data => {
+  //   store.dispatch(removeFriendSocket(data.friendToDeleteId))
+  // })
+  // socket.on('accept-request', data => {
+  //   store.dispatch(acceptRequestSocket(data.userId))
+  //   store.dispatch(removeSentRequestSocket(data.userId))
+  // })
+  // socket.on('decline-request', data => {
+  //   store.dispatch(declineRequestSocket(data.userId))
+  //   store.dispatch(removeSentRequestSocket(data.userId))
+  // })
+  // socket.on('cancel-sent-request', data => {
+  //   store.dispatch(declineRequestSocket(data.userId))
+  //   store.dispatch(removeSentRequestSocket(data.userId))
+  // })
+  // socket.on('add-sent-request', data => {
+  //   store.dispatch(addRequestSocket(data.userId))
+  // })
 })
 
 export default socket

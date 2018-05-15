@@ -81,7 +81,6 @@ router.delete('/:id', (req, res, next) => {
 })
 
 
-
 router.put('/:id', (req, res, next) => {
   Event.findOne({
     where: {
@@ -109,16 +108,77 @@ router.put('/:id/invite-users', async (req, res, next) => {
   let event = await Event.findOne({
     where: {
       id: req.params.id,
-    }
+    },
+    include: [
+    {
+      all:true,
+    },
+    {
+      model: Park, required: false,
+      include: [
+        {
+          model: Address,
+          required: false,
+        }
+      ]
+    },
+  ]
   });
   await event.addInvitees(req.body.userIds);
   for (let i = 0; i < req.body.userIds.length; i ++) {
     let id = req.body.userIds[i];
     user = await User.findById(id);
-    user.addAttendingEvent(event);
+    user.addInvitedEvent(event);
   }
   res.json(event);
 })
+
+router.get('/:id/uninvited', async (req, res, next) => {
+  let event = await Event.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{all:true}, {model: Park, required: false, include: [{model: Address,required: false}]}]
+  });
+  let user = await User.findById(req.body.userId);
+  let userFriends = await user.getFriends();
+  let uninvitedFriends = [];
+  for (let i = 0; i < userFriends.length; i++) {
+    let friend = userFriends[i];
+    let isInvitee = await event.hasInvitee(friend);
+    let isAttendee = await event.hasAttendee(friend);
+    if (!isInvitee && isAttendee) {
+      uninvitedFriends.push(friend);
+    }
+  }
+  res.json(uninvitedFriends);
+})
+
+router.get('/:id/uninvited/:friendId', async (req, res, next) => {
+  let event = await Event.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{all:true}, {model: Park, required: false, include: [{model: Address,required: false}]}]
+  });
+  console.log("found event: ", event);
+  let user = await User.findById(req.params.friendId);
+  console.log("found user: ", user);
+  let userFriends = await user.getFriends();
+  console.log("found friends: ", userFriends);
+  let uninvitedFriends = [];
+  for (let i = 0; i < userFriends.length; i++) {
+    let friend = userFriends[i];
+    let isInvitee = await event.hasInvitee(friend);
+    let isAttendee = await event.hasAttendee(friend);
+    if (!isInvitee && !isAttendee) {
+      uninvitedFriends.push(friend);
+    }
+  }
+  event.uninvitedFriends = uninvitedFriends;
+  res.json(event);
+})
+
 
 router.put('/:id/remove-invite', async(req, res, next) => {
   let event = await Event.findOne({
@@ -141,6 +201,8 @@ router.put('/:id/add-attendee', async(req, res, next) => {
   let user = await User.findById(req.body.userId);
   await event.addAttendee(req.body.userId);
   await user.addAttendingEvent(event);
+  await event.removeInvitee(req.body.userId);
+  await user.removeInvitedEvent(event);
   let updatedEvent = await Event.findOne({
     where:{
       id:req.params.id
@@ -149,7 +211,7 @@ router.put('/:id/add-attendee', async(req, res, next) => {
       {all:true},
     ]
   })
-  console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
+  //console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
   res.json(updatedEvent);
 });
 

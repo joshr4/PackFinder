@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Button, Header, Image, Modal, Grid, Form, List, Input } from 'semantic-ui-react';
 import moment from 'moment'
 import axios from 'axios'
+import history from '../../history'
 import { AddEventForm } from '../index';
 
 class AddAttendeeModal extends Component {
   constructor(props) {
     super(props);
-    console.log("props.userFriends (attendee modal) ", props.userFriends);
     this.state = {
       isDirty: false,
       item: {
@@ -22,7 +22,7 @@ class AddAttendeeModal extends Component {
       userFriends:props.userFriends,
     };
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    // this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange = (e) => {
@@ -33,52 +33,23 @@ class AddAttendeeModal extends Component {
     this.setState({ isDirty: true, item: Object.assign(this.state.item, { [variable]: value }) })
   }
 
-  handleSubmit = (e) => {
-    console.log("submitting add attendee modal: ", e.target);
-    let friendIDs = [];
-    for (let K in e.target) {
-      if (e.target[K] && e.target[K].value && K != "classList"
-        // && ('checked' in event.target[K])
-      ) {
-        console.log("K: ", K);
-        console.log("value: ", e.target[K].value);
-        console.log("checked: ", e.target[K].checked);
-        if (typeof parseInt(K) == "number") {
-          let relatedId = this.props.userFriends[K].id;
-          console.log("relatedId: ", relatedId);
-          friendIDs.push(relatedId);
-        }
-      }
-    }
-    console.log("friendIDs: ", friendIDs);
-    //axios.put here
-    axios.put(`/api/events/${this.props.item.id}/invite-users`, 
-    {userIds: friendIDs}
-    ).then(response => {
-      this.props.onClose();
-    })
-  }
-
   render() {
     let { onClose, showModal, onDelete, handleSubmit, userFriends } = this.props
-    let { description, item, isDirty, user, 
-      // userFriends 
+    let { description, item, isDirty, user,
+      // userFriends
     } = this.state
     userFriends = (userFriends) ? (userFriends) : []; 
-    console.log("attendeeModal userFriends: ", this.props.userFriends);
-    return (
-      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
-        <Button color="blue" style={{ marginLeft: 20, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
-        <Modal.Content image>
 
-        <Form style={{width:"auto"}} onSubmit={this.handleSubmit}>          
-          <Modal.Description>
+    return (
+      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
+        <Modal.Content image>
+        <Form style={{width:"100%"}} onSubmit={handleSubmit}>
           <h3>Invite Friends</h3>
-          <Grid>
+          <Grid style={{width:"100%"}}>
           <Grid.Row columns={16}>
-              {userFriends.map(friend => {
+              {userFriends.length ? userFriends.map(friend => {
                 return (
-                  <Grid.Column width={5}>
+                  <Grid.Column width={5} key={friend.id} >
                   <Form.Field name={"friend-" + friend.id} value={{}} control='input' type='checkbox' style={{marginRight:"10px"}} />
                   <List.Item style={{paddingBottom:"10px"}}>
                   <Image avatar src={friend.imageUrl}/>
@@ -88,12 +59,14 @@ class AddAttendeeModal extends Component {
                 </List.Item>
                 </Grid.Column>
               )
-              })}
+              }) :
+              <div style={{padding: '5px'}}><h4>You have no friends, add some from the Home page!</h4>
+              <Button color="blue" onClick={() => history.push(`/home`)}> Home Page </Button>
+              </div>}
           </Grid.Row>
           </Grid>
-          </Modal.Description>
-          <Button positive floated="right" type="submit" style={{ marginRight: 20 }}>Invite Selected Friends</Button>
-          </Form>
+          <Button positive floated="right" type="submit" style={{ marginRight: 20}}>Invite Selected Friends</Button>
+        </Form>
         </Modal.Content>
       </Modal>
     )
