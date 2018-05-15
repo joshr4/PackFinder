@@ -9,6 +9,7 @@ const EventAttendees = props => {
         <Form.Field>
           <label>Invite Friends</label>
           {props.users.map(user  => (<h3 key={user.id}>{user.firstName}</h3>))}
+
         </Form.Field>
       </Form.Group>
   );

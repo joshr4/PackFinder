@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini, EventAddModal } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini, EventEditModal } from '../';
 
 import {
   getParksAddresses,
@@ -52,7 +52,7 @@ export class UserHome extends Component {
     const { showAddEventModal } = this.state;
     return (
       <div className="container">
-        <EventAddModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} />
+        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>

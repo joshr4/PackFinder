@@ -8,14 +8,20 @@ class EventEditModal extends Component {
     super(props);
     this.state = {
       isDirty: false,
-      item: {
+      item: props.item ? {
         description: props.item.description,
         date: moment(props.item.start).format('YYYY-MM-DD'),
         startTime: moment(props.item.start).format('HH:mm'),
         parkId: props.item.parkId,
         private: props.item.private,
         id: props.item.id,
-      }
+      } : {
+          description: '',
+          date: moment().format('YYYY-MM-DD'),
+          startTime: moment().format('HH:mm'),
+          parkId: 1,
+          private: false,
+        }
     };
     this.handleChange = this.handleChange.bind(this)
   }
@@ -25,6 +31,7 @@ class EventEditModal extends Component {
     let value
     if (variable === 'private') value = !this.state.item.private
     else value = e.target.value
+    console.log('val',value)
     this.setState({ isDirty: true, item: Object.assign(this.state.item, { [variable]: value }) })
   }
 
@@ -43,7 +50,7 @@ class EventEditModal extends Component {
             <AddEventForm
               item={item}
               handleChange={this.handleChange}
-              handleSubmit={() => isDirty ? handleSubmit(item) : onClose() }
+              handleSubmit={() => isDirty ? handleSubmit(item) : onClose()}
             />
           </Modal.Description>
         </Modal.Content>

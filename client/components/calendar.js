@@ -9,12 +9,13 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { VisitModal } from './index';
+import { VisitModal, EventEditModal } from './index';
 
 import {
   getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
-  getEvents, updateEvent, deleteEvent }
-from '../store';
+  getEvents, updateEvent, deleteEvent
+}
+  from '../store';
 
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global'
@@ -62,6 +63,7 @@ class Dnd extends React.Component {
       formValid: false,
       slider: 1,
       showModal: false,
+      showAddEventModal: false,
       modalType: 'view',
       user: {},
       events: [],
@@ -69,6 +71,7 @@ class Dnd extends React.Component {
     this.moveEvent = this.moveEvent.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.toggleEventModal = this.toggleEventModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -81,12 +84,16 @@ class Dnd extends React.Component {
     this.props.getData();
     axios.get('/api/events').then(response => {
       this.setState({
-        events:this.props.events.concat(response.data)
+        events: this.props.events.concat(response.data)
       })
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-
+  toggleEventModal() {
+    this.setState({
+      showAddEventModal: !this.state.showAddEventModal,
+    });
+  }
   toggleModal() {
     this.setState({
       showModal: !this.state.showModal,
@@ -279,93 +286,99 @@ class Dnd extends React.Component {
   eventStyleGetter = (event, start, end, isSelected) => {
     var backgroundColor = '#' + event.hexColor;
     var style = {
-        backgroundColor: backgroundColor,
-        // borderRadius: '0px',
-        // opacity: 0.8,
-        // color: 'black',
-        // border: '0px',
-        // display: 'block'
+      backgroundColor: backgroundColor,
+      // borderRadius: '0px',
+      // opacity: 0.8,
+      // color: 'black',
+      // border: '0px',
+      // display: 'block'
     };
     return {
-        style: style
+      style: style
     };
   };
 
   render() {
+    let { isLoggedIn } = this.props
+    let { showAddEventModal } = this.state
     return (
-      <div className="container" style={{"overflow-y":"scroll"}}>
-      <Grid>
-      <Grid.Row>
-      <Grid.Column width={4}>
-        {
-          //JOSH YOUR EVENT DASHBOARD GOES HERE
-        }
-      </Grid.Column>
-      <Grid.Column width={12} style={{paddingRight:"25px", paddingBottom:"50px"}}>
-      <Segment.Group horizontal>
-            <Segment>
-            <Button positive style={{ margin: 0}} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
-            </Segment>
-            <Segment>
-            <Button primary style={{ margin: 0}} onClick={() => console.log("Create Event")}>Create Public Event</Button>
-            {
-              //JOSH YOUR CREATE EVENT MODAL GETS TRIGGERED HERE 
-            }
-            </Segment>
-            <Segment>
-            <Label circular color="blue">Scheduled Check-Ins</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="yellow">Events Nearby</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="green">Events You're Attending</Label>            
-            </Segment>
-            <Segment>
-            <Label circular color="teal">Events You're Coordinating</Label>            
-            </Segment>
-      </Segment.Group>
-      <Grid.Row style={{height:"670px"}}>
-      Double click an event on the calendar to edit.
+      <div className="container" style={{ "overflow-y": "scroll" }}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={4}>
+              {
+                //JOSH YOUR EVENT DASHBOARD GOES HERE
+              }
+            </Grid.Column>
+            <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
+              <Segment.Group horizontal>
+                <Segment>
+                  <Button positive style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
+                </Segment>
+                <Segment>
+                  <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Public Event</Button>
+                  {isLoggedIn ?
+                  <EventEditModal
+                  onClose={this.toggleEventModal}
+                  showModal={showAddEventModal}
+                  onDelete={() => { }}
+                  handleSubmit={() => { }} />
+                  : <div />}
+                </Segment>
+                <Segment>
+                  <Label circular color="blue">Scheduled Check-Ins</Label>
+                </Segment>
+                <Segment>
+                  <Label circular color="yellow">Events Nearby</Label>
+                </Segment>
+                <Segment>
+                  <Label circular color="green">Events You're Attending</Label>
+                </Segment>
+                <Segment>
+                  <Label circular color="teal">Events You're Coordinating</Label>
+                </Segment>
+              </Segment.Group>
+              <Grid.Row style={{ height: "670px" }}>
+                Double click an event on the calendar to edit.
       <DragAndDropCalendar
-      // className="no-scroll"
-      selectable
-      culture="en-GB"
-      events={this.props.events}
-      eventPropGetter={(this.eventStyleGetter)}
-      //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
-      onEventDrop={this.moveEvent}
-      resizable
-      onDoubleClickEvent={event => this.openModal(event, 'view')}
-      onEventResize={this.resizeEvent}
-      defaultView="week"
-      defaultDate={moment().toDate()}
-      step={30}
-      min={new Date(0, 0, 0, 6, 0)}
-      max={new Date(0, 0, 0, 23, 0)}
-      // max={new Date(0, 0, 0, 23, 0)}
-      />       
-      </Grid.Row>            
-      </Grid.Column>
-        <VisitModal
-          modalType={this.state.modalType}
-          show={this.state.showModal}
-          onClose={this.toggleModal}
-          onDelete={this.removeEvent}
-          item={this.state.selectedEvent}
-          slider={this.state.slider}
-          handleSubmit={this.addEvent}
-          handleChange={this.handleChange}
-          handleFieldChange={this.handleFieldChange}
-          parkList={this.props.parkList}
-          onEdit={this.openModal}
-          handleEdit={this.updateEvent}
-          handleSliderChange={this.handleSliderChange}
-          noPark={false}
-        />        
-      </Grid.Row>
+                  // className="no-scroll"
+                  selectable
+                  culture="en-GB"
+                  events={this.props.events}
+                  eventPropGetter={(this.eventStyleGetter)}
+                  //events={this.props.events.filter(visit => visit.userId===this.props.user.id)}
+                  onEventDrop={this.moveEvent}
+                  resizable
+                  onDoubleClickEvent={event => this.openModal(event, 'view')}
+                  onEventResize={this.resizeEvent}
+                  defaultView="week"
+                  defaultDate={moment().toDate()}
+                  step={30}
+                  min={new Date(0, 0, 0, 6, 0)}
+                  max={new Date(0, 0, 0, 23, 0)}
+                // max={new Date(0, 0, 0, 23, 0)}
+                />
+              </Grid.Row>
+            </Grid.Column>
+            <VisitModal
+              modalType={this.state.modalType}
+              show={this.state.showModal}
+              onClose={this.toggleModal}
+              onDelete={this.removeEvent}
+              item={this.state.selectedEvent}
+              slider={this.state.slider}
+              handleSubmit={this.addEvent}
+              handleChange={this.handleChange}
+              handleFieldChange={this.handleFieldChange}
+              parkList={this.props.parkList}
+              onEdit={this.openModal}
+              handleEdit={this.updateEvent}
+              handleSliderChange={this.handleSliderChange}
+              noPark={false}
+            />
+          </Grid.Row>
         </Grid>
-    </div>
+      </div>
     );
   }
 }
@@ -379,7 +392,7 @@ const mapState = state => {
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
     if (event.creator.id == state.user.id) {
-      calEvent.hexColor = "00b5ad";      
+      calEvent.hexColor = "00b5ad";
     }
     else {
       calEvent.hexColor = "fbbd08";
@@ -416,7 +429,8 @@ const mapState = state => {
   return {
     events: calItems,
     user: state.user,
-    parkList: dropDownParks
+    parkList: dropDownParks,
+    isLoggedIn: !!state.user.id
   };
 };
 
