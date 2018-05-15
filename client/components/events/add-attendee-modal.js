@@ -7,7 +7,6 @@ import { AddEventForm } from '../index';
 class AddAttendeeModal extends Component {
   constructor(props) {
     super(props);
-    console.log("props.userFriends (attendee modal) ", props.userFriends);
     this.state = {
       isDirty: false,
       item: {
@@ -36,16 +35,15 @@ class AddAttendeeModal extends Component {
 
   render() {
     let { onClose, showModal, onDelete, handleSubmit, userFriends } = this.props
-    let { description, item, isDirty, user, 
-      // userFriends 
+    let { description, item, isDirty, user,
+      // userFriends
     } = this.state
-    userFriends = (userFriends) ? (userFriends) : []; 
+    userFriends = (userFriends) ? (userFriends) : [];
 
-    console.log("attendeeModal userFriends: ", this.props.userFriends);
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
         <Modal.Content image>
-        <Form style={{width:"100%"}} onSubmit={handleSubmit}>          
+        <Form style={{width:"100%"}} onSubmit={handleSubmit}>
           <h3>Invite Friends</h3>
           <Grid style={{width:"100%"}}>
           <Grid.Row columns={16}>
@@ -62,7 +60,7 @@ class AddAttendeeModal extends Component {
                 </Grid.Column>
               )
               })}
-              
+
           </Grid.Row>
           </Grid>
           <Button positive floated="right" type="submit" style={{ marginRight: 20}}>Invite Selected Friends</Button>

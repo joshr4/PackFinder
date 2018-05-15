@@ -96,7 +96,7 @@ router.put('/:id', (req, res, next) => {
           model: Address,
           required: false,
         }
-      ]},      
+      ]},
     ]
   }).then(events => {
     events.update(req.body).then((updated) => {
@@ -106,7 +106,6 @@ router.put('/:id', (req, res, next) => {
 })
 
 router.put('/:id/invite-users', async (req, res, next) => {
-  console.log("invite-users api route: ", req.body);
   let event = await Event.findOne({
     where: {
       id: req.params.id,
@@ -116,7 +115,7 @@ router.put('/:id/invite-users', async (req, res, next) => {
       all:true,
     },
     {
-      model: Park, required: false, 
+      model: Park, required: false,
       include: [
         {
           model: Address,
@@ -164,7 +163,7 @@ router.put('/:id/add-attendee', async(req, res, next) => {
       {all:true},
     ]
   })
-  console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
+  //console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
   res.json(updatedEvent);
 });
 
