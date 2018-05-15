@@ -101,7 +101,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("open modal event/view: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
         // Open event modal here
@@ -185,7 +184,7 @@ class Dnd extends React.Component {
     if (event.isEvent && !event.editable) {
       return
     }
-    
+
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -312,9 +311,6 @@ class Dnd extends React.Component {
   render() {
     let { isLoggedIn, parkList, user, addEvent, events } = this.props
     let { showAddEventModal } = this.state
-    console.log("props.user: ", user);
-    console.log("props.events: ", events);
-    console.log("calendar props: ", this.props);
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
         <Grid>
@@ -352,7 +348,7 @@ class Dnd extends React.Component {
                 </Segment>
                 <Segment>
                   <Label circular color="yellow">Events Near You</Label>
-                </Segment>                
+                </Segment>
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
@@ -401,7 +397,6 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("state.visits & state.events: ", state.visits.length, state.visits.events);
 
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
@@ -426,7 +421,7 @@ const mapState = state => {
     //     calEvent.hexColor = "21ba45";
     //   }
     // })
-    
+
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
@@ -462,7 +457,7 @@ const mapState = state => {
     attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
     invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
     nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
-    
+
   };
 };
 

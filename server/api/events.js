@@ -161,11 +161,8 @@ router.get('/:id/uninvited/:friendId', async (req, res, next) => {
     },
     include: [{all:true}, {model: Park, required: false, include: [{model: Address,required: false}]}]
   });
-  console.log("found event: ", event);
   let user = await User.findById(req.params.friendId);
-  console.log("found user: ", user);
   let userFriends = await user.getFriends();
-  console.log("found friends: ", userFriends);
   let uninvitedFriends = [];
   for (let i = 0; i < userFriends.length; i++) {
     let friend = userFriends[i];

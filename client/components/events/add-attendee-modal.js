@@ -38,7 +38,6 @@ class AddAttendeeModal extends Component {
     let { description, item, isDirty, user,
       // userFriends
     } = this.state
-    console.log('FRIENDS',userFriends)
     userFriends = (userFriends) ? (userFriends) : [];
 
     return (

@@ -44,7 +44,6 @@ socket.on('connect', () => {
   // **************************
 
   socket.on('event-invite', data => {
-    console.log('Rx socket', data)
     let id = data.id
     let userId = data.userId
     store.dispatch(inviteUsersOnSocket({id}, [userId]))
