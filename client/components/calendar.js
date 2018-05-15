@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Segment, Label } from 'semantic-ui-react';
+import { Button, Grid, Segment, Label, Header } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -336,17 +336,18 @@ class Dnd extends React.Component {
   render() {
     let { isLoggedIn, parkList, user, addEvent, events } = this.props
     let { showAddEventModal, editableEvent } = this.state
+    
     return (
-      <div className="container" style={{ "overflow-y": "scroll" }}>
+      <div className="container" style={{ "overflowY": "scroll" }}>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={4}>
-
+            <Grid.Column width={4} style={{ paddingLeft: "50px"}}>
+            <Header>Upcoming Events</Header>                    
               {this.props.user && <EventsList className="event-list" user={this.props.user} />}
-
             </Grid.Column>
-            <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
-              <Segment.Group horizontal>
+            <Grid.Column width={12} style={{ paddingRight: "50px", paddingBottom: "50px" }}>
+              <Header>Calendar</Header>                    
+              <Segment.Group horizontal style={{marginTop:"0px"}}>
                 <Segment>
                   <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
