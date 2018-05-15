@@ -13,7 +13,7 @@ import { VisitModal, EventsList, EventEditModal } from './index';
 
 import {
   getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
-  getEvents, updateEvent, deleteEvent
+  getEvents, updateEvent, deleteEvent, addEvent
 }
   from '../store';
 
@@ -299,7 +299,7 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList } = this.props
+    let { isLoggedIn, parkList, user, addEvent } = this.props
     let { showAddEventModal } = this.state
     return (
       <div className="container" style={{ "overflow-y": "scroll" }}>
@@ -323,7 +323,10 @@ class Dnd extends React.Component {
                       showModal={showAddEventModal}
                       onDelete={() => { }}
                       handleSubmit={() => { }}
-                      parkDropDownList={parkList} />
+                      parkDropDownList={parkList}
+                      user={user}
+                      handleEvent={addEvent}
+                      />
                     : <div />}
                 </Segment>
                 <Segment>
@@ -457,7 +460,10 @@ const mapDispatch = dispatch => {
     async updateEvent(event) {
       await dispatch(updateEvent(event));
       dispatch(getEvents());
-
+    },
+    async addEvent(event) {
+      await dispatch(addEvent(event));
+      dispatch(getEvents());
     }
   };
 };

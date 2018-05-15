@@ -107,6 +107,7 @@ export class EventDetail extends Component {
         handleSubmit={this.handleSubmit}
         onDelete={deleteEvent}
         item={displayEvent}
+        handleEvent={this.props.updateEvent}
       />
       <AddAttendeeModal
         onClose={this.toggleAttendeeModal}
@@ -232,6 +233,7 @@ const mapDispatch = (dispatch, ownProps) => {
       ownProps.history.push('/home')
     },
     updateEvent(event) {
+
       dispatch(updateEvent(event));
     },
     getEvents() {

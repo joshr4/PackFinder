@@ -24,6 +24,29 @@ class EventEditModal extends Component {
         }
     };
     this.handleChange = this.handleChange.bind(this)
+    this.handleFieldChange = this.handleFieldChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleFieldChange = data => {
+    this.setState({
+      item: Object.assign(this.state.item, { parkId: data.value }),
+    })
+  }
+
+  handleSubmit = (event) => {
+    let stateEvent = event
+    let year = parseInt(stateEvent.date.split('-')[0]);
+    let month = parseInt(stateEvent.date.split('-')[1]) - 1;
+    let day = parseInt(stateEvent.date.split('-')[2]);
+    let fromHour = parseInt(stateEvent.startTime.split(':')[0]);
+    let fromMin = parseInt(stateEvent.startTime.split(':')[1]);
+    let startTime = new Date(year, month, day, fromHour, fromMin);
+    let newEvent
+    if (this.props.user) newEvent = Object.assign(stateEvent, { start: startTime, creatorId: this.props.user.id })
+    else newEvent = Object.assign(stateEvent, { start: startTime})
+    this.props.handleEvent(newEvent)
+    this.props.onClose()
   }
 
   handleChange = (e) => {
@@ -35,7 +58,7 @@ class EventEditModal extends Component {
   }
 
   render() {
-    let { onClose, showModal, onDelete, handleSubmit, parkDropDownList } = this.props
+    let { onClose, showModal, onDelete, parkDropDownList } = this.props
     let { description, item, isDirty } = this.state
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
@@ -49,8 +72,9 @@ class EventEditModal extends Component {
             <AddEventForm
               item={item}
               handleChange={this.handleChange}
-              handleSubmit={() => isDirty ? handleSubmit(item) : onClose()}
+              handleSubmit={() => isDirty ? this.handleSubmit(item) : onClose()}
               parkDropDownList={parkDropDownList}
+              handleFieldChange={this.handleFieldChange}
             />
           </Modal.Description>
         </Modal.Content>
