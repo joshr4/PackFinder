@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Card, Feed, Button } from 'semantic-ui-react';
 import faker from 'faker';
-import { FriendsList, UserHomeCalendar, NearbyParks, EventList, EventMini, EventEditModal } from '../';
+import { FriendsList, UserHomeCalendar, NearbyParks, EventsList, EventMini, EventEditModal } from '../';
 
 import {
   getParksAddresses,
@@ -96,14 +96,7 @@ export class UserHome extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {events ? (
-                    events.map(event => (
-                      <EventMini key={event.id} item={event} />
-                    ))
-                  ) : (
-                      <div />
-                    )
-                  }
+                  {user && <EventsList className="event-list" user={user} />}
                 </Feed>
               </Card.Content>
             </Card>

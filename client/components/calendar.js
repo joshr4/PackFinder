@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { VisitModal, EventEditModal } from './index';
+import { VisitModal, EventsList, EventEditModal } from './index';
 
 import {
   getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses,
@@ -306,9 +306,9 @@ class Dnd extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={4}>
-              {
-                //JOSH YOUR EVENT DASHBOARD GOES HERE
-              }
+
+              {this.props.user && <EventsList className="event-list" user={this.props.user} />}
+
             </Grid.Column>
             <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
               <Segment.Group horizontal>
@@ -318,12 +318,12 @@ class Dnd extends React.Component {
                 <Segment>
                   <Button primary style={{ margin: 0 }} onClick={() => this.toggleEventModal()}>Create Public Event</Button>
                   {isLoggedIn ?
-                  <EventEditModal
-                  onClose={this.toggleEventModal}
-                  showModal={showAddEventModal}
-                  onDelete={() => { }}
-                  handleSubmit={() => { }} />
-                  : <div />}
+                    <EventEditModal
+                      onClose={this.toggleEventModal}
+                      showModal={showAddEventModal}
+                      onDelete={() => { }}
+                      handleSubmit={() => { }} />
+                    : <div />}
                 </Segment>
                 <Segment>
                   <Label circular color="blue">Scheduled Check-Ins</Label>
@@ -357,6 +357,7 @@ class Dnd extends React.Component {
                   min={new Date(0, 0, 0, 6, 0)}
                   max={new Date(0, 0, 0, 23, 0)}
                 // max={new Date(0, 0, 0, 23, 0)}
+
                 />
               </Grid.Row>
             </Grid.Column>

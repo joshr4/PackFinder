@@ -42,3 +42,7 @@ export {default as FriendsListTab} from './dashboard/friends-list-tab'
 export {default as FriendsListItem} from './dashboard/friends-list-item'
 export {default as NearbyParks} from './dashboard/nearby-parks'
 export {default as SidebarMenu} from './sidebar-menu'
+
+export {default as EventsList} from './dashboard/events-list'
+export {default as EventsListTab} from './dashboard/events-list-tab'
+export {default as EventsListItem} from './dashboard/events-list-item'
