@@ -59,7 +59,6 @@ export const addEvent = event => dispatch =>
 
 
 export const inviteUsers = (event, userIds) => dispatch => {
-  console.log("inviteUsers event.js store: ", userIds);
   return axios
   .put(`/api/events/${event.id}/invite-users`, {userIds})
   .then(res => dispatch(updEvent(res.data || defaultEvents)))

@@ -34,7 +34,7 @@ const AddEventForm = props => {
           <label>Time</label>
           <Input
             type="time"
-            name="start"
+            name="startTime"
             style={{ marginLeft: '0px' }}
             value={startTime}
           />

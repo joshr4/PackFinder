@@ -27,9 +27,10 @@ export const findUsers = (usersList) => ({
 
 
 export const findUsersByName = (name) => dispatch =>{
-  name = name.split(' ').join('+')
+  var betterName = name.replace(/[^\w\s]/gi, '')
+  betterName = betterName.split(' ').join('+')
   return axios
-  .get(`/api/users/search/${name}`)
+  .get(`/api/users/search/${betterName}`)
   .then(res => dispatch(findUsers(res.data)))
   .catch(err => console.log(err));
 }

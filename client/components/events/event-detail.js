@@ -98,7 +98,6 @@ export class EventDetail extends Component {
         }
       }
     }
-    console.log("friendIDs: ", friendIDs);
     //axios.put here
     let invitedClickedText = friendIDs.length + " friends invited!";
     if (friendIDs.length == 1) {
@@ -110,7 +109,7 @@ export class EventDetail extends Component {
     })
     this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
-    // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`, 
+    // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
     //   {userIds: friendIDs}
     // ).then(response => {
     //   this.toggleAttendeeModal();
@@ -131,7 +130,6 @@ export class EventDetail extends Component {
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
     // let friendstoInvite = this.props.user.friends;
-
     // let attendees = [];
     // let invitees = [];
     // if (displayEvent) {
@@ -144,7 +142,6 @@ export class EventDetail extends Component {
         <EventEditModal
         onClose={this.toggleModal}
         showModal={showModal}
-        handleSubmit={this.handleSubmit}
         onDelete={deleteEvent}
         item={displayEvent}
         handleEvent={this.props.updateEvent}
@@ -250,7 +247,6 @@ export class EventDetail extends Component {
   }
 }
 const mapState = (state, ownProps) => {
-  console.log("updated state: ", state);
   let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
   let isOwner = false
   let coords = {lat: 41.954629, lng: -87.6572544}

@@ -37,6 +37,7 @@ export class UserHome extends Component {
   toggleModal() {
     this.setState({ showAddEventModal: !this.state.showAddEventModal })
   }
+
   componentDidMount() {
     // this.props.getEveryAddresses();
     this.props.getUserLocation();
@@ -48,12 +49,22 @@ export class UserHome extends Component {
     // console.log(this.props)
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.userPosition !== this.props.userPosition){
+      this.setState({location: {lat: nextProps.userPosition.latitude, lng: nextProps.userPosition.longitude}}, () => {
+        this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+        this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
+        this.props.getNearByEvents(this.state.location, 8046)
+      })
+    }
+  }
+
   render() {
     const { parkList, user, dropDownParks } = this.props;
     const { showAddEventModal } = this.state;
     return (
       <div className="container">
-        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} onDelete={() => { }} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
+        <EventEditModal onClose={this.toggleModal} showModal={showAddEventModal} handleSubmit={() => { }} parkDropDownList={dropDownParks} handleEvent={this.props.addEvent} user={user} />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <Card style={{ width: '100%' }}>
@@ -127,7 +138,8 @@ const mapStateToProps = state => {
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
-    usersList: state.usersList
+    usersList: state.usersList,
+    userPosition: state.location.coords
   };
 };
 
