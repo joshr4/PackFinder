@@ -201,6 +201,8 @@ router.put('/:id/add-attendee', async(req, res, next) => {
   let user = await User.findById(req.body.userId);
   await event.addAttendee(req.body.userId);
   await user.addAttendingEvent(event);
+  await event.removeInvitee(req.body.userId);
+  await user.removeInvitedEvent(event);
   let updatedEvent = await Event.findOne({
     where:{
       id:req.params.id

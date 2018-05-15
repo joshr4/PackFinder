@@ -164,7 +164,7 @@ const mapDispatch = dispatch => {
       dispatch(removeAttendee(event, userId));
     },
     async addAttendee(event, userId) {
-      await dispatch(addAttendee(event, {userId: userId}));
+      await dispatch(addAttendee(event, userId));
       dispatch(getEvents())
     },
     removeInvite(event, userId) {
