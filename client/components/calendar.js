@@ -128,13 +128,14 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
+    console.log("event, type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
         this.toggleEventModal(event, true)
       }
       return
     }
-    let selEvent = event
+    let selEvent = Object.assign({}, event); //TARGET IS FIRST, CLONE IS SECOND
     if (type === 'view') {
       let year = event.start.getFullYear();
       let month = event.start.getMonth();
@@ -144,13 +145,16 @@ class Dnd extends React.Component {
       if (month < 9) month0 = '0'
       if (day < 10) day0 = '0'
       selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
-      selEvent.start = timeDisplay(event.start, true)
-      selEvent.end = timeDisplay(event.end, true)
+      let startString = timeDisplay(selEvent.start, true);
+      let endString = timeDisplay(selEvent.end, true);
+      selEvent.start = startString;
+      selEvent.end = endString;
+      console.log("line 151");
       await this.setState({
         selectedEvent: selEvent,
       })
     }
-    if (type === 'add') {
+    else if (type === 'add') {
       await this.setState({
         selectedEvent: {
           id: null,
