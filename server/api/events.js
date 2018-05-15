@@ -45,6 +45,7 @@ router.post('/', async (req, res, next) => {
     description: req.body.description
   });
   await newEvent.setCreator(creatorUser);
+  await newEvent.addAttendee(creatorUser);
   await newEvent.setPark(relatedPark);
   await newEvent.save();
   res.json(newEvent);
@@ -140,8 +141,16 @@ router.put('/:id/add-attendee', async(req, res, next) => {
   let user = await User.findById(req.body.userId);
   await event.addAttendee(req.body.userId);
   await user.addAttendingEvent(event);
+  let updatedEvent = await Event.findOne({
+    where:{
+      id:req.params.id
+    },
+    include:[
+      {all:true},
+    ]
+  })
   console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
-  res.json(event);
+  res.json(updatedEvent);
 });
 
 router.put('/:id/remove-attendee', async(req, res, next) => {
@@ -158,7 +167,15 @@ router.put('/:id/remove-attendee', async(req, res, next) => {
   let user = await User.findById(req.body.userId);
   await event.removeAttendee(req.body.userId);
   await user.removeAttendingEvent(event);/////////error, cannot find this method
-  res.json(event);
+  let updatedEvent = await Event.findOne({
+    where:{
+      id:req.params.id
+    },
+    include:[
+      {all:true},
+    ]
+  })
+  res.json(updatedEvent);
 });
 
 
