@@ -186,7 +186,7 @@ export class EventDetail extends Component {
 
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
-            </Grid.Column>            
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row>
           <Grid.Column width={16}>

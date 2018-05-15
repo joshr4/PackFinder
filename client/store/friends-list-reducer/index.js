@@ -3,14 +3,14 @@ import nearbyUsers from './nearby-users';
 import sentRequests from './sent-requests';
 import receivedRequests from './received-requests';
 import friends from './friends';
-import userList from './find-friends'
+import search from './find-friends'
 
 export const reducer = combineReducers({
   nearbyUsers,
   sentRequests,
   receivedRequests,
   friends,
-  userList
+  search
 });
 
 export default reducer;

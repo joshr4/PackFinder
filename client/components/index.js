@@ -40,6 +40,7 @@ export {default as UserHome} from './dashboard/user-home'
 export {default as FriendsList} from './dashboard/friends-list'
 export {default as FriendsListTab} from './dashboard/friends-list-tab'
 export {default as FriendsListItem} from './dashboard/friends-list-item'
+export {default as FriendsListSearch} from './dashboard/friends-list-search'
 export {default as NearbyParks} from './dashboard/nearby-parks'
 export {default as SidebarMenu} from './sidebar-menu'
 

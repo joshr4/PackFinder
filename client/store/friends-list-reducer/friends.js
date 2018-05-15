@@ -81,7 +81,7 @@ export default function (state = defaultList, action) {
     case ADD_FRIEND:
       return [...state, action.friend];
     case REMOVE_FRIEND:
-      return state.filter(request => request.id !== action.removed.id);
+  return state.filter(request => request.id !== action.removeId);
     default:
       return state;
   }

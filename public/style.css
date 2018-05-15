@@ -10,7 +10,7 @@ body .container {
 }
 
 .friends-list {
-  height: 60.5vh;
+  height: 66.5vh;
   align-items: baseline;
   align-content: baseline;
 }
@@ -26,7 +26,6 @@ body .container {
 
 .dashboard-card {
   padding: 0;
-  height: 80vh;
 }
 
 .dashboard-feed {
@@ -38,7 +37,7 @@ body .container {
     padding-top: 12vh;
   }
   .friends-list {
-    height: 77vh;
+    height: 74.5vh;
     align-items: baseline;
     align-content: baseline;
   }
@@ -47,7 +46,7 @@ body .container {
   }
   .dashboard-card {
     padding: 0;
-    height: 82vh;
+    /* height: 82vh; */
   }
 }
 
