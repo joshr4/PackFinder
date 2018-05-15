@@ -8,7 +8,7 @@ import history from '../../history';
 const GET_FRIENDS_LIST = 'GET_FRIENDS_LIST';
 const REMOVE_FRIEND = 'REMOVE_FRIEND';
 const ADD_FRIEND = 'ADD_FRIEND';
-const FIND_USERS_BY_NAME = 'FIND_USERS_BY_NAME'
+
 
 /**
  * INITIAL STATE
@@ -29,10 +29,6 @@ const remove = (removed) => ({
 export const add = (friend) => ({
   type: ADD_FRIEND,
   friend
-});
-export const findUsers = (usersList) => ({
-  type: FIND_USERS_BY_NAME,
-  usersList
 });
 
 /**
@@ -61,19 +57,13 @@ export const removeFriend = (userId, friendId) => dispatch =>
   .then(res => dispatch(remove(res.data || defaultList)))
   .catch(err => console.log(err));
 
-  export const findUsersByName = (name) => dispatch =>{
-    name = name.split(' ').join('+')
-    return axios
-    .get(`/api/users/search/${name}`)
-    .then(res => dispatch(findUsers(res.data)))
-    .catch(err => console.log(err));
-  }
 
 // router.post('/:id/friend-request/delete', async (req, res, next) => {
 
 /**
  * REDUCER
  */
+
 export default function (state = defaultList, action) {
   switch (action.type) {
     case GET_FRIENDS_LIST:
@@ -82,8 +72,6 @@ export default function (state = defaultList, action) {
       return [...state, action.friend];
     case REMOVE_FRIEND:
       return state.filter(request => request.id !== action.removed.id);
-    case FIND_USERS_BY_NAME:
-      return action.usersList;
     default:
       return state;
   }
