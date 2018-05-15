@@ -114,7 +114,7 @@ router.put('/:id/invite-users', async (req, res, next) => {
   for (let i = 0; i < req.body.userIds.length; i ++) {
     let id = req.body.userIds[i];
     user = await User.findById(id);
-    user.addAttendingEvent(event);    
+    user.addAttendingEvent(event);
   }
   res.json(event);
 })
@@ -134,23 +134,30 @@ router.put('/:id/remove-invite', async(req, res, next) => {
 router.put('/:id/add-attendee', async(req, res, next) => {
   let event = await Event.findOne({
     where: {
-      id:req.params.id,
-    }
+      id: req.params.id,
+    },
   });
   let user = await User.findById(req.body.userId);
   await event.addAttendee(req.body.userId);
   await user.addAttendingEvent(event);
+  console.log('updated',event)///////////event doesnt have the new attendee on it for some reason
   res.json(event);
 });
 
 router.put('/:id/remove-attendee', async(req, res, next) => {
   let event = await Event.findOne({
     where: {
-      id:req.params.id,
-    }
+      id: req.params.id,
+    },
+    include: [
+      {
+        all: true
+      }
+    ]
   });
+  let user = await User.findById(req.body.userId);
   await event.removeAttendee(req.body.userId);
-  await user.removeAttendingEvent(event);
+  await user.removeAttendingEvent(event);/////////error, cannot find this method
   res.json(event);
 });
 
@@ -178,8 +185,6 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
       ]
     })
     .then(events => {
-      console.log('we are here')
-
       const filteredEvents = events.filter(event =>
 
         geolib.isPointInCircle(
@@ -208,7 +213,6 @@ router.get('/:latitude/:longitude/:distance', (req, res, next) => {
       })
 
       sortedEvents.forEach(event => {
-        console.log(event.park.address.location.distance)
       })
 
       res.json(sortedEvents.slice(0, 20))})

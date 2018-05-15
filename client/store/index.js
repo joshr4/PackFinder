@@ -9,12 +9,13 @@ import location from './location'
 import pets from './pets'
 import friends from './friends'
 import events from './events'
+import nearbyEvents from './events-nearby'
 // import nearbyUsers from './nearby-users'
 import messages from './messages'
 import friendsList from './friends-list-reducer'
 import sidebar from './sidebar'
 import selectedUser from './selectedUser'
-const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, messages, friendsList, sidebar, selectedUser})
+const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, messages, friendsList, sidebar, selectedUser, nearbyEvents})
 
 // const reducer = combineReducers({user, visits, parkList, pets, location, friends, events, friendsList})
 
@@ -37,3 +38,4 @@ export * from './messages'
 export * from './friends-list-reducer'
 export * from './sidebar'
 export * from './selectedUser'
+export * from './events-nearby'
