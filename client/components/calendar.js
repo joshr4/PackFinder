@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Segment, Label } from 'semantic-ui-react';
+import { Button, Grid, Segment, Label, Header } from 'semantic-ui-react';
 import events from './events';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -63,6 +63,8 @@ class Dnd extends React.Component {
       formValid: false,
       slider: 1,
       showModal: false,
+      editableEvent: false,
+      eventToModal: null,
       showAddEventModal: false,
       modalType: 'view',
       user: {},
@@ -89,25 +91,47 @@ class Dnd extends React.Component {
       // this.props.events = this.props.events.concat(response.data);
     })
   }
-  toggleEventModal() {
-    this.setState({
-      showAddEventModal: !this.state.showAddEventModal,
+  async toggleEventModal(event, editable = false) {
+    let thisEvent = event;
+    if (event) {
+      let year = event.start.getFullYear();
+      let month = event.start.getMonth();
+      let day = event.start.getDate();
+      let month0 = ''
+      let day0 = ''
+      if (month < 9) month0 = '0'
+      if (day < 10) day0 = '0'
+      thisEvent.startTime = timeDisplay(event.start, true);
+      thisEvent.date = `${year}-${month0}${month + 1}-${day0}${day}`;
+    }
+    // let month0 = ''
+    // let day0 = ''
+    // if (month < 9) month0 = '0'
+    // if (day < 10) day0 = '0'
+    // selEvent.visitDate = `${year}-${month0}${month + 1}-${day0}${day}`
+    // selEvent.start = timeDisplay(event.start, true)
+    // selEvent.end = timeDisplay(event.end, true)
+
+    await this.setState({
+      editableEvent: editable,
+      eventToModal: thisEvent,
     });
+    this.setState({
+      showAddEventModal: !this.state.showAddEventModal
+    })
   }
-  toggleModal() {
+
+  toggleModal(editable) {
     this.setState({
       showModal: !this.state.showModal,
     });
   }
 
   async openModal(event, type) {
-    console.log("open modal event/view: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
-        // Open event modal here
+        this.toggleEventModal(event, true)
       }
-      // this.toggleModal()
-      // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
       return
     }
     let selEvent = event
@@ -185,7 +209,7 @@ class Dnd extends React.Component {
     if (event.isEvent && !event.editable) {
       return
     }
-    
+
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -249,6 +273,10 @@ class Dnd extends React.Component {
         () => { this.validateField(e.target.name, e.target.value) })
     })
   }
+  handleDelete = eventId => {
+    this.props.deleteEvent(eventId)
+    this.toggleEventModal()
+  }
 
   handleFieldChange = data => {
     this.setState({
@@ -310,22 +338,20 @@ class Dnd extends React.Component {
   };
 
   render() {
-    let { isLoggedIn, parkList, user, addEvent, events } = this.props
-    let { showAddEventModal } = this.state
-    console.log("props.user: ", user);
-    console.log("props.events: ", events);
-    console.log("calendar props: ", this.props);
+    let { isLoggedIn, parkList, user, addEvent, events, deleteEvent } = this.props
+    let { showAddEventModal, editableEvent } = this.state
+    
     return (
-      <div className="container" style={{ "overflow-y": "scroll" }}>
+      <div className="container" style={{ "overflowY": "scroll" }}>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={4}>
-
+            <Grid.Column width={4} style={{ paddingLeft: "50px"}}>
+            <Header>Upcoming Events</Header>                    
               {this.props.user && <EventsList className="event-list" user={this.props.user} />}
-
             </Grid.Column>
-            <Grid.Column width={12} style={{ paddingRight: "25px", paddingBottom: "50px" }}>
-              <Segment.Group horizontal>
+            <Grid.Column width={12} style={{ paddingRight: "50px", paddingBottom: "50px" }}>
+              <Header>Calendar</Header>                    
+              <Segment.Group horizontal style={{marginTop:"0px"}}>
                 <Segment>
                   <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>
                 </Segment>
@@ -336,8 +362,11 @@ class Dnd extends React.Component {
                       onClose={this.toggleEventModal}
                       showModal={showAddEventModal}
                       parkDropDownList={parkList}
+                      onDelete={editableEvent ? this.handleDelete : null}
                       user={user}
-                      handleEvent={addEvent}
+                      item={editableEvent ? this.state.eventToModal : false}
+                      editing={editableEvent}
+                      handleEvent={editableEvent ? this.props.updateEvent : addEvent}
                       />
                     : <div />}
                 </Segment>
@@ -352,7 +381,7 @@ class Dnd extends React.Component {
                 </Segment>
                 <Segment>
                   <Label circular color="yellow">Events Near You</Label>
-                </Segment>                
+                </Segment>
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
@@ -401,12 +430,13 @@ class Dnd extends React.Component {
 }
 
 const mapState = state => {
-  console.log("state.visits & state.events: ", state.visits.length, state.visits.events);
 
   let userVisits = state.visits.filter(visit => visit.userId == state.user.id);
   let calEvents = state.events.map(event => {
     let calEvent = event;
+    calEvent.id = event.id
     calEvent.isEvent = true;
+    calEvent.description = event.description;
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
@@ -426,7 +456,7 @@ const mapState = state => {
     //     calEvent.hexColor = "21ba45";
     //   }
     // })
-    
+
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
@@ -462,7 +492,7 @@ const mapState = state => {
     attendingEvents: state.events.filter(event => event.attendees.filter(invitee => invitee.id === state.user.id).length),
     invitedEvents: state.events.filter(event => event.invitees.filter(invitee => invitee.id === state.user.id).length),
     nearbyEvents: state.nearbyEvents.filter(event => event.attendees.filter(attendee => attendee.id   !== state.user.id))
-    
+
   };
 };
 
@@ -491,6 +521,9 @@ const mapDispatch = dispatch => {
     async addEvent(event) {
       await dispatch(addEvent(event));
       dispatch(getEvents());
+    },
+    deleteEvent(eventId) {
+      dispatch(deleteEvent(eventId));
     }
   };
 };
