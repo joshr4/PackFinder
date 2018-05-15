@@ -43,7 +43,7 @@ export class EventDetail extends Component {
     this.state = {
       showModal: false,
       showAttendeeModal: false,
-      invitedClicked: false,      
+      invitedClicked: false,
       invitedClickedText: "",
       map: {},
     };
@@ -80,20 +80,14 @@ export class EventDetail extends Component {
     this.toggleModal();
   }
 
-  handleAttendeeSubmit = (e) => {
-    // console.log('handleAttendeeSubmit from event-detail.js');
-    // console.log("submitting add attendee modal: ", e.target);
+  handleAttendeeSubmit = async (e) => {
     let friendIDs = [];
     for (let K in e.target) {
       if (e.target[K] && e.target[K].value && K != "classList"
         // && ('checked' in event.target[K])
       ) {
-        // console.log("K: ", K);
-        // console.log("value: ", e.target[K].value);
-        // console.log("checked: ", e.target[K].checked);
         if (typeof parseInt(K) == "number" && e.target[K].checked) {
           let relatedId = this.props.user.Friends[K].id;
-          // console.log("relatedId: ", relatedId);
           friendIDs.push(relatedId);
         }
       }
@@ -107,7 +101,7 @@ export class EventDetail extends Component {
       invitedClicked:true,
       invitedClickedText
     })
-    this.props.inviteUsers(this.props.displayEvent, friendIDs);
+    await this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
     //   {userIds: friendIDs}
@@ -125,17 +119,9 @@ export class EventDetail extends Component {
 
   render() {
     let { displayEvent, isOwner, coords, user, attendees, invitees } = this.props
-    console.log("this.props (updated): ", this.props);
-    console.log("uninvited friends: ", this.props.uninvitedFriends);
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
-    // let friendstoInvite = this.props.user.friends;
-    // let attendees = [];
-    // let invitees = [];
-    // if (displayEvent) {
-    //   attendees = displayEvent.attendees;
-    //   invitees = displayEvent.invitees;
-    // }
+
     return (
       displayEvent ?
         <Container className="container" style={{"overflowY":"scroll"}}>
@@ -220,15 +206,15 @@ export class EventDetail extends Component {
                   )
                   })}
               </Grid.Row>
-              
+
               </Grid>
 
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
-              {this.state.invitedClicked ? 
-                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>) 
-              : null}             
-              
+              {this.state.invitedClicked ?
+                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>)
+              : null}
+
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -253,7 +239,7 @@ const mapState = (state, ownProps) => {
   let attendees = [];
   let invitees = [];
   let uninvitedFriends = [];
-  
+
   if (eventDetail) {
     isOwner = eventDetail.creatorId === state.user.id;
     coords = eventDetail.park.address.location;
@@ -262,7 +248,7 @@ const mapState = (state, ownProps) => {
     if (state.user.Friends) {
       let InvitedandAttendingIds = [];
       attendees.forEach(attendee => {InvitedandAttendingIds.push(parseInt(attendee.id))});
-      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});    
+      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});
       state.user.Friends.forEach(friend => {
         if (!InvitedandAttendingIds.includes(friend.id)) {
           uninvitedFriends.push(friend);
@@ -287,8 +273,8 @@ const mapState = (state, ownProps) => {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    inviteUsers(event, userIds) {
-      dispatch(inviteUsers(event, userIds));
+    async inviteUsers(event, userIds) {
+      await dispatch(inviteUsers(event, userIds));
     },
     addEvent(event) {
       dispatch(addEvent(event));

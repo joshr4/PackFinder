@@ -8,6 +8,7 @@ class EventEditModal extends Component {
     super(props);
     this.state = {
       isDirty: false,
+      isItemSet: false,
       item: props.item ? {
         description: props.item.description,
         date: moment(props.item.start).format('YYYY-MM-DD'),
@@ -15,13 +16,14 @@ class EventEditModal extends Component {
         parkId: props.item.parkId,
         private: props.item.private,
         id: props.item.id,
-      } : {
+      } :
+      {
           description: '',
           date: moment().format('YYYY-MM-DD'),
           startTime: moment().format('HH:mm'),
           parkId: 1,
           private: false,
-        },
+      },
       slider: 0
     };
     this.handleChange = this.handleChange.bind(this)
@@ -66,15 +68,21 @@ class EventEditModal extends Component {
   }
 
   render() {
-    let { onClose, showModal, onDelete, parkDropDownList } = this.props
-    let { description, item, isDirty, slider } = this.state
+    let { onClose, showModal, onDelete, parkDropDownList} = this.props
+    let { description, isDirty, slider, item, isItemSet } = this.state
+    if (this.props.editing && !isItemSet) {
+      this.setState({
+      item: this.props.item, isItemSet: true
+      })
+    }
     return (
-      <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} >
-        <Button color="blue" style={{ marginLeft: 20, marginTop: 20 }} onClick={() => onClose()}>Close</Button>
-
-        {onDelete ? <Button negative floated="right" style={{ marginRight: 20, marginTop: 20 }} onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
+      <Modal open={showModal} onClose={() => {
+        this.setState({isItemSet: false})
+        onClose()
+        }} style={{ width: 'console' }} closeIcon>
+        {onDelete ? <Button negative floated='right' style={{ marginRight: 20, marginTop: 20 }}
+        onClick={() => onDelete(this.props.item.id)}>Delete Event</Button> : <div />}
         <Modal.Content image>
-
           <Modal.Description>
             <h3> {description}</h3>
             <AddEventForm

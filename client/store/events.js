@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../history';
+import socket from '../socket'
 
 /**
  * ACTION TYPES
@@ -30,11 +31,14 @@ export const getEvents = () => dispatch =>
     .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
     .catch(err => console.log(err));
 
-export const deleteEvent = eventId => dispatch =>
+export const deleteEvent = eventId => dispatch =>{
+
+console.log('delete',eventId)
   axios
     .delete(`/api/events/${eventId}`)
     .then(() => dispatch(delEvent(eventId || defaultEvents)))
     .catch(err => console.log(err));
+}
 
 export const updateEvent = event => dispatch =>
   axios
@@ -61,7 +65,22 @@ export const addEvent = event => dispatch =>
 export const inviteUsers = (event, userIds) => dispatch => {
   return axios
   .put(`/api/events/${event.id}/invite-users`, {userIds})
-  .then(res => dispatch(updEvent(res.data || defaultEvents)))
+  .then(res => {
+    dispatch(updEvent(res.data || defaultEvents))
+    socket.emit('event-invite', {
+      userIds,
+      event
+    })
+  })
+  .catch(err => console.log(err));
+}
+
+export const inviteUsersOnSocket = (event, userIds) => dispatch => {
+  return axios
+  .put(`/api/events/${event.id}/invite-users`, {userIds})
+  .then(res => {
+    dispatch(updEvent(res.data || defaultEvents))
+  })
   .catch(err => console.log(err));
 }
 
