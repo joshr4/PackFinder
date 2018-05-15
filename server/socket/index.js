@@ -17,6 +17,9 @@ module.exports = (io) => {
       //   " RECEIVED IN SOCKET/INDEX, broadcast.emit: "), message);
       socket.broadcast.emit('new-message', message);
     });
+    // **************************
+    // FRIENDS LIST SOCKETS
+    // **************************
     socket.on('delete-friend', data => {
       if (currentUsers[data.friendId]) {
         io.to(currentUsers[data.friendId]).emit('delete-friend', {

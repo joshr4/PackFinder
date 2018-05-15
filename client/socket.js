@@ -15,6 +15,10 @@ socket.on('connect', () => {
     store.dispatch(getMessages(message));
   });
 
+  // **************************
+  // FRIENDS LIST SOCKETS
+  // **************************
+
   socket.on('delete-friend', data => {
     store.dispatch(removeFriendSocket(data.friendToDeleteId))
   })
