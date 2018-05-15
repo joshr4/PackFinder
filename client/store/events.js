@@ -51,6 +51,13 @@ export const addEvent = event => dispatch =>
     })
     .catch(err => console.log(err));
 
+// export const getuninvitedFriends(event, userId) => dispatch =>
+//   axios
+//   .get(`/api/events/${event.id}/`)
+//   .then(res => dispatch(getAllEvents(res.data || defaultEvents)))
+//   .catch(err => console.log(err));
+
+
 export const inviteUsers = (event, userIds) => dispatch => {
   return axios
   .put(`/api/events/${event.id}/invite-users`, {userIds})

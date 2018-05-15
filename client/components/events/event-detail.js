@@ -43,6 +43,8 @@ export class EventDetail extends Component {
     this.state = {
       showModal: false,
       showAttendeeModal: false,
+      invitedClicked: false,      
+      invitedClickedText: "",
       map: {},
     };
     this.toggleModal = this.toggleModal.bind(this)
@@ -97,6 +99,14 @@ export class EventDetail extends Component {
       }
     }
     //axios.put here
+    let invitedClickedText = friendIDs.length + " friends invited!";
+    if (friendIDs.length == 1) {
+      invitedClickedText = "1" + " friend invited!";
+    }
+    this.setState({
+      invitedClicked:true,
+      invitedClickedText
+    })
     this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
@@ -114,15 +124,18 @@ export class EventDetail extends Component {
   }
 
   render() {
-    let { displayEvent, isOwner, coords, user, deleteEvent } = this.props
-    let { showModal, showAttendeeModal } = this.state
-    let attendees = [];
-    let invitees = [];
-    if (displayEvent) {
-      attendees = displayEvent.attendees;
-      invitees = displayEvent.invitees;
-    }
-
+    let { displayEvent, isOwner, coords, user, attendees, invitees } = this.props
+    console.log("this.props (updated): ", this.props);
+    console.log("uninvited friends: ", this.props.uninvitedFriends);
+    let { showModal, showAttendeeModal } = this.state;
+    let friendstoInvite = this.props.uninvitedFriends;
+    // let friendstoInvite = this.props.user.friends;
+    // let attendees = [];
+    // let invitees = [];
+    // if (displayEvent) {
+    //   attendees = displayEvent.attendees;
+    //   invitees = displayEvent.invitees;
+    // }
     return (
       displayEvent ?
         <Container className="container" style={{"overflowY":"scroll"}}>
@@ -139,7 +152,7 @@ export class EventDetail extends Component {
         handleSubmit={this.handleAttendeeSubmit}
         item={displayEvent}
         user={user}
-        userFriends={user.Friends}
+        userFriends={friendstoInvite}
       />
       <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
         <Grid celled>
@@ -207,10 +220,15 @@ export class EventDetail extends Component {
                   )
                   })}
               </Grid.Row>
+              
               </Grid>
 
               {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
               : <div />}
+              {this.state.invitedClicked ? 
+                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>) 
+              : null}             
+              
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -232,14 +250,34 @@ const mapState = (state, ownProps) => {
   let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
   let isOwner = false
   let coords = {lat: 41.954629, lng: -87.6572544}
-  if (eventDetail) isOwner = eventDetail.creatorId === state.user.id
-  if (eventDetail) coords = eventDetail.park.address.location
+  let attendees = [];
+  let invitees = [];
+  let uninvitedFriends = [];
+  
+  if (eventDetail) {
+    isOwner = eventDetail.creatorId === state.user.id;
+    coords = eventDetail.park.address.location;
+    attendees = eventDetail.attendees;
+    invitees = eventDetail.invitees
+    if (state.user.Friends) {
+      let InvitedandAttendingIds = [];
+      attendees.forEach(attendee => {InvitedandAttendingIds.push(parseInt(attendee.id))});
+      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});    
+      state.user.Friends.forEach(friend => {
+        if (!InvitedandAttendingIds.includes(friend.id)) {
+          uninvitedFriends.push(friend);
+        }
+      })
+    }
+  }
 
   isOwner = true //FOR TESTING - REMOVE LATER
 
   return {
     allEvents: state.events,
-    attendees: [],
+    attendees: attendees,
+    invitees: invitees,
+    uninvitedFriends,
     user: state.user,
     displayEvent: eventDetail,
     isOwner: isOwner,
@@ -260,7 +298,6 @@ const mapDispatch = (dispatch, ownProps) => {
       ownProps.history.push('/home')
     },
     updateEvent(event) {
-
       dispatch(updateEvent(event));
     },
     getEvents() {

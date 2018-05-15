@@ -20,7 +20,6 @@ class AddAttendeeModal extends Component {
       },
       user: props.user,
       userFriends:props.userFriends,
-      invitedClicked: false,
     };
     this.handleChange = this.handleChange.bind(this)
     // this.handleSubmit = this.handleSubmit.bind(this)
@@ -39,7 +38,7 @@ class AddAttendeeModal extends Component {
     let { description, item, isDirty, user,
       // userFriends
     } = this.state
-    userFriends = (userFriends) ? (userFriends) : [];
+    userFriends = (userFriends) ? (userFriends) : []; 
 
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
@@ -64,7 +63,6 @@ class AddAttendeeModal extends Component {
               <div style={{padding: '5px'}}><h4>You have no friends, add some from the Home page!</h4>
               <Button color="blue" onClick={() => history.push(`/home`)}> Home Page </Button>
               </div>}
-
           </Grid.Row>
           </Grid>
           <Button positive floated="right" type="submit" style={{ marginRight: 20}}>Invite Selected Friends</Button>
