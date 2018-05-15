@@ -101,8 +101,12 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
+    console.log("open modal event/view: ", event, type);
     if (event.isEvent) {
-      this.toggleModal()
+      if (event.editable) {
+        // Open event modal here
+      }
+      // this.toggleModal()
       // TOGGLE "EVENT" MODAL HERE (NOT VISITS)
       return
     }
@@ -151,6 +155,9 @@ class Dnd extends React.Component {
   }
 
   moveEvent({ event, start, end }) {
+    if (event.isEvent && !event.editable) {
+      return
+    }
     const { events } = this.props;
     const idx = events.indexOf(event);
     const updatedEvent = { ...event, start, end };
@@ -175,6 +182,10 @@ class Dnd extends React.Component {
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
+    if (event.isEvent && !event.editable) {
+      return
+    }
+    
     const { events } = this.props;
     const updatedEvent = events.filter(existingEvent => existingEvent.id == event.id);
     updatedEvent[0].start = start
@@ -334,14 +345,14 @@ class Dnd extends React.Component {
                   <Label circular color="blue">Your Check-Ins</Label>
                 </Segment>
                 <Segment>
-                  <Label circular color="yellow">Event Near You</Label>
+                  <Label circular color="teal">Events You're Coordinating</Label>
                 </Segment>
                 <Segment>
                   <Label circular color="green">Events You're Attending</Label>
                 </Segment>
                 <Segment>
-                  <Label circular color="teal">Events You're Coordinating</Label>
-                </Segment>
+                  <Label circular color="yellow">Events Near You</Label>
+                </Segment>                
               </Segment.Group>
               <Grid.Row style={{ height: "670px" }}>
                 Double click an event on the calendar to edit.
@@ -399,18 +410,23 @@ const mapState = state => {
     calEvent.title = event.description;
     calEvent.start = new Date(event.start);
     calEvent.end = new Date(event.end);
-    calEvent.hexColor = "00b5ad";
-    if (event.creator.id == state.user.id) {
-      calEvent.hexColor = "00b5ad";
-    }
-    else {
-      calEvent.hexColor = "fbbd08";
-    }
+    // calEvent.hexColor = "00b5ad";
+    calEvent.hexColor = "fbbd08";
     calEvent.attendees.forEach(attendee => {
       if (attendee.id == state.user.id) {
         calEvent.hexColor = "21ba45";
       }
     })
+    if (event.creator.id == state.user.id) {
+      calEvent.hexColor = "00b5ad";
+      calEvent.editable = true;
+    }
+    // calEvent.attendees.forEach(attendee => {
+    //   if (attendee.id == state.user.id) {
+    //     calEvent.hexColor = "21ba45";
+    //   }
+    // })
+    
     return calEvent;
   })
   let calVisits = userVisits.map(visit => {
