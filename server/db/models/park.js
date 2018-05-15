@@ -67,9 +67,9 @@ const Park = db.define('park', {
         type: Sequelize.TEXT,
         defaultValue: "",
     },
-    imageUrl: {
-      type: Sequelize.STRING,
-      defaultValue: '',
+    imageUrls: {
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      defaultValue: [],
     },
     schedule: {
         type: Sequelize.JSON,

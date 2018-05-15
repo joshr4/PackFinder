@@ -28,7 +28,7 @@ class ParkListItem extends Component {
         <div className="extra">
         <Grid columns={3} >
         <Grid.Column width={3}>
-        {currentPark.imageUrl ? <Image size='small' centered={true} src={currentPark.imageUrl} /> : <Image size='small' centered={true} src="https://react.semantic-ui.com/assets/images/wireframe/image.png" />}
+        {currentPark.imageUrls.length ? <Image size='small' centered={true} src={currentPark.imageUrls[0]} /> : <Image size='small' centered={true} src="https://react.semantic-ui.com/assets/images/wireframe/image.png" />}
 
           <div className="ui star rating" data-rating="4"></div>
           </Grid.Column>
