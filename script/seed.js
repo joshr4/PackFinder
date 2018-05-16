@@ -39,8 +39,6 @@ async function seed () {
   await friendSeed();
   await eventsSeed();
   await messagesSeed();
-
-
   // // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // // and store the result that the promise resolves to in a variable! This is nice!
   // console.log(`seeded ${users.length} users`)

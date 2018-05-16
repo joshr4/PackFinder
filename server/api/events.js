@@ -124,10 +124,18 @@ router.put('/:id/invite-users', async (req, res, next) => {
     },
   ]
   });
+  console.log("invite users: ", req.body, "event id: ", event.id);
   await event.addInvitees(req.body.userIds);
+  let invitees = await event.getInvitees();
+  console.log("event invitees length: ", invitees.length);
+  invitees.forEach(invitee => {
+    console.log("invitee id: ", invitee.id);
+  })
+  await event.save();
   for (let i = 0; i < req.body.userIds.length; i ++) {
     let id = req.body.userIds[i];
     user = await User.findById(id);
+    console.log()
     await user.addInvitedEvent(event);
   }
   res.json(event);

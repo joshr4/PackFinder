@@ -15,7 +15,7 @@ const randUser = [201, 202, 203, 204, 205]
 const customImg = [
   'http://www.heraldchronicle.com/wp-content/uploads/2017/09/dog-in-costume-VI.jpg',
   'https://www.rd.com/wp-content/uploads/2017/09/04_of-the-Best-Halloween-Costumes-for-Dogs-via-petthingsonline.com_.jpg',
-  'https://metrouk2.files.wordpress.com/2016/10/star-wars-pet-bantha-rider-costume-bc-808050.jpg','http://www.maniacworld.com/dog-yoda-halloween-costume.jpg',
+  'https://metrouk2.files.wordpress.com/2016/10/star-wars-pet-bantha-rider-costume-bc-808050.jpg', 'http://www.maniacworld.com/dog-yoda-halloween-costume.jpg',
   'http://4.bp.blogspot.com/_p4aQPkYlwrw/TKxPyZaus2I/AAAAAAAAF-0/zefsM0ydDyA/s1600/wonder+woman+dog+costume.jpeg',
   'http://www.samorzady.org/upload/2017/11/07/halloween-dog-costume-ideas-32-easy-cute-costumes-for-pets-in-halloween-costumes-l-bf675b3731f65daa.jpg',
   'https://i.pinimg.com/736x/51/12/4b/51124b220cd3c0b525cd78e0785e8a16--dog-halloween-costumes-pet-costumes.jpg',
@@ -259,21 +259,44 @@ function generatePets() {
 
   pets.push(
     Pet.build({
-      name: faker.name.firstName(),
-      age: chance.integer({
-        min: 1,
-        max: 11
-      }),
+      name: 'Fred',
+      age: 4,
       breed: `${pets.subBreed}${pets.randBreed}`,
-      imageUrls: [pets.imageUrl],
-      bio: chance.paragraph({
-        sentences: 1
-      }),
-      weight: chance.integer({
-        min: 7,
-        max: 125
-      }),
-      userId: index++
+      imageUrls: [customImg[0]],
+      bio: `Fred's favorite show is The Flinstones. He Loves to run around the local dog park and enjoy the outdoors.`,
+      weight: 44,
+      userId: 21 //Dan user Id
+    }))
+
+  pets.push(
+    Pet.build({
+      name: 'Elvis',
+      age: 6,
+      breed: `Pug`,
+      imageUrls: [customImg[1]],
+      bio: `Elivs plays the guitar in his spare time and enjoys socializing with other dogs who have similar musical tastes.`,
+      weight: 33,
+      userId: 21 //Dan user Id
+    }))
+  pets.push(
+    Pet.build({
+      name: 'Lassie',
+      age: 7,
+      breed: `${pets.subBreed}${pets.randBreed}`,
+      imageUrls: [customImg[2]],
+      bio: `Lassie is a dependable canine companion who enjoys playing fetch. She has an uncanny ability to detect people in wells. Her favorite film is Star Wars Episode IV: A New Hope`,
+      weight: 42,
+      userId: 21 //Matt user Id
+    }))
+  pets.push(
+    Pet.build({
+      name: 'Oscar',
+      age: 8,
+      breed: `${pets.subBreed}${pets.randBreed}`,
+      imageUrls: [customImg[3]],
+      bio: `Oscar is a fun loving dog thats gets along with everyone!`,
+      weight: 29,
+      userId: 21 //Matt user Id
     }))
   return pets;
 }

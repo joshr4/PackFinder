@@ -55,7 +55,7 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: [{model: Pet, as: 'pets'}, {model: Address}],
+      include: [{model: Pet, as: 'pets'}, {model: Address}, {model:User, as:'Friends'}],
     }).then(user => {
       res.json(user);
     });
