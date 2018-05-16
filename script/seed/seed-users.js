@@ -111,7 +111,7 @@ function generateUsers(userAddresses) {
   );
   users.push(
     User.build({
-      firstName: 'Mathew',
+      firstName: 'Matthew',
       lastName: 'Chan',
       imageUrl: faker.image.avatar(),
       email: `matt@matt.com`,
