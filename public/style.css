@@ -9,6 +9,12 @@ body .container {
   /* background: #54b9bf; */
 }
 
+.auth-container {
+  padding-top: 20vh;
+  height: 100vh;
+  /* background: #54b9bf; */
+}
+
 .friends-list {
   height: 66.5vh;
   align-items: baseline;
