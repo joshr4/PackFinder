@@ -54,8 +54,8 @@ export class UserHome extends Component {
       this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     }
 
-    if (!this.props.friendsList.friends.lenght &&
-    !this.props.friendsList.nearbyUsers.lenght &&
+    if (!this.props.friendsList.friends.length &&
+    !this.props.friendsList.nearbyUsers.length &&
     !this.props.friendsList.receivedRequests.length &&
     !this.props.friendsList.sentRequests.length)
     {
