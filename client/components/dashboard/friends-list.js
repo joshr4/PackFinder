@@ -33,7 +33,7 @@ export class FriendsList extends Component {
     } = this.props;
 
     if (!this.props.friendsList.friends.length &&
-      !this.props.friendsList.nearbyUsers.lenght &&
+      !this.props.friendsList.nearbyUsers.length &&
       !this.props.friendsList.receivedRequests.length &&
       !this.props.friendsList.sentRequests.length)
       {
