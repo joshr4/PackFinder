@@ -47,14 +47,38 @@ export class UserHome extends Component {
   }
 
   componentDidMount() {
-    // this.props.getEveryAddresses();
-    this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
-    this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
-    // this.props.getNearByUsers(this.state.location)
-    // this.props.findUsers('ricky li')
-    this.props.getNearByEvents(this.state.location, 8046)
-    this.props.getUserLocation();
+
     // console.log(this.props)
+
+    if (!this.props.parkList.length){
+      this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+    }
+
+    if (!this.props.friendsList.friends.length &&
+    !this.props.friendsList.nearbyUsers.length &&
+    !this.props.friendsList.receivedRequests.length &&
+    !this.props.friendsList.sentRequests.length)
+    {
+      this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
+    }
+
+    if (!this.props.events.length){
+      this.props.getNearByEvents(this.state.location, 8046)
+    }
+
+    if (!this.props.userPosition.latitude){
+      this.props.getUserLocation();
+    }
+
+    if (this.state.loading && !this.props.userPosition.latitude){
+      setTimeout(() => {
+        this.setState({loading: false})
+      }, 5000)
+    }
+    else if (this.state.loading){
+      this.setState({loading: false})
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,7 +91,6 @@ export class UserHome extends Component {
           },
         },
         () => {
-
           this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
           this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
           this.props.getNearByEvents(this.state.location, 8046);
@@ -88,12 +111,6 @@ export class UserHome extends Component {
         width: '100%',
       },
     };
-
-    if (this.state.loading){
-      setTimeout(() => {
-        this.setState({loading: false})
-      }, 5000)
-    }
 
 
     return (
@@ -200,6 +217,8 @@ const mapStateToProps = state => {
     };
     return newPark;
   });
+
+  // console.log(state)
   return {
     email: state.user.email.toString(),
     parkList: state.parkList,
@@ -209,6 +228,8 @@ const mapStateToProps = state => {
     events: state.events,
     usersList: state.usersList,
     userPosition: state.location.coords,
+    friendsList: state.friendsList,
+
   };
 };
 

@@ -38,8 +38,17 @@ class ParkList extends Component {
 
   componentDidMount() {
     // this.props.getEveryAddresses();
-    this.props.getUserLocation();
-    this.props.getNearbyParks(this.state.location, this.state.range); //3218 = 2 miles in meters
+
+    console.log(this.props)
+
+    if (!this.props.userPosition.latitude){
+      this.props.getUserLocation();
+    }
+
+    if (!this.props.nearbyParks.length){
+      this.props.getNearbyParks(this.state.location, this.state.range);
+    }
+    //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
   }
 
