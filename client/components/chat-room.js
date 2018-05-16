@@ -133,7 +133,7 @@ class ChatRoom extends Component {
         return (
             <div className="container" style={{ padding: 10, border: "1px solid black", height:"670px", "overflowY":"scroll"}}>
             <Form onSubmit={this.handleSubmit}>
-            <TextArea style={{marginBottom:"10px"}} autoHeight placeholder='Write message' name="messageBody"
+            <TextArea rows={1} style={{marginBottom:"10px"}} autoHeight placeholder='Write message' name="messageBody"
             value={this.state.chatValue} onChange={this.chatChange}
             />
             <Button type="submit" positive>Post</Button>
