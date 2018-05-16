@@ -191,6 +191,7 @@ export class EventDetail extends Component {
                     toggleAttendeeModal={this.toggleAttendeeModal}
                     invitedClicked={this.state.invitedClicked}
                     invitedClickedText={this.state.invitedClickedText}
+                    imageUrls={displayEvent.park.imageUrls}
                   />
                   {/* <Segment clearing size="large" attached style={{ padding: '0.5em' }} >
                       <b style={{ padding: '.25em' }}>{displayEvent.description}</b>
