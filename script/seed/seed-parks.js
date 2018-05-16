@@ -37,7 +37,7 @@ const parks = [
     location: { lat: 41.879807, lng: -87.650484 }
   },
   {
-    name: 'Bryn Mawr Dog Friendly Area - TEMPORARY',
+    name: 'Bryn Mawr Dog Friendly Area',
     line_1: 'Bryn Mawr & Lake Shore Drive',
     city: 'Chicago',
     state: 'IL',

@@ -27,11 +27,11 @@ router.post('/', async (req, res, next) => {
         },
         include: [{
             all: true
-        }]              
+        }]
     })
     .then(resMessage => {
         res.json(resMessage)
-    } 
+    }
     );
 })
-// 
+//
