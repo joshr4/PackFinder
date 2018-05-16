@@ -41,13 +41,15 @@ export class EventsList extends Component {
         position: 'absolute',
         top: '-10px',
         right: '-3px',
+        background: '#54b9bf',
       },
       menuItem: {
-        padding: '1em 0.5em',
+        padding: '0.5em 0.5em',
         flex: '1',
         justifyContent: 'center',
       },
     };
+
     const panes = [
       {
         menuItem: (
@@ -114,8 +116,8 @@ export class EventsList extends Component {
       },
       {
         menuItem: (
-          <Menu.Item key="Invited" style={styles.menuItem}>
-            Invited<Label style={styles.menuLabels}>{invitedEvents.length}</Label>
+          <Menu.Item key="Invite" style={styles.menuItem}>
+            Invites<Label style={styles.menuLabels}>{invitedEvents.length}</Label>
           </Menu.Item>
         ),
         render: () => (
