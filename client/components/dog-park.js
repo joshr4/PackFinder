@@ -26,6 +26,7 @@ import {
   Select,
   TextArea,
   Checkbox,
+  Tab,
 } from 'semantic-ui-react';
 import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
@@ -48,6 +49,29 @@ import { VictoryChart, VictoryBar, VictoryAxis, VictoryArea } from 'victory';
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
+let monthName = {
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December',
+};
+let WDMap = {
+  0: 'Sunday',
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+};
 
 let timeDisplay = function(dateObj, military = false) {
   if (dateObj == '') {
@@ -81,6 +105,18 @@ let dateDisplay = function(dateObj) {
     day = '0' + day;
   }
   return month + '/' + day;
+  // console.log("dateDisplay: ", monthName[M])
+  // month = monthName[month];
+  // return month + "-" + day;
+};
+
+let stringDate = function(dateObj) {
+  let month = dateObj.getMonth() + 1;
+  let day = dateObj.getDate();
+  if (day < 10) {
+    day = '0' + day;
+  }
+  return monthName[month] + '-' + day;
 };
 
 let strfTime = function(dateObj) {
@@ -104,6 +140,19 @@ let strfTime = function(dateObj) {
   let TString = hourString + minuteString;
 
   return DString + ' ' + TString;
+};
+
+let hourString = function(dtObj) {
+  let hour = dtObj.getHours() + 1;
+  let minutes = dtObj.getMinutes();
+  let output = hour + ' AM';
+  if (hour == 12) {
+    output = hour + ' PM';
+  }
+  if (hour > 12) {
+    output = hour - 12 + ' PM';
+  }
+  return output;
 };
 
 let stringFormat = function(dateObj) {
@@ -155,7 +204,7 @@ export class DogPark extends Component {
         { time: 'test', visits: 0.00074 },
         { time: 'test2', visits: 0.00074 },
       ],
-      maxVisits: 0,
+      maxVisits: 1,
       userId: 1,
       parkId: 1,
       park: {
@@ -177,6 +226,16 @@ export class DogPark extends Component {
       dayView: false,
       timePartition: dayPartition,
       dayOptions: [],
+      weekDayOptions: [
+        { val: 'daily', display: 'All Days' },
+        { val: 'weekly/1', display: 'Monday' },
+        { val: 'weekly/2', display: 'Tuesday' },
+        { val: 'weekly/3', display: 'Wednesday' },
+        { val: 'weekly/4', display: 'Thursday' },
+        { val: 'weekly/5', display: 'Friday' },
+        { val: 'weekly/6', display: 'Saturday' },
+        { val: 'weekly/0', display: 'Sunday' },
+      ],
       map: null,
       location: {
         lat: 41.895266,
@@ -185,9 +244,12 @@ export class DogPark extends Component {
       slider: 1,
       showModal: false,
       averageData: [],
+      weekChartVal: 'daily',
+      popularChartTitle: 'All Days',
     };
     this.handleChange = this.handleChange.bind(this);
     this.changeDate = this.changeDate.bind(this);
+    this.changeweekDay = this.changeweekDay.bind(this);
     this.updateD3 = this.updateD3.bind(this);
     this.clearDate = this.clearDate.bind(this);
     this.handleSliderChange = this.handleSliderChange.bind(this);
@@ -206,11 +268,17 @@ export class DogPark extends Component {
   async updateD3() {
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-    let averageVisitsURL = `/api/parks/${parkId}/visits/D3-data/average`;
+    let averageVisitsURL = `/api/parks/${parkId}/visits/data/average/${
+      this.state.weekChartVal
+    }`; //Daily average route
+    let fullWeekURL = `/api/parks/${parkId}/visits/data/average/weekly/average`; //Full week view
     let averageDataResponse = await axios.get(averageVisitsURL);
+    let fullWeekResponse = await axios.get(fullWeekURL);
     this.setState({
       averageData: averageDataResponse.data,
+      fullWeekData: fullWeekResponse.data,
     });
+
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(
@@ -304,6 +372,7 @@ export class DogPark extends Component {
           timeObj: intervalStart,
           time: stringFormat(intervalStart),
           date: dateDisplay(intervalStart),
+          dateString: stringDate(intervalStart),
           timeDisplay: timeDisplay(intervalStart),
           strfTime: strfTime(intervalStart),
           // time: timeDisplay(intervalStart, true),
@@ -317,7 +386,10 @@ export class DogPark extends Component {
           if (!this.state.dayView) {
             d3Elem.time = dateDisplay(intervalStart);
           } else {
-            d3Elem.time = timeDisplay(intervalStart);
+            // d3Elem.time = timeDisplay(intervalStart);
+            // d3Elem.dateString = timeDisplay(intervalStart);
+            d3Elem.time = hourString(intervalStart);
+            d3Elem.dateString = hourString(intervalStart);
           }
           if (startT < intervalEnd && endT > intervalStart) {
             d3Elem.visits++;
@@ -400,7 +472,7 @@ export class DogPark extends Component {
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
-  changeDate(event) {
+  async changeDate(event) {
     event.preventDefault();
     let splitDate = event.target.selectDate.value.split('/');
     // dayView = true;
@@ -409,10 +481,27 @@ export class DogPark extends Component {
       parseInt(splitDate[1]) - 1,
       parseInt(splitDate[2])
     );
-    this.setState({
+    await this.setState({
       timePartition: hourPartition,
       dayView: true,
       selectedDate: selectedDate,
+    });
+    this.updateD3();
+  }
+  changeweekDay(event) {
+    console.log('changing week day...');
+    event.preventDefault();
+    let weekChartVal = event.target.selectweekDay.value;
+    let newChartTitle = 'All Days';
+    if (weekChartVal.split('/').length > 1) {
+      newChartTitle = WDMap[parseInt(weekChartVal.split('/')[1])];
+    }
+    this.setState({
+      weekChartVal,
+      popularChartTitle: newChartTitle,
+      // timePartition: hourPartition,
+      // dayView: true,
+      // selectedDate: selectedDate,
     });
     this.updateD3();
   }
@@ -485,23 +574,7 @@ export class DogPark extends Component {
       yLabel = 'Visitors',
       yTicks = [Math.min(this.state.maxVisits, 10), 'd'],
       yDomain = [0, 3],
-      // .ticks(d3.time.days, 1)
-      // .tickFormat((true) ? d3.time.format('%H:%M') : "")
-      // xTicks = [d3.time.format("%m-%d"), 3]
       xTicks = [d3.time.days, 1];
-    // var xScale = d3.time.scale()
-    // .domain([mindate, maxdate])
-    // const markers = [
-    //   {
-    //     address: {
-    //       location: {lat: 41.895266, lng: -87.641223}
-    //     }
-    //   }, {
-    //     address: {
-    //       location: {lat: 41.8788652, lng: -87.6262237}
-    //     }
-    //   }
-    // ]
     const testData = [
       { time: 1, visits: 13000 },
       { time: 2, visits: 16500 },
@@ -517,6 +590,7 @@ export class DogPark extends Component {
       if (elem.timeObj) {
         victoryObj.time = elem.timeObj;
       }
+      victoryObj.time = elem.dateString;
       victoryData.push(victoryObj);
     });
     const styles = {
@@ -527,6 +601,229 @@ export class DogPark extends Component {
         padding: 0,
       },
     };
+
+    const panes = [
+      {
+        menuItem: 'Check-Ins',
+        render: () => (
+          <Tab.Pane>
+            <Form onSubmit={this.changeDate} style={{ marginBottom: '5px' }}>
+              Select specific day to view:
+              <select
+                name="selectDate"
+                style={{
+                  width: 'auto',
+                  display: 'inline-block',
+                  marginRight: '10px',
+                  marginLeft: '10px',
+                }}
+              >
+                {this.state.dayOptions.map(elem => {
+                  return (
+                    <option key={elem.val} value={elem.val}>
+                      {elem.display}
+                    </option>
+                  );
+                })}
+              </select>
+              <Button
+                type="submit"
+                name="submitDate"
+                style={{ marginLeft: '10px' }}
+                color="blue"
+                size="tiny"
+              >
+                Select Day
+              </Button>
+              {this.state.dayView ? (
+                <Button
+                  onClick={this.clearDate}
+                  name="clearDate"
+                  style={{ marginLeft: '10px' }}
+                  color="green"
+                  size="tiny"
+                >
+                  Clear
+                </Button>
+              ) : null}
+            </Form>
+            <VictoryChart
+              title="Visitors"
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              height={250}
+              // width="auto"
+              padding={{ top: 0, bottom: 50, left: 50, right: 50 }}
+              domainPadding={20}
+            >
+              <VictoryAxis
+                // scale="time"
+                style={{
+                  tickLabels: { fontSize: '8px', padding: 10, angle: 315 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                domain={[0, this.state.maxVisits]}
+                tickCount={this.state.dayView ? null : victoryData.length}
+              />
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  tickLabels: { fontSize: '8px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                tickFormat={x => ` ${x} visits`}
+                tickFormat={d3.format(',d')}
+                label="Visits"
+              />
+              <VictoryBar
+                data={victoryData}
+                // alignment={this.state.dayView ? 'start' : 'middle'}
+                barRatio={1}
+                alignment="middle"
+                style={{
+                  tickLabels: { fontSize: '10px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
+                    strokeWidth: 1,
+                    // border:"2px solid black"
+                  },
+                }}
+                x="time"
+                y="visits"
+              />
+            </VictoryChart>
+          </Tab.Pane>
+        ),
+      },
+
+      {
+        menuItem: 'Popular Times',
+        //#weekchart
+        render: () => (
+          <Tab.Pane>
+            <Form onSubmit={this.changeweekDay}>
+              Select day of week to view:
+              <select
+                name="selectweekDay"
+                style={{
+                  width: 'auto',
+                  display: 'inline-block',
+                  marginRight: '10px',
+                  marginLeft: '10px',
+                }}
+              >
+                {this.state.weekDayOptions.map(elem => {
+                  return (
+                    <option key={elem.val} value={elem.val}>
+                      {elem.display}
+                    </option>
+                  );
+                })}
+              </select>
+              <Button
+                type="submit"
+                style={{ marginLeft: '10px' }}
+                color="blue"
+                size="tiny"
+              >
+                Select Day
+              </Button>
+            </Form>
+            <VictoryChart
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              domainPadding={20}
+              padding={{ top: 0, bottom: 50, left: 50, right: 50 }}
+              height={250}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: { fontSize: '8px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                fixLabelOverlap={true}
+                label="Time"
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={this.state.averageData.hasVisits ? null : [0, 1]}
+                style={{
+                  tickLabels: {
+                    fontSize: '8px',
+                    padding: 5,
+                  },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                tickFormat={x => ` ${x}`}
+                label="Average Daily Visits"
+              />
+              <VictoryBar
+                alignment="start"
+                data={this.state.averageData.dataArray}
+                barRatio={1}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
+                    strokeWidth: 1,
+                    // border:"2px solid black"
+                  },
+                }}
+                x="timeString"
+                y="average"
+              />
+            </VictoryChart>
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Popular Days',
+        //#weekchart
+        render: () => (
+          <Tab.Pane>
+            <VictoryChart
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              domainPadding={20}
+              padding={{ top: 30, bottom: 50, left: 50, right: 50 }}
+              height={250}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={this.state.fullWeekData.hasVisits ? null : [0, 1]}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                tickFormat={x => ` ${x}`}
+                label="Average Daily Visits"
+              />
+              <VictoryBar
+                data={this.state.fullWeekData.dataArray}
+                barRatio={1}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
+                    strokeWidth: 1,
+                    // border:"2px solid black"
+                  },
+                }}
+                x="name"
+                y="average"
+              />
+            </VictoryChart>
+          </Tab.Pane>
+        ),
+      },
+    ];
+
     return (
       <div className="container" style={{ overflowY: 'scroll' }}>
         <VisitModal
@@ -545,15 +842,19 @@ export class DogPark extends Component {
           handleSliderChange={this.handleSliderChange}
           noPark={true}
         />
-        <Grid centered className="overflow-scroll" style={{ height: '80vh' }}>
+        <Grid
+          centered
+          // className="overflow-scroll"
+          style={{ height: '80vh' }}
+        >
           <Grid.Row>
-          <Grid.Column width={8}>
+            <Grid.Column width={8}>
               <Card style={styles.dashboardList}>
                 <Card.Content style={{ padding: '0' }}>
-                    <DogParkItem
-                      checkIn={this.toggleModal}
-                      park={this.state.park}
-                    />
+                  <DogParkItem
+                    checkIn={this.toggleModal}
+                    park={this.state.park}
+                  />
                 </Card.Content>
               </Card>
             </Grid.Column>
@@ -570,259 +871,14 @@ export class DogPark extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={16}>
-              <Segment>
-                <Form onSubmit={this.changeDate}>
-                  Select day to view:
-                  <select
-                    name="selectDate"
-                    style={{
-                      width: 'auto',
-                      display: 'inline-block',
-                      marginRight: '10px',
-                      marginLeft: '10px',
-                    }}
-                  >
-                    {this.state.dayOptions.map(elem => {
-                      return (
-                        <option key={elem.val} value={elem.val}>
-                          {elem.display}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <Button
-                    type="submit"
-                    name="submitDate"
-                    style={{ marginLeft: '10px' }}
-                    color="blue"
-                    size="tiny"
-                  >
-                    Select Day
-                  </Button>
-                  {this.state.dayView ? (
-                    <Button
-                      onClick={this.clearDate}
-                      name="clearDate"
-                      style={{ marginLeft: '10px' }}
-                      color="green"
-                      size="tiny"
-                    >
-                      Clear
-                    </Button>
-                  ) : null}
-                </Form>
-              </Segment>
-              <Segment style={{ margin: 'auto', textAlign: 'center' }}>
-                <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
-                  Visitors
-                </Header>
-                {3 != 3 ? (
-                  <BarChart
-                    style={{ marginLeft: '500px' }}
-                    title={title}
-                    data={D3data}
-                    width={width}
-                    height={height}
-                    chartSeries={chartSeries}
-                    x={x}
-                    xLabel={xLabel}
-                    xScale={xScale}
-                    xTicks={xTicks}
-                    yTicks={yTicks}
-                    // yDomain= {yDomain}
-                    // yLabel = {yLabel}
-                    textAlign="center"
-                  />
-                ) : null}
-
-                <VictoryChart
-                  title="Visitors"
-                  style={{ labels: { fontSize: '10px', color: 'red' } }}
-                  domainPadding={20}
-                >
-                  <VictoryAxis
-                    // tickValues specifies both the number of ticks and where
-                    // they are placed on the axis
-                    scale="time"
-                    style={{
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    label="Time"
-                    // tickValues={[1, 2, 3, 4]}
-                    // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    // tickFormat specifies how ticks should be displayed
-                    // tickFormat={(x) => (`$${x / 1000}k`)}
-                    style={{
-                      // axisLabel: {fontSize: "10px", padding: 30},
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    tickFormat={x => ` ${x} visits`}
-                    tickFormat={d3.format(',d')}
-                    label="Visits"
-                    // tickValues={[0, 1]}
-                  />
-                  <VictoryBar
-                    data={victoryData}
-                    style={{
-                      tickLabels: { fontSize: '10px', padding: 5 },
-                    }}
-                    title="Visitors"
-                    // style={{labels: {fontSize:"10px", color:"red"}}}
-                    x="time"
-                    y="visits"
-                  />
-                </VictoryChart>
-
-                {
-                  //VICTORY AREA
-                }
-                <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
-                  Daily Averages
-                </Header>
-                <VictoryChart
-                  style={{ labels: { fontSize: '10px', color: 'red' } }}
-                  domainPadding={20}
-                >
-                  <VictoryAxis
-                    // tickValues specifies both the number of ticks and where
-                    // they are placed on the axis
-                    style={{
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    label="Time"
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    style={{
-                      // axisLabel: {fontSize: "10px", padding: 30},
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    tickFormat={x => ` ${x}`}
-                    label="Average Daily Visits"
-                    // tickValues={[0, 1]}
-                  />
-                  <VictoryArea
-                    data={this.state.averageData}
-                    style={{
-                      tickLabels: { fontSize: '10px', padding: 5 },
-                    }}
-                    // style={{labels: {fontSize:"10px", color:"red"}}}
-                    x="timeString"
-                    y="average"
-                  />
-                </VictoryChart>
+            <Grid.Column width={8}>
+              <Segment height="auto">
+                <Tab panes={panes} />
               </Segment>
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={16}>
+            <Grid.Column width={8}>
               <Segment>
-                <Form onSubmit={this.changeDate}>
-                  Select day to view:
-                  <select
-                    name="selectDate"
-                    style={{
-                      width: 'auto',
-                      display: 'inline-block',
-                      marginRight: '10px',
-                      marginLeft: '10px',
-                    }}
-                  >
-                    {this.state.dayOptions.map(elem => {
-                      return (
-                        <option key={elem.val} value={elem.val}>
-                          {elem.display}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <Button
-                    type="submit"
-                    name="submitDate"
-                    style={{ marginLeft: '10px' }}
-                    color="blue"
-                    size="tiny"
-                  >
-                    Select Day
-                  </Button>
-                  {this.state.dayView ? (
-                    <Button
-                      onClick={this.clearDate}
-                      name="clearDate"
-                      style={{ marginLeft: '10px' }}
-                      color="green"
-                      size="tiny"
-                    >
-                      Clear
-                    </Button>
-                  ) : null}
-                </Form>
-              </Segment>
-              <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
-                Visitors
-              </Header>
-              <Segment style={{ margin: 'auto', textAlign: 'center' }}>
-                <BarChart
-                  style={{ marginLeft: '500px' }}
-                  title={title}
-                  data={D3data}
-                  width={width}
-                  height={height}
-                  chartSeries={chartSeries}
-                  x={x}
-                  xLabel={xLabel}
-                  xScale={xScale}
-                  xTicks={xTicks}
-                  yTicks={yTicks}
-                  // yDomain= {yDomain}
-                  // yLabel = {yLabel}
-                  textAlign="center"
-                />
-
-                <VictoryChart
-                  // domainPadding will add space to each side of VictoryBar to
-                  // prevent it from overlapping the axis
-                  style={{ labels: { fontSize: '10px', color: 'red' } }}
-                  domainPadding={20}
-                >
-                  <VictoryAxis
-                    // tickValues specifies both the number of ticks and where
-                    // they are placed on the axis
-                    scale="time"
-                    style={{
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    label="Time"
-                    // tickValues={[1, 2, 3, 4]}
-                    // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    // tickFormat specifies how ticks should be displayed
-                    // tickFormat={(x) => (`$${x / 1000}k`)}
-                    style={{
-                      // axisLabel: {fontSize: "10px", padding: 30},
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    tickFormat={x => ` ${x} visits`}
-                    tickFormat={d3.format(',d')}
-                    label="Visits"
-                    // tickValues={[0, 1]}
-                  />
-                  <VictoryBar
-                    data={victoryData}
-                    style={{
-                      tickLabels: { fontSize: '10px', padding: 5 },
-                    }}
-                    // style={{labels: {fontSize:"10px", color:"red"}}}
-                    x="time"
-                    y="visits"
-                  />
-                </VictoryChart>
+                <Tab panes={panes} />
               </Segment>
             </Grid.Column>
           </Grid.Row>

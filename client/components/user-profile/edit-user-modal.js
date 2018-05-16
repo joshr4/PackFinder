@@ -34,7 +34,7 @@ class EditUserModal extends Component {
         line_1: '',
         city: '',
         state: '',
-        zipcode: '60601',
+        zipcode: '',
       }
     }
 
