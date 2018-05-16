@@ -124,7 +124,7 @@ export class EventDetail extends Component {
 
     return (
       displayEvent ?
-        <Container className="container" style={{ "overflowY": "scroll" }}>
+        <div className="container" style={{overflowY:"scroll"}}>
           <EventEditModal
             onClose={this.toggleModal}
             showModal={showModal}
@@ -140,82 +140,79 @@ export class EventDetail extends Component {
             user={user}
             userFriends={friendstoInvite}
           />
-          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-            <Grid columns={2}>
-              <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
-                {displayEvent.private ? <Label floating color="red" style={{ zIndex: '0' }}>Private</Label> : <div />}
-                <Segment clearing size="large" attached>
-                  <b>{displayEvent.description}</b>
-                  {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleModal()}>Edit</Button>
-                    : <div />}
-                </Segment>
-                <Segment attached>
-                  <b>Park Name: </b>{displayEvent.park.name}
-                </Segment>
-                <Segment attached>
-                  <b>Date: </b>{moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}
-                  {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
-                    : <div />}
-                </Segment>
-
-
-                <Grid.Row >
-                  <h4>Attending:</h4>
-                  <List horizontal>
-                    {attendees.map(attendee => {
-                      return (
-                        <List.Item width={1} key={attendee.id} style={{ paddingBottom: "10px" }}>
-                          <Image avatar src={attendee.imageUrl} />
-                          <List.Content>
-                            <List.Header size="tiny" style={{ fontSize: "13px" }}>{attendee.fullName}</List.Header>
-                          </List.Content>
-                        </List.Item>
-                      )
-                    })}
-                  </List>
-                  <h4>Invited:</h4>
-                  <List horizontal>
-                    {invitees.map(invitee => {
-                      return (
-                        <List.Item width={1} key={invitee.id} style={{ paddingBottom: "10px" }}>
-                          <Image avatar src={invitee.imageUrl} />
-                          <List.Content>
-                            <List.Header size="small" style={{ fontSize: "13px" }}>{invitee.fullName}</List.Header>
-                          </List.Content>
-                        </List.Item>
-                      )
-                    })}
-                  </List>
-
-
-
-                  {this.state.invitedClicked ?
-                    (<span style={{ fontSize: "12px", color: "blue" }}><br />{this.state.invitedClickedText}</span>)
-                    : null}
-                </Grid.Row>
-              </Grid.Column>
-
-
-              <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
-                <SingleParkMap
-                  zoom={15}
-                  center={coords}
-                  mapLoaded={this.mapLoaded.bind(this)}
-                  containerElement={<div style={{ height: `100%` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                />
-              </Grid.Column>
+          {/* <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical> */}
+            <Grid columns={2} centered className="overflow-scroll" style={{ height: '80vh' }}>
               <Grid.Row>
-                  <Grid.Column width={16}>
-                    <Header>Event Chat</Header>
-                    <ChatRoom height={250} eventId={parseInt(this.props.match.params.id)} />
-                  </Grid.Column>
-                </Grid.Row>
+                <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
+                  {displayEvent.private ? <Label floating color="red" style={{ zIndex: '0' }}>Private</Label> : <div />}
+                  <Segment clearing size="large" attached>
+                    <b>{displayEvent.description}</b>
+                    {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleModal()}>Edit</Button>
+                      : <div />}
+                  </Segment>
+                  <Segment attached>
+                    <b>Park Name: </b>{displayEvent.park.name}
+                  </Segment>
+                  <Segment attached>
+                    <b>Date: </b>{moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}
+                    {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
+                      : <div />}
+                  </Segment>
+                  <Grid.Row >
+                    <h4>Attending:</h4>
+                    <List horizontal>
+                      {attendees.map(attendee => {
+                        return (
+                          <List.Item width={1} key={attendee.id} style={{ paddingBottom: "10px" }}>
+                            <Image avatar src={attendee.imageUrl} />
+                            <List.Content>
+                              <List.Header size="tiny" style={{ fontSize: "13px" }}>{attendee.fullName}</List.Header>
+                            </List.Content>
+                          </List.Item>
+                        )
+                      })}
+                    </List>
+                    <h4>Invited:</h4>
+                    <List horizontal>
+                      {invitees.map(invitee => {
+                        return (
+                          <List.Item width={1} key={invitee.id} style={{ paddingBottom: "10px" }}>
+                            <Image avatar src={invitee.imageUrl} />
+                            <List.Content>
+                              <List.Header size="small" style={{ fontSize: "13px" }}>{invitee.fullName}</List.Header>
+                            </List.Content>
+                          </List.Item>
+                        )
+                      })}
+                    </List>
+                    {this.state.invitedClicked ?
+                      (<span style={{ fontSize: "12px", color: "blue" }}><br />{this.state.invitedClickedText}</span>)
+                      : null}
+                  </Grid.Row>
+                </Grid.Column>
+
+
+                <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
+                  <SingleParkMap
+                    zoom={15}
+                    center={coords}
+                    mapLoaded={this.mapLoaded.bind(this)}
+                    containerElement={<div style={{ height: `100%` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Header>Event Chat</Header>
+                  <ChatRoom height={250} eventId={parseInt(this.props.match.params.id)} />
+                </Grid.Column>
+              </Grid.Row>
 
             </Grid>
             <br /> <br /> <br />
-          </Segment>
-        </Container>
+          {/* </Segment> */}
+        </div>
         :
         <div />
     );
