@@ -23,7 +23,9 @@ const EventDetailItem = props => {
     isOwner,
     toggleModal,
     priv,
-    toggleAttendeeModal
+    toggleAttendeeModal,
+    invitedClicked,
+    invitedClickedText
   } = props;
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
@@ -83,6 +85,9 @@ const EventDetailItem = props => {
                 {isOwner ?
                   <Button visible={isOwner} size="tiny" floated="right" color="blue" onClick={() => toggleAttendeeModal()}>Invite Friends</Button>
                   : <div />}
+                  {invitedClicked ?
+                    (<span style={{ fontSize: "12px", color: "blue" }}><br />{invitedClickedText}</span>)
+                    : null}
               </Segment>
             </Grid.Row>
           </Grid.Column>

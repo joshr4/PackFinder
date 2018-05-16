@@ -12,7 +12,7 @@ const {
 const addresses = require('./addresses')
 
 // console.log('this is addresses', addresses)
-const numUsers = 200;
+const numUsers = 20;
 
 function doTimes(n, fn) {
   const results = [];
@@ -125,6 +125,16 @@ function generateUsers(userAddresses) {
       lastName: 'OMalley',
       imageUrl: faker.image.avatar(),
       email: `kevin@kevin.com`,
+      password: '123',
+      addressId: userAddresses.splice(0, 1)[0].id,
+    })
+  );
+  users.push(
+    User.build({
+      firstName: 'Hugh',
+      lastName: 'Mayn',
+      imageUrl: 'https://holidaystocelebrate.files.wordpress.com/2012/07/human-and-dog-costume.jpg',
+      email: `hugh@hugh.com`,
       password: '123',
       addressId: userAddresses.splice(0, 1)[0].id,
     })
