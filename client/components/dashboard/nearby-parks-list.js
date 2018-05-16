@@ -12,23 +12,32 @@ import { NearbyParksListItem } from '../';
  */
 
 export const NearbyParksList = props => {
-  const { parkList } = props;
+  const styles = {
+    dashboardList: {
+      boxShadow:
+        '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
+      width: '100%',
+    },
+  };
+  const { nearbyParks } = props;
   return (
-    <div>
-      {parkList.map(park => <NearbyParksListItem key={park.id} park={park} />)}
-    </div>
+    <Card style={styles.dashboardList}>
+      <h3 style={{ margin: '0.5em' }}>Nearby Parks</h3>
+      <Card.Content style={{ padding: '0' }} className="dashboard-card">
+        <Feed className="overflow-scroll dashboard-feed">
+          {nearbyParks && nearbyParks.map(park => (
+            <NearbyParksListItem key={park.id} park={park} />
+          ))}
+        </Feed>
+      </Card.Content>
+    </Card>
   );
 };
 
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    email: state.user.email,
-    nearbyUsers: state.nearbyUsers,
-  };
-};
+const mapState = ({ nearbyParks }) => ({ nearbyParks });
 
 const mapDispatch = dispatch => {
   return {

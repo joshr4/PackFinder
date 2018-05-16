@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Card, Feed, Button, Header, Dimmer, Loader, } from 'semantic-ui-react';
+import {
+  Grid,
+  Card,
+  Feed,
+  Button,
+  Header,
+  Dimmer,
+  Loader,
+} from 'semantic-ui-react';
 import faker from 'faker';
 import {
   FriendsList,
@@ -47,12 +55,10 @@ export class UserHome extends Component {
   }
 
   componentDidMount() {
-
     // console.log(this.props)
 
-    if (!this.props.parkList.length){
       this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
-    }
+
 
     if (!this.props.friendsList.friends.length &&
     !this.props.friendsList.nearbyUsers.length &&
@@ -95,14 +101,17 @@ export class UserHome extends Component {
           this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
           this.props.getNearByEvents(this.state.location, 8046);
 
-          this.setState({loading: false})
+          this.setState({ loading: false });
         }
       );
     }
   }
 
   render() {
-    const { parkList, user, dropDownParks } = this.props;
+    const { parkList, user } = this.props;
+
+    console.log(parkList)
+
     const { showAddEventModal } = this.state;
     const styles = {
       dashboardList: {
@@ -115,34 +124,20 @@ export class UserHome extends Component {
 
     return (
       <div className="container">
+        {this.state.loading ? (
+          <Dimmer active>
+            <Loader className="massive" content="Loading" />
+          </Dimmer>
+        ) : (
+          <Dimmer>
+            <Loader className="massive" content="Loading" />
+          </Dimmer>
+        )}
 
-      {this.state.loading ? <Dimmer active>
-        <Loader className="massive" content="Loading" />
-      </Dimmer>
-      :
-      <Dimmer>
-        <Loader className="massive" content="Loading" />
-      </Dimmer>
-    }
 
-        <EventEditModal
-          onClose={this.toggleModal}
-          showModal={showAddEventModal}
-          handleSubmit={() => {}}
-          parkDropDownList={dropDownParks}
-          handleEvent={this.props.addEvent}
-          user={user}
-        />
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
-            <Card style={styles.dashboardList}>
-              <Card.Content>
-                <Card.Header>Pack List</Card.Header>
-              </Card.Content>
-              <Card.Content style={{ padding: '0' }}>
-                {user && <FriendsList className="pack-list" user={user} />}
-              </Card.Content>
-            </Card>
+            <FriendsList />
           </Grid.Column>
 
           <Grid.Column
@@ -151,53 +146,10 @@ export class UserHome extends Component {
             computer={5}
             largeScreen={5}
           >
-            <Card style={styles.dashboardList}>
-              <Card.Content>
-                <Card.Header>Nearby Parks</Card.Header>
-              </Card.Content>
-              <Card.Content style={{ padding: '0' }} className="dashboard-card">
-                <Feed className="overflow-scroll dashboard-feed">
-                  {parkList && (
-                    <NearbyParksList
-                      className="pack-list"
-                      parkList={parkList}
-                    />
-                  )}
-                </Feed>
-              </Card.Content>
-            </Card>
+            <NearbyParksList />
           </Grid.Column>
           <Grid.Column only={'computer'} tablet={8} computer={5}>
-            <Card
-              style={styles.dashboardList}
-              className="dashboard-list-shadow"
-            >
-              <Card.Content>
-                <div style={{ display: 'flex' }}>
-                  <Header style={{ padding: 0, margin: 0 }}>
-                    Upcoming Events
-                  </Header>
-                  <Button
-                    icon="plus"
-                    floated="right"
-                    style={{
-                      position: 'absolute',
-                      top: '5px',
-                      right: '6px',
-                      padding: '0.25em 0.2em',
-                      borderRadius: '50%',
-                      fontSize: '1.75em',
-                      color: 'rgb(83, 184, 191)',
-                      background: 'rgb(45, 66, 80)',
-                    }}
-                    onClick={this.toggleModal}
-                  />
-                </div>
-              </Card.Content>
-              <Card.Content style={{ padding: '0' }} className="dashboard-card">
-                {user && <EventsList className="event-list" user={user} />}
-              </Card.Content>
-            </Card>
+            <EventsList />
           </Grid.Column>
         </Grid>
       </div>
@@ -209,20 +161,12 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapStateToProps = state => {
-  let dropDownParks = state.parkList.map(park => {
-    let newPark = {
-      key: park.id,
-      value: park.id,
-      text: park.name,
-    };
-    return newPark;
-  });
+
 
   // console.log(state)
   return {
     email: state.user.email.toString(),
     parkList: state.nearbyParks,
-    dropDownParks: dropDownParks,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
@@ -235,9 +179,6 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getEveryAddresses() {
-      dispatch(getParksAddresses());
-    },
     getUserLocation() {
       dispatch(getGeolocation());
     },

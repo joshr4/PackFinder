@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Tab, Menu, Label } from 'semantic-ui-react';
+import { Tab, Menu, Label, Card } from 'semantic-ui-react';
 import {
   getNearByUsersInfo,
   getSentRequests,
@@ -13,7 +13,7 @@ import {
   sendFriendRequest,
   removeFriend,
   declineRequest,
-  findUsersByName
+  findUsersByName,
 } from '../../store';
 import { FriendsListTab, FriendsListSearch } from '../';
 
@@ -49,13 +49,12 @@ export class FriendsList extends Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
   render() {
-
     const {
       nearbyUsers,
       friends,
       receivedRequests,
       sentRequests,
-      search
+      search,
     } = this.props.friendsList;
     const {
       fetchFriendsList,
@@ -88,6 +87,11 @@ export class FriendsList extends Component {
         padding: '0.5em 0.5em',
         flex: '1',
         justifyContent: 'center',
+      },
+      dashboardList: {
+        boxShadow:
+          '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
+        width: '100%',
       },
     };
     const panes = [
@@ -187,14 +191,19 @@ export class FriendsList extends Component {
       },
     ];
     return (
-      <Tab
-        menu={{ attached: true, tabular: false }}
-        renderActiveOnly
-        loading={this.state.loading.toString()}
-        panes={panes}
-        activeIndex={this.state.activeIndex}
-        onTabChange={this.handleTabChange}
-      />
+      <Card style={styles.dashboardList}>
+        <h3 style={{ margin: '0.5em' }}>Pack List</h3>
+        <Card.Content style={{ padding: '0' }}>
+          <Tab
+            menu={{ attached: true, tabular: false }}
+            renderActiveOnly
+            loading={this.state.loading.toString()}
+            panes={panes}
+            activeIndex={this.state.activeIndex}
+            onTabChange={this.handleTabChange}
+          />
+        </Card.Content>
+      </Card>
     );
   }
 }
@@ -203,16 +212,14 @@ export class FriendsList extends Component {
  * CONTAINER
  */
 const mapState = state => {
-
   // ({ friendsList, user }) => ({ friendsList, user });
 
   return {
     friendsList: state.friendsList,
     user: state.user,
-    userPosition: state.location.coords
-  }
+    userPosition: state.location.coords,
+  };
 };
-
 
 const mapDispatch = dispatch => {
   return {

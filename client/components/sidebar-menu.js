@@ -63,25 +63,25 @@ const SidebarMenu = props => {
               />
               <Menu.Item
                 as={NavLink}
-                to="/parkList"
+                to="/mobile-parks"
                 name="Parks List"
                 style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
               <Menu.Item
-                // as={NavLink}
-                // to="/events-list"
+                as={NavLink}
+                to="/mobile-events"
                 name="Events"
                 style={styles.sidebarMenuItem}
                 onClick={handleToggle}
               />
-              <Menu.Item
+              {/* <Menu.Item
                 as={NavLink}
                 to="/calendar"
                 name="Calendar"
                 style={styles.sidebarMenuItem}
                 onClick={handleToggle}
-              />
+              /> */}
               <Menu.Item
                 as={NavLink}
                 to="/profile"
