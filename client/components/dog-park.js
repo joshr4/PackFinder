@@ -40,7 +40,7 @@ import {
   getParksAddresses,
 } from '../store';
 import { connect } from 'react-redux';
-import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
+import {VictoryChart, VictoryBar, VictoryAxis, VictoryArea} from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -184,6 +184,7 @@ export class DogPark extends Component {
       },
       slider: 1,
       showModal: false,
+      averageData: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.changeDate = this.changeDate.bind(this);
@@ -202,10 +203,14 @@ export class DogPark extends Component {
     this.setState({ map });
   }
 
-  updateD3() {
+  async updateD3() {
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-
+    let averageVisitsURL = `/api/parks/${parkId}/visits/D3-data/average`;
+    let averageDataResponse = await axios.get(averageVisitsURL);
+    this.setState({
+      averageData:averageDataResponse.data,
+    })
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(
@@ -510,7 +515,6 @@ export class DogPark extends Component {
         visits: elem.visits,
       };
       if (elem.timeObj) {
-        // victoryObj.time = elem.timeObj.getTime();
         victoryObj.time = elem.timeObj;
       }
       victoryData.push(victoryObj);
@@ -523,7 +527,7 @@ export class DogPark extends Component {
       },
     };
     return (
-      <div className="container">
+     <div className="container" style={{overflowY:"scroll"}}>
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
@@ -542,28 +546,159 @@ export class DogPark extends Component {
         />
         <Grid centered className="overflow-scroll" style={{ height: '80vh' }}>
           <Grid.Row>
-            <Grid.Column width={8}>
-              <Card style={styles.dashboardList}>
-                <Card.Content style={{ padding: '0' }}>
-                    <DogParkItem
-                      checkIn={this.toggleModal}
-                      park={this.state.park}
-                    />
-                </Card.Content>
-              </Card>
-            </Grid.Column>
+        <Grid.Column width={8}>
+          <Segment attached>
+          <b>Address: <br /></b>
+          {this.state.park.address.line_1}
+          </Segment>
+          <Segment attached>
+          {this.state.park.averageVisitors}
+          </Segment>
+          <Segment attached>
+          <b>Description: <br /></b>
+          {this.state.park.description}
+          </Segment>
+          <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
+        </Grid.Column>
+        <Grid.Column width={8}>
+            <SingleParkMap
+            zoom={15}
+            center={this.state.park.address.location}
+            mapLoaded={this.mapLoaded.bind(this)}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
 
-            <Grid.Column width={7}>
-              <SingleParkMap
-                zoom={15}
-                center={this.state.park.address.location}
-                mapLoaded={this.mapLoaded.bind(this)}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-              />
+          {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
 
-              {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
-            </Grid.Column>
+        </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={16}>
+          <Segment>
+          <Form onSubmit={this.changeDate}>
+            Select day to view:
+
+            <select name="selectDate" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
+            {this.state.dayOptions.map(elem => {
+              return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
+            })}
+            </select>
+
+
+            <Button type="submit" name="submitDate" style={{marginLeft: '10px'}} color='blue' size='tiny'>
+              Select Day
+            </Button>
+            {this.state.dayView ? (
+              <Button onClick={this.clearDate} name="clearDate" style={{marginLeft: '10px'}} color='green' size='tiny'>
+                Clear
+              </Button>
+            ) : null}
+          </Form>
+            </Segment>
+          <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
+            <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
+          {(3 != 3) ? 
+            (<BarChart
+            style={{'marginLeft': '500px'}}
+            title= {title}
+            data= {D3data}
+            width= {width}
+            height= {height}
+            chartSeries = {chartSeries}
+            x= {x}
+            xLabel= {xLabel}
+            xScale= {xScale}
+            xTicks={xTicks}
+            yTicks= {yTicks}
+            // yDomain= {yDomain}
+            // yLabel = {yLabel}
+            textAlign="center" />)
+            :
+            (null)
+          }
+
+          <VictoryChart
+          title="Visitors"
+          style={{labels: {fontSize:"10px", color:"red"}}}
+          domainPadding={20}
+        >
+          <VictoryAxis
+            // tickValues specifies both the number of ticks and where
+            // they are placed on the axis
+            scale="time"
+            style={{
+              tickLabels: {fontSize: "5px", padding: 5}
+            }}
+            label="Time"
+            // tickValues={[1, 2, 3, 4]}
+            // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+          />
+          <VictoryAxis
+            dependentAxis
+            // tickFormat specifies how ticks should be displayed
+            // tickFormat={(x) => (`$${x / 1000}k`)}
+            style={{
+              // axisLabel: {fontSize: "10px", padding: 30},
+              tickLabels: {fontSize: "5px", padding: 5}
+            }}
+            tickFormat={(x) => (` ${x} visits`)}
+            tickFormat={d3.format(",d")}
+            label="Visits"
+            // tickValues={[0, 1]}
+          />
+          <VictoryBar
+            data={victoryData}
+            style={{
+              tickLabels: {fontSize: "10px", padding: 5}
+            }}
+            title="Visitors"
+            // style={{labels: {fontSize:"10px", color:"red"}}}
+            x="time"
+            y="visits"
+          />
+        </VictoryChart>
+
+        {
+          //VICTORY AREA
+        }
+        <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Daily Averages</Header>        
+        <VictoryChart
+        style={{labels: {fontSize:"10px", color:"red"}}}
+        domainPadding={20}
+      >
+        <VictoryAxis
+          // tickValues specifies both the number of ticks and where
+          // they are placed on the axis
+          style={{
+            tickLabels: {fontSize: "5px", padding: 5}
+          }}
+          label="Time"
+        />
+        <VictoryAxis
+          dependentAxis
+          style={{
+            // axisLabel: {fontSize: "10px", padding: 30},
+            tickLabels: {fontSize: "5px", padding: 5}
+          }}
+          tickFormat={(x) => (` ${x}`)}
+          label="Average Daily Visits"
+          // tickValues={[0, 1]}
+        />
+        <VictoryArea
+          data={this.state.averageData}
+          style={{
+            tickLabels: {fontSize: "10px", padding: 5}
+          }}
+          // style={{labels: {fontSize:"10px", color:"red"}}}
+          x="timeString"
+          y="average"
+        />
+      </VictoryChart>
+
+          </Segment>
+          </Grid.Column>
+
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={16}>
