@@ -48,17 +48,29 @@ export class UserHome extends Component {
 
   componentDidMount() {
     if (!this.props.parkList.length){
-    this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+      this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     }
+
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
+
     if (!this.props.events.length){
-    this.props.getNearByEvents(this.state.location, 8046)
+      this.props.getNearByEvents(this.state.location, 8046)
     }
 
     if (!this.props.userPosition.latitude){
-    this.props.getUserLocation();
+      this.props.getUserLocation();
     }
+
+    if (this.state.loading && !this.props.userPosition.latitude){
+      setTimeout(() => {
+        this.setState({loading: false})
+      }, 5000)
+    }
+    else if (this.state.loading){
+      this.setState({loading: false})
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,15 +104,6 @@ export class UserHome extends Component {
         width: '100%',
       },
     };
-
-    if (this.state.loading && !this.props.userPosition.latitude){
-      setTimeout(() => {
-        this.setState({loading: false})
-      }, 5000)
-    }
-    else if (this.state.loading){
-      this.setState({loading: false})
-    }
 
 
     return (
