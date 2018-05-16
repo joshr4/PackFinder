@@ -12,7 +12,7 @@ const {
 const addresses = require('./addresses')
 
 // console.log('this is addresses', addresses)
-const numUsers = 20;
+const numUsers = 200;
 
 function doTimes(n, fn) {
   const results = [];
