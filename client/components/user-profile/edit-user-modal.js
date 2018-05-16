@@ -97,6 +97,7 @@ class EditUserModal extends Component {
               showNestedModal={showNestedModal}
               onChangeHandler={this.onChangeHandler.bind(this)}
               user={this.state.user}
+              pet={false}
             />
 
             <Button onClick={toggleNestedModal} style={{ width: '128px' }}>

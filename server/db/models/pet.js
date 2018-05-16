@@ -20,7 +20,7 @@ const Pet = db.define('pet', {
     },
     imageUrls: {
         type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue:[],
+        defaultValue: [],
     },
     weight: {
         type: Sequelize.INTEGER,

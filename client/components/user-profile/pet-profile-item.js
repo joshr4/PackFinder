@@ -22,9 +22,9 @@ const PetProfileItem = props => {
               <List>
                 <List.Item>Name: {name}</List.Item>
                 <List.Item>Breed: {breed}</List.Item>
-                <List.Item>Bio: {bio}</List.Item>
                 <List.Item>Age: {age}</List.Item>
                 <List.Item>Weight: {weight}</List.Item>
+                <List.Item>Bio: {bio}</List.Item>
               </List>
             </Segment>
           </Grid.Column>
