@@ -72,7 +72,7 @@ export class UserHome extends Component {
           this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
           this.props.getNearByEvents(this.state.location, 8046);
 
-          this.setState({loading: false}, () => console.log(this.state.loading))
+          this.setState({loading: false})
         }
       );
     }
