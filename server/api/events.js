@@ -138,6 +138,24 @@ router.put('/:id/invite-users', async (req, res, next) => {
     console.log()
     await user.addInvitedEvent(event);
   }
+  event = await Event.findOne({
+    where:{id:req.params.id},
+    include: [
+      {
+        all:true,
+      },
+      {
+        model: Park, required: false,
+        include: [
+          {
+            model: Address,
+            required: false,
+          }
+        ]
+      }
+    ]
+  }
+); 
   res.json(event);
 })
 
