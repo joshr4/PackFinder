@@ -24,7 +24,6 @@ class Routes extends Component {
         <Route exact path="/" component={Splash} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/profile" component={Profile} />
         <Route path="/profile/:userId" component={Profile} />
         <Route exact path="/dog-park" component={SinglePark} />
         <Route path="/dog-park/:id" component={DogPark} />
@@ -35,12 +34,15 @@ class Routes extends Component {
         <Route path="/event/:id" component={EventDetail} />
         <Route path="/events" component={EventList} />
         <Route path="/chat-room" component={ChatRoom} />
+        {/* Mobile specific routes */}
+        <Route path="/mobile-events" component={ChatRoom} />
+
         {
           isLoggedIn &&
             <Switch>
               {/* Routes placed here are only available after logging in */}
               <Route path="/home" component={UserHome} />
-              <Route path="/profile" component={Profile} />
+              <Route exact path="/profile" component={Profile} />
             </Switch>
         }
         {/* Displays our Login component as a fallback */}
