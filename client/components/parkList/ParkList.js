@@ -9,12 +9,15 @@ import {
   Segment,
   Sticky,
   Card,
+  Form,
+  Input,
 } from 'semantic-ui-react';
 import {
   getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
+  getGoogleMapLocation,
 } from '../../store/index.js';
 
 class ParkList extends Component {
@@ -29,6 +32,7 @@ class ParkList extends Component {
       isHover: -1,
       range: 3218, // 2 miles
       slider: 1,
+      searchBox: '',
     };
   }
 
@@ -109,6 +113,14 @@ class ParkList extends Component {
     });
   }
 
+  onSearchChange(evt) {
+    this.setState({ searchBox: evt.target.value });
+  }
+
+  onSearchSubmit(evt) {
+    this.props.getLocationFromAddress(this.state.searchBox);
+  }
+
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
@@ -146,12 +158,23 @@ class ParkList extends Component {
           <Grid.Column width={7}>
             <Card style={styles.dashboardList}>
               <Card.Content>
-                <Card.Header>Nearby Parks</Card.Header>
+                <Card.Header>Parks</Card.Header>
               </Card.Content>
               <Card.Content style={{ padding: '0' }} className="dashboard-card">
+                <Form
+                  onSubmit={this.onSearchSubmit.bind(this)}
+                >
+                  <Input
+                    icon="search"
+                    type="text"
+                    style={{ margin: '3px 0px 13px 0px', fontSize: '16px', width: '100%' }}
+                    placeholder="Seach Packfinder Map"
+                    onChange={this.onSearchChange.bind(this)}
+                  />
+                </Form>
                 <div
                   className="ui one cards overflow-scroll"
-                  style={{ height: '70vh' }}
+                  style={{ height: '64.5vh' }}
                 >
                   {this.props.nearbyParks.map((park, index) => {
                     return (
@@ -168,11 +191,9 @@ class ParkList extends Component {
                 </div>
               </Card.Content>
             </Card>
-            ˝{' '}
           </Grid.Column>
-
           <Grid.Column width={7}>
-            <Sticky context={contextRef} offset={130}>
+            <div>
               <div
                 style={{
                   marginLeft: '15px',
@@ -208,7 +229,7 @@ class ParkList extends Component {
                 mapElement={<div style={{ height: `100%` }} />}
                 isHover={this.state.isHover}
               />
-            </Sticky>
+            </div>
           </Grid.Column>
         </Grid>
       </div>
@@ -234,9 +255,9 @@ const mapDispatch = dispatch => {
     getNearbyParks(location, dist) {
       dispatch(getNearByParksAddresses(location, dist));
     },
-    // getNearByUsers(location){
-    //   dispatch(getNearByUsersInfo(location))
-    // }
+    getLocationFromAddress(address) {
+      dispatch(getGoogleMapLocation(address));
+    },
   };
 };
 
