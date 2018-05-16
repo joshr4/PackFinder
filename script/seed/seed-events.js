@@ -83,9 +83,11 @@ async function createEvents() {
                 posterId: Hugh.id,
                 eventId: event.id,
             })
-            event.addAttendee(Dan)
-            event.addAttendee(Matt)
-            event.addAttendee(Hugh)
+            await event.addAttendee(Dan);
+            await event.addAttendee(Matt);
+            await event.addAttendee(Hugh);
+            await event.setCreator(Hugh);
+            continue;
         }
 
         await event.setCreator(thisUser);
