@@ -5,11 +5,22 @@ body {
 
 body .container {
   padding-top: 20vh;
-  height: 100vh
+  height: 100vh;
+  /* background: #54b9bf; */
+}
+
+.auth-container {
+  padding-top: 20vh;
+  height: 100vh;
   /* background: #54b9bf; */
 }
 
 .friends-list {
+  height: 66.5vh;
+  align-items: baseline;
+  align-content: baseline;
+}
+.events-list {
   height: 66.5vh;
   align-items: baseline;
   align-content: baseline;
@@ -24,12 +35,23 @@ body .container {
   -webkit-overflow-scrolling: touch;
 }
 
+.dashboard-list-shadow {
+  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3), 2px 0px 5px rgba(0, 0, 0, 0.3),
+    0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .dashboard-card {
   padding: 0;
+  height: 72vh;
 }
 
 .dashboard-feed {
-  height: 70vh;
+  height: 72vh;
+}
+body ::-webkit-scrollbar {
+  height: 0px;
+  width: 5px;
+  /* remove scrollbar space */
 }
 
 @media only screen and (max-width: 768px) {
@@ -73,7 +95,7 @@ form div {
   max-width: 300px;
 }
 
-.login-signup>button {
+.login-signup > button {
   margin: 1em;
   display: inline-block;
 }
@@ -89,7 +111,7 @@ form div {
   align-items: center;
 }
 
-.login-signup>form {
+.login-signup > form {
   align-items: center;
   width: 33.33vw;
   justify-content: center;
@@ -141,9 +163,9 @@ form div {
   /* Remove outline */
   opacity: 0.7;
   /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s;
+  -webkit-transition: 0.2s;
   /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+  transition: opacity 0.2s;
 }
 
 /* Mouse-over effects */
@@ -174,7 +196,7 @@ form div {
   /* Set a specific slider handle width */
   height: 25px;
   /* Slider handle height */
-  background: #4CAF50;
+  background: #4caf50;
   /* Green background */
   cursor: pointer;
   /* Cursor on hover */

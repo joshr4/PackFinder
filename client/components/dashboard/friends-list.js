@@ -79,7 +79,7 @@ export class FriendsList extends Component {
         background: '#54b9bf',
       },
       menuItem: {
-        padding: '1em 0.5em',
+        padding: '0.5em 0.5em',
         flex: '1',
         justifyContent: 'center',
       },
