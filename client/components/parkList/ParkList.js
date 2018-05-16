@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Map, ParkListItem } from '../index.js';
 import { connect } from 'react-redux';
-import { Grid, Header, Image, Rail, Segment, Sticky } from 'semantic-ui-react';
-import { getParksAddresses, getGeolocation, getNearByParksAddresses, getNearByUsersInfo } from '../../store/index.js'
+import { Grid, Header, Image, Rail, Segment, Sticky, Form, Button } from 'semantic-ui-react';
+import { getParksAddresses, getGeolocation, getNearByParksAddresses, getNearByUsersInfo, getGoogleMapLocation } from '../../store/index.js'
 
 class ParkList extends Component {
 
@@ -16,7 +16,8 @@ class ParkList extends Component {
       },
       isHover: -1,
       range: 3218, // 2 miles
-      slider: 1
+      slider: 1,
+      searchBox: '',
     }
 
   }
@@ -88,6 +89,13 @@ class ParkList extends Component {
     })
   }
 
+  onSearchChange(evt){
+    this.setState({searchBox: evt.target.value})
+  }
+
+  onSearchSubmit(evt){
+    this.props.getLocationFromAddress(this.state.searchBox)
+  }
 
   handleContextRef = contextRef => this.setState({ contextRef });
 
@@ -120,10 +128,31 @@ class ParkList extends Component {
     return (
       <div className="container" ref={this.handleContextRef}>
 
+      <Grid columns={2}>
+      <Grid.Column width={9}>
+
+      <Grid columns={2}>
+      <Grid.Column width={13}>
+      <Form style={{ fluid: true }} onSubmit={this.onSearchSubmit.bind(this)}>
+      <input type="text" style={{margin: '15px'}} placeholder="Seach Packfinder Map"
+      onChange={this.onSearchChange.bind(this)}  />
+
+      </Form>
+      </Grid.Column>
+      <Grid.Column width={3}>
+      <Button style={{margin: '15px'}} onClick={this.onSearchSubmit.bind(this)} >Fetch</Button>
+      </Grid.Column>
+      </Grid>
+
+      </Grid.Column>
+
+      <Grid.Column width={7}>
       <div style={{marginLeft: '15px', marginTop: '15px', marginBottom: '15px', width: '140px'}} className="slidecontainer">
       <input type="range" min="0" max="3" className="slider" id="viewDistance" value={this.state.slider} onChange={this.sliderChangeHandler.bind(this)} />
       <p>{`Distance: ${distance} miles `}</p>
     </div>
+    </Grid.Column>
+      </Grid>
 
       <Grid columns={2}>
 
@@ -184,9 +213,9 @@ const mapDispatch = dispatch => {
     getNearbyParks(location, dist){
       dispatch(getNearByParksAddresses(location, dist))
     },
-    // getNearByUsers(location){
-    //   dispatch(getNearByUsersInfo(location))
-    // }
+    getLocationFromAddress(address){
+      dispatch(getGoogleMapLocation(address))
+    }
   };
 };
 
