@@ -31,6 +31,7 @@ import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
 import { BarChart, LineChart } from 'react-d3-basic';
 import AddVisitForm from './addvisitform';
+import { DogParkItem } from '.';
 import {
   getVisits,
   deleteVisit,
@@ -521,7 +522,6 @@ export class DogPark extends Component {
         width: '100%',
       },
     };
-
     return (
       <div className="container">
         <VisitModal
@@ -540,36 +540,15 @@ export class DogPark extends Component {
           handleSliderChange={this.handleSliderChange}
           noPark={true}
         />
-        <Grid centered className="overflow-scroll" style={{height: '80vh'}}>
+        <Grid centered className="overflow-scroll" style={{ height: '80vh' }}>
           <Grid.Row>
             <Grid.Column width={8}>
               <Card style={styles.dashboardList}>
-                <Card.Content>
-                  <Card.Header>{this.state.park.name}</Card.Header>
-                </Card.Content>
                 <Card.Content style={{ padding: '0' }}>
-                  <Segment attached>
-                    <b>
-                      Address: <br />
-                    </b>
-                    {this.state.park.address.line_1}
-                  </Segment>
-                  <Segment attached>{this.state.park.averageVisitors}</Segment>
-                  <Segment attached>
-                    <b>
-                      Description: <br />
-                    </b>
-                    {this.state.park.description}
-                  </Segment>
-                  <Button
-                    positive
-                    style={{ margin: 10 }}
-                    type="submit"
-                    name="submitBtn"
-                    onClick={() => this.toggleModal()}
-                  >
-                    Check-in
-                  </Button>
+                    <DogParkItem
+                      checkIn={this.toggleModal}
+                      park={this.state.park}
+                    />
                 </Card.Content>
               </Card>
             </Grid.Column>
