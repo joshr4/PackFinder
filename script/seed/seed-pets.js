@@ -10,7 +10,17 @@ const axios = require('axios');
 
 const numPets = 205; //do not set this higher than users
 
-const randUser = [201,202,203,204,205]
+const randUser = [201, 202, 203, 204, 205]
+
+const customImg = [
+  'http://www.heraldchronicle.com/wp-content/uploads/2017/09/dog-in-costume-VI.jpg',
+  'https://www.rd.com/wp-content/uploads/2017/09/04_of-the-Best-Halloween-Costumes-for-Dogs-via-petthingsonline.com_.jpg',
+  'https://metrouk2.files.wordpress.com/2016/10/star-wars-pet-bantha-rider-costume-bc-808050.jpg','http://www.maniacworld.com/dog-yoda-halloween-costume.jpg',
+  'http://4.bp.blogspot.com/_p4aQPkYlwrw/TKxPyZaus2I/AAAAAAAAF-0/zefsM0ydDyA/s1600/wonder+woman+dog+costume.jpeg',
+  'http://www.samorzady.org/upload/2017/11/07/halloween-dog-costume-ideas-32-easy-cute-costumes-for-pets-in-halloween-costumes-l-bf675b3731f65daa.jpg',
+  'https://i.pinimg.com/736x/51/12/4b/51124b220cd3c0b525cd78e0785e8a16--dog-halloween-costumes-pet-costumes.jpg',
+  'http://boredomtherapy.com/wp-content/uploads/2015/10/01-dog-haloween-costumes.jpg'
+]
 
 const breeds = {
   "affenpinscher": [],
@@ -247,26 +257,24 @@ function generatePets() {
 
   //PUT CUSTOM PETS HERE
 
-  // pets.push(
-  //   Pet.build({
-  //     age: chance.integer({
-  //       min: 1,
-  //       max: 16
-  //     }),
-  //     breed: `${subBreed}${randBreed}`,
-  //     imageUrls: [imageUrl],
-  //     bio: chance.paragraph({
-  //       sentences: 1
-  //     }),
-  //     weight: chance.integer({
-  //       min: 7,
-  //       max: 125
-  //     }),
-  //     userId: chance.integer({
-  //       min: 1,
-  //       max: 19
-  //     })
-  //   }))
+  pets.push(
+    Pet.build({
+      name: faker.name.firstName(),
+      age: chance.integer({
+        min: 1,
+        max: 11
+      }),
+      breed: `${subBreed}${randBreed}`,
+      imageUrls: [imageUrl],
+      bio: chance.paragraph({
+        sentences: 1
+      }),
+      weight: chance.integer({
+        min: 7,
+        max: 125
+      }),
+      userId: index++
+    }))
   return pets;
 }
 
