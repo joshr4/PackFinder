@@ -220,19 +220,26 @@ export class EventDetail extends Component {
 
 
               <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
-                <SingleParkMap
-                  zoom={15}
-                  center={coords}
-                  mapLoaded={this.mapLoaded.bind(this)}
-                  containerElement={<div style={{ height: `100%` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                />
+                <Card style={styles.dashboardList}>
+                  <Card.Content style={{ padding: '0em' }}>
+                    <Header style={{ flex: 2, margin: '0.5em', fontSize: '1em' }}>Event Chat</Header>
+                    <ChatRoom height={250} eventId={parseInt(this.props.match.params.id)} />
+
+                  </Card.Content>
+                </Card>
               </Grid.Column>
               <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
-                <Card style={styles.dashboardList}>
-                  <Header>Event Chat</Header>
-                  <ChatRoom height={250} eventId={parseInt(this.props.match.params.id)} />
-                </Card>
+                {/* <Card style={styles.dashboardList}>
+                  <Card.Content style={{ padding: '0em' }}> */}
+                    <SingleParkMap
+                      zoom={15}
+                      center={coords}
+                      mapLoaded={this.mapLoaded.bind(this)}
+                      containerElement={<div style={{ height: `100%` }} />}
+                      mapElement={<div style={{ height: `100%` }} />}
+                    />
+                  {/* </Card.Content>
+                </Card> */}
               </Grid.Column>
             </Grid.Row>
             {/* <Grid.Row>
