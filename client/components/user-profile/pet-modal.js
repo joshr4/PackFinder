@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Header, Image, Modal, Grid, Input, Form, TextArea, Icon } from 'semantic-ui-react';
 import AddVisitForm from '../addvisitform';
+import { EditImageModal } from '../index.js';
 
 const PetModal = props => {
-  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet } = props
+  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet, toggleNestedModal, showNestedModal } = props
   return (
     <Modal open={props.show} onClose={props.onClose}>
       <Modal.Header>Edit your pet</Modal.Header>
@@ -14,24 +15,22 @@ const PetModal = props => {
           size="large"
           src={item.imageUrls[0]}
         />
-        {/*
-          <EditImageModal
+
+        <EditImageModal
         toggleNestedModal={toggleNestedModal}
         showNestedModal={showNestedModal}
-        onChangeHandler={this.onChangeHandler.bind(this)}
-        user={this.state.user}
+        user={item}
+        pet={true}
+        onChangeHandler={e => handleChange(e)}
         />
-      */}
-      <Button style={{ width: '128px' }}>
+
+      <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
       Edit photo{' '}
     </Button>
     </div>
 
-
         <Modal.Description>
           <Form onSubmit={props.handleSubmit} onChange={e => handleChange(e)}>
-
-
 
             <Form.Group widths="equal">
                 <Form.Field

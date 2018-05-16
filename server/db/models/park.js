@@ -2,11 +2,23 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Address = db.define('address', {
-    line_1: Sequelize.STRING,
+    line_1: {
+      type: Sequelize.STRING,
+      defaultValue: "",
+    },
     // line_2: Sequelize.STRING,
-    city: Sequelize.STRING,
-    state: Sequelize.STRING,
-    zipcode: Sequelize.STRING,
+    city: {
+      type: Sequelize.STRING,
+      defaultValue: ""
+    },
+    state: {
+      type: Sequelize.STRING,
+      defaultValue: "",
+    },
+    zipcode: {
+      type: Sequelize.STRING,
+      defaultValue: "",
+    },
     location: {
       type: Sequelize.JSON,
       defaultValue: {lat: 0, lng: 0},
@@ -14,7 +26,7 @@ const Address = db.define('address', {
     fullAddress: {
         type: Sequelize.VIRTUAL,
         get() {
-            return `${this.line_1} ${this.city}, ${this.state} ${this.zipcode}`
+            return `${this.line_1} ${this.city} ${this.state} ${this.zipcode}`
         }
     }
 });
