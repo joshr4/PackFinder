@@ -221,7 +221,7 @@ const mapStateToProps = state => {
   // console.log(state)
   return {
     email: state.user.email.toString(),
-    parkList: state.parkList,
+    parkList: state.nearbyParks,
     dropDownParks: dropDownParks,
     nearbyUsers: state.nearbyUsers,
     user: state.user,

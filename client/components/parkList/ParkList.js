@@ -13,7 +13,6 @@ import {
   Input,
 } from 'semantic-ui-react';
 import {
-  getParksAddresses,
   getGeolocation,
   getNearByParksAddresses,
   getNearByUsersInfo,
@@ -38,8 +37,6 @@ class ParkList extends Component {
 
   componentDidMount() {
     // this.props.getEveryAddresses();
-
-    console.log(this.props)
 
     if (!this.props.userPosition.latitude){
       this.props.getUserLocation();
@@ -248,24 +245,21 @@ class ParkList extends Component {
 
 const mapStateToProps = state => {
   return {
-    nearbyParks: state.parkList,
+    nearbyParks: state.nearbyParks,
     userPosition: state.location.coords,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    getEveryAddresses() {
-      // dispatch(getParksAddresses());
-    },
     getUserLocation() {
-      // dispatch(getGeolocation());
+      dispatch(getGeolocation());
     },
     getNearbyParks(location, dist) {
-      // dispatch(getNearByParksAddresses(location, dist));
+      dispatch(getNearByParksAddresses(location, dist));
     },
     getLocationFromAddress(address) {
-      // dispatch(getGoogleMapLocation(address));
+      dispatch(getGoogleMapLocation(address));
     },
   };
 };
