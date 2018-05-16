@@ -150,7 +150,7 @@ export class EventDetail extends Component {
           '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
         width: '100%',
         padding: 0,
-        marginBottom:0,
+        marginBottom:0, 
       },
     };
     return displayEvent ? (
