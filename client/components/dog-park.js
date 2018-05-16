@@ -27,7 +27,7 @@ import {BarChart, LineChart} from 'react-d3-basic'
 import AddVisitForm from './addvisitform';
 import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
 import { connect } from 'react-redux';
-import {VictoryChart, VictoryBar, VictoryAxis} from 'victory';
+import {VictoryChart, VictoryBar, VictoryAxis, VictoryArea} from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -171,6 +171,7 @@ export class DogPark extends Component {
       },
       slider: 1,
       showModal: false,
+      averageData: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.changeDate = this.changeDate.bind(this);
@@ -189,10 +190,14 @@ export class DogPark extends Component {
     this.setState({ map })
   }
 
-  updateD3() {
+  async updateD3() {
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-
+    let averageVisitsURL = `/api/parks/${parkId}/visits/D3-data/average`;
+    let averageDataResponse = await axios.get(averageVisitsURL);
+    this.setState({
+      averageData:averageDataResponse.data,
+    })
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
@@ -465,7 +470,6 @@ export class DogPark extends Component {
         visits:elem.visits,
       }
       if (elem.timeObj) {
-        // victoryObj.time = elem.timeObj.getTime();
         victoryObj.time = elem.timeObj;
       }
       victoryData.push(victoryObj);
@@ -473,7 +477,7 @@ export class DogPark extends Component {
 
     return (
 
-      <div className="container">
+      <div className="container" style={{overflowY:"scroll"}}>
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
@@ -544,31 +548,34 @@ export class DogPark extends Component {
             ) : null}
           </Form>
             </Segment>
-          <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
           <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
-          <BarChart
-          style={{'marginLeft': '500px'}}
-          title= {title}
-          data= {D3data}
-          width= {width}
-          height= {height}
-          chartSeries = {chartSeries}
-          x= {x}
-          xLabel= {xLabel}
-          xScale= {xScale}
-          xTicks={xTicks}
-          yTicks= {yTicks}
-          // yDomain= {yDomain}
-          // yLabel = {yLabel}
-          textAlign="center" />
+            <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
+          {(3 != 3) ? 
+            (<BarChart
+            style={{'marginLeft': '500px'}}
+            title= {title}
+            data= {D3data}
+            width= {width}
+            height= {height}
+            chartSeries = {chartSeries}
+            x= {x}
+            xLabel= {xLabel}
+            xScale= {xScale}
+            xTicks={xTicks}
+            yTicks= {yTicks}
+            // yDomain= {yDomain}
+            // yLabel = {yLabel}
+            textAlign="center" />)
+            :
+            (null)
+          }
 
           <VictoryChart
-          // domainPadding will add space to each side of VictoryBar to
-          // prevent it from overlapping the axis
+          title="Visitors"
           style={{labels: {fontSize:"10px", color:"red"}}}
           domainPadding={20}
         >
-        <VictoryAxis
+          <VictoryAxis
             // tickValues specifies both the number of ticks and where
             // they are placed on the axis
             scale="time"
@@ -597,11 +604,49 @@ export class DogPark extends Component {
             style={{
               tickLabels: {fontSize: "10px", padding: 5}
             }}
+            title="Visitors"
             // style={{labels: {fontSize:"10px", color:"red"}}}
             x="time"
             y="visits"
           />
         </VictoryChart>
+
+        {
+          //VICTORY AREA
+        }
+        <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Daily Averages</Header>        
+        <VictoryChart
+        style={{labels: {fontSize:"10px", color:"red"}}}
+        domainPadding={20}
+      >
+        <VictoryAxis
+          // tickValues specifies both the number of ticks and where
+          // they are placed on the axis
+          style={{
+            tickLabels: {fontSize: "5px", padding: 5}
+          }}
+          label="Time"
+        />
+        <VictoryAxis
+          dependentAxis
+          style={{
+            // axisLabel: {fontSize: "10px", padding: 30},
+            tickLabels: {fontSize: "5px", padding: 5}
+          }}
+          tickFormat={(x) => (` ${x}`)}
+          label="Average Daily Visits"
+          // tickValues={[0, 1]}
+        />
+        <VictoryArea
+          data={this.state.averageData}
+          style={{
+            tickLabels: {fontSize: "10px", padding: 5}
+          }}
+          // style={{labels: {fontSize:"10px", color:"red"}}}
+          x="timeString"
+          y="average"
+        />
+      </VictoryChart>
 
           </Segment>
           </Grid.Column>
