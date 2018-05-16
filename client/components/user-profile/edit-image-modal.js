@@ -4,13 +4,24 @@ import { connect } from 'react-redux';
 import { updateUserStore } from '../../store';
 
 export const EditImageModal = props => {
-  const { showNestedModal, toggleNestedModal, user, onChangeHandler } = props;
+  const { showNestedModal, toggleNestedModal, user, onChangeHandler, pet } = props;
+
   return (
     <Modal dimmer={false} open={showNestedModal} size="small">
       <Modal.Header>Update Photo</Modal.Header>
       <Modal.Content>
         <Form>
           <Form.Group widths="equal">
+          {pet ?
+            <Form.Field
+              fluid
+              control={Input}
+              label="ImageURL"
+              name="imageUrls"
+              onChange={onChangeHandler}
+              value={user.imageUrls[0]}
+            />
+            :
             <Form.Field
               fluid
               control={Input}
@@ -18,7 +29,7 @@ export const EditImageModal = props => {
               name="imageUrl"
               onChange={onChangeHandler}
               value={user.imageUrl}
-            />
+            /> }
           </Form.Group>
         </Form>
       </Modal.Content>
