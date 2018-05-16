@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { SingleParkMap, ParkListItem, VisitModal } from './index.js';
 import moment from 'moment';
 import {
@@ -18,16 +18,29 @@ import {
   Visibility,
   Card,
   Item,
-  Label, Embed,
-  Form, Input, Radio, Select, TextArea, Checkbox
-} from 'semantic-ui-react'
-import axios from 'axios'
+  Label,
+  Embed,
+  Form,
+  Input,
+  Radio,
+  Select,
+  TextArea,
+  Checkbox,
+} from 'semantic-ui-react';
+import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
-import {BarChart, LineChart} from 'react-d3-basic'
+import { BarChart, LineChart } from 'react-d3-basic';
 import AddVisitForm from './addvisitform';
-import { getVisits, deleteVisit, updateVisit, addVisit, getParksAddresses } from '../store';
+import { DogParkItem } from '.';
+import {
+  getVisits,
+  deleteVisit,
+  updateVisit,
+  addVisit,
+  getParksAddresses,
+} from '../store';
 import { connect } from 'react-redux';
-import {VictoryChart, VictoryBar, VictoryAxis} from 'victory';
+import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -38,7 +51,7 @@ import {VictoryChart, VictoryBar, VictoryAxis} from 'victory';
 
 let timeDisplay = function(dateObj, military = false) {
   if (dateObj == '') {
-    return ''
+    return '';
   }
   let hour = dateObj.getHours();
   let minutes = dateObj.getMinutes();
@@ -48,16 +61,15 @@ let timeDisplay = function(dateObj, military = false) {
     if (hour >= 12) {
       hour -= 12;
       suffix = ' PM';
-    }
-    else {
+    } else {
       suffix = ' AM';
     }
   }
-  let hourString = (hour < 10) ? '0' + hour + ':' : hour + ':';
-  let minuteString = (minutes < 10) ? '0' + minutes : minutes;
+  let hourString = hour < 10 ? '0' + hour + ':' : hour + ':';
+  let minuteString = minutes < 10 ? '0' + minutes : minutes;
   outputString = hourString + minuteString + suffix;
   return outputString;
-}
+};
 
 let dateDisplay = function(dateObj) {
   let month = dateObj.getMonth() + 1;
@@ -69,11 +81,11 @@ let dateDisplay = function(dateObj) {
     day = '0' + day;
   }
   return month + '/' + day;
-}
+};
 
 let strfTime = function(dateObj) {
   if (dateObj == '') {
-    return ''
+    return '';
   }
   let month = dateObj.getMonth() + 1;
   if (month < 10) {
@@ -87,16 +99,16 @@ let strfTime = function(dateObj) {
 
   let hour = dateObj.getHours();
   let minutes = dateObj.getMinutes();
-  let hourString = (hour < 10) ? '0' + hour + ':' : hour + ':';
-  let minuteString = (minutes < 10) ? '0' + minutes : minutes;
+  let hourString = hour < 10 ? '0' + hour + ':' : hour + ':';
+  let minuteString = minutes < 10 ? '0' + minutes : minutes;
   let TString = hourString + minuteString;
 
   return DString + ' ' + TString;
-}
+};
 
 let stringFormat = function(dateObj) {
   if (dateObj == '') {
-    return ''
+    return '';
   }
   let year = dateObj.getFullYear();
   let day = dateObj.getDate();
@@ -104,9 +116,10 @@ let stringFormat = function(dateObj) {
   let hour = dateObj.getHours();
   let minutes = dateObj.getMinutes();
   let outputString = '';
-  outputString = year + '-' + (month + 1) + '-' + day + ' ' + hour + ':' + minutes;
+  outputString =
+    year + '-' + (month + 1) + '-' + day + ' ' + hour + ':' + minutes;
   return outputString;
-}
+};
 
 let YmDFormat = function(dateObj) {
   let year = dateObj.getFullYear();
@@ -119,7 +132,7 @@ let YmDFormat = function(dateObj) {
     month = '0' + month;
   }
   return year + '-' + month + '-' + day;
-}
+};
 
 let halfHourpartition = 1000 * 60 * 30;
 let hourPartition = 1000 * 60 * 60;
@@ -127,7 +140,7 @@ let dayPartition = 24 * hourPartition;
 
 export class DogPark extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     let thisDate = new Date(Date.now());
     let thisDateString = YmDFormat(thisDate);
     this.state = {
@@ -138,36 +151,36 @@ export class DogPark extends Component {
       maxT: '',
       xIndices: [],
       d3Data: [
-          {letter: 'Z', visits: 0.00074},
-          {time: 'test', visits: 0.00074},
-          {time: 'test2', visits: 0.00074}
+        { letter: 'Z', visits: 0.00074 },
+        { time: 'test', visits: 0.00074 },
+        { time: 'test2', visits: 0.00074 },
       ],
       maxVisits: 0,
       userId: 1,
       parkId: 1,
       park: {
         address: {
-        line_1: '',
-        location: {
-          lat: 41.895266,
-          lng: -87.6412237,
-        }
-      }
-    },
+          line_1: '',
+          location: {
+            lat: 41.895266,
+            lng: -87.6412237,
+          },
+        },
+      },
       addFormFieldData: {
         park: parseInt(props.match.params.id),
         start: moment().format('HH:mm'),
         end: '20:00',
         visitDate: moment().format('YYYY-MM-DD'),
       },
-      selectedDate: "",
+      selectedDate: '',
       dayView: false,
       timePartition: dayPartition,
       dayOptions: [],
       map: null,
       location: {
         lat: 41.895266,
-        lng: -87.6412237
+        lng: -87.6412237,
       },
       slider: 1,
       showModal: false,
@@ -182,11 +195,11 @@ export class DogPark extends Component {
     this.addEvent = this.addEvent.bind(this);
   }
 
-  mapLoaded(map){
-    if (this.state.map !== null){
-      return
+  mapLoaded(map) {
+    if (this.state.map !== null) {
+      return;
     }
-    this.setState({ map })
+    this.setState({ map });
   }
 
   updateD3() {
@@ -195,7 +208,9 @@ export class DogPark extends Component {
 
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
-      let filteredEvents = this.props.events.filter(event => event.parkId == this.props.match.params.id);
+      let filteredEvents = this.props.events.filter(
+        event => event.parkId == this.props.match.params.id
+      );
       visits = filteredEvents;
       // let visits = this.props.events;
       let dateMin = '';
@@ -209,46 +224,52 @@ export class DogPark extends Component {
         maxT = plusOne;
       }
       visits.forEach(visit => {
-      let startT = new Date(visit.start);
+        let startT = new Date(visit.start);
         let endT = new Date(visit.end);
-        if (minT == '' || startT < minT && !this.state.dayView) {
-            minT = startT;
+        if (minT == '' || (startT < minT && !this.state.dayView)) {
+          minT = startT;
         }
         if (dateMin == '' || startT < dateMin) {
           dateMin = startT;
         }
 
-        if (maxT == '' || endT > maxT && !this.state.dayView) {
+        if (maxT == '' || (endT > maxT && !this.state.dayView)) {
           maxT = endT;
         }
         if (dateMax == '' || endT > dateMax) {
           dateMax = endT;
         }
-      })
+      });
 
       let d3Data = [];
       let width = maxT - minT;
       let halfHourpartition = 1000 * 60 * 30;
       let hourPartition = 1000 * 60 * 60;
 
-
       let datewidth = dateMax - dateMin;
       let dayPartition = 24 * hourPartition;
-      let nDays = datewidth/dayPartition;
+      let nDays = datewidth / dayPartition;
       let dayOptions = [];
-      let dateOnlyMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate(), 0, 0);
+      let dateOnlyMin = new Date(
+        dateMin.getFullYear(),
+        dateMin.getMonth(),
+        dateMin.getDate(),
+        0,
+        0
+      );
       for (let i = 0; i < nDays; i++) {
         let dayOption = new Date(dateOnlyMin.getTime() + dayPartition * i);
-        let dayOptionString = dateDisplay(dayOption) + "/" + dateOnlyMin.getFullYear();
+        let dayOptionString =
+          dateDisplay(dayOption) + '/' + dateOnlyMin.getFullYear();
         let elem = {
-          val: dateOnlyMin.getFullYear() + "/" + dateDisplay(dayOption),
+          val: dateOnlyMin.getFullYear() + '/' + dateDisplay(dayOption),
           display: dayOptionString,
         };
         dayOptions.push(elem);
       }
       this.setState({
         dayOptions,
-      })
+      });
 
       let nPartitions = width / this.state.timePartition;
       if (this.state.dayView) {
@@ -256,12 +277,24 @@ export class DogPark extends Component {
       }
       let maxVisits = 0;
       for (let i = 0; i < nPartitions; i++) {
-        let intervalStart = new Date(minT.getTime() + this.state.timePartition * i);
+        let intervalStart = new Date(
+          minT.getTime() + this.state.timePartition * i
+        );
         if (!this.state.dayView) {
-          let dateOnly = new Date(minT.getFullYear(), minT.getMonth(), minT.getDate(), 0, 0);
-          intervalStart = new Date(dateOnly.getTime() + this.state.timePartition * i);
+          let dateOnly = new Date(
+            minT.getFullYear(),
+            minT.getMonth(),
+            minT.getDate(),
+            0,
+            0
+          );
+          intervalStart = new Date(
+            dateOnly.getTime() + this.state.timePartition * i
+          );
         }
-        let intervalEnd = new Date(intervalStart.getTime() + this.state.timePartition);
+        let intervalEnd = new Date(
+          intervalStart.getTime() + this.state.timePartition
+        );
         let d3Elem = {
           timeObj: intervalStart,
           time: stringFormat(intervalStart),
@@ -278,14 +311,13 @@ export class DogPark extends Component {
           // Setting X-label
           if (!this.state.dayView) {
             d3Elem.time = dateDisplay(intervalStart);
-          }
-          else {
+          } else {
             d3Elem.time = timeDisplay(intervalStart);
           }
-          if ((startT < intervalEnd && endT > intervalStart)) {
+          if (startT < intervalEnd && endT > intervalStart) {
             d3Elem.visits++;
           }
-        })
+        });
         if (d3Elem.visits > maxVisits) {
           maxVisits = d3Elem.visits;
         }
@@ -297,25 +329,27 @@ export class DogPark extends Component {
         maxT,
         d3Data,
         maxVisits,
-      })
-    })
+      });
+    });
   }
   componentDidMount() {
     let parkId = this.props.match.params.id;
     let parkURL = `/api/parks/${parkId}`;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-    let parkArray = this.props.parkList.filter(park => park.id == this.props.match.params.id);
+    let parkArray = this.props.parkList.filter(
+      park => park.id == this.props.match.params.id
+    );
     axios.get(`/api/parks/${parkId}`).then(response => {
       this.setState({
-        park:response.data
-      })
+        park: response.data,
+      });
     });
     this.props.getData().then(() => {
       this.updateD3();
     });
   }
   addEvent = () => {
-    let stateVisit = this.state.addFormFieldData
+    let stateVisit = this.state.addFormFieldData;
     let year = parseInt(stateVisit.visitDate.split('-')[0]);
     let month = parseInt(stateVisit.visitDate.split('-')[1]) - 1;
     let day = parseInt(stateVisit.visitDate.split('-')[2]);
@@ -324,108 +358,120 @@ export class DogPark extends Component {
     let toHour = parseInt(stateVisit.end.split(':')[0]);
     let toMin = parseInt(stateVisit.end.split(':')[1]);
     let startTime = new Date(year, month, day, fromHour, fromMin);
-    let endTime = new Date(year, month, day, fromHour, fromMin + 30 * this.state.slider);
+    let endTime = new Date(
+      year,
+      month,
+      day,
+      fromHour,
+      fromMin + 30 * this.state.slider
+    );
     let newVisitInfo = {
       start: startTime,
       end: endTime,
       parkId: stateVisit.park,
       userId: this.props.user.id,
-      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0].text
-    }
+      title: this.props.parkList.filter(park => park.key === stateVisit.park)[0]
+        .text,
+    };
     //ADD IN USER ID TO POST REQUEST
-    this.props.addNewVisit(newVisitInfo).then((result) => {
+    this.props.addNewVisit(newVisitInfo).then(result => {
       this.updateD3();
     });
-    this.toggleModal()
-  }
+    this.toggleModal();
+  };
 
   handleChange = (e, data) => {
     this.setState({
-        addFormFieldData: Object.assign(this.state.addFormFieldData, {[e.target.name]: e.target.value})
-    })
-  }
+      addFormFieldData: Object.assign(this.state.addFormFieldData, {
+        [e.target.name]: e.target.value,
+      }),
+    });
+  };
   toggleModal() {
     this.setState({
       showModal: !this.state.showModal,
     });
   }
 
-  hideFixedMenu = () => this.setState({ fixed: false })
-  showFixedMenu = () => this.setState({ fixed: true })
+  hideFixedMenu = () => this.setState({ fixed: false });
+  showFixedMenu = () => this.setState({ fixed: true });
   changeDate(event) {
     event.preventDefault();
-    let splitDate = event.target.selectDate.value.split("/");
+    let splitDate = event.target.selectDate.value.split('/');
     // dayView = true;
-    let selectedDate = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]));
+    let selectedDate = new Date(
+      parseInt(splitDate[0]),
+      parseInt(splitDate[1]) - 1,
+      parseInt(splitDate[2])
+    );
     this.setState({
-      timePartition:hourPartition,
+      timePartition: hourPartition,
       dayView: true,
-      selectedDate:selectedDate,
-    })
+      selectedDate: selectedDate,
+    });
     this.updateD3();
   }
   clearDate(event) {
     event.preventDefault();
     this.setState({
-      timePartition:dayPartition,
+      timePartition: dayPartition,
       dayView: false,
-      selectedDate:"",
+      selectedDate: '',
     });
     this.updateD3();
   }
   handleSliderChange = e => {
-    this.setState({ slider: e.target.value})
-  }
+    this.setState({ slider: e.target.value });
+  };
   render() {
-      const { children } = this.props
-      const { fixed } = this.state
-      const courses = [1, 2, 3, 4, 5, 6, 7, 8]
-      const videos = ['1', '2', '3', '4', '5'];
-      const items = [
-        {
-          childKey: 0,
-          image: 'https://react.semantic-ui.com/assets/images/wireframe/image.png',
-          header: 'Header',
-          description: 'Description',
-          meta: 'Metadata',
-          extra: 'Extra',
-        },
-        {
-          childKey: 1,
-          image: 'https://react.semantic-ui.com/assets/images/wireframe/image.png',
-          header: 'Header',
-          description: 'Description',
-          meta: 'Metadata',
-          extra: 'Extra',
-        },
-      ]
-      const simpleList = courses.map(val => (
-        <li key={val} data-id={val}>List Item {val}</li>
-      ));
+    const { children } = this.props;
+    const { fixed } = this.state;
+    const courses = [1, 2, 3, 4, 5, 6, 7, 8];
+    const videos = ['1', '2', '3', '4', '5'];
+    const items = [
+      {
+        childKey: 0,
+        image:
+          'https://react.semantic-ui.com/assets/images/wireframe/image.png',
+        header: 'Header',
+        description: 'Description',
+        meta: 'Metadata',
+        extra: 'Extra',
+      },
+      {
+        childKey: 1,
+        image:
+          'https://react.semantic-ui.com/assets/images/wireframe/image.png',
+        header: 'Header',
+        description: 'Description',
+        meta: 'Metadata',
+        extra: 'Extra',
+      },
+    ];
+    const simpleList = courses.map(val => (
+      <li key={val} data-id={val}>
+        List Item {val}
+      </li>
+    ));
 
-      const ItemExampleProps = () => (
-        <Item.Group items={items} />
-      )
-      var D3data = [
-        {letter: 'Z', visits: 0.00074},
-      ];
-      var D3data = this.state.d3Data;
-      // var parseDate = d3.time.format("%m/%d/%y").parse;
-      var parseDate = d3.time.format('%Y-%m-%d %H:%M').parse;
-      var width = 1500,
+    const ItemExampleProps = () => <Item.Group items={items} />;
+    var D3data = [{ letter: 'Z', visits: 0.00074 }];
+    var D3data = this.state.d3Data;
+    // var parseDate = d3.time.format("%m/%d/%y").parse;
+    var parseDate = d3.time.format('%Y-%m-%d %H:%M').parse;
+    var width = 1500,
       height = 600,
       title = 'Bar Chart',
       chartSeries = [
         {
           field: 'visits',
-          name: 'Visits'
-        }
+          name: 'Visits',
+        },
       ],
       x = function(d) {
-        if (typeof (d.time) === typeof ('string')) {
+        if (typeof d.time === typeof 'string') {
           return d.time;
-        }
-        else if (d.time) {
+        } else if (d.time) {
           return parseDate(d.time.toString());
         }
       },
@@ -437,10 +483,9 @@ export class DogPark extends Component {
       // .ticks(d3.time.days, 1)
       // .tickFormat((true) ? d3.time.format('%H:%M') : "")
       // xTicks = [d3.time.format("%m-%d"), 3]
-      xTicks = [d3.time.days, 1]
-      ;
-      // var xScale = d3.time.scale()
-      // .domain([mindate, maxdate])
+      xTicks = [d3.time.days, 1];
+    // var xScale = d3.time.scale()
+    // .domain([mindate, maxdate])
     // const markers = [
     //   {
     //     address: {
@@ -453,26 +498,31 @@ export class DogPark extends Component {
     //   }
     // ]
     const testData = [
-      {time: 1, visits: 13000},
-      {time: 2, visits: 16500},
-      {time: 3, visits: 14250},
-      {time: 4, visits: 19000}
+      { time: 1, visits: 13000 },
+      { time: 2, visits: 16500 },
+      { time: 3, visits: 14250 },
+      { time: 4, visits: 19000 },
     ];
     const victoryData = [];
 
     D3data.forEach(elem => {
       let victoryObj = {
-        visits:elem.visits,
-      }
+        visits: elem.visits,
+      };
       if (elem.timeObj) {
         // victoryObj.time = elem.timeObj.getTime();
         victoryObj.time = elem.timeObj;
       }
       victoryData.push(victoryObj);
     });
-
+    const styles = {
+      dashboardList: {
+        boxShadow:
+          '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
+        width: '100%',
+      },
+    };
     return (
-
       <div className="container">
         <VisitModal
           modalType={'add'}
@@ -490,127 +540,141 @@ export class DogPark extends Component {
           handleSliderChange={this.handleSliderChange}
           noPark={true}
         />
-          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-          <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">{this.state.park.name}</Header>
-          <Grid celled>
+        <Grid centered className="overflow-scroll" style={{ height: '80vh' }}>
           <Grid.Row>
-        <Grid.Column width={8}>
-          <Segment attached>
-          <b>Address: <br /></b>
-          {this.state.park.address.line_1}
-          </Segment>
-          <Segment attached>
-          {this.state.park.averageVisitors}
-          </Segment>
-          <Segment attached>
-          <b>Description: <br /></b>
-          {this.state.park.description}
-          </Segment>
-          <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
-        </Grid.Column>
-        <Grid.Column width={8}>
-            <SingleParkMap
-            zoom={15}
-            center={this.state.park.address.location}
-            mapLoaded={this.mapLoaded.bind(this)}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
+            <Grid.Column width={8}>
+              <Card style={styles.dashboardList}>
+                <Card.Content style={{ padding: '0' }}>
+                    <DogParkItem
+                      checkIn={this.toggleModal}
+                      park={this.state.park}
+                    />
+                </Card.Content>
+              </Card>
+            </Grid.Column>
 
-          {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
+            <Grid.Column width={7}>
+              <SingleParkMap
+                zoom={15}
+                center={this.state.park.address.location}
+                mapLoaded={this.mapLoaded.bind(this)}
+                containerElement={<div style={{ height: `100%` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+              />
 
-        </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={16}>
-          <Segment>
-          <Form onSubmit={this.changeDate}>
-            Select day to view:
-
-            <select name="selectDate" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
-            {this.state.dayOptions.map(elem => {
-              return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
-            })}
-            </select>
-
-
-            <Button type="submit" name="submitDate" style={{marginLeft: '10px'}} color='blue' size='tiny'>
-              Select Day
-            </Button>
-            {this.state.dayView ? (
-              <Button onClick={this.clearDate} name="clearDate" style={{marginLeft: '10px'}} color='green' size='tiny'>
-                Clear
-              </Button>
-            ) : null}
-          </Form>
-            </Segment>
-          <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">Visitors</Header>
-          <Segment style={{'margin': 'auto', 'textAlign': 'center'}}>
-          <BarChart
-          style={{'marginLeft': '500px'}}
-          title= {title}
-          data= {D3data}
-          width= {width}
-          height= {height}
-          chartSeries = {chartSeries}
-          x= {x}
-          xLabel= {xLabel}
-          xScale= {xScale}
-          xTicks={xTicks}
-          yTicks= {yTicks}
-          // yDomain= {yDomain}
-          // yLabel = {yLabel}
-          textAlign="center" />
-
-          <VictoryChart
-          // domainPadding will add space to each side of VictoryBar to
-          // prevent it from overlapping the axis
-          style={{labels: {fontSize:"10px", color:"red"}}}
-          domainPadding={20}
-        >
-        <VictoryAxis
-            // tickValues specifies both the number of ticks and where
-            // they are placed on the axis
-            scale="time"
-            style={{
-              tickLabels: {fontSize: "5px", padding: 5}
-            }}
-            label="Time"
-            // tickValues={[1, 2, 3, 4]}
-            // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-          />
-          <VictoryAxis
-            dependentAxis
-            // tickFormat specifies how ticks should be displayed
-            // tickFormat={(x) => (`$${x / 1000}k`)}
-            style={{
-              // axisLabel: {fontSize: "10px", padding: 30},
-              tickLabels: {fontSize: "5px", padding: 5}
-            }}
-            tickFormat={(x) => (` ${x} visits`)}
-            tickFormat={d3.format(",d")}
-            label="Visits"
-            // tickValues={[0, 1]}
-          />
-          <VictoryBar
-            data={victoryData}
-            style={{
-              tickLabels: {fontSize: "10px", padding: 5}
-            }}
-            // style={{labels: {fontSize:"10px", color:"red"}}}
-            x="time"
-            y="visits"
-          />
-        </VictoryChart>
-
-          </Segment>
-          </Grid.Column>
+              {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
+            </Grid.Column>
           </Grid.Row>
-          </Grid>
-          <br /> <br /> <br />
-        </Segment>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Segment>
+                <Form onSubmit={this.changeDate}>
+                  Select day to view:
+                  <select
+                    name="selectDate"
+                    style={{
+                      width: 'auto',
+                      display: 'inline-block',
+                      marginRight: '10px',
+                      marginLeft: '10px',
+                    }}
+                  >
+                    {this.state.dayOptions.map(elem => {
+                      return (
+                        <option key={elem.val} value={elem.val}>
+                          {elem.display}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <Button
+                    type="submit"
+                    name="submitDate"
+                    style={{ marginLeft: '10px' }}
+                    color="blue"
+                    size="tiny"
+                  >
+                    Select Day
+                  </Button>
+                  {this.state.dayView ? (
+                    <Button
+                      onClick={this.clearDate}
+                      name="clearDate"
+                      style={{ marginLeft: '10px' }}
+                      color="green"
+                      size="tiny"
+                    >
+                      Clear
+                    </Button>
+                  ) : null}
+                </Form>
+              </Segment>
+              <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
+                Visitors
+              </Header>
+              <Segment style={{ margin: 'auto', textAlign: 'center' }}>
+                <BarChart
+                  style={{ marginLeft: '500px' }}
+                  title={title}
+                  data={D3data}
+                  width={width}
+                  height={height}
+                  chartSeries={chartSeries}
+                  x={x}
+                  xLabel={xLabel}
+                  xScale={xScale}
+                  xTicks={xTicks}
+                  yTicks={yTicks}
+                  // yDomain= {yDomain}
+                  // yLabel = {yLabel}
+                  textAlign="center"
+                />
 
-
+                <VictoryChart
+                  // domainPadding will add space to each side of VictoryBar to
+                  // prevent it from overlapping the axis
+                  style={{ labels: { fontSize: '10px', color: 'red' } }}
+                  domainPadding={20}
+                >
+                  <VictoryAxis
+                    // tickValues specifies both the number of ticks and where
+                    // they are placed on the axis
+                    scale="time"
+                    style={{
+                      tickLabels: { fontSize: '5px', padding: 5 },
+                    }}
+                    label="Time"
+                    // tickValues={[1, 2, 3, 4]}
+                    // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    // tickFormat specifies how ticks should be displayed
+                    // tickFormat={(x) => (`$${x / 1000}k`)}
+                    style={{
+                      // axisLabel: {fontSize: "10px", padding: 30},
+                      tickLabels: { fontSize: '5px', padding: 5 },
+                    }}
+                    tickFormat={x => ` ${x} visits`}
+                    tickFormat={d3.format(',d')}
+                    label="Visits"
+                    // tickValues={[0, 1]}
+                  />
+                  <VictoryBar
+                    data={victoryData}
+                    style={{
+                      tickLabels: { fontSize: '10px', padding: 5 },
+                    }}
+                    // style={{labels: {fontSize:"10px", color:"red"}}}
+                    x="time"
+                    y="visits"
+                  />
+                </VictoryChart>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <br /> <br /> <br />
         <Segment inverted vertical style={{ padding: '5em 0em' }}>
           <Container>
             <Grid divided inverted stackable>
@@ -634,15 +698,20 @@ export class DogPark extends Component {
                   </List>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                  <Header as="h4" inverted>Footer Header</Header>
-                  <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                  <Header as="h4" inverted>
+                    Footer Header
+                  </Header>
+                  <p>
+                    Extra space for a call to action inside the footer that
+                    could help re-engage users.
+                  </p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Container>
         </Segment>
-        </div>
-    )
+      </div>
+    );
   }
 }
 const mapState = state => {
@@ -654,23 +723,23 @@ const mapState = state => {
       end: new Date(visit.end),
       address: visit.park.address,
       parkId: visit.park.id,
-      userId: visit.userId
-    }
-    return newVisit
-  })
+      userId: visit.userId,
+    };
+    return newVisit;
+  });
   //{ key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' }
   let dropDownParks = state.parkList.map(park => {
     let newPark = {
       key: park.id,
       value: park.id,
-      text: park.name
-    }
-    return newPark
-  })
+      text: park.name,
+    };
+    return newPark;
+  });
   return {
     events: calEvents,
     user: state.user,
-    parkList: dropDownParks
+    parkList: dropDownParks,
   };
 };
 
@@ -692,4 +761,4 @@ const mapDispatch = dispatch => {
     },
   };
 };
-export default connect(mapState, mapDispatch)(DogPark)
+export default connect(mapState, mapDispatch)(DogPark);

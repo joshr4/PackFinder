@@ -106,6 +106,7 @@ class ParkListItem extends Component {
                       flexDirection: 'row',
                       height: '10rem',
                       justifyContent: 'flex-start',
+                      // alignItems: 'center'
                     }}
                   >
                     {imageUrls.map(imageUrl => (
