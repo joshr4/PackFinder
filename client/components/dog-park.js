@@ -41,7 +41,7 @@ import {
   getParksAddresses,
 } from '../store';
 import { connect } from 'react-redux';
-import {VictoryChart, VictoryBar, VictoryAxis, VictoryArea} from 'victory';
+import { VictoryChart, VictoryBar, VictoryAxis, VictoryArea } from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -111,7 +111,7 @@ let stringDate = function(dateObj) {
   return monthName[month] + '-' + day;
 };
 
-let strfTime = function(dateObj) {
+let strfTime = function (dateObj) {
   if (dateObj == '') {
     return '';
   }
@@ -148,6 +148,7 @@ let hourString = function(dtObj) {
 }
 
 let stringFormat = function(dateObj) {
+
   if (dateObj == '') {
     return '';
   }
@@ -162,7 +163,7 @@ let stringFormat = function(dateObj) {
   return outputString;
 };
 
-let YmDFormat = function(dateObj) {
+let YmDFormat = function (dateObj) {
   let year = dateObj.getFullYear();
   let day = dateObj.getDate();
   if (day < 10) {
@@ -268,6 +269,7 @@ export class DogPark extends Component {
       averageData:averageDataResponse.data,
       fullWeekData:fullWeekResponse.data,
     })
+
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
       let filteredEvents = this.props.events.filter(
@@ -587,6 +589,7 @@ export class DogPark extends Component {
         boxShadow:
           '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
         width: '100%',
+        padding: 0,
       },
     };
 
@@ -765,19 +768,19 @@ export class DogPark extends Component {
     ]
         
     return (
-     <div className="container" style={{overflowY:"scroll"}}>
+      <div className="container" style={{ overflowY: 'scroll' }}>
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
           onClose={this.toggleModal}
-          onDelete={() => {}}
+          onDelete={() => { }}
           item={this.state.addFormFieldData}
           slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
-          handleFieldChange={() => {}}
+          handleFieldChange={() => { }}
           parkList={this.props.parkList}
-          onEdit={() => {}}
+          onEdit={() => { }}
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
           noPark={true}
@@ -787,20 +790,16 @@ export class DogPark extends Component {
         style={{ height: '80vh' }}>
           <Grid.Row>
         <Grid.Column width={8}>
-          <Segment attached>
-          <b>Address: <br /></b>
-          {this.state.park.address.line_1}
-          </Segment>
-          <Segment attached>
-          {this.state.park.averageVisitors}
-          </Segment>
-          <Segment attached>
-          <b>Description: <br /></b>
-          {this.state.park.description}
-          </Segment>
-          <Button positive style={{margin: 10 }} type="submit" name="submitBtn" onClick={() => this.toggleModal()}>Check-in</Button>
+          <Card style={styles.dashboardList}>
+                <Card.Content style={{ padding: '0' }}>
+                    <DogParkItem
+                      checkIn={this.toggleModal}
+                      park={this.state.park}
+                    />
+                </Card.Content>
+              </Card>
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={7}>
             <SingleParkMap
             zoom={15}
             center={this.state.park.address.location}
@@ -825,6 +824,47 @@ export class DogPark extends Component {
           </Segment>
           </Grid.Column>
 
+
+                {
+                  //VICTORY AREA
+                }
+                <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
+                  Daily Averages
+                </Header>
+                <VictoryChart
+                  style={{ labels: { fontSize: '10px', color: 'red' } }}
+                  domainPadding={20}
+                >
+                  <VictoryAxis
+                    // tickValues specifies both the number of ticks and where
+                    // they are placed on the axis
+                    style={{
+                      tickLabels: { fontSize: '5px', padding: 5 },
+                    }}
+                    label="Time"
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    style={{
+                      // axisLabel: {fontSize: "10px", padding: 30},
+                      tickLabels: { fontSize: '5px', padding: 5 },
+                    }}
+                    tickFormat={x => ` ${x}`}
+                    label="Average Daily Visits"
+                    // tickValues={[0, 1]}
+                  />
+                  <VictoryArea
+                    data={this.state.averageData}
+                    style={{
+                      tickLabels: { fontSize: '10px', padding: 5 },
+                    }}
+                    // style={{labels: {fontSize:"10px", color:"red"}}}
+                    x="timeString"
+                    y="average"
+                  />
+                </VictoryChart>
+              </Segment>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
         <br /> <br /> <br />

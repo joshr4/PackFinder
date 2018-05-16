@@ -264,8 +264,8 @@ function generatePets() {
         min: 1,
         max: 11
       }),
-      breed: `${subBreed}${randBreed}`,
-      imageUrls: [imageUrl],
+      breed: `${pets.subBreed}${pets.randBreed}`,
+      imageUrls: [pets.imageUrl],
       bio: chance.paragraph({
         sentences: 1
       }),
