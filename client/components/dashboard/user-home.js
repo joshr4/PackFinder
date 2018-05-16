@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Card, Feed, Button, Header } from 'semantic-ui-react';
+import { Grid, Card, Feed, Button, Header, Dimmer, Loader, } from 'semantic-ui-react';
 import faker from 'faker';
 import {
   FriendsList,
@@ -37,6 +37,7 @@ export class UserHome extends Component {
       },
       isHover: -1,
       showAddEventModal: false,
+      loading: true,
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -66,9 +67,12 @@ export class UserHome extends Component {
           },
         },
         () => {
+
           this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
           this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
           this.props.getNearByEvents(this.state.location, 8046);
+
+          this.setState({loading: false}, () => console.log(this.state.loading))
         }
       );
     }
@@ -84,8 +88,26 @@ export class UserHome extends Component {
         width: '100%',
       },
     };
+
+    if (this.state.loading){
+      setTimeout(() => {
+        this.setState({loading: false})
+      }, 5000)
+    }
+
+
     return (
       <div className="container">
+
+      {this.state.loading ? <Dimmer active>
+        <Loader className="massive" content="Loading" />
+      </Dimmer>
+      :
+      <Dimmer>
+        <Loader className="massive" content="Loading" />
+      </Dimmer>
+    }
+
         <EventEditModal
           onClose={this.toggleModal}
           showModal={showAddEventModal}
