@@ -857,6 +857,9 @@ export class DogPark extends Component {
                   />
                 </Card.Content>
               </Card>
+              <Segment height="auto">
+                <Tab panes={panes} />
+              </Segment>              
             </Grid.Column>
             <Grid.Column width={7}>
               <SingleParkMap
@@ -866,7 +869,6 @@ export class DogPark extends Component {
                 containerElement={<div style={{ height: `100%` }} />}
                 mapElement={<div style={{ height: `100%` }} />}
               />
-
               {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
             </Grid.Column>
           </Grid.Row>

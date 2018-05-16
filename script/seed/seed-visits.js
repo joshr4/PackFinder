@@ -22,7 +22,7 @@ async function createVisits() {
         //console.log("thisUser: ", thisUser.id);
         //console.log("thisPark: ", thisPark.id);
         let startHour = chance.integer({min:0, max:20})
-        let startDay = chance.integer({min:1, max:25})
+        let startDay = chance.integer({min:14, max:23})
         let visit1 = await Visit.create({
             start: new Date(2018, 4, startDay, startHour, 0),
             end: new Date(2018, 4, startDay, startHour + 1, 0),
@@ -32,7 +32,7 @@ async function createVisits() {
         visit1.setPark(thisPark);
         await visit1.save();
         let startHour2 = chance.integer({min:0, max:20})
-        let startDay2 = chance.integer({min:1, max:25})
+        let startDay2 = chance.integer({min:14, max:23})
         let visit2 = await Visit.create({
             start: new Date(2018, 4, startDay2, startHour2, 0),
             end: new Date(2018, 4, startDay2, startHour2 + 1, 0),
@@ -43,6 +43,27 @@ async function createVisits() {
         // await thisUser.addUserFavorites(thisPark);
         await thisUser.addFavorite(thisPark);
         await thisUser.save();
+
+        let startHour3 = chance.integer({min:0, max:20})
+        let startDay3 = chance.integer({min:14, max:23})
+        let visit3 = await Visit.create({
+            start: new Date(2018, 4, startDay3, startHour3, 0),
+            end: new Date(2018, 4, startDay3, startHour3 + 1, 0),
+            userId: thisUser.id,
+            parkId: thisPark.id,
+            title: thisPark.name,
+        })
+
+        let startHour4 = chance.integer({min:0, max:20})
+        let startDay4 = chance.integer({min:14, max:23})
+        let visit4 = await Visit.create({
+            start: new Date(2018, 4, startDay4, startHour4, 0),
+            end: new Date(2018, 4, startDay4, startHour4 + 1, 0),
+            userId: thisUser.id,
+            parkId: thisPark.id,
+            title: thisPark.name,
+        })
+
     }
 }
 
