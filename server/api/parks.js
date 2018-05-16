@@ -251,7 +251,7 @@ router.get('/:id/visits/D3-data/days', async (req, res, next) => {
     res.json(d3Data);
 })
 
-router.get('/:id/visits/D3-data/average', async (req, res, next) => {
+router.get('/:id/visits/data/average/daily', async (req, res, next) => {
     let thisPark = await Park.findOne({
         where: {id:req.params.id},
         include:[{
@@ -300,48 +300,192 @@ router.get('/:id/visits/D3-data/average', async (req, res, next) => {
     let width = maxT - minT;
     let hourPartition = 1000 * 60 * 60;
     let nHours = width/hourPartition;
+    let hasVisits = false;
     for (let i = 0; i < nHours; i++) {
         let intervalStart = new Date(minT.getTime() + hourPartition * i);
         let thisHour = intervalStart.getHours() + 1;
         hourlyDict[thisHour - 1].count ++;
-        // let dateOnly = new Date(minT.getFullYear(), minT.getMonth(), minT.getDate(), 0, 0);
-        // intervalStart = new Date(dateOnly.getTime() + dayPartition * i);
         let intervalEnd = new Date(intervalStart.getTime() + hourPartition);
-        // let d3Elem = {
-        //   timeObj: intervalStart,
-        //   time: stringFormat(intervalStart),
-        //   date: dateDisplay(intervalStart),
-        //   timeDisplay: timeDisplay(intervalStart),
-        //   strfTime: strfTime(intervalStart),
-        //   // time: timeDisplay(intervalStart, true),
-        //   // time: intervalStart.getTime(),
-        //   visits: 0,
-        // };
         visits.forEach(visit => {
           let startT = new Date(visit.start);
           let endT = new Date(visit.end);
-          // Setting X-label
-        //   d3Elem.time = dateDisplay(intervalStart);
           if ((startT < intervalEnd && endT > intervalStart)) {
-            // d3Elem.visits++;
-                hourlyDict[thisHour].visits ++;
+                hourlyDict[thisHour].visits ++;             
+                hasVisits = true;   
                 hourlyDict[thisHour].average = hourlyDict[thisHour].visits/hourlyDict[thisHour].count;
             }
         })
-        // if (d3Elem.visits > maxVisits) {
-        //   maxVisits = d3Elem.visits;
-        // }
-        // d3Data.push(d3Elem);
-      }
-    
-    res.json(hourlyDict);
+      }    
+    res.json({
+        hasVisits,
+        dataArray:hourlyDict
+    });
     return
-    //HOURLY VIEW
-    // if (this.state.dayView) { 
-    //   minT = this.state.selectedDate;
-    //   let plusOne = minT;
-    //   plusOne = new Date(minT.getTime() + dayPartition);
-    //   maxT = plusOne;
-    // }
+})
 
+router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
+    let thisPark = await Park.findOne({
+        where: {id:req.params.id},
+        include:[{
+            model: Visit, required:false,
+            include:[{model:User}]}]
+    });
+    let visits = thisPark.visits;
+    let dateMin = '';
+    let dateMax = '';
+    let minT = '';
+    let maxT = '';
+    let weekDict = {
+        0: [], //Sunday is 0
+        1: [], //Monday is 1
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [], //Saturday is 6
+    }
+    let hasVisits = {
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+    }
+    let weekAverages = [
+        {
+            visits:0,
+            count:0,
+            average:0,
+            name: 'Sunday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Monday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Tuesday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Wednesday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Thursday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Friday'
+        },
+        {
+            visits:0,
+            count:0,
+            average:0,            
+            name: 'Saturday'
+        },
+    ]
+    let hourlyDict = [];
+    for (let i = 1; i < 25; i ++) {
+        let timeString = i + " AM";
+        if (i == 12) {
+            timeString = i + " PM";
+        }
+        if (i > 12) {
+            timeString = (i - 12) + " PM";
+        }
+        for (let D in weekDict) {
+            weekDict[D].push({
+                hour:i,
+                average:0,
+                visits:0,
+                count:0,
+                timeString,
+            })
+        }
+    }
+    visits.forEach(visit => {
+        let startT = new Date(visit.start);
+        let endT = new Date(visit.end);
+          if (minT == '' || startT < minT) {
+              minT = startT;
+          }
+          if (dateMin == '' || startT < dateMin) {
+            dateMin = startT;
+          }
+    
+          if (maxT == '' || endT > maxT) {
+            maxT = endT;
+          }
+          if (dateMax == '' || endT > dateMax) {
+            dateMax = endT;
+          }
+    })
+    let width = maxT - minT;
+    let hourPartition = 1000 * 60 * 60;
+    let nHours = width/hourPartition;
+
+    let dayPartition = hourPartition*24;
+    let nDays = width/dayPartition;
+    for (let i = 0; i < nDays; i++) {
+        let intervalStart = new Date(minT.getTime() + dayPartition * i);
+        let dayNum = intervalStart.getDay();
+        weekAverages[dayNum].count ++;
+    }
+
+    for (let i = 0; i < nHours; i++) {
+        let intervalStart = new Date(minT.getTime() + hourPartition * i);
+        let dayNum = intervalStart.getDay();
+        let thisHour = intervalStart.getHours() + 1;
+        weekDict[dayNum][thisHour - 1].count ++;//Hourly
+        // if (i == 1) {
+        //     weekAverages[dayNum].count ++;
+        // }
+        let intervalEnd = new Date(intervalStart.getTime() + hourPartition);
+        visits.forEach(visit => {
+          let startT = new Date(visit.start);
+          let endT = new Date(visit.end);
+          if ((startT < intervalEnd && endT > intervalStart)) {
+                weekAverages[dayNum].visits ++; //Daily
+                weekAverages[dayNum].average = weekAverages[dayNum].visits/weekAverages[dayNum].count; //Daily
+                weekDict[dayNum][thisHour].visits ++;
+                hasVisits[dayNum] = true;
+                weekDict[dayNum][thisHour].average = weekDict[dayNum][thisHour].visits/weekDict[dayNum][thisHour].count;
+            }
+        })
+    }    
+    let paramsDay = req.params.day;
+    if (paramsDay == 'all') {
+        res.json({
+            hasVisits: true,
+            dataArray: weekDict
+        });
+    }
+    else if (paramsDay == 'average' || paramsDay == 'averages') {
+        res.json({
+            hasVisits: true,
+            dataArray: weekAverages
+        }
+        );
+    }
+    else {
+        res.json({
+            hasVisits: hasVisits[parseInt(paramsDay)],
+            dataArray: weekDict[parseInt(paramsDay)]
+        }
+        );
+    }
+    return
 })
