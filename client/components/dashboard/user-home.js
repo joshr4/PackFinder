@@ -109,7 +109,7 @@ export class UserHome extends Component {
   }
 
   render() {
-    const { parkList, user, dropDownParks } = this.props;
+    const { parkList, user } = this.props;
     const { showAddEventModal } = this.state;
     const styles = {
       dashboardList: {
@@ -132,14 +132,7 @@ export class UserHome extends Component {
           </Dimmer>
         )}
 
-        <EventEditModal
-          onClose={this.toggleModal}
-          showModal={showAddEventModal}
-          handleSubmit={() => {}}
-          parkDropDownList={dropDownParks}
-          handleEvent={this.props.addEvent}
-          user={user}
-        />
+
         <Grid columns={3} centered style={{ padding: '0em 0.2em' }}>
           <Grid.Column mobile={16} tablet={8} computer={5} largeScreen={5}>
             <FriendsList />
@@ -166,20 +159,12 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapStateToProps = state => {
-  let dropDownParks = state.parkList.map(park => {
-    let newPark = {
-      key: park.id,
-      value: park.id,
-      text: park.name,
-    };
-    return newPark;
-  });
+
 
   // console.log(state)
   return {
     email: state.user.email.toString(),
     parkList: state.parkList,
-    dropDownParks: dropDownParks,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,

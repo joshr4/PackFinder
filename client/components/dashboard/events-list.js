@@ -8,16 +8,22 @@ import {
   addAttendee,
   removeAttendee,
   getEvents,
+  addEvent,
 } from '../../store';
-import { EventsListTab } from '../';
+import { EventsListTab, EventEditModal } from '../';
 
 /**
  * COMPONENT
  */
 
 export class EventsList extends Component {
-  state = { activeIndex: 0, loading: false };
+  state = { activeIndex: 0, loading: false, showAddEventModal: false };
+
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
+  toggleModal = () => {
+    this.setState({ showAddEventModal: !this.state.showAddEventModal });
+  };
 
   render() {
     const {
@@ -30,6 +36,8 @@ export class EventsList extends Component {
       deleteEvent,
       addAttendee,
       removeAttendee,
+      dropDownParks,
+      addEvent
     } = this.props;
     const styles = {
       menuLabels: {
@@ -126,8 +134,17 @@ export class EventsList extends Component {
         ),
       },
     ];
+    const { showAddEventModal } = this.state;
     return (
       <Card style={styles.dashboardList} className="mobile">
+        <EventEditModal
+          onClose={this.toggleModal}
+          showModal={showAddEventModal}
+          handleSubmit={() => {}}
+          parkDropDownList={dropDownParks}
+          handleEvent={this.props.addEvent}
+          user={user}
+        />
         <Card.Content style={{ padding: '0px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ margin: '0.5em' }}>Upcoming Events</h3>
@@ -168,6 +185,15 @@ export class EventsList extends Component {
  */
 
 const mapState = state => {
+  let dropDownParks = state.parkList.map(park => {
+    let newPark = {
+      key: park.id,
+      value: park.id,
+      text: park.name,
+      user: state.user,
+    };
+    return newPark;
+  });
   return {
     friendsList: state.friendsList,
     userEvents: state.events.filter(event => event.creatorId === state.user.id),
@@ -183,6 +209,7 @@ const mapState = state => {
     nearbyEvents: state.nearbyEvents.filter(event =>
       event.attendees.filter(attendee => attendee.id !== state.user.id)
     ),
+    dropDownParks: dropDownParks,
   };
 };
 
@@ -203,6 +230,9 @@ const mapDispatch = dispatch => {
     },
     getNearByEventsInfo() {
       return dispatch(getNearByEventsInfo());
+    },
+    addEvent(event) {
+      dispatch(addEvent(event));
     },
   };
 };
