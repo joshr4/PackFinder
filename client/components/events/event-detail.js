@@ -98,7 +98,7 @@ export class EventDetail extends Component {
       invitedClickedText = "1" + " friend invited!";
     }
     this.setState({
-      invitedClicked:true,
+      invitedClicked: true,
       invitedClickedText
     })
     await this.props.inviteUsers(this.props.displayEvent, friendIDs);
@@ -124,109 +124,98 @@ export class EventDetail extends Component {
 
     return (
       displayEvent ?
-        <Container className="container" style={{"overflowY":"scroll"}}>
-        <EventEditModal
-        onClose={this.toggleModal}
-        showModal={showModal}
-        onDelete={deleteEvent}
-        item={displayEvent}
-        handleEvent={this.props.updateEvent}
-      />
-      <AddAttendeeModal
-        onClose={this.toggleAttendeeModal}
-        showModal={showAttendeeModal}
-        handleSubmit={this.handleAttendeeSubmit}
-        item={displayEvent}
-        user={user}
-        userFriends={friendstoInvite}
-      />
-      <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
-        <Grid celled>
-          <Grid.Row min-height="60%" >
-            <Grid.Column width={8}>
-            {displayEvent.private ? <Label floating color="red" style={{zIndex: '0'}}>Private</Label> : <div />}
-              <Segment attached>
-                <b>
-                  Park Name: {displayEvent.park.name}<br />
-                </b>
-              </Segment>
-              <Segment attached>
-                <b>
-                  Date: {moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}<br />
-                </b>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <SingleParkMap
-                zoom={15}
-                center={coords}
-                mapLoaded={this.mapLoaded.bind(this)}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row min-height="40%">
-            <Grid.Column width={8}>
-              <h4>Description:</h4><p>{displayEvent.description}</p>
-              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleModal()}>Edit Event</Button>
-              : <div />}
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <h4>Going:</h4>
-              <Grid>
-              <Grid.Row columns={16}>
-                  {attendees.map(attendee => {
-                    return (
-                      <Grid.Column width={5}>
-                      <List.Item style={{paddingBottom:"10px"}}>
-                      <Image avatar src={attendee.imageUrl}/>
-                      <List.Content>
-                        <List.Header style={{fontSize:"13px"}}><b>{attendee.fullName}</b></List.Header>
-                      </List.Content>
-                    </List.Item>
-                    </Grid.Column>
-                  )
-                  })}
-              </Grid.Row>
-              </Grid>
-              <h4>Invited:</h4>
-              <Grid>
-              <Grid.Row columns={16}>
-                  {invitees.map(invitee => {
-                    return (
-                      <Grid.Column width={5}>
-                      <List.Item style={{paddingBottom:"10px"}}>
-                      <Image avatar src={invitee.imageUrl}/>
-                      <List.Content>
-                        <List.Header style={{fontSize:"13px"}}><b>{invitee.fullName}</b></List.Header>
-                      </List.Content>
-                    </List.Item>
-                    </Grid.Column>
-                  )
-                  })}
-              </Grid.Row>
+        <Container className="container" style={{ "overflowY": "scroll" }}>
+          <EventEditModal
+            onClose={this.toggleModal}
+            showModal={showModal}
+            onDelete={deleteEvent}
+            item={displayEvent}
+            handleEvent={this.props.updateEvent}
+          />
+          <AddAttendeeModal
+            onClose={this.toggleAttendeeModal}
+            showModal={showAttendeeModal}
+            handleSubmit={this.handleAttendeeSubmit}
+            item={displayEvent}
+            user={user}
+            userFriends={friendstoInvite}
+          />
+          <Segment style={{ padding: '2em', paddingTop: '2em' }} vertical>
+            <Grid columns={2}>
+              <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
+                {displayEvent.private ? <Label floating color="red" style={{ zIndex: '0' }}>Private</Label> : <div />}
+                <Segment clearing size="large" attached>
+                  <b>{displayEvent.description}</b>
+                  {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleModal()}>Edit</Button>
+                    : <div />}
+                </Segment>
+                <Segment attached>
+                  <b>Park Name: </b>{displayEvent.park.name}
+                </Segment>
+                <Segment attached>
+                  <b>Date: </b>{moment(displayEvent.start).format('MMMM Do YYYY, h:mm a')}
+                  {isOwner ? <Button size="tiny" floated="right" color="blue" onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
+                    : <div />}
+                </Segment>
 
-              </Grid>
 
-              {isOwner ? <Button color="blue" style={{ marginRight: 20, marginTop: 20 }} onClick={() => this.toggleAttendeeModal()}>Invite Friends</Button>
-              : <div />}
-              {this.state.invitedClicked ?
-                (<span style={{fontSize:"12px", color:"blue"}}><br/>{this.state.invitedClickedText}</span>)
-              : null}
+                <Grid.Row >
+                  <h4>Attending:</h4>
+                  <List horizontal>
+                    {attendees.map(attendee => {
+                      return (
+                        <List.Item width={1} key={attendee.id} style={{ paddingBottom: "10px" }}>
+                          <Image avatar src={attendee.imageUrl} />
+                          <List.Content>
+                            <List.Header size="tiny" style={{ fontSize: "13px" }}>{attendee.fullName}</List.Header>
+                          </List.Content>
+                        </List.Item>
+                      )
+                    })}
+                  </List>
+                  <h4>Invited:</h4>
+                  <List horizontal>
+                    {invitees.map(invitee => {
+                      return (
+                        <List.Item width={1} key={invitee.id} style={{ paddingBottom: "10px" }}>
+                          <Image avatar src={invitee.imageUrl} />
+                          <List.Content>
+                            <List.Header size="small" style={{ fontSize: "13px" }}>{invitee.fullName}</List.Header>
+                          </List.Content>
+                        </List.Item>
+                      )
+                    })}
+                  </List>
 
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-          <Grid.Column width={16}>
-            <Header>Event Chat</Header>
-            <ChatRoom height={674} eventId={parseInt(this.props.match.params.id)}/>
-          </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <br /> <br /> <br />
-      </Segment>
-    </Container>
+
+
+                  {this.state.invitedClicked ?
+                    (<span style={{ fontSize: "12px", color: "blue" }}><br />{this.state.invitedClickedText}</span>)
+                    : null}
+                </Grid.Row>
+              </Grid.Column>
+
+
+              <Grid.Column mobile={16} tablet={8} computer={8} largeScreen={8}>
+                <SingleParkMap
+                  zoom={15}
+                  center={coords}
+                  mapLoaded={this.mapLoaded.bind(this)}
+                  containerElement={<div style={{ height: `100%` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
+              </Grid.Column>
+              <Grid.Row>
+                  <Grid.Column width={16}>
+                    <Header>Event Chat</Header>
+                    <ChatRoom height={250} eventId={parseInt(this.props.match.params.id)} />
+                  </Grid.Column>
+                </Grid.Row>
+
+            </Grid>
+            <br /> <br /> <br />
+          </Segment>
+        </Container>
         :
         <div />
     );
@@ -235,7 +224,7 @@ export class EventDetail extends Component {
 const mapState = (state, ownProps) => {
   let eventDetail = state.events.filter(event => event.id === Number(ownProps.match.params.id))[0]
   let isOwner = false
-  let coords = {lat: 41.954629, lng: -87.6572544}
+  let coords = { lat: 41.954629, lng: -87.6572544 }
   let attendees = [];
   let invitees = [];
   let uninvitedFriends = [];
@@ -247,8 +236,8 @@ const mapState = (state, ownProps) => {
     invitees = eventDetail.invitees
     if (state.user.Friends) {
       let InvitedandAttendingIds = [];
-      attendees.forEach(attendee => {InvitedandAttendingIds.push(parseInt(attendee.id))});
-      invitees.forEach(invitees => {InvitedandAttendingIds.push(parseInt(invitees.id))});
+      attendees.forEach(attendee => { InvitedandAttendingIds.push(parseInt(attendee.id)) });
+      invitees.forEach(invitees => { InvitedandAttendingIds.push(parseInt(invitees.id)) });
       state.user.Friends.forEach(friend => {
         if (!InvitedandAttendingIds.includes(friend.id)) {
           uninvitedFriends.push(friend);

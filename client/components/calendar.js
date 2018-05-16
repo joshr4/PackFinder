@@ -128,7 +128,6 @@ class Dnd extends React.Component {
   }
 
   async openModal(event, type) {
-    console.log("event, type: ", event, type);
     if (event.isEvent) {
       if (event.editable) {
         this.toggleEventModal(event, true)
@@ -149,7 +148,6 @@ class Dnd extends React.Component {
       let endString = timeDisplay(selEvent.end, true);
       selEvent.start = startString;
       selEvent.end = endString;
-      console.log("line 151");
       await this.setState({
         selectedEvent: selEvent,
       })
@@ -344,17 +342,17 @@ class Dnd extends React.Component {
   render() {
     let { isLoggedIn, parkList, user, addEvent, events, deleteEvent } = this.props
     let { showAddEventModal, editableEvent } = this.state
-    
+
     return (
       <div className="container" style={{ "overflowY": "scroll" }}>
         <Grid>
           <Grid.Row>
             <Grid.Column width={4} style={{ paddingLeft: "50px"}}>
-            <Header>Upcoming Events</Header>                    
+            <Header>Upcoming Events</Header>
               {this.props.user && <EventsList className="event-list" user={this.props.user} />}
             </Grid.Column>
             <Grid.Column width={12} style={{ paddingRight: "50px", paddingBottom: "50px" }}>
-              <Header>Calendar</Header>                    
+              <Header>Calendar</Header>
               <Segment.Group horizontal style={{marginTop:"0px"}}>
                 <Segment>
                   <Button primary style={{ margin: 0 }} onClick={() => this.openModal(this.state.selectedEvent, 'add')}>Schedule Check-In</Button>

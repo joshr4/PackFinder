@@ -1,20 +1,96 @@
 import React from 'react';
 import { Button, Header, Image, Modal, Grid, Input, Form, TextArea, Icon } from 'semantic-ui-react';
 import AddVisitForm from '../addvisitform';
+import { EditImageModal } from '../index.js';
 
 const PetModal = props => {
-  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet } = props
+  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet, toggleNestedModal, showNestedModal, isPetModalDirty } = props
   return (
-    <Modal open={props.show}>
+    <Modal open={props.show} onClose={props.onClose}>
+      <Modal.Header>Edit your pet</Modal.Header>
       <Modal.Content image>
+      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '15px'}}>
         <Image
           wrapped
-          size="large"
+          size="medium"
           src={item.imageUrls[0]}
         />
+
+        <EditImageModal
+        toggleNestedModal={toggleNestedModal}
+        showNestedModal={showNestedModal}
+        user={item}
+        pet={true}
+        onChangeHandler={e => handleChange(e)}
+        />
+
+      <Button onClick={toggleNestedModal} style={{ width: '128px' }}>
+      Edit photo{' '}
+    </Button>
+    </div>
+
         <Modal.Description>
           <Form onSubmit={props.handleSubmit} onChange={e => handleChange(e)}>
-            {isUpdatePet ? <Button type="button" color="red" inverted onClick={() => handleDelete()}>Delete</Button> : <div />}
+
+            <Form.Group widths="equal">
+                <Form.Field
+                  fluid
+                  control={Input}
+                  label="Name:"
+                  name="name"
+                  placeholder="Name"
+                  value={item.name}
+
+                />
+              </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Field
+                  fluid
+                  control={Input}
+                  label="Breed:"
+                  name="breed"
+                  placeholder="Breed"
+                  value={item.breed}
+
+                />
+              </Form.Group>
+              <Form.Group widths="equal">
+              <Form.Field
+              fluid
+              control={Input}
+              label="Age:"
+              name="age"
+              placeholder="1"
+              value={item.age}
+              type="number"
+
+            />
+
+              <Form.Field
+                fluid
+                control={Input}
+                label="Weight:"
+                name="weight"
+                placeholder="1"
+                value={item.weight}
+                type="number"
+
+              />
+
+              </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Field
+                  control={TextArea}
+                  label="About:"
+                  name="bio"
+                  placeholder="Tell us more about your pet..."
+                  value={item.bio}
+
+                />
+              </Form.Group>
+
+
+            { /*}
             <Grid columns={2}>
               <Grid.Row>
                 <Grid.Column width={2}>
@@ -85,14 +161,18 @@ const PetModal = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
+    */}
           </Form>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-      <Button color="red" inverted onClick={() => onClose()}>
+
+      {isUpdatePet ? <Button className="left floated" type="button" color="red" position='left' onClick={() => handleDelete()}>Delete</Button> : <div />}
+
+      <Button  color="red" inverted onClick={() => onClose()}>
          <Icon name="remove" /> Cancel
        </Button>
-       <Button color="green" inverted onClick={isUpdatePet ? () => handleUpdate() : () => handleAdd()}>
+       <Button color="green" disabled={!isPetModalDirty} inverted onClick={isUpdatePet ? () => handleUpdate() : () => handleAdd()}>
          <Icon name="checkmark" /> Save
        </Button>
       </Modal.Actions>

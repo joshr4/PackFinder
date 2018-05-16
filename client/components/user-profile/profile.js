@@ -14,6 +14,7 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       showPetModal: false,
+      isPetModalDirty: false,
       selectedPet: {
         bio: '',
         breed: '',
@@ -28,14 +29,13 @@ class Profile extends React.Component {
       isUpdatePet: false,
       readOnly: false,
       friendId: null,
-
+      showNestedModal: false
     };
     this.togglePetModal = this.togglePetModal.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.openPetModal = this.openPetModal.bind(this);
-
-
+    this.toggleNestedModal = this.toggleNestedModal.bind(this);
 
   }
   componentDidMount() {
@@ -56,7 +56,7 @@ class Profile extends React.Component {
       selPet = {
         bio: '',
         breed: '',
-        imageUrls: [],
+        imageUrls: ['https://usercontent2.hubstatic.com/7780333.jpg'],
         name: '',
         weight: undefined,
         age: undefined,
@@ -87,16 +87,36 @@ class Profile extends React.Component {
     this.props.deletePet(this.state.selectedPet);
     this.togglePetModal();
   };
+
   handleChange = e => {
+
+    if (e.target.name === 'imageUrls'){
+
+    let tempArr = [...this.state.selectedPet.imageUrls]
+    tempArr[0] = e.target.value
     this.setState({
       selectedPet: Object.assign(this.state.selectedPet, {
-        [e.target.name]: e.target.value,
+      imageUrls: tempArr,
       }),
     });
+    }
+
+    else {
+
+      this.setState({
+        selectedPet: Object.assign(this.state.selectedPet, {
+        [e.target.name]: e.target.value,
+        }),
+        isPetModalDirty: true,
+      });
+    }
+  };
+  toggleNestedModal = () => {
+    this.setState({ showNestedModal: !this.state.showNestedModal });
   };
   render() {
     const { userPets, user, selectedUser } = this.props;
-
+    const { isPetModalDirty } = this.state;
     let petsList = []
 
     if (this.state.readOnly){
@@ -118,9 +138,11 @@ class Profile extends React.Component {
             handleUpdate={this.handleUpdate}
             handleDelete={this.handleDeletePet}
             isUpdatePet={this.state.isUpdatePet}
+            showNestedModal={this.state.showNestedModal}
+            toggleNestedModal={this.toggleNestedModal}
+            isPetModalDirty={isPetModalDirty}
           />
           <Grid columns={2} divided>
-            <Header as="h3">Owner:</Header>
             <UserProfileItem readOnly={this.state.readOnly} selectedUser={selectedUser} />
             <Grid.Row>
               <Grid.Column width="4">

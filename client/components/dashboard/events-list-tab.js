@@ -18,11 +18,11 @@ export class EventsListTab extends Component {
       <Grid
         divided
         className="overflow-scroll friends-list"
-        // style={{
-        //   height: '60.5vh',
-        //   alignItems: 'baseline',
-        //   alignContent: 'baseline',
-        // }}
+        style={{
+          height: '66.75vh',
+          alignItems: 'baseline',
+          alignContent: 'baseline',
+        }}
       >
         {loading === 'true' ? (
           <Dimmer active>

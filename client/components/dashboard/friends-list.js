@@ -36,7 +36,6 @@ export class FriendsList extends Component {
       fetchReceivedRequests(user.id),
       fetchSentRequests(user.id),
     ];
-    Promise.all(loadFriendsList).then(this.setState({ loading: false }));
   };
 
   state = { activeIndex: 0, loading: true };
@@ -79,7 +78,7 @@ export class FriendsList extends Component {
         background: '#54b9bf',
       },
       menuItem: {
-        padding: '1em 0.5em',
+        padding: '0.5em 0.5em',
         flex: '1',
         justifyContent: 'center',
       },

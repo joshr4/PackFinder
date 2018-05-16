@@ -27,7 +27,7 @@ export const FriendsListItem = props => {
     4: 'Send Request',
   };
   return (
-    <Segment style={{ margin: '0px', width: '100%' }}>
+    <Segment id="park-list-item" style={{ margin: '0px', width: '100%' }}>
       <Grid>
         <Grid.Row style={{ padding: '0.25em', alignItems: 'center' }}>
           <Header
@@ -42,7 +42,7 @@ export const FriendsListItem = props => {
               <Label
                 style={{ flex: 0.5, padding: '0.5em 0.5em' }}
                 icon="globe"
-                content={`${address.location.distance} mi away`}
+                content={`${address.location.distance} mi`}
               />
             )}
           {activeIndex === 1 ? (
