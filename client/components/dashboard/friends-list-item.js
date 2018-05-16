@@ -42,7 +42,7 @@ export const FriendsListItem = props => {
               <Label
                 style={{ flex: 0.5, padding: '0.5em 0.5em' }}
                 icon="globe"
-                content={`${address.location.distance} mi away`}
+                content={`${address.location.distance} mi`}
               />
             )}
           {activeIndex === 1 ? (

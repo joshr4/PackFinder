@@ -36,10 +36,11 @@ body .container {
 
 .dashboard-card {
   padding: 0;
+  height: 72vh;
 }
 
 .dashboard-feed {
-  height: 71vh;
+  height: 72vh;
 }
 body ::-webkit-scrollbar {
   height: 0px;

@@ -47,7 +47,7 @@ export const NearbyParksListItem = props => {
                 <Label
                   style={{ flex: 0.75, padding: '0.5em 0.5em' }}
                   icon="globe"
-                  content={`${address.location.distance} mi away`}
+                  content={`${address.location.distance} mi`}
                 />
               )}
             <NavLink to={`/dog-park/${id}`}>

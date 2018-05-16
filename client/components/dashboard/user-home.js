@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Card, Feed, Button } from 'semantic-ui-react';
+import { Grid, Card, Feed, Button, Header } from 'semantic-ui-react';
 import faker from 'faker';
 import {
   FriendsList,
@@ -80,7 +80,7 @@ export class UserHome extends Component {
     const styles = {
       dashboardList: {
         boxShadow:
-      '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
+          '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
         width: '100%',
       },
     };
@@ -134,22 +134,29 @@ export class UserHome extends Component {
               className="dashboard-list-shadow"
             >
               <Card.Content>
-                <div style={{display: 'flex'}}>
-                  <Card.Header>Upcoming Events</Card.Header>
+                <div style={{ display: 'flex' }}>
+                  <Header style={{ padding: 0, margin: 0 }}>
+                    Upcoming Events
+                  </Header>
                   <Button
-                    positive
+                    icon="plus"
                     floated="right"
-                    // style={{ marginRight: 20, marginTop: 20 }}
+                    style={{
+                      position: 'absolute',
+                      top: '5px',
+                      right: '6px',
+                      padding: '0.25em 0.2em',
+                      borderRadius: '50%',
+                      fontSize: '1.75em',
+                      color: 'rgb(83, 184, 191)',
+                      background: 'rgb(45, 66, 80)',
+                    }}
                     onClick={this.toggleModal}
-                  >
-                    +
-                  </Button>{' '}
+                  />
                 </div>
               </Card.Content>
               <Card.Content style={{ padding: '0' }} className="dashboard-card">
-                {/* <Feed> */}
                 {user && <EventsList className="event-list" user={user} />}
-                {/* </Feed> */}
               </Card.Content>
             </Card>
           </Grid.Column>
