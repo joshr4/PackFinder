@@ -59,6 +59,9 @@ export class UserHome extends Component {
 
       this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
 
+      if(!this.props.parkList.length){
+      this.props.getAllParks()
+      }
 
     if (!this.props.friendsList.friends.length &&
     !this.props.friendsList.nearbyUsers.length &&
@@ -109,8 +112,6 @@ export class UserHome extends Component {
 
   render() {
     const { parkList, user } = this.props;
-
-    console.log(parkList)
 
     const { showAddEventModal } = this.state;
     const styles = {
@@ -166,7 +167,7 @@ const mapStateToProps = state => {
   // console.log(state)
   return {
     email: state.user.email.toString(),
-    parkList: state.nearbyParks,
+    parkList: state.parkList,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
@@ -197,6 +198,9 @@ const mapDispatch = dispatch => {
     addEvent(event) {
       dispatch(addEvent(event));
     },
+    getAllParks(){
+      dispatch(getParksAddresses())
+    }
   };
 };
 

@@ -24,7 +24,7 @@ class EventEditModal extends Component {
           parkId: 1,
           private: false,
       },
-      slider: 0
+      slider: 1
     };
     this.handleChange = this.handleChange.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)

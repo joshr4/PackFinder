@@ -5,6 +5,8 @@ module.exports = router
 
 router.get('/', (req, res, next) => {
   Park.findAll({
+    // attributes: { exclude: ['imageUrls', 'rating', 'description'] },
+      attributes: ['name', 'id'],
       include:[
           {model: Visit, required:false,
             include:[{model:User}]},
@@ -104,7 +106,7 @@ router.get('/:id/visits', (req, res, next) => {
     outputString = hourString + minuteString + suffix;
     return outputString;
   }
-  
+
   let dateDisplay = function(dateObj) {
     let month = dateObj.getMonth() + 1;
     if (month < 10) {
@@ -116,7 +118,7 @@ router.get('/:id/visits', (req, res, next) => {
     }
     return month + '/' + day;
   }
-  
+
   let strfTime = function(dateObj) {
     if (dateObj == '') {
       return ''
@@ -130,16 +132,16 @@ router.get('/:id/visits', (req, res, next) => {
       day = '0' + day;
     }
     let DString = month + '/' + day;
-  
+
     let hour = dateObj.getHours();
     let minutes = dateObj.getMinutes();
     let hourString = (hour < 10) ? '0' + hour + ':' : hour + ':';
     let minuteString = (minutes < 10) ? '0' + minutes : minutes;
     let TString = hourString + minuteString;
-  
+
     return DString + ' ' + TString;
   }
-  
+
   let stringFormat = function(dateObj) {
     if (dateObj == '') {
       return ''
@@ -153,7 +155,7 @@ router.get('/:id/visits', (req, res, next) => {
     outputString = year + '-' + (month + 1) + '-' + day + ' ' + hour + ':' + minutes;
     return outputString;
   }
-  
+
   let YmDFormat = function(dateObj) {
     let year = dateObj.getFullYear();
     let day = dateObj.getDate();
@@ -166,7 +168,7 @@ router.get('/:id/visits', (req, res, next) => {
     }
     return year + '-' + month + '-' + day;
   }
-  
+
 
 router.get('/:id/visits/D3-data/days', async (req, res, next) => {
     let thisPark = await Park.findOne({
@@ -181,7 +183,7 @@ router.get('/:id/visits/D3-data/days', async (req, res, next) => {
     let minT = '';
     let maxT = '';
     //HOURLY VIEW
-    // if (this.state.dayView) { 
+    // if (this.state.dayView) {
     //   minT = this.state.selectedDate;
     //   let plusOne = minT;
     //   plusOne = new Date(minT.getTime() + dayPartition);
@@ -207,7 +209,7 @@ router.get('/:id/visits/D3-data/days', async (req, res, next) => {
 
     let d3Data = [];
     let width = maxT - minT;
-    
+
     let halfHourpartition = 1000 * 60 * 30;
     let hourPartition = 1000 * 60 * 60;
     let dayPartition = 24 * hourPartition;
@@ -289,7 +291,7 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
           if (dateMin == '' || startT < dateMin) {
             dateMin = startT;
           }
-    
+
           if (maxT == '' || endT > maxT) {
             maxT = endT;
           }
@@ -310,12 +312,12 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
           let startT = new Date(visit.start);
           let endT = new Date(visit.end);
           if ((startT < intervalEnd && endT > intervalStart)) {
-                hourlyDict[thisHour].visits ++;             
-                hasVisits = true;   
+                hourlyDict[thisHour].visits ++;
+                hasVisits = true;
                 hourlyDict[thisHour].average = hourlyDict[thisHour].visits/hourlyDict[thisHour].count;
             }
         })
-      }    
+      }
     res.json({
         hasVisits,
         dataArray:hourlyDict
@@ -363,37 +365,37 @@ router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Monday'
         },
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Tuesday'
         },
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Wednesday'
         },
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Thursday'
         },
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Friday'
         },
         {
             visits:0,
             count:0,
-            average:0,            
+            average:0,
             name: 'Saturday'
         },
     ]
@@ -425,7 +427,7 @@ router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
           if (dateMin == '' || startT < dateMin) {
             dateMin = startT;
           }
-    
+
           if (maxT == '' || endT > maxT) {
             maxT = endT;
           }
@@ -465,7 +467,7 @@ router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
                 weekDict[dayNum][thisHour].average = weekDict[dayNum][thisHour].visits/weekDict[dayNum][thisHour].count;
             }
         })
-    }    
+    }
     let paramsDay = req.params.day;
     if (paramsDay == 'all') {
         res.json({
