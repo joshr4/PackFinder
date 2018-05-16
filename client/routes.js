@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash,
-ChatRoom, EventDetail, EventList} from './components'
+ChatRoom, EventDetail, EventList, FriendsList, EventsList, NearbyParksList} from './components'
 
 import {me, getEvents} from './store'
 
@@ -24,7 +24,6 @@ class Routes extends Component {
         <Route exact path="/" component={Splash} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/profile" component={Profile} />
         <Route path="/profile/:userId" component={Profile} />
         <Route exact path="/dog-park" component={SinglePark} />
         <Route path="/dog-park/:id" component={DogPark} />
@@ -35,12 +34,17 @@ class Routes extends Component {
         <Route path="/event/:id" component={EventDetail} />
         <Route path="/events" component={EventList} />
         <Route path="/chat-room" component={ChatRoom} />
+        {/* Mobile specific routes */}
+        <Route path="/mobile-home" component={FriendsList} />
+        <Route path="/mobile-events" component={EventsList} />
+        <Route path="/mobile-parks" component={NearbyParksList} />
+
         {
           isLoggedIn &&
             <Switch>
               {/* Routes placed here are only available after logging in */}
               <Route path="/home" component={UserHome} />
-              <Route path="/profile" component={Profile} />
+              <Route exact path="/profile" component={Profile} />
             </Switch>
         }
         {/* Displays our Login component as a fallback */}

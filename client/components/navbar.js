@@ -29,7 +29,7 @@ const styles = {
     fontSize: 25,
     fontFamily: 'Veradana, sans-serif',
     fontWeight: 500,
-    padding: '1em 0.5em'
+    padding: '1em 0.5em',
   },
   titleText: {
     fontFamily: 'Pacifico, cursive',
@@ -53,7 +53,8 @@ const styles = {
 
 export const Navbar = props => {
   const path = history.location.pathname;
-  const { isLoggedIn, handleClick, handleToggle } = props;
+  const { isLoggedIn, handleClick, handleToggle, visible } = props;
+  console.log('visible in navbar', visible);
   if (path === '/') {
     styles.menu = {
       ...styles.menu,
@@ -97,7 +98,7 @@ export const Navbar = props => {
             <Responsive
               as={Menu.Item}
               maxWidth={768}
-              icon="sidebar"
+              icon={!visible ? 'sidebar' : 'remove'}
               style={styles.hamburger}
               onClick={handleToggle}
             />
@@ -132,7 +133,7 @@ export const Navbar = props => {
             <Responsive
               as={Menu.Item}
               maxWidth={768}
-              icon="sidebar"
+              icon={!visible ? 'sidebar' : 'remove'}
               style={styles.hamburger}
               onClick={handleToggle}
             />
@@ -155,6 +156,7 @@ export const Navbar = props => {
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
+    visible: state.sidebar,
   };
 };
 
