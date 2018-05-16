@@ -47,12 +47,20 @@ export class UserHome extends Component {
   }
 
   componentDidMount() {
+
+    // console.log(this.props)
+
     if (!this.props.parkList.length){
       this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
     }
 
-    this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
-    // this.props.getNearByUsers(this.state.location)
+    if (!this.props.friendsList.friends.lenght &&
+    !this.props.friendsList.nearbyUsers.lenght &&
+    !this.props.friendsList.receivedRequests.length &&
+    !this.props.friendsList.sentRequests.length)
+    {
+      this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
+    }
 
     if (!this.props.events.length){
       this.props.getNearByEvents(this.state.location, 8046)
@@ -83,7 +91,6 @@ export class UserHome extends Component {
           },
         },
         () => {
-
           this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
           this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
           this.props.getNearByEvents(this.state.location, 8046);
@@ -210,6 +217,8 @@ const mapStateToProps = state => {
     };
     return newPark;
   });
+
+  // console.log(state)
   return {
     email: state.user.email.toString(),
     parkList: state.parkList,
@@ -219,6 +228,8 @@ const mapStateToProps = state => {
     events: state.events,
     usersList: state.usersList,
     userPosition: state.location.coords,
+    friendsList: state.friendsList,
+
   };
 };
 

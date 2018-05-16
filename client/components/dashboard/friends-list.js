@@ -31,11 +31,18 @@ export class FriendsList extends Component {
       sendfriendRequest,
       user,
     } = this.props;
-    let loadFriendsList = [
-      fetchFriendsList(user.id),
-      fetchReceivedRequests(user.id),
-      fetchSentRequests(user.id),
-    ];
+
+    if (!this.props.friendsList.friends.lenght &&
+      !this.props.friendsList.nearbyUsers.lenght &&
+      !this.props.friendsList.receivedRequests.length &&
+      !this.props.friendsList.sentRequests.length)
+      {
+        let loadFriendsList = [
+        fetchFriendsList(user.id),
+        fetchReceivedRequests(user.id),
+        fetchSentRequests(user.id),
+        ];
+      }
   };
 
   state = { activeIndex: 0, loading: true };
