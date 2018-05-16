@@ -132,7 +132,7 @@ function generateUsers(userAddresses) {
   users.push(
     User.build({
       firstName: 'Hugh',
-      lastName: 'Mayn',
+      lastName: 'Mahn',
       imageUrl: 'https://holidaystocelebrate.files.wordpress.com/2012/07/human-and-dog-costume.jpg',
       email: `hugh@hugh.com`,
       password: '123',
