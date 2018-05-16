@@ -13,9 +13,7 @@ router.post('/login', (req, res, next) => {
       where: {
         email: req.body.email,
       },
-      include: [{
-        all: true,
-      } ],
+      include: [{model: Pet, as: 'pets'}, {model: Address}],
     })
     .then(user => {
       if (!user) {
@@ -57,7 +55,7 @@ router.get('/me', (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: [{all:true}],
+      include: [{model: Pet, as: 'pets'}, {model: Address}],
     }).then(user => {
       res.json(user);
     });
