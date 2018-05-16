@@ -116,7 +116,7 @@ let stringDate = function(dateObj) {
   if (day < 10) {
     day = '0' + day;
   }
-  return monthName[month] + '-' + day;
+  return monthName[month] + ' ' + day;
 };
 
 let strfTime = function(dateObj) {
