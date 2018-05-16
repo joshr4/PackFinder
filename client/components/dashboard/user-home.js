@@ -57,9 +57,8 @@ export class UserHome extends Component {
   componentDidMount() {
     // console.log(this.props)
 
-    if (!this.props.parkList.length){
       this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
-    }
+
 
     if (!this.props.friendsList.friends.length &&
     !this.props.friendsList.nearbyUsers.length &&
@@ -110,6 +109,9 @@ export class UserHome extends Component {
 
   render() {
     const { parkList, user } = this.props;
+
+    console.log(parkList)
+
     const { showAddEventModal } = this.state;
     const styles = {
       dashboardList: {
@@ -164,7 +166,7 @@ const mapStateToProps = state => {
   // console.log(state)
   return {
     email: state.user.email.toString(),
-    parkList: state.parkList,
+    parkList: state.nearbyParks,
     nearbyUsers: state.nearbyUsers,
     user: state.user,
     events: state.events,
@@ -177,9 +179,6 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getEveryAddresses() {
-      dispatch(getParksAddresses());
-    },
     getUserLocation() {
       dispatch(getGeolocation());
     },

@@ -19,13 +19,13 @@ export const NearbyParksList = props => {
       width: '100%',
     },
   };
-  const { parkList } = props;
+  const { nearbyParks } = props;
   return (
     <Card style={styles.dashboardList}>
       <h3 style={{ margin: '0.5em' }}>Nearby Parks</h3>
       <Card.Content style={{ padding: '0' }} className="dashboard-card">
         <Feed className="overflow-scroll dashboard-feed">
-          {parkList && parkList.map(park => (
+          {nearbyParks && nearbyParks.map(park => (
             <NearbyParksListItem key={park.id} park={park} />
           ))}
         </Feed>
@@ -37,7 +37,7 @@ export const NearbyParksList = props => {
 /**
  * CONTAINER
  */
-const mapState = ({ parkList }) => ({ parkList });
+const mapState = ({ nearbyParks }) => ({ nearbyParks });
 
 const mapDispatch = dispatch => {
   return {
