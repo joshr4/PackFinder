@@ -23,6 +23,8 @@ async function createEvents() {
     //let startT2 = new Date(2018, 4, 7, 15, 0);
     //let endT2 = new Date(2018, 4, 7, 18, 0);
     // for (let i = 0; i < allUsers.length; i ++) {
+    let Matt = await User.findOne({where:{email:"matt@matt.com"}});
+    let Dan = await User.findOne({where:{email:"dan@dan.com"}});
     for (let i = 0; i < 15; i ++) {
         let thisUser = allUsers[i];
         let parkIndex = i % nParks;
@@ -47,19 +49,29 @@ async function createEvents() {
                 email:"josh@josh.com"
             }
         })
-        if (i <= 8) {
+        if (i <= 8) { //Sending 8 invites to Josh
             await event.addInvitee(testUser);
             await testUser.addInvitedEvent(event);
         }
-        else {
+        else { //2 Josh accepts 7 invites
             await event.addAttendee(testUser);
             await testUser.addAttendingEvent(event);
         }
+        // SEEDING EVENT INVITES FOR MATT & DAN
+        // MATT
+        await event.addInvitee(Matt);
+        // await Matt.addAttendingEvent(event);
+        // DAN
+        await event.addInvitee(Dan);
+        // await Dan.addAttendingEvent(event);
+    
         
         for (let x = 0; x < 10; x++) {
             let randomUserIndex = parseInt(Math.floor(Math.random()*(nUsers - 1)));
             let randomUser = allUsers[randomUserIndex];
-            if (randomUser.id == thisUser.id) {
+            if (randomUser.id == thisUser.id
+            || randomUser.email == "matt@matt.com" 
+            || randomUser.email == "dan@dan.com") {
                 continue;
             }
             if (x <= 5) {

@@ -321,7 +321,6 @@ export class EventDetail extends Component {
                 </Form>
               </Grid.Row>
             </Grid.Column>
-
             <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
               <Card style={styles.dashboardList}>
                 <Card.Content style={{ padding: '0em' }}>
