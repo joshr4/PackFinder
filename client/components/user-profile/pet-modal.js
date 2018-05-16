@@ -4,7 +4,7 @@ import AddVisitForm from '../addvisitform';
 import { EditImageModal } from '../index.js';
 
 const PetModal = props => {
-  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet, toggleNestedModal, showNestedModal } = props
+  let { item, onClose, handleAdd, handleUpdate, handleChange, handleDelete, isUpdatePet, toggleNestedModal, showNestedModal, isPetModalDirty } = props
   return (
     <Modal open={props.show} onClose={props.onClose}>
       <Modal.Header>Edit your pet</Modal.Header>
@@ -12,7 +12,7 @@ const PetModal = props => {
       <div style={{ display: 'flex', flexDirection: 'column', marginRight: '15px'}}>
         <Image
           wrapped
-          size="large"
+          size="medium"
           src={item.imageUrls[0]}
         />
 
@@ -83,7 +83,7 @@ const PetModal = props => {
                   control={TextArea}
                   label="About:"
                   name="bio"
-                  placeholder="Tell us more about yourself..."
+                  placeholder="Tell us more about your pet..."
                   value={item.bio}
 
                 />
@@ -172,7 +172,7 @@ const PetModal = props => {
       <Button  color="red" inverted onClick={() => onClose()}>
          <Icon name="remove" /> Cancel
        </Button>
-       <Button color="green" inverted onClick={isUpdatePet ? () => handleUpdate() : () => handleAdd()}>
+       <Button color="green" disabled={!isPetModalDirty} inverted onClick={isUpdatePet ? () => handleUpdate() : () => handleAdd()}>
          <Icon name="checkmark" /> Save
        </Button>
       </Modal.Actions>
