@@ -83,7 +83,7 @@ let dateDisplay = function(dateObj) {
   return month + '/' + day;
 };
 
-let strfTime = function(dateObj) {
+let strfTime = function (dateObj) {
   if (dateObj == '') {
     return '';
   }
@@ -106,7 +106,7 @@ let strfTime = function(dateObj) {
   return DString + ' ' + TString;
 };
 
-let stringFormat = function(dateObj) {
+let stringFormat = function (dateObj) {
   if (dateObj == '') {
     return '';
   }
@@ -121,7 +121,7 @@ let stringFormat = function(dateObj) {
   return outputString;
 };
 
-let YmDFormat = function(dateObj) {
+let YmDFormat = function (dateObj) {
   let year = dateObj.getFullYear();
   let day = dateObj.getDate();
   if (day < 10) {
@@ -533,14 +533,14 @@ export class DogPark extends Component {
           modalType={'add'}
           show={this.state.showModal}
           onClose={this.toggleModal}
-          onDelete={() => {}}
+          onDelete={() => { }}
           item={this.state.addFormFieldData}
           slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
-          handleFieldChange={() => {}}
+          handleFieldChange={() => { }}
           parkList={this.props.parkList}
-          onEdit={() => {}}
+          onEdit={() => { }}
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
           noPark={true}
