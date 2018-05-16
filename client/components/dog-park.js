@@ -26,7 +26,7 @@ import {
   Select,
   TextArea,
   Checkbox,
-  Tab
+  Tab,
 } from 'semantic-ui-react';
 import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
@@ -50,20 +50,28 @@ import { VictoryChart, VictoryBar, VictoryAxis, VictoryArea } from 'victory';
  * such things.
  */
 let monthName = {
-  1:"January", 2:"February", 3:"March",
-  4:"April", 5:"May", 6:"June",
-  7:"July", 8:"August", 9:"September",
-  10:"October", 11:"November", 12:"December",
-}
+  1: 'January',
+  2: 'February',
+  3: 'March',
+  4: 'April',
+  5: 'May',
+  6: 'June',
+  7: 'July',
+  8: 'August',
+  9: 'September',
+  10: 'October',
+  11: 'November',
+  12: 'December',
+};
 let WDMap = {
-  0: "Sunday",
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-}
+  0: 'Sunday',
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+};
 
 let timeDisplay = function(dateObj, military = false) {
   if (dateObj == '') {
@@ -111,7 +119,7 @@ let stringDate = function(dateObj) {
   return monthName[month] + '-' + day;
 };
 
-let strfTime = function (dateObj) {
+let strfTime = function(dateObj) {
   if (dateObj == '') {
     return '';
   }
@@ -137,18 +145,17 @@ let strfTime = function (dateObj) {
 let hourString = function(dtObj) {
   let hour = dtObj.getHours() + 1;
   let minutes = dtObj.getMinutes();
-  let output = hour + " AM";
+  let output = hour + ' AM';
   if (hour == 12) {
-    output = hour + " PM";
+    output = hour + ' PM';
   }
   if (hour > 12) {
-    output = (hour - 12) + " PM";
+    output = hour - 12 + ' PM';
   }
-  return output
-}
+  return output;
+};
 
 let stringFormat = function(dateObj) {
-
   if (dateObj == '') {
     return '';
   }
@@ -163,7 +170,7 @@ let stringFormat = function(dateObj) {
   return outputString;
 };
 
-let YmDFormat = function (dateObj) {
+let YmDFormat = function(dateObj) {
   let year = dateObj.getFullYear();
   let day = dateObj.getDate();
   if (day < 10) {
@@ -219,15 +226,15 @@ export class DogPark extends Component {
       dayView: false,
       timePartition: dayPartition,
       dayOptions: [],
-      weekDayOptions:[
-        {val:'daily', display:'All Days'},
-        {val:'weekly/1', display:'Monday'},
-        {val:'weekly/2', display:'Tuesday'},
-        {val:'weekly/3', display:'Wednesday'},
-        {val:'weekly/4', display:'Thursday'},
-        {val:'weekly/5', display:'Friday'},
-        {val:'weekly/6', display:'Saturday'},
-        {val:'weekly/0', display:'Sunday'},
+      weekDayOptions: [
+        { val: 'daily', display: 'All Days' },
+        { val: 'weekly/1', display: 'Monday' },
+        { val: 'weekly/2', display: 'Tuesday' },
+        { val: 'weekly/3', display: 'Wednesday' },
+        { val: 'weekly/4', display: 'Thursday' },
+        { val: 'weekly/5', display: 'Friday' },
+        { val: 'weekly/6', display: 'Saturday' },
+        { val: 'weekly/0', display: 'Sunday' },
       ],
       map: null,
       location: {
@@ -261,14 +268,16 @@ export class DogPark extends Component {
   async updateD3() {
     let parkId = this.props.match.params.id;
     let parkVisitsURL = `/api/parks/${parkId}/visits`;
-    let averageVisitsURL = `/api/parks/${parkId}/visits/data/average/${this.state.weekChartVal}`; //Daily average route
+    let averageVisitsURL = `/api/parks/${parkId}/visits/data/average/${
+      this.state.weekChartVal
+    }`; //Daily average route
     let fullWeekURL = `/api/parks/${parkId}/visits/data/average/weekly/average`; //Full week view
     let averageDataResponse = await axios.get(averageVisitsURL);
     let fullWeekResponse = await axios.get(fullWeekURL);
     this.setState({
-      averageData:averageDataResponse.data,
-      fullWeekData:fullWeekResponse.data,
-    })
+      averageData: averageDataResponse.data,
+      fullWeekData: fullWeekResponse.data,
+    });
 
     axios.get(parkVisitsURL).then(response => {
       let visits = response.data;
@@ -480,12 +489,12 @@ export class DogPark extends Component {
     this.updateD3();
   }
   changeweekDay(event) {
-    console.log("changing week day...");
+    console.log('changing week day...');
     event.preventDefault();
     let weekChartVal = event.target.selectweekDay.value;
-    let newChartTitle = "All Days";
-    if (weekChartVal.split("/").length > 1) {
-      newChartTitle = WDMap[parseInt(weekChartVal.split("/")[1])];
+    let newChartTitle = 'All Days';
+    if (weekChartVal.split('/').length > 1) {
+      newChartTitle = WDMap[parseInt(weekChartVal.split('/')[1])];
     }
     this.setState({
       weekChartVal,
@@ -594,275 +603,282 @@ export class DogPark extends Component {
     };
 
     const panes = [
-      { menuItem: 'Check-Ins', render: () => 
-        <Tab.Pane>
-            <Form onSubmit={this.changeDate} style={{marginBottom:"5px"}}>
-            Select specific day to view:
-            <select name="selectDate" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
-            {this.state.dayOptions.map(elem => {
-              return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
-            })}
-            </select>
-            <Button type="submit" name="submitDate" style={{marginLeft: '10px'}} color='blue' size='tiny'>
-              Select Day
-            </Button>
-            {this.state.dayView ? (
-              <Button onClick={this.clearDate} name="clearDate" style={{marginLeft: '10px'}} color='green' size='tiny'>
-                Clear
+      {
+        menuItem: 'Check-Ins',
+        render: () => (
+          <Tab.Pane>
+            <Form onSubmit={this.changeDate} style={{ marginBottom: '5px' }}>
+              Select specific day to view:
+              <select
+                name="selectDate"
+                style={{
+                  width: 'auto',
+                  display: 'inline-block',
+                  marginRight: '10px',
+                  marginLeft: '10px',
+                }}
+              >
+                {this.state.dayOptions.map(elem => {
+                  return (
+                    <option key={elem.val} value={elem.val}>
+                      {elem.display}
+                    </option>
+                  );
+                })}
+              </select>
+              <Button
+                type="submit"
+                name="submitDate"
+                style={{ marginLeft: '10px' }}
+                color="blue"
+                size="tiny"
+              >
+                Select Day
               </Button>
-            ) : null}
-          </Form>
-          <VictoryChart
-          title="Visitors"
-          style={{labels: {fontSize:"10px", color:"red"}}}
-          height={250}
-          // width="auto"
-          padding={{top:0, bottom:50, left:50, right:50}}
-          domainPadding={20}
-          >
+              {this.state.dayView ? (
+                <Button
+                  onClick={this.clearDate}
+                  name="clearDate"
+                  style={{ marginLeft: '10px' }}
+                  color="green"
+                  size="tiny"
+                >
+                  Clear
+                </Button>
+              ) : null}
+            </Form>
+            <VictoryChart
+              title="Visitors"
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              height={250}
+              // width="auto"
+              padding={{ top: 0, bottom: 50, left: 50, right: 50 }}
+              domainPadding={20}
+            >
               <VictoryAxis
                 // scale="time"
                 style={{
-                  tickLabels: {fontSize: "8px", padding: 10, angle: 315},
-                  axis: {stroke:"#000000", strokeWidth: 2},
+                  tickLabels: { fontSize: '8px', padding: 10, angle: 315 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
                 }}
                 domain={[0, this.state.maxVisits]}
-                tickCount={this.state.dayView ? null : (victoryData.length)}
+                tickCount={this.state.dayView ? null : victoryData.length}
               />
               <VictoryAxis
                 dependentAxis
                 style={{
-                  tickLabels: {fontSize: "8px", padding: 5},
-                  axis: {stroke:"#000000", strokeWidth: 2},
+                  tickLabels: { fontSize: '8px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
                 }}
-                tickFormat={(x) => (` ${x} visits`)}
-                tickFormat={d3.format(",d")}
+                tickFormat={x => ` ${x} visits`}
+                tickFormat={d3.format(',d')}
                 label="Visits"
               />
               <VictoryBar
                 data={victoryData}
                 // alignment={this.state.dayView ? 'start' : 'middle'}
                 barRatio={1}
-                alignment='middle'
+                alignment="middle"
                 style={{
-                  tickLabels: {fontSize: "10px", padding: 5},
-                  data: { 
-                    fill: "#54B8BF", 
-                    stroke:"#000000",
+                  tickLabels: { fontSize: '10px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
                     strokeWidth: 1,
-                    // border:"2px solid black" 
-                  }
+                    // border:"2px solid black"
+                  },
                 }}
                 x="time"
                 y="visits"
               />
-        </VictoryChart>
-
-        </Tab.Pane> 
+            </VictoryChart>
+          </Tab.Pane>
+        ),
       },
 
-      { menuItem: 'Popular Times',
-        //#weekchart   
-        render: () => 
-        <Tab.Pane>
-        <Form onSubmit={this.changeweekDay}>
-        Select day of week to view:
-        <select name="selectweekDay" style={{"width":"auto", "display":"inline-block", "marginRight":"10px", "marginLeft":"10px"}}>
-            {this.state.weekDayOptions.map(elem => {
-              return(<option key={elem.val} value={elem.val}>{elem.display}</option>)
-            })}
-        </select>
-        <Button type="submit" style={{marginLeft: '10px'}} color='blue' size='tiny'>
-          Select Day
-        </Button>
-      </Form>
-        <VictoryChart
-        style={{labels: {fontSize:"10px", color:"red"}}}
-        domainPadding={20}
-        padding={{top:0, bottom:50, left:50, right:50}}
-        height={250}
-        >
-        <VictoryAxis
-          style={{
-            tickLabels: {fontSize: "8px", padding: 5},
-            axis: {stroke:"#000000", strokeWidth: 2},
-          }}
-          fixLabelOverlap={true}
-          label="Time"
-        />
-        <VictoryAxis
-          dependentAxis
-          domain={(this.state.averageData.hasVisits) ? null : [0, 1]}
-          style={{
-            tickLabels: {
-              fontSize: "8px", 
-              padding: 5},
-            axis: {stroke:"#000000", strokeWidth: 2},
-          }}
-          tickFormat={(x) => (` ${x}`)}
-          label="Average Daily Visits"
-        />
-        <VictoryBar
-          alignment='start'
-          data={this.state.averageData.dataArray}
-          barRatio={1}
-          style={{
-            tickLabels: {fontSize: "7px", padding: 5},
-            data: { 
-              fill: "#54B8BF", 
-              stroke:"#000000",
-              strokeWidth: 1,
-              // border:"2px solid black" 
-            }
-    }}
-          x="timeString"
-          y="average"
-        />
-      </VictoryChart>
-        </Tab.Pane> 
+      {
+        menuItem: 'Popular Times',
+        //#weekchart
+        render: () => (
+          <Tab.Pane>
+            <Form onSubmit={this.changeweekDay}>
+              Select day of week to view:
+              <select
+                name="selectweekDay"
+                style={{
+                  width: 'auto',
+                  display: 'inline-block',
+                  marginRight: '10px',
+                  marginLeft: '10px',
+                }}
+              >
+                {this.state.weekDayOptions.map(elem => {
+                  return (
+                    <option key={elem.val} value={elem.val}>
+                      {elem.display}
+                    </option>
+                  );
+                })}
+              </select>
+              <Button
+                type="submit"
+                style={{ marginLeft: '10px' }}
+                color="blue"
+                size="tiny"
+              >
+                Select Day
+              </Button>
+            </Form>
+            <VictoryChart
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              domainPadding={20}
+              padding={{ top: 0, bottom: 50, left: 50, right: 50 }}
+              height={250}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: { fontSize: '8px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                fixLabelOverlap={true}
+                label="Time"
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={this.state.averageData.hasVisits ? null : [0, 1]}
+                style={{
+                  tickLabels: {
+                    fontSize: '8px',
+                    padding: 5,
+                  },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                tickFormat={x => ` ${x}`}
+                label="Average Daily Visits"
+              />
+              <VictoryBar
+                alignment="start"
+                data={this.state.averageData.dataArray}
+                barRatio={1}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
+                    strokeWidth: 1,
+                    // border:"2px solid black"
+                  },
+                }}
+                x="timeString"
+                y="average"
+              />
+            </VictoryChart>
+          </Tab.Pane>
+        ),
       },
-      { menuItem: 'Popular Days',
-        //#weekchart   
-        render: () => 
-        <Tab.Pane>
-        <VictoryChart
-        style={{labels: {fontSize:"10px", color:"red"}}}
-        domainPadding={20}
-        padding={{top:30, bottom:50, left:50, right:50}}
-        height={250}
-        >
-        <VictoryAxis
-          style={{
-            tickLabels: {fontSize: "7px", padding: 5},
-            axis: {stroke:"#000000", strokeWidth: 2},
-          }}
-        />
-        <VictoryAxis
-          dependentAxis
-          domain={(this.state.fullWeekData.hasVisits) ? null : [0, 1]}
-          style={{
-            tickLabels: {fontSize: "7px", padding: 5},
-            axis: {stroke:"#000000", strokeWidth: 2},
-          }}
-          tickFormat={(x) => (` ${x}`)}
-          label="Average Daily Visits"
-        />
-        <VictoryBar
-          data={this.state.fullWeekData.dataArray}
-          barRatio={1}
-          style={{
-            tickLabels: {fontSize: "7px", padding: 5},
-            data: { 
-              fill: "#54B8BF", 
-              stroke:"#000000",
-              strokeWidth: 1,
-              // border:"2px solid black" 
-            }
-    }}
-          x="name"
-          y="average"
-        />
-      </VictoryChart>
-        </Tab.Pane> 
+      {
+        menuItem: 'Popular Days',
+        //#weekchart
+        render: () => (
+          <Tab.Pane>
+            <VictoryChart
+              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              domainPadding={20}
+              padding={{ top: 30, bottom: 50, left: 50, right: 50 }}
+              height={250}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={this.state.fullWeekData.hasVisits ? null : [0, 1]}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  axis: { stroke: '#000000', strokeWidth: 2 },
+                }}
+                tickFormat={x => ` ${x}`}
+                label="Average Daily Visits"
+              />
+              <VictoryBar
+                data={this.state.fullWeekData.dataArray}
+                barRatio={1}
+                style={{
+                  tickLabels: { fontSize: '7px', padding: 5 },
+                  data: {
+                    fill: '#54B8BF',
+                    stroke: '#000000',
+                    strokeWidth: 1,
+                    // border:"2px solid black"
+                  },
+                }}
+                x="name"
+                y="average"
+              />
+            </VictoryChart>
+          </Tab.Pane>
+        ),
       },
-    ]
-        
+    ];
+
     return (
       <div className="container" style={{ overflowY: 'scroll' }}>
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
           onClose={this.toggleModal}
-          onDelete={() => { }}
+          onDelete={() => {}}
           item={this.state.addFormFieldData}
           slider={this.state.slider}
           handleSubmit={this.addEvent}
           handleChange={this.handleChange}
-          handleFieldChange={() => { }}
+          handleFieldChange={() => {}}
           parkList={this.props.parkList}
-          onEdit={() => { }}
+          onEdit={() => {}}
           handleEdit={this.updateEvent}
           handleSliderChange={this.handleSliderChange}
           noPark={true}
         />
-        <Grid centered 
-        // className="overflow-scroll" 
-        style={{ height: '80vh' }}>
+        <Grid
+          centered
+          // className="overflow-scroll"
+          style={{ height: '80vh' }}
+        >
           <Grid.Row>
-        <Grid.Column width={8}>
-          <Card style={styles.dashboardList}>
+            <Grid.Column width={8}>
+              <Card style={styles.dashboardList}>
                 <Card.Content style={{ padding: '0' }}>
-                    <DogParkItem
-                      checkIn={this.toggleModal}
-                      park={this.state.park}
-                    />
+                  <DogParkItem
+                    checkIn={this.toggleModal}
+                    park={this.state.park}
+                  />
                 </Card.Content>
               </Card>
-        </Grid.Column>
-        <Grid.Column width={7}>
-            <SingleParkMap
-            zoom={15}
-            center={this.state.park.address.location}
-            mapLoaded={this.mapLoaded.bind(this)}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <SingleParkMap
+                zoom={15}
+                center={this.state.park.address.location}
+                mapLoaded={this.mapLoaded.bind(this)}
+                containerElement={<div style={{ height: `100%` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+              />
 
-          {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
-
-        </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={8}>
-          <Segment height="auto">
-            <Tab panes={panes} />
-          </Segment>
-          </Grid.Column>
-          <Grid.Column width={8}>
-          <Segment>
-            <Tab panes={panes} />
-          </Segment>
-          </Grid.Column>
-
-
-                {
-                  //VICTORY AREA
-                }
-                <Header as="h3" style={{ fontSize: '3em' }} textAlign="center">
-                  Daily Averages
-                </Header>
-                <VictoryChart
-                  style={{ labels: { fontSize: '10px', color: 'red' } }}
-                  domainPadding={20}
-                >
-                  <VictoryAxis
-                    // tickValues specifies both the number of ticks and where
-                    // they are placed on the axis
-                    style={{
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    label="Time"
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    style={{
-                      // axisLabel: {fontSize: "10px", padding: 30},
-                      tickLabels: { fontSize: '5px', padding: 5 },
-                    }}
-                    tickFormat={x => ` ${x}`}
-                    label="Average Daily Visits"
-                    // tickValues={[0, 1]}
-                  />
-                  <VictoryArea
-                    data={this.state.averageData}
-                    style={{
-                      tickLabels: { fontSize: '10px', padding: 5 },
-                    }}
-                    // style={{labels: {fontSize:"10px", color:"red"}}}
-                    x="timeString"
-                    y="average"
-                  />
-                </VictoryChart>
+              {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <Segment height="auto">
+                <Tab panes={panes} />
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Segment>
+                <Tab panes={panes} />
               </Segment>
             </Grid.Column>
           </Grid.Row>
