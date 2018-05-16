@@ -64,19 +64,13 @@ export const NearbyParksListItem = props => {
         <Grid.Row columns={1} style={{ padding: '0em 0em' }}>
           <Grid.Column width={16} style={{ padding: '0', margin: '0' }}>
             <Grid.Row style={{ padding: '0', margin: '0' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                }}
-              >
                 <div
                   style={{
                     overflowX: 'scroll',
                     display: 'flex',
                     flexDirection: 'row',
                     height: '10rem',
+                    justifyContent: 'flex-start'
                   }}
                 >
                   {imageUrls.map(imageUrl => (
@@ -104,7 +98,6 @@ export const NearbyParksListItem = props => {
                     }}
                   />
                 </div>
-              </div>
             </Grid.Row>
           </Grid.Column>
         </Grid.Row>
