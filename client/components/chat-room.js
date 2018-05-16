@@ -130,11 +130,16 @@ class ChatRoom extends Component {
             // timestring: (this.id + "Days ago"),
             likes:5},
         ]
-        let reversedMessages = this.props.messages.reverse(); 
         return (
             <div className="container" style={{ padding: '0.5em', height: '100%', "overflowY":"scroll"}}>
+            <Form onSubmit={this.handleSubmit}>
+            <TextArea rows={1} style={{marginBottom:"0.5em"}} autoHeight placeholder='Write message' name="messageBody"
+            value={this.state.chatValue} onChange={this.chatChange}
+            />
+            <Button type="submit" positive>Post</Button>
+            </Form>
               <Feed>
-            {reversedMessages.map(message => {
+            {this.props.messages.map(message => {
                 return(
                     <Feed.Event key={message.id}>
                     <Feed.Label image={message.poster.imageUrl}/>
@@ -155,13 +160,7 @@ class ChatRoom extends Component {
                 )
             })}
           </Feed>
-          <Form onSubmit={this.handleSubmit}>
-          <TextArea rows={1} style={{marginBottom:"0.5em"}} autoHeight placeholder='Write message' name="messageBody"
-          value={this.state.chatValue} onChange={this.chatChange}
-          />
-          <Button type="submit" positive>Post</Button>
-          </Form>
-  </div>)
+    </div>)
     }
 }
 
