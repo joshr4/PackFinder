@@ -80,9 +80,7 @@ const EventDetailItem = props => {
             <Grid.Row style={{ padding: '0', margin: '0' }}>
               <Segment style={{ margin: 0 }}>
                 {`${description}`}
-                {isOwner ?
-                  <Button visible={isOwner} size="tiny" floated="right" color="blue" onClick={() => toggleAttendeeModal()}>Invite Friends</Button>
-                  : <div />}
+                <Button visible={isOwner} size="tiny" floated="right" color="blue" onClick={() => toggleAttendeeModal()}>Invite Friends</Button>
               </Segment>
             </Grid.Row>
           </Grid.Column>

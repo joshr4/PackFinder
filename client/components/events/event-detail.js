@@ -162,7 +162,10 @@ export class EventDetail extends Component {
                       priv={displayEvent.private}
                       toggleAttendeeModal={this.toggleAttendeeModal}
                     />
-                    {/* <Segment clearing size="large" attached style={{ padding: '0.5em' }} >
+                    {this.state.invitedClicked ?
+                      (<span style={{ fontSize: "12px", color: "blue" }}><br />{this.state.invitedClickedText}</span>)
+                      : null}
+                      {/* <Segment clearing size="large" attached style={{ padding: '0.5em' }} >
                       <b style={{ padding: '.25em' }}>{displayEvent.description}</b>
                     </Segment>
                     <Segment attached style={{ padding: '0.5em' }}>
@@ -214,7 +217,26 @@ export class EventDetail extends Component {
                   </Card>
                   {this.state.invitedClicked ?
                     (<span style={{ fontSize: "12px", color: "blue" }}><br />{this.state.invitedClickedText}</span>)
-                    : null}
+                    : null}                        
+                  <Card style={styles.dashboardList}>
+                    <Card.Content style={{ padding: '1em' }}>
+                      <Card.Header style={{ marginBottom: '1em' }}>Invited:</Card.Header>
+                      <Grid>
+                        {invitees.length ? invitees.map(invitee => {
+                          return (
+                            <Grid.Column mobile={4} tablet={3} computer={3} largeScreen={2} key={invitee.id} textAlign={'center'} style={{ marginBottom: '4px', padding: '0px' }}>
+                              <Image avatar src={invitee.imageUrl} />
+                              <List.Content>
+                                <List.Header style={{ fontSize: '10px' }}>{invitee.fullName}</List.Header>
+                              </List.Content>
+                            </Grid.Column>
+                          )
+                        })
+                          : <p>Nobody has been invited</p>}
+                      </Grid>
+                    </Card.Content>
+                  </Card>
+                    
                 </Grid.Row>
               </Grid.Column>
 
