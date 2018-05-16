@@ -120,7 +120,6 @@ class Profile extends React.Component {
             isUpdatePet={this.state.isUpdatePet}
           />
           <Grid columns={2} divided>
-            <Header as="h3">Owner:</Header>
             <UserProfileItem readOnly={this.state.readOnly} selectedUser={selectedUser} />
             <Grid.Row>
               <Grid.Column width="4">

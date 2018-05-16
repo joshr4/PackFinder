@@ -29,35 +29,47 @@ export class UserProfileItem extends React.Component {
             toggleNestedModal={this.toggleNestedModal}
           />
         )}
-        <Grid.Column width="4">
-        { readOnly ?
-          <Image size="small" src={selectedUser.imageUrl} circular /> :
-          <Image size="small" src={user.imageUrl} circular /> }
-        </Grid.Column>
+        {/* <Grid.Column width="4"> */}
+          {readOnly ? (
+            <div>
+              <h2>{selectedUser.fullName}</h2>
+              <Image size="small" src={selectedUser.imageUrl} circular />
+            </div>
+          ) : (
+            <div>
+              <h2>{user.fullName}</h2>
+              <Image size="small" src={user.imageUrl} circular />
+            </div>
+          )}
+        {/* </Grid.Column> */}
         <Grid.Column width="12">
-          {readOnly ?
+          {readOnly ? (
             <Segment>
-            {selectedUser && (
-              <List>
-                <List.Item>Name: {selectedUser.fullName}</List.Item>
-                <List.Item>Email: {selectedUser.email}</List.Item>
-                <List.Item>Bio: {selectedUser.description}</List.Item>
-              </List>
-            )}
-          </Segment>
-            :
+              {selectedUser && (
+                <List>
+                  <List.Item>Name: {selectedUser.fullName}</List.Item>
+                  <List.Item>Email: {selectedUser.email}</List.Item>
+                  <List.Item>Bio: {selectedUser.description}</List.Item>
+                </List>
+              )}
+            </Segment>
+          ) : (
             <Segment>
-            {user && (
-              <List>
-                <List.Item>Name: {user.fullName}</List.Item>
-                <List.Item>Email: {user.email}</List.Item>
-                <List.Item>Bio: {user.description}</List.Item>
-                {user.address && <List.Item>Address: {user.address.fullAddress}</List.Item>}
-              </List>
-            )}
-          </Segment>}
-          {readOnly ? null :
-            <Button onClick={this.toggleEditUserModal}>Edit</Button>}
+              {user && (
+                <List>
+                  <List.Item>Name: {user.fullName}</List.Item>
+                  <List.Item>Email: {user.email}</List.Item>
+                  <List.Item>Bio: {user.description}</List.Item>
+                  {user.address && (
+                    <List.Item>Address: {user.address.fullAddress}</List.Item>
+                  )}
+                </List>
+              )}
+            </Segment>
+          )}
+          {readOnly ? null : (
+            <Button onClick={this.toggleEditUserModal}>Edit</Button>
+          )}
         </Grid.Column>
       </Grid.Row>
     );
