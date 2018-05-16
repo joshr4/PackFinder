@@ -38,7 +38,7 @@ class AddAttendeeModal extends Component {
     let { description, item, isDirty, user,
       // userFriends
     } = this.state
-    userFriends = (userFriends) ? (userFriends) : []; 
+    userFriends = (userFriends) ? (userFriends) : [];
 
     return (
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>

@@ -55,5 +55,17 @@ module.exports = (io) => {
         })
       }
     });
+    // **************************
+    // EVENTS SOCKETS
+    // **************************
+    socket.on('event-invite', data => {
+      data.userIds.forEach(id => {
+        if (currentUsers[id]) {
+          io.to(currentUsers[id]).emit('event-invite', {
+            id: data.event.id, userId: id
+          })
+        }
+      })
+    });
   })
 }

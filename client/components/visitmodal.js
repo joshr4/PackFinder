@@ -5,11 +5,10 @@ import AddVisitForm from './addvisitform';
 const VisitModal = props => {
   let { modalType, onDelete, item, handleSubmit, handleChange, handleFieldChange, handleSliderChange, parkList, nowString, onEdit, handleEdit, slider, noPark } = props
   return (
-    <Modal open={props.show} onClose={props.onClose} style={{width: '75vw'}} >
+    <Modal open={props.show} onClose={props.onClose} style={{width: '75vw'}} closeIcon>
       <Grid>
-        <Button color="blue" style={{ marginLeft: 35, marginTop: 20}} onClick={() => props.onClose()}>Close</Button>
         { modalType === 'view' ?
-            <Button color="teal" style={{marginTop: 20}} onClick={() => onEdit(item, 'edit')}>Edit Visit</Button>
+            <Button color="teal" style={{marginLeft: 20, marginTop: 20}} onClick={() => onEdit(item, 'edit')}>Edit Visit</Button>
           : null}
         { modalType === 'view' ?
             <Button negative style={{marginRight: 20, marginTop: 20}} onClick={() => onDelete(item)}>Delete Visit</Button>
