@@ -7,9 +7,7 @@ module.exports = (io) => {
     socket.on('join', (data) => {
       console.log('joind a socket room', data)
       currentUsers[data.userId] = socket.id
-      console.log('SOCKET CURRENTUSERS', currentUsers)
       socket.join(data.userId); // We are using room of socket io
-      console.log('socket after join - socket.rooms', socket.rooms)
     });
 
     socket.on('new-message', message => {

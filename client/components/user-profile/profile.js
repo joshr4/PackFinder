@@ -14,6 +14,7 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       showPetModal: false,
+      isPetModalDirty: false,
       selectedPet: {
         bio: '',
         breed: '',
@@ -29,7 +30,6 @@ class Profile extends React.Component {
       readOnly: false,
       friendId: null,
       showNestedModal: false
-
     };
     this.togglePetModal = this.togglePetModal.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
@@ -56,7 +56,7 @@ class Profile extends React.Component {
       selPet = {
         bio: '',
         breed: '',
-        imageUrls: [],
+        imageUrls: ['https://usercontent2.hubstatic.com/7780333.jpg'],
         name: '',
         weight: undefined,
         age: undefined,
@@ -94,19 +94,20 @@ class Profile extends React.Component {
 
     let tempArr = [...this.state.selectedPet.imageUrls]
     tempArr[0] = e.target.value
-
     this.setState({
       selectedPet: Object.assign(this.state.selectedPet, {
-       imageUrls: tempArr,
+      imageUrls: tempArr,
       }),
     });
     }
 
     else {
+
       this.setState({
         selectedPet: Object.assign(this.state.selectedPet, {
-         [e.target.name]: e.target.value,
+        [e.target.name]: e.target.value,
         }),
+        isPetModalDirty: true,
       });
     }
   };
@@ -115,7 +116,7 @@ class Profile extends React.Component {
   };
   render() {
     const { userPets, user, selectedUser } = this.props;
-
+    const { isPetModalDirty } = this.state;
     let petsList = []
 
     if (this.state.readOnly){
@@ -139,6 +140,7 @@ class Profile extends React.Component {
             isUpdatePet={this.state.isUpdatePet}
             showNestedModal={this.state.showNestedModal}
             toggleNestedModal={this.toggleNestedModal}
+            isPetModalDirty={isPetModalDirty}
           />
           <Grid columns={2} divided>
             <UserProfileItem readOnly={this.state.readOnly} selectedUser={selectedUser} />
