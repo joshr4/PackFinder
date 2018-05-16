@@ -47,14 +47,18 @@ export class UserHome extends Component {
   }
 
   componentDidMount() {
-    // this.props.getEveryAddresses();
+    if (!this.props.parkList.length){
     this.props.getNearbyParks(this.state.location, 3218); //3218 = 2 miles in meters
+    }
     this.props.getNearByUsers(this.state.location); //3218 = 2 miles in meters
     // this.props.getNearByUsers(this.state.location)
-    // this.props.findUsers('ricky li')
+    if (!this.props.events.length){
     this.props.getNearByEvents(this.state.location, 8046)
+    }
+
+    if (!this.props.userPosition.latitude){
     this.props.getUserLocation();
-    // console.log(this.props)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,10 +93,13 @@ export class UserHome extends Component {
       },
     };
 
-    if (this.state.loading){
+    if (this.state.loading && !this.props.userPosition.latitude){
       setTimeout(() => {
         this.setState({loading: false})
       }, 5000)
+    }
+    else if (this.state.loading){
+      this.setState({loading: false})
     }
 
 
