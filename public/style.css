@@ -5,7 +5,7 @@ body {
 
 body .container {
   padding-top: 20vh;
-  height: 100vh
+  height: 100vh;
   /* background: #54b9bf; */
 }
 
@@ -30,7 +30,8 @@ body .container {
 }
 
 .dashboard-list-shadow {
-  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3), 2px 0px 5px rgba(0, 0, 0, 0.3), 0px 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3), 2px 0px 5px rgba(0, 0, 0, 0.3),
+    0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-card {
@@ -40,9 +41,9 @@ body .container {
 .dashboard-feed {
   height: 71vh;
 }
-
-::-webkit-scrollbar {
+body ::-webkit-scrollbar {
   height: 0px;
+  width: 5px;
   /* remove scrollbar space */
 }
 
@@ -87,7 +88,7 @@ form div {
   max-width: 300px;
 }
 
-.login-signup>button {
+.login-signup > button {
   margin: 1em;
   display: inline-block;
 }
@@ -103,7 +104,7 @@ form div {
   align-items: center;
 }
 
-.login-signup>form {
+.login-signup > form {
   align-items: center;
   width: 33.33vw;
   justify-content: center;
@@ -155,9 +156,9 @@ form div {
   /* Remove outline */
   opacity: 0.7;
   /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s;
+  -webkit-transition: 0.2s;
   /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+  transition: opacity 0.2s;
 }
 
 /* Mouse-over effects */
@@ -188,7 +189,7 @@ form div {
   /* Set a specific slider handle width */
   height: 25px;
   /* Slider handle height */
-  background: #4CAF50;
+  background: #4caf50;
   /* Green background */
   cursor: pointer;
   /* Cursor on hover */

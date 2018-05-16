@@ -80,7 +80,7 @@ export class UserHome extends Component {
     const styles = {
       dashboardList: {
         boxShadow:
-          '-2px 0px 5px rgba(0,0,0,0.3), 2px 0px 5px rgba(0,0,0,0.3), 0px 2px 5px rgba(0,0,0,0.3)',
+      '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
         width: '100%',
       },
     };
