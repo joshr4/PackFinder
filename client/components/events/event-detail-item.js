@@ -25,7 +25,8 @@ const EventDetailItem = props => {
     priv,
     toggleAttendeeModal,
     invitedClicked,
-    invitedClickedText
+    invitedClickedText,
+    imageUrls,
   } = props;
   return (
     <Segment style={{ margin: '0px', width: '100%' }}>
@@ -79,7 +80,41 @@ const EventDetailItem = props => {
         </Grid.Row>
         <Grid.Row columns={1} style={{ padding: '0em 0em' }}>
           <Grid.Column width={16} style={{ padding: '0', margin: '0' }}>
-            <Grid.Row style={{ padding: '0', margin: '0' }}>
+            <Grid.Row style={{ padding: '0', margin: '0' }}><div
+                style={{
+                  overflowX: 'scroll',
+                  overflowY: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  height: '10rem',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                {imageUrls &&
+                  imageUrls.map(imageUrl => (
+                    <div style={{ width: '100%' }} key={imageUrl}>
+                      <img style={{ height: '100%' }} src={imageUrl} />
+                    </div>
+                  ))}
+                <Icon
+                  name="angle right"
+                  style={{
+                    position: 'absolute',
+                    top: '60px',
+                    right: '0px',
+                    backgroundColor: 'transparent',
+                    padding: '0px',
+                    fontSize: '5em',
+                    color: 'rgb(222, 242, 242)',
+                    maxWidth: '-1px',
+                    margin: '0em 0em',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}
+                />
+              </div>
+
               <Segment style={{ margin: 0 }}>
                 {`${description}`}
                 {isOwner ?
