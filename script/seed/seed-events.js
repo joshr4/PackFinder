@@ -87,6 +87,7 @@ async function createEvents() {
             await event.addAttendee(Matt);
             await event.addAttendee(Hugh);
             await event.setCreator(Hugh);
+            await event.setPark(thisPark);
             continue;
         }
 
