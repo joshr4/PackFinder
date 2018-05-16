@@ -127,7 +127,7 @@ export class EventsList extends Component {
       },
     ];
     return (
-      <Card style={styles.dashboardList}>
+      <Card style={styles.dashboardList} className="mobile">
         <Card.Content style={{ padding: '0px' }}>
           <div style={{ display: 'flex' }}>
             <h3 style={{ margin: '0.5em' }}>Upcoming Events</h3>

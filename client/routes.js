@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, SinglePark, Example, ParkGraph, Dnd, Profile, ParkList, DogPark, Splash,
-ChatRoom, EventDetail, EventList} from './components'
+ChatRoom, EventDetail, EventList, FriendsList, EventsList, NearbyParksList} from './components'
 
 import {me, getEvents} from './store'
 
@@ -35,7 +35,9 @@ class Routes extends Component {
         <Route path="/events" component={EventList} />
         <Route path="/chat-room" component={ChatRoom} />
         {/* Mobile specific routes */}
-        <Route path="/mobile-events" component={ChatRoom} />
+        <Route path="/mobile-home" component={FriendsList} />
+        <Route path="/mobile-events" component={EventsList} />
+        <Route path="/mobile-parks" component={NearbyParksList} />
 
         {
           isLoggedIn &&
