@@ -101,7 +101,7 @@ export class EventDetail extends Component {
         // && ('checked' in event.target[K])
       ) {
         if (typeof parseInt(K) == 'number' && e.target[K].checked) {
-          let relatedId = this.props.user.Friends[K].id;
+          let relatedId = this.props.uninvitedFriends[K].id;
           friendIDs.push(relatedId);
         }
       }
@@ -115,6 +115,7 @@ export class EventDetail extends Component {
       invitedClicked: true,
       invitedClickedText,
     });
+    console.log("inviting users: ", friendIDs);
     await this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
@@ -142,6 +143,7 @@ export class EventDetail extends Component {
     } = this.props;
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
+    let invitedFriends = this.props.invitedFriends
     const styles = {
       dashboardList: {
         boxShadow:
@@ -166,6 +168,7 @@ export class EventDetail extends Component {
           item={displayEvent}
           user={user}
           userFriends={friendstoInvite}
+          invitedFriends={invitedFriends}
         />
         <Grid
           columns={2}
@@ -276,18 +279,49 @@ export class EventDetail extends Component {
                   <Card style={styles.dashboardList}>
                     <Card.Content style={{ padding: '1em' }}>
                       <Card.Header style={{ marginBottom: '1em' }}>
-                        Invite Friends
+                        Invited Friends
+                      </Card.Header>
+                      <Grid>
+                      {invitedFriends.length ? (
+                        invitedFriends.map(invitedFriend => {
+                          return (
+                            <Grid.Column
+                              mobile={4}
+                              tablet={3}
+                              computer={3}
+                              largeScreen={2}
+                              key={invitedFriend.id}
+                              textAlign={'center'}
+                              style={{ marginBottom: '4px', padding: '0px' }}
+                            >
+                              <Image avatar src={invitedFriend.imageUrl} />
+                              <List.Content>
+                                <List.Header style={{ fontSize: '10px' }}>
+                                  {invitedFriend.fullName}
+                                </List.Header>
+                              </List.Content>
+                            </Grid.Column>
+                          );
+                        })
+                      ) : (
+                        <p>
+                        No friends invited!
+                        </p>
+                      )}
+                    </Grid>                                            
+                      <Card.Header style={{ marginBottom: '1em' }}>
+                        Friends to Invite
                       </Card.Header>
                       {friendstoInvite.length ? (
                         friendstoInvite.map(friend => {
                           return (
-                            <Grid.Column width={5} key={friend.id}>
+                            <Grid.Column width={5} key={friend.id} style={{marginRight:'10px'}}>
                               <Form.Field
                                 name={'friend-' + friend.id}
                                 value={{}}
                                 control="input"
                                 type="checkbox"
-                                style={{ marginRight: '10px' }}
+                                style={{ marginRight: '5px' }}
                               />
                               <List.Item style={{ paddingBottom: '10px' }}>
                                 <Image avatar src={friend.imageUrl} />
@@ -372,6 +406,9 @@ const mapState = (state, ownProps) => {
   let attendees = [];
   let invitees = [];
   let uninvitedFriends = [];
+  let invitedFriends = [];
+  console.log("mapState: ", state);
+  console.log("eventDetail: ", eventDetail);
 
   if (eventDetail) {
     isOwner = eventDetail.creatorId === state.user.id;
@@ -380,6 +417,7 @@ const mapState = (state, ownProps) => {
     invitees = eventDetail.invitees;
     if (state.user.Friends) {
       let InvitedandAttendingIds = [];
+      console.log("");
       attendees.forEach(attendee => {
         InvitedandAttendingIds.push(parseInt(attendee.id));
       });
@@ -387,8 +425,12 @@ const mapState = (state, ownProps) => {
         InvitedandAttendingIds.push(parseInt(invitees.id));
       });
       state.user.Friends.forEach(friend => {
+        // console.log("state.user.Friends: ", friend);
         if (!InvitedandAttendingIds.includes(friend.id)) {
           uninvitedFriends.push(friend);
+        }
+        else {
+          invitedFriends.push(friend);
         }
       });
     }
@@ -401,6 +443,7 @@ const mapState = (state, ownProps) => {
     attendees: attendees,
     invitees: invitees,
     uninvitedFriends,
+    invitedFriends,
     user: state.user,
     displayEvent: eventDetail,
     isOwner: isOwner,

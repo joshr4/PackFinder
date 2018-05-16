@@ -34,7 +34,7 @@ class AddAttendeeModal extends Component {
   }
 
   render() {
-    let { onClose, showModal, onDelete, handleSubmit, userFriends } = this.props
+    let { onClose, showModal, onDelete, handleSubmit, userFriends, invitedFriends } = this.props
     let { description, item, isDirty, user,
       // userFriends
     } = this.state
@@ -44,6 +44,26 @@ class AddAttendeeModal extends Component {
       <Modal open={showModal} onClose={() => onClose()} style={{ width: 'console' }} closeIcon>
         <Modal.Content image>
         <Form style={{width:"100%"}} onSubmit={handleSubmit}>
+        <h3>Already Invited</h3>
+        <Grid style={{width:"100%"}}>
+        <Grid.Row columns={16}>
+            {invitedFriends.length ? invitedFriends.map(invited => {
+              return (
+                <Grid.Column width={5} key={invited.id} >
+                <List.Item style={{paddingBottom:"10px"}}>
+                <Image avatar src={invited.imageUrl}/>
+                <List.Content>
+                  <List.Header style={{fontSize:"13px"}}><b>{invited.fullName}</b></List.Header>
+                </List.Content>
+              </List.Item>
+              </Grid.Column>
+            )
+            }) :
+            <div style={{padding: '5px'}}><h4>No friends invited!</h4>
+            </div>}
+        </Grid.Row>
+        </Grid>      
+        
           <h3>Invite Friends</h3>
           <Grid style={{width:"100%"}}>
           <Grid.Row columns={16}>
@@ -54,7 +74,7 @@ class AddAttendeeModal extends Component {
                   <List.Item style={{paddingBottom:"10px"}}>
                   <Image avatar src={friend.imageUrl}/>
                   <List.Content>
-                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName}</b></List.Header>
+                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName + friend.id}</b></List.Header>
                   </List.Content>
                 </List.Item>
                 </Grid.Column>
