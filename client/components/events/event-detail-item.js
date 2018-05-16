@@ -117,9 +117,11 @@ const EventDetailItem = props => {
 
               <Segment style={{ margin: 0 }}>
                 {`${description}`}
-                {isOwner ?
+                {
+                  // isOwner ?
                   <Button visible={isOwner} size="tiny" floated="right" color="blue" onClick={() => toggleAttendeeModal()}>Invite Friends</Button>
-                  : <div />}
+                  // : <div />
+                }
                   {invitedClicked ?
                     (<span style={{ fontSize: "12px", color: "blue" }}><br />{invitedClickedText}</span>)
                     : null}
