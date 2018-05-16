@@ -256,16 +256,16 @@ const mapStateToProps = state => {
 const mapDispatch = dispatch => {
   return {
     getEveryAddresses() {
-      dispatch(getParksAddresses());
+      // dispatch(getParksAddresses());
     },
     getUserLocation() {
-      dispatch(getGeolocation());
+      // dispatch(getGeolocation());
     },
     getNearbyParks(location, dist) {
-      dispatch(getNearByParksAddresses(location, dist));
+      // dispatch(getNearByParksAddresses(location, dist));
     },
     getLocationFromAddress(address) {
-      dispatch(getGoogleMapLocation(address));
+      // dispatch(getGoogleMapLocation(address));
     },
   };
 };
