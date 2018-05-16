@@ -34,7 +34,7 @@ async function createEvents() {
         let thisUser = allUsers[i];
         let parkIndex = i % nParks;
         let thisPark = allParks[parkIndex];
-        let thisDescription = eventDescriptions[(i % 5) + 1];
+        let thisDescription = eventDescriptions[(i % 9) + 1];
         // console.log("i: ", i);
         //console.log("thisUser: ", thisUser.id);
         //console.log("thisPark: ", thisPark.id);
