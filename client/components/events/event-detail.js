@@ -178,7 +178,7 @@ export class EventDetail extends Component {
               <Grid.Row columns={16}>
                   {attendees.map(attendee => {
                     return (
-                      <Grid.Column width={5}>
+                      <Grid.Column width={5} key={attendee.id}>
                       <List.Item style={{paddingBottom:"10px"}}>
                       <Image avatar src={attendee.imageUrl}/>
                       <List.Content>
@@ -195,7 +195,7 @@ export class EventDetail extends Component {
               <Grid.Row columns={16}>
                   {invitees.map(invitee => {
                     return (
-                      <Grid.Column width={5}>
+                      <Grid.Column width={5} key={invitee.id}>
                       <List.Item style={{paddingBottom:"10px"}}>
                       <Image avatar src={invitee.imageUrl}/>
                       <List.Content>
