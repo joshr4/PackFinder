@@ -49,6 +49,7 @@ class ChatRoom extends Component {
         // this.state.messages = getAllMessages();
         this.state = store.getState();
         this.chatChange = this.chatChange.bind(this);
+        this.focusChat = this.focusChat.bind(this);
     }
 
     componentDidMount () {
@@ -104,6 +105,13 @@ class ChatRoom extends Component {
             chatValue:e.target.value,
         })
     }
+    focusChat() {
+        var element = document.getElementById("feedId");
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
+        console.log("element: ", element);
+    }
     render() {
         let messages = [
             {id: 1,
@@ -130,15 +138,26 @@ class ChatRoom extends Component {
             // timestring: (this.id + "Days ago"),
             likes:5},
         ]
+        // var element = this.refs.feedId;
+        // console.log("element: ", element);
+        // if (element) {
+        //     element.scrollTop = element.scrollHeight;
+        // }
+        this.focusChat();
         return (
-            <div className="container" style={{ padding: '0.5em', height: '100%', "overflowY":"scroll"}}>
-            <Form onSubmit={this.handleSubmit}>
-            <TextArea rows={1} style={{marginBottom:"0.5em"}} autoHeight placeholder='Write message' name="messageBody"
-            value={this.state.chatValue} onChange={this.chatChange}
-            />
-            <Button type="submit" positive>Post</Button>
-            </Form>
-              <Feed>
+            <div className="container" style={{ padding: '0.5em', 
+            height: '75vh', 
+            // "overflowY":"scroll"
+            }}>
+              <Feed
+              style={{
+                height: '60vh', "overflowY":"scroll"
+              }}
+              id="feedId"
+              ref={feed => {
+                  this.messageFeed = feed;
+              }}
+              >
             {this.props.messages.map(message => {
                 return(
                     <Feed.Event key={message.id}>
@@ -160,6 +179,16 @@ class ChatRoom extends Component {
                 )
             })}
           </Feed>
+          {
+            //MOST RECENT COMMENTS AT THE BOTTOM -> WHEN GENERATING ARRAY, LARGER TIMES GO IN...
+            }
+          <Form onSubmit={this.handleSubmit}>
+          <TextArea rows={1} style={{marginBottom:"0.5em"}} autoHeight placeholder='Write message' name="messageBody"
+          value={this.state.chatValue} onChange={this.chatChange}
+          />
+          <Button type="submit" positive>Post</Button>
+          </Form>
+        
     </div>)
     }
 }
@@ -178,6 +207,7 @@ const mapState = (state, ownProps) => {
         let timeString = timeSplit[4].slice(0, -3);
         let longTime = DoW + " " + month + " " + date + " " + year + " " + timeString;
         let shortTime = month + " " + date + " " + timeString;
+        shortTime = timeString;
         if (timeObj.getDate() == new Date(Date.now()).getDate()) {
             message.timeString = shortTime;
         }
@@ -185,6 +215,15 @@ const mapState = (state, ownProps) => {
             message.timeString = longTime;
         }
     })
+    console.log("pre-sorted messages: ", messages);
+    messages.sort(function(a, b) {
+        return (new Date(a.createdAt) - new Date(b.createdAt));
+    });
+    // function updateScroll(){
+        // var element = document.getElementById("feedId");
+        // element.scrollTop = element.scrollHeight;
+    // }
+    console.log("post-sorted messages 3: ", messages);    
     return {
       messages: messages,
       user: state.user

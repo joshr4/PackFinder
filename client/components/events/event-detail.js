@@ -278,18 +278,26 @@ export class EventDetail extends Component {
             </Grid.Column>
             <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
               <Card style={styles.dashboardList}>
-                <Card.Content style={{ padding: '0em' }}>
+                <Card.Content style={{ 
+                  padding: '0em',
+                  // height:'80vh', 
+                  // overflowY:'scroll'
+                }}>
                   <Header style={{ flex: 2, margin: '0.5em', fontSize: '1em' }}>
                     Event Chat
                   </Header>
                   <ChatRoom
-                    height={250}
+                    // height={'80vh'}
+                    style={{
+                      // height:'80vh', 
+                      // overflowY:'scroll'
+                    }}
                     eventId={parseInt(this.props.match.params.id)}
                   />
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
+            <Grid.Column tablet={7} only="computer" computer={5} largeScreen={5}>
               {/* <Card style={styles.dashboardList}>
                   <Card.Content style={{ padding: '0em' }}> */}
               <SingleParkMap
