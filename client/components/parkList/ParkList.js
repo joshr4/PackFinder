@@ -3,14 +3,10 @@ import { Map, ParkListItem } from '../index.js';
 import { connect } from 'react-redux';
 import {
   Grid,
-  Header,
-  Image,
-  Rail,
-  Segment,
-  Sticky,
   Card,
   Form,
   Input,
+  Button
 } from 'semantic-ui-react';
 import {
   getGeolocation,
@@ -224,6 +220,21 @@ class ParkList extends Component {
                 />
                 <p>{`Distance: ${distance} miles `}</p>
               </div>
+              <div
+                style={{
+                  margin: '0px',
+                  position: 'absolute',
+                  top: '24.4px',
+                  right: '55px',
+                  zIndex: 1,
+                }}
+              >
+                <Button
+                  name="focus-location"
+                  icon="location arrow"
+                  style={{color: '#2c424f', fontSize: '20px', background: 'white', padding: '0.1em', borderRadius: '0'}}
+                />
+                </div>
               <Map
                 zoom={14}
                 center={this.state.location}
