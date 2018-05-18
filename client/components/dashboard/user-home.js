@@ -82,7 +82,7 @@ export class UserHome extends Component {
     if (this.state.loading && !this.props.userPosition.latitude){
       setTimeout(() => {
         this.setState({loading: false})
-      }, 5000)
+      }, 2500)
     }
     else if (this.state.loading){
       this.setState({loading: false})

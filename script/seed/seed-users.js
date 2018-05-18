@@ -63,7 +63,7 @@ function randomIndex(max) {
 }
 
 function randUser(possibleAddresses) {
-  const start = randomIndex(possibleAddresses.length)
+  const start = randomIndex(possibleAddresses.length - 1)
   const addressId = possibleAddresses.splice(start, 1)[0].id;
   const user = {
     password: '123',
@@ -79,6 +79,7 @@ function randUser(possibleAddresses) {
 
 function generateUsers(userAddresses) {
   const users = doTimes(numUsers, () => randUser(userAddresses));
+  // console.log(userAddresses)
   users.push(
     User.build({
       firstName: 'Daniel',
@@ -116,7 +117,7 @@ function generateUsers(userAddresses) {
       imageUrl: faker.image.avatar(),
       email: `matt@matt.com`,
       password: '123',
-      addressId: userAddresses.splice(0, 1)[0].id,
+      addressId: 341,
     })
   );
   users.push(

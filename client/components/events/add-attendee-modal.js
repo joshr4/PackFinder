@@ -62,8 +62,8 @@ class AddAttendeeModal extends Component {
             <div style={{padding: '5px'}}><h4>No friends invited!</h4>
             </div>}
         </Grid.Row>
-        </Grid>      
-        
+        </Grid>
+
           <h3>Invite Friends</h3>
           <Grid style={{width:"100%"}}>
           <Grid.Row columns={16}>
@@ -74,7 +74,7 @@ class AddAttendeeModal extends Component {
                   <List.Item style={{paddingBottom:"10px"}}>
                   <Image avatar src={friend.imageUrl}/>
                   <List.Content>
-                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName + friend.id}</b></List.Header>
+                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName}</b></List.Header>
                   </List.Content>
                 </List.Item>
                 </Grid.Column>
