@@ -123,6 +123,10 @@ class ParkList extends Component {
     this.props.getLocationFromAddress(this.state.searchBox);
   }
 
+  relocatButton(evt){
+    this.props.getUserLocation();
+  }
+
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
@@ -233,6 +237,7 @@ class ParkList extends Component {
                   name="focus-location"
                   icon="location arrow"
                   style={{color: '#2c424f', fontSize: '20px', background: 'white', padding: '0.1em', borderRadius: '0'}}
+                  onClick={this.relocatButton.bind(this)}
                 />
                 </div>
               <Map
