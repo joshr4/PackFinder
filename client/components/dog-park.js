@@ -27,6 +27,8 @@ import {
   TextArea,
   Checkbox,
   Tab,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react';
 import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
@@ -199,11 +201,7 @@ export class DogPark extends Component {
       minT: '',
       maxT: '',
       xIndices: [],
-      d3Data: [
-        { letter: 'Z', visits: 0.00074 },
-        { time: 'test', visits: 0.00074 },
-        { time: 'test2', visits: 0.00074 },
-      ],
+      d3Data: [],
       maxVisits: 1,
       userId: 1,
       parkId: 1,
@@ -245,6 +243,7 @@ export class DogPark extends Component {
       showModal: false,
       averageData: [],
       weekChartVal: 'daily',
+      loading: true,
       popularChartTitle: 'All Days',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -273,6 +272,8 @@ export class DogPark extends Component {
     }`; //Daily average route
     let fullWeekURL = `/api/parks/${parkId}/visits/data/average/weekly/average`; //Full week view
     let averageDataResponse = await axios.get(averageVisitsURL);
+    console.log('averageVisitsURL: ', averageVisitsURL);
+    console.log('averageData: ', averageDataResponse.data);
     let fullWeekResponse = await axios.get(fullWeekURL);
     this.setState({
       averageData: averageDataResponse.data,
@@ -424,6 +425,11 @@ export class DogPark extends Component {
     this.props.getData().then(() => {
       this.updateD3();
     });
+    if (this.state.loading){
+      setTimeout(() => {
+        this.setState({loading: false})
+      }, 1500)
+    }
   }
   addEvent = () => {
     let stateVisit = this.state.addFormFieldData;
@@ -454,6 +460,7 @@ export class DogPark extends Component {
     this.props.addNewVisit(newVisitInfo).then(result => {
       this.updateD3();
     });
+    this.setState({loading:true});
     this.toggleModal();
   };
 
@@ -518,6 +525,12 @@ export class DogPark extends Component {
     this.setState({ slider: e.target.value });
   };
   render() {
+    // this.setState({loading:true});
+    if (this.state.loading){
+      setTimeout(() => {
+        this.setState({loading: false})
+      }, 1500)
+    }    
     const { children } = this.props;
     const { fixed } = this.state;
     const courses = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -824,8 +837,18 @@ export class DogPark extends Component {
       },
     ];
 
-    return (
+    return (      
       <div className="container" style={{ overflowY: 'scroll' }}>
+      {this.state.loading ? (
+        <Dimmer active>
+          <Loader className="massive" content="Loading" />
+        </Dimmer>
+      ) : (
+        <Dimmer>
+          <Loader className="massive" content="Loading" />
+        </Dimmer>
+      )}    
+
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
@@ -872,55 +895,8 @@ export class DogPark extends Component {
               {/*<Image size="big"  centered={true} src={this.state.park.imageUrl} />*/}
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={8}>
-              <Segment height="auto">
-                <Tab panes={panes} />
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={8}>
-              <Segment>
-                <Tab panes={panes} />
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
         </Grid>
         <br /> <br /> <br />
-        <Segment inverted vertical style={{ padding: '5em 0em' }}>
-          <Container>
-            <Grid divided inverted stackable>
-              <Grid.Row>
-                <Grid.Column width={3}>
-                  <Header inverted as="h4" content="About" />
-                  <List link inverted>
-                    <List.Item as="a">Sitemap</List.Item>
-                    <List.Item as="a">Contact Us</List.Item>
-                    <List.Item as="a">Religious Ceremonies</List.Item>
-                    <List.Item as="a">Gazebo Plans</List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as="h4" content="Services" />
-                  <List link inverted>
-                    <List.Item as="a">Banana Pre-Order</List.Item>
-                    <List.Item as="a">DNA FAQ</List.Item>
-                    <List.Item as="a">How To Access</List.Item>
-                    <List.Item as="a">Favorite X-Men</List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={7}>
-                  <Header as="h4" inverted>
-                    Footer Header
-                  </Header>
-                  <p>
-                    Extra space for a call to action inside the footer that
-                    could help re-engage users.
-                  </p>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Container>
-        </Segment>
       </div>
     );
   }

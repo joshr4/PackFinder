@@ -260,26 +260,17 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
             model: Visit, required:false,
             include:[{model:User}]}]
     });
+    let total = 0;
     let visits = thisPark.visits;
-    let dateMin = '';
-    let dateMax = '';
     let minT = '';
     let maxT = '';
     let hourlyDict = [];
     for (let i = 1; i < 25; i ++) {
-        let timeString = i + " AM";
-        if (i == 12) {
-            timeString = i + " PM";
-        }
-        if (i > 12) {
-            timeString = (i - 12) + " PM";
-        }
         hourlyDict.push({
             hour:i,
             average:0,
             visits:0,
             count:0,
-            timeString,
         })
     }
     visits.forEach(visit => {
@@ -288,15 +279,8 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
           if (minT == '' || startT < minT) {
               minT = startT;
           }
-          if (dateMin == '' || startT < dateMin) {
-            dateMin = startT;
-          }
-
           if (maxT == '' || endT > maxT) {
             maxT = endT;
-          }
-          if (dateMax == '' || endT > dateMax) {
-            dateMax = endT;
           }
     })
     let width = maxT - minT;
@@ -305,20 +289,43 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
     let hasVisits = false;
     for (let i = 0; i < nHours; i++) {
         let intervalStart = new Date(minT.getTime() + hourPartition * i);
-        let thisHour = intervalStart.getHours() + 1;
+        let hour = intervalStart.getHours();
+        let timeString = hour + " AM";
+        if (hour == 0) {
+            timeString = "12" + " AM";
+        }
+        else if (hour == 12) {
+            timeString = hour + " PM";
+        }
+        else if (hour > 12) {
+            timeString = (hour - 12) + " PM";
+        }
+        let thisHour = intervalStart.getHours() + 1; //0-23 + 1
+        // let timeString = 
         hourlyDict[thisHour - 1].count ++;
         let intervalEnd = new Date(intervalStart.getTime() + hourPartition);
+        hourlyDict[thisHour - 1].startT = intervalStart;
+        hourlyDict[thisHour - 1].endT = intervalEnd;
         visits.forEach(visit => {
-          let startT = new Date(visit.start);
-          let endT = new Date(visit.end);
+        let startT = new Date(visit.start);
+        let endT = new Date(visit.end);
           if ((startT < intervalEnd && endT > intervalStart)) {
-                hourlyDict[thisHour].visits ++;
+                total ++;
+                hourlyDict[thisHour - 1].visits ++;
                 hasVisits = true;
-                hourlyDict[thisHour].average = hourlyDict[thisHour].visits/hourlyDict[thisHour].count;
+                let visits = hourlyDict[thisHour - 1].visits;
+                let count = hourlyDict[thisHour - 1].count;
             }
         })
-      }
+        let nVisits = hourlyDict[thisHour - 1].visits;
+        let nCount = hourlyDict[thisHour - 1].count;
+        let avg = nVisits/nCount;
+        console.log('avg for:', hourlyDict[thisHour - 1].timeString, avg, nVisits, nCount);
+        hourlyDict[thisHour - 1].average = avg;
+        hourlyDict[thisHour - 1].timeString = timeString;
+    }
     res.json({
+        total,
         hasVisits,
         dataArray:hourlyDict
     });
@@ -424,15 +431,8 @@ router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
           if (minT == '' || startT < minT) {
               minT = startT;
           }
-          if (dateMin == '' || startT < dateMin) {
-            dateMin = startT;
-          }
-
           if (maxT == '' || endT > maxT) {
             maxT = endT;
-          }
-          if (dateMax == '' || endT > dateMax) {
-            dateMax = endT;
           }
     })
     let width = maxT - minT;
@@ -462,9 +462,9 @@ router.get('/:id/visits/data/average/weekly/:day', async (req, res, next) => {
           if ((startT < intervalEnd && endT > intervalStart)) {
                 weekAverages[dayNum].visits ++; //Daily
                 weekAverages[dayNum].average = weekAverages[dayNum].visits/weekAverages[dayNum].count; //Daily
-                weekDict[dayNum][thisHour].visits ++;
+                weekDict[dayNum][thisHour - 1].visits ++;
                 hasVisits[dayNum] = true;
-                weekDict[dayNum][thisHour].average = weekDict[dayNum][thisHour].visits/weekDict[dayNum][thisHour].count;
+                weekDict[dayNum][thisHour - 1].average = weekDict[dayNum][thisHour - 1].visits/weekDict[dayNum][thisHour - 1].count;
             }
         })
     }
