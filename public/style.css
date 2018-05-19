@@ -34,6 +34,7 @@ body .container {
 .overflow-scroll {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 .dashboard-list-shadow {
@@ -53,6 +54,11 @@ body ::-webkit-scrollbar {
   height: 0px;
   width: 5px;
   /* remove scrollbar space */
+}
+
+.ui.inverted.menu .active.item {
+  background: rgba(255,255,255,.15);
+  color: #edfefff2!important;
 }
 
 .navbar-title {

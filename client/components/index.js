@@ -37,6 +37,7 @@ export {default as EventItem} from './events/event-item'
 export {default as EventEditModal} from './events/event-edit-modal'
 export {default as AddEventForm} from './events/event-form'
 export {default as ChatRoom} from './chat-room'
+export {default as ChatMessage} from './chat-message'
 //Friend's stuff
 export {default as UserHome} from './dashboard/user-home'
 export {default as FriendsList} from './dashboard/friends-list'
