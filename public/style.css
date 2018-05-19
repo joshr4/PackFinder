@@ -65,6 +65,11 @@ body ::-webkit-scrollbar {
 .ui.inverted.menu .active.item {
   background: rgba(255, 255, 255, .15);
   color: #edfefff2 !important;
+  /* color: rgb(45, 66, 80) !important; */
+}
+.subnav.ui.inverted.menu .active.item {
+  background: rgba(255, 255, 255, .2);
+  color: rgb(45, 66, 80) !important;
 }
 
 .navbar-title {

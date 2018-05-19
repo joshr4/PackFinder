@@ -23,6 +23,7 @@ const styles = {
     width: '100vw',
     color: '#54B8BF',
     height: '12vh',
+    borderRadius: '0',
   },
   menuItem: {
     color: '#55b9bf',
