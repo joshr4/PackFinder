@@ -25,10 +25,10 @@ const styles = {
     height: '12vh',
   },
   menuItem: {
-    color: '#fff',
+    color: '#55b9bf',
     fontSize: 25,
     fontFamily: 'Veradana, sans-serif',
-    fontWeight: 500,
+    fontWeight: 600,
     padding: '1em 0.5em',
   },
   titleText: {
@@ -68,13 +68,41 @@ export const Navbar = props => {
   return (
     <div style={{ position: 'relative' }}>
       <Menu style={styles.menu}>
-        {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
-        <NavLink to="/">
-          <Header as="h1" style={styles.titleText}>
-            {' '}
-            Pack Finder{' '}
-          </Header>
-        </NavLink>
+        {/* <div> */}
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            paddingBottom: '1em',
+          }}
+        >
+          {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
+          <NavLink to="/">
+            <h1
+              className="navbar-title"
+            >
+              {' '}
+              Pack Finder{' '}
+            </h1>
+          </NavLink>
+        </div>
+        <div style={{ position: 'relative', height: '80%', marginLeft: '8px' }}>
+          <img
+            style={{
+              transform: 'scale(0.742, .651)',
+              position: 'absolute',
+              bottom: '-16px',
+              right: '-16px',
+              width: '80%',
+            }}
+            src="/map-2.svg"
+          />
+          <img
+            style={{ transform: 'scaleX(-1)', zIndex: '1', height: '100%', marginTop: '3px' }}
+            src="/dog.svg"
+          />
+        </div>
+        {/* </div> */}
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}
@@ -106,14 +134,6 @@ export const Navbar = props => {
         ) : (
           <Menu.Menu position="right">
             {/* The navbar will show these NavLinks before you log in */}
-            <NavLink to="/parkList">
-              <Responsive
-                as={Menu.Item}
-                minWidth={768}
-                style={styles.menuItem}
-                name="home"
-              />
-            </NavLink>
             <NavLink to="/login">
               <Responsive
                 as={Menu.Item}
