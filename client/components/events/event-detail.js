@@ -115,7 +115,7 @@ export class EventDetail extends Component {
       invitedClicked: true,
       invitedClickedText,
     });
-    console.log("inviting users: ", friendIDs);
+    console.log('inviting users: ', friendIDs);
     await this.props.inviteUsers(this.props.displayEvent, friendIDs);
     this.toggleAttendeeModal();
     // axios.put(`/api/events/${this.props.displayEvent.id}/invite-users`,
@@ -143,14 +143,14 @@ export class EventDetail extends Component {
     } = this.props;
     let { showModal, showAttendeeModal } = this.state;
     let friendstoInvite = this.props.uninvitedFriends;
-    let invitedFriends = this.props.invitedFriends
+    let invitedFriends = this.props.invitedFriends;
     const styles = {
       dashboardList: {
         boxShadow:
           '  rgba(0, 0, 0, 0.2) 2px 3px 11px, rgba(0, 0, 0, 0.2) 1px 2px 9px',
         width: '100%',
         padding: 0,
-        marginBottom:0,
+        marginBottom: 0,
       },
     };
     return displayEvent ? (
@@ -206,98 +206,101 @@ export class EventDetail extends Component {
                         : <div />}
                     </Segment> */}
                 </Card.Content>
+                <Card.Content style={{ padding: '1em' }}>
+                  <Card.Header style={{ marginBottom: '1em' }}>
+                    Attending:
+                  </Card.Header>
+                  <Grid>
+                    {attendees.length ? (
+                      attendees.map(attendee => {
+                        return (
+                          <Grid.Column
+                            mobile={4}
+                            tablet={3}
+                            computer={3}
+                            largeScreen={2}
+                            key={attendee.id}
+                            textAlign={'center'}
+                            style={{ marginBottom: '4px', padding: '0px' }}
+                          >
+                            <Image avatar src={attendee.imageUrl} />
+                            <List.Content>
+                              <List.Header style={{ fontSize: '10px' }}>
+                                {attendee.fullName}
+                              </List.Header>
+                            </List.Content>
+                          </Grid.Column>
+                        );
+                      })
+                    ) : (
+                      <p>Nobody is planning to attend</p>
+                    )}
+                  </Grid>
+                </Card.Content>
+                <Card.Content style={{ padding: '1em' }}>
+                  <Card.Header style={{ marginBottom: '1em' }}>
+                    Invited:
+                  </Card.Header>
+                  <Grid>
+                    {invitees.length ? (
+                      invitees.map(invitee => {
+                        return (
+                          <Grid.Column
+                            mobile={4}
+                            tablet={3}
+                            computer={3}
+                            largeScreen={2}
+                            key={invitee.id}
+                            textAlign={'center'}
+                            style={{ marginBottom: '4px', padding: '0px' }}
+                          >
+                            <Image avatar src={invitee.imageUrl} />
+                            <List.Content>
+                              <List.Header style={{ fontSize: '10px' }}>
+                                {invitee.fullName}
+                              </List.Header>
+                            </List.Content>
+                          </Grid.Column>
+                        );
+                      })
+                    ) : (
+                      <p>Nobody has been invited</p>
+                    )}
+                  </Grid>
+                </Card.Content>
               </Card>
-              <Grid.Row>
-                <Card style={styles.dashboardList}>
-                  <Card.Content style={{ padding: '1em' }}>
-                    <Card.Header style={{ marginBottom: '1em' }}>
-                      Attending:
-                    </Card.Header>
-                    <Grid>
-                      {attendees.length ? (
-                        attendees.map(attendee => {
-                          return (
-                            <Grid.Column
-                              mobile={4}
-                              tablet={3}
-                              computer={3}
-                              largeScreen={2}
-                              key={attendee.id}
-                              textAlign={'center'}
-                              style={{ marginBottom: '4px', padding: '0px' }}
-                            >
-                              <Image avatar src={attendee.imageUrl} />
-                              <List.Content>
-                                <List.Header style={{ fontSize: '10px' }}>
-                                  {attendee.fullName}
-                                </List.Header>
-                              </List.Content>
-                            </Grid.Column>
-                          );
-                        })
-                      ) : (
-                        <p>Nobody is planning to attend</p>
-                      )}
-                    </Grid>
-                  </Card.Content>
-                </Card>
-                <Card style={styles.dashboardList}>
-                  <Card.Content style={{ padding: '1em' }}>
-                    <Card.Header style={{ marginBottom: '1em' }}>
-                      Invited:
-                    </Card.Header>
-                    <Grid>
-                      {invitees.length ? (
-                        invitees.map(invitee => {
-                          return (
-                            <Grid.Column
-                              mobile={4}
-                              tablet={3}
-                              computer={3}
-                              largeScreen={2}
-                              key={invitee.id}
-                              textAlign={'center'}
-                              style={{ marginBottom: '4px', padding: '0px' }}
-                            >
-                              <Image avatar src={invitee.imageUrl} />
-                              <List.Content>
-                                <List.Header style={{ fontSize: '10px' }}>
-                                  {invitee.fullName}
-                                </List.Header>
-                              </List.Content>
-                            </Grid.Column>
-                          );
-                        })
-                      ) : (
-                        <p>Nobody has been invited</p>
-                      )}
-                    </Grid>
-                  </Card.Content>
-                </Card>
-              </Grid.Row>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
               <Card style={styles.dashboardList}>
-                <Card.Content style={{ 
-                  padding: '0em',
-                  // height:'80vh', 
-                  // overflowY:'scroll'
-                }}>
+                <Card.Content
+                  style={{
+                    padding: '0em',
+                    // height:'80vh',
+                    // overflowY:'scroll'
+                  }}
+                >
                   <Header style={{ flex: 2, margin: '0.5em', fontSize: '1em' }}>
                     Event Chat
                   </Header>
                   <ChatRoom
                     // height={'80vh'}
-                    style={{
-                      // height:'80vh', 
-                      // overflowY:'scroll'
-                    }}
+                    style={
+                      {
+                        // height:'80vh',
+                        // overflowY:'scroll'
+                      }
+                    }
                     eventId={parseInt(this.props.match.params.id)}
                   />
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column tablet={7} only="computer" computer={5} largeScreen={5}>
+            <Grid.Column
+              tablet={7}
+              only="computer"
+              computer={5}
+              largeScreen={5}
+            >
               {/* <Card style={styles.dashboardList}>
                   <Card.Content style={{ padding: '0em' }}> */}
               <SingleParkMap
@@ -336,8 +339,8 @@ const mapState = (state, ownProps) => {
   let invitees = [];
   let uninvitedFriends = [];
   let invitedFriends = [];
-  console.log("mapState: ", state);
-  console.log("eventDetail: ", eventDetail);
+  console.log('mapState: ', state);
+  console.log('eventDetail: ', eventDetail);
 
   if (eventDetail) {
     isOwner = eventDetail.creatorId === state.user.id;
@@ -346,7 +349,7 @@ const mapState = (state, ownProps) => {
     invitees = eventDetail.invitees;
     if (state.user.Friends) {
       let InvitedandAttendingIds = [];
-      console.log("user friends: ", state.user.Friends);
+      console.log('user friends: ', state.user.Friends);
       attendees.forEach(attendee => {
         InvitedandAttendingIds.push(parseInt(attendee.id));
       });
@@ -357,8 +360,7 @@ const mapState = (state, ownProps) => {
         // console.log("state.user.Friends: ", friend);
         if (!InvitedandAttendingIds.includes(friend.id)) {
           uninvitedFriends.push(friend);
-        }
-        else {
+        } else {
           invitedFriends.push(friend);
         }
       });

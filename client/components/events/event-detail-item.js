@@ -29,7 +29,7 @@ const EventDetailItem = props => {
     imageUrls,
   } = props;
   return (
-    <Segment style={{ margin: '0px', width: '100%' }}>
+    <Segment style={{ margin: '0px', width: '100%', border: '0px' }}>
       <Grid>
         <Grid.Row
           style={{
@@ -73,14 +73,25 @@ const EventDetailItem = props => {
                   content={`${address.location.distance} mi`}
                 />
               )}
-            {priv ? <Label color="red" >Private</Label> : <div />}
-            {isOwner ? <Button size="tiny" floated="right" color="teal" onClick={() => toggleModal()}>Edit</Button>
-              : <div />}
+            {priv ? <Label color="red">Private</Label> : <div />}
+            {isOwner ? (
+              <Button
+                size="tiny"
+                floated="right"
+                color="teal"
+                onClick={() => toggleModal()}
+              >
+                Edit
+              </Button>
+            ) : (
+              <div />
+            )}
           </div>
         </Grid.Row>
         <Grid.Row columns={1} style={{ padding: '0em 0em' }}>
           <Grid.Column width={16} style={{ padding: '0', margin: '0' }}>
-            <Grid.Row style={{ padding: '0', margin: '0' }}><div
+            <Grid.Row style={{ padding: '0', margin: '0' }}>
+              <div
                 style={{
                   overflowX: 'scroll',
                   overflowY: 'hidden',
@@ -115,16 +126,27 @@ const EventDetailItem = props => {
                 />
               </div>
 
-              <Segment style={{ margin: 0 }}>
+              <Segment style={{ margin: 0, border: '0px' }}>
                 {`${description}`}
                 {
                   // isOwner ?
-                  <Button visible={isOwner} size="tiny" floated="right" color="blue" onClick={() => toggleAttendeeModal()}>Invite Friends</Button>
+                  <Button
+                    visible={isOwner}
+                    size="tiny"
+                    floated="right"
+                    color="blue"
+                    onClick={() => toggleAttendeeModal()}
+                  >
+                    Invite Friends
+                  </Button>
                   // : <div />
                 }
-                  {invitedClicked ?
-                    (<span style={{ fontSize: "12px", color: "blue" }}><br />{invitedClickedText}</span>)
-                    : null}
+                {invitedClicked ? (
+                  <span style={{ fontSize: '12px', color: 'blue' }}>
+                    <br />
+                    {invitedClickedText}
+                  </span>
+                ) : null}
               </Segment>
             </Grid.Row>
           </Grid.Column>
