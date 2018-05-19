@@ -91,14 +91,14 @@ export const Navbar = props => {
             style={{
               transform: 'scale(0.742, .651)',
               position: 'absolute',
-              bottom: '-15px',
-              right: '-15px',
+              bottom: '-16px',
+              right: '-16px',
               width: '80%',
             }}
             src="/map-2.svg"
           />
           <img
-            style={{ transform: 'scaleX(-1)', zIndex: '1', height: '100%' }}
+            style={{ transform: 'scaleX(-1)', zIndex: '1', height: '100%', marginTop: '3px' }}
             src="/dog.svg"
           />
         </div>
