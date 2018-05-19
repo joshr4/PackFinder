@@ -131,13 +131,14 @@ const EventDetailItem = props => {
                 {
                   // isOwner ?
                   <Button
+                    attached="bottom right"
                     visible={isOwner}
                     size="tiny"
                     floated="right"
                     color="blue"
                     onClick={() => toggleAttendeeModal()}
                   >
-                    Invite Friends
+                    Invite
                   </Button>
                   // : <div />
                 }

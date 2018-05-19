@@ -11,19 +11,19 @@ const ChatMessage = props => {
   const { message, user } = props;
   console.log('message', message);
   console.log('user', user.id);
-  let direction =
+  let styles =
     user.id === message.posterId
-      ? { flexDirection: 'row-reverse' }
-      : { flexDirection: 'row' };
-  console.log('direction', direction);
+      ? { direction: { flexDirection: 'row-reverse' }, color: 'teal' }
+      : { direction: { flexDirection: 'row' }, color: 'red' };
+  const { direction, color } = styles;
   return (
     <Feed.Event key={message.id} style={direction}>
       <Feed.Label image={message.poster.imageUrl} />
-      <Message color="red">
+      <Message color={color}>
         <Feed.Content>
           <Feed.Summary>
-            <a>{message.poster.fullName}</a>
-            <Feed.Date>{message.timeString}</Feed.Date>
+            {/* {message.poster.fullName} */}
+            <Message.Header>{`${message.poster.fullName} @ ${message.timeString}`}</Message.Header>
           </Feed.Summary>
           <Feed.Extra text>{message.content}</Feed.Extra>
           <Feed.Meta>

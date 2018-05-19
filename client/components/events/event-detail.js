@@ -9,7 +9,6 @@ import {
   AddAttendeeModal,
   EventDetailItem,
 } from '../index.js';
-import moment from 'moment';
 import {
   Button,
   Container,
@@ -25,15 +24,6 @@ import {
   Sidebar,
   Visibility,
   Card,
-  Item,
-  Label,
-  Embed,
-  Form,
-  Input,
-  Radio,
-  Select,
-  TextArea,
-  Checkbox,
 } from 'semantic-ui-react';
 import axios from 'axios';
 import {
@@ -151,6 +141,7 @@ export class EventDetail extends Component {
         width: '100%',
         padding: 0,
         marginBottom: 0,
+        height: '78vh'
       },
     };
     return displayEvent ? (
@@ -174,8 +165,8 @@ export class EventDetail extends Component {
         <Grid
           columns={2}
           centered
-          className="overflow-scroll"
-          style={{ height: '80vh' }}
+          // className="overflow-scroll"
+          style={{ height: '75vh' }}
         >
           <Grid.Row>
             <Grid.Column mobile={16} tablet={7} computer={5} largeScreen={5}>
@@ -206,7 +197,10 @@ export class EventDetail extends Component {
                         : <div />}
                     </Segment> */}
                 </Card.Content>
-                <Card.Content style={{ padding: '1em' }}>
+                <Card.Content
+                  className="overflow-scroll"
+                  style={{ padding: '1em', height: '22vh' }}
+                >
                   <Card.Header style={{ marginBottom: '1em' }}>
                     Attending:
                   </Card.Header>
@@ -215,10 +209,7 @@ export class EventDetail extends Component {
                       attendees.map(attendee => {
                         return (
                           <Grid.Column
-                            mobile={4}
-                            tablet={3}
-                            computer={3}
-                            largeScreen={2}
+                            width={4}
                             key={attendee.id}
                             textAlign={'center'}
                             style={{ marginBottom: '4px', padding: '0px' }}
@@ -237,7 +228,10 @@ export class EventDetail extends Component {
                     )}
                   </Grid>
                 </Card.Content>
-                <Card.Content style={{ padding: '1em' }}>
+                <Card.Content
+                  className="overflow-scroll"
+                  style={{ padding: '1em', height: '22vh' }}
+                >
                   <Card.Header style={{ marginBottom: '1em' }}>
                     Invited:
                   </Card.Header>
@@ -246,10 +240,11 @@ export class EventDetail extends Component {
                       invitees.map(invitee => {
                         return (
                           <Grid.Column
-                            mobile={4}
-                            tablet={3}
-                            computer={3}
-                            largeScreen={2}
+                            // mobile={4}
+                            // tablet={3}
+                            // computer={3}
+                            // largeScreen={2}
+                            width={4}
                             key={invitee.id}
                             textAlign={'center'}
                             style={{ marginBottom: '4px', padding: '0px' }}
@@ -296,10 +291,11 @@ export class EventDetail extends Component {
               </Card>
             </Grid.Column>
             <Grid.Column
-              tablet={7}
+              // tablet={7}
               only="computer"
               computer={5}
               largeScreen={5}
+              style={{height: '78vh'}}
             >
               {/* <Card style={styles.dashboardList}>
                   <Card.Content style={{ padding: '0em' }}> */}
@@ -321,7 +317,7 @@ export class EventDetail extends Component {
               </Grid.Column>
             </Grid.Row> */}
         </Grid>
-        <br /> <br /> <br />
+        {/* <br /> <br /> <br /> */}
         {/* </Segment> */}
       </div>
     ) : (

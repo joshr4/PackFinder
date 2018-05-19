@@ -102,41 +102,6 @@ class ChatRoom extends Component {
     console.log('element: ', element);
   }
   render() {
-    let messages = [
-      {
-        id: 1,
-        username: 'username1',
-        content: 'message content 1',
-        likes: 5,
-      },
-      {
-        id: 2,
-        username: 'username2',
-        content: 'message content 2',
-        likes: 5,
-      },
-      {
-        id: 3,
-        username: 'username3',
-        content: 'message content 3',
-        // timestring: (this.id + "Days ago"),
-        likes: 5,
-      },
-      {
-        id: 4,
-        username: 'username4',
-        content: 'message content 4',
-        // timestring: (this.id + "Days ago"),
-        likes: 5,
-      },
-      {
-        id: 5,
-        username: 'username5',
-        content: 'message content 5',
-        // timestring: (this.id + "Days ago"),
-        likes: 5,
-      },
-    ];
     // var element = this.refs.feedId;
     // console.log("element: ", element);
     // if (element) {
@@ -148,15 +113,16 @@ class ChatRoom extends Component {
         className="container"
         style={{
           padding: '0.5em',
-          height: '75vh',
+          height: '73vh',
           // "overflowY":"scroll"
         }}
       >
         <Segment style={{ padding: 0 }}>
           <Feed
             style={{
-              height: '64vh',
+              height: '63vh',
               overflowY: 'scroll',
+              padding: '1em 0.5em',
             }}
             id="feedId"
             ref={feed => {
@@ -171,7 +137,7 @@ class ChatRoom extends Component {
         {
           //MOST RECENT COMMENTS AT THE BOTTOM -> WHEN GENERATING ARRAY, LARGER TIMES GO IN...
         }
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} unstackable>
           <Form.Group>
             <Form.TextArea
               required
@@ -187,7 +153,12 @@ class ChatRoom extends Component {
               width={4}
               content="Post"
               type="submit"
-              style={{ marginBottom: '10px', background: '#54b9bf' }}
+              style={{
+                marginBottom: '10px',
+                background: '#54b9bf',
+                width: '100%',
+                height: '80%',
+              }}
             />
           </Form.Group>
         </Form>
