@@ -25,10 +25,10 @@ const styles = {
     height: '12vh',
   },
   menuItem: {
-    color: '#fff',
+    color: '#55b9bf',
     fontSize: 25,
     fontFamily: 'Veradana, sans-serif',
-    fontWeight: 500,
+    fontWeight: 600,
     padding: '1em 0.5em',
   },
   titleText: {
@@ -134,14 +134,6 @@ export const Navbar = props => {
         ) : (
           <Menu.Menu position="right">
             {/* The navbar will show these NavLinks before you log in */}
-            <NavLink to="/parkList">
-              <Responsive
-                as={Menu.Item}
-                minWidth={768}
-                style={styles.menuItem}
-                name="home"
-              />
-            </NavLink>
             <NavLink to="/login">
               <Responsive
                 as={Menu.Item}
