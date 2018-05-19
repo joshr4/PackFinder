@@ -55,6 +55,11 @@ body ::-webkit-scrollbar {
   /* remove scrollbar space */
 }
 
+.ui.inverted.menu .active.item {
+  background: rgba(255,255,255,.15);
+  color: #edfefff2!important;
+}
+
 .navbar-title {
   font-family: Pacifico, cursive;
   font-size: 50px;

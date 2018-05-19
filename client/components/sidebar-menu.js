@@ -18,10 +18,10 @@ const SidebarMenu = props => {
   const { visible, handleToggle, isLoggedIn, handleClick } = props;
   const styles = {
     sidebarMenuItem: {
-      color: '#fff',
-      fontSize: 25,
+      color: '#54B8BF',
+      fontSize: 30,
       fontFamily: 'Veradana, sans-serif',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     sidebarMenu: {
       height: '100vh',
@@ -100,13 +100,6 @@ const SidebarMenu = props => {
               {/* The navbar will show these NavLinks before you log in */}
               <Menu.Item
                 as={NavLink}
-                to="/home"
-                style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-                name="home"
-              />
-              <Menu.Item
-                as={NavLink}
                 to="/login"
                 style={styles.sidebarMenuItem}
                 onClick={handleToggle}
@@ -118,34 +111,6 @@ const SidebarMenu = props => {
                 style={styles.sidebarMenuItem}
                 onClick={handleToggle}
                 name="signup"
-              />
-              <Menu.Item
-                as={NavLink}
-                to="/friends"
-                name="Friends"
-                style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-              />
-              <Menu.Item
-                as={NavLink}
-                to="/parks-list"
-                name="Parks List"
-                style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-              />
-              <Menu.Item
-                as={NavLink}
-                to="/events-list"
-                name="Events"
-                style={styles.sidebarMenuItem}
-                onClick={handleToggle}
-              />
-              <Menu.Item
-                as={NavLink}
-                to="/profile"
-                name="Profile"
-                style={styles.sidebarMenuItem}
-                onClick={handleToggle}
               />
             </Menu.Menu>
           )}
