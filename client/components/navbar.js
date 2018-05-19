@@ -66,7 +66,6 @@ export const Navbar = props => {
     styles.menu = { ...styles.menu, backgroundColor: 'rgb(44, 66, 80)' };
   }
   const onSplash = path === '/';
-  console.log('onSplash', onSplash, 'path', path);
   return (
     <div style={{ position: 'relative' }}>
       <Menu style={styles.menu}>
