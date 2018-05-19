@@ -3399,5 +3399,15 @@ const addresses = [{
       lng: -87.7579009
     }
   },
+  {
+    line_1: '400 W Superior St',
+    city: 'Chicago',
+    state: 'IL',
+    zipcode: '60610',
+    location: {
+      lat: 41.8959839,
+      lng: -87.6390368
+    }
+  },
 ]
 module.exports = addresses
