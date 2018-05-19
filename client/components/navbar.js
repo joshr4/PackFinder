@@ -107,14 +107,14 @@ export const Navbar = props => {
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}
-            <NavLink to="/home">
+            {/* <NavLink to="/home">
               <Responsive
                 as={Menu.Item}
                 minWidth={768}
                 style={styles.menuItem}
                 name="home"
               />
-            </NavLink>
+            </NavLink> */}
             <div>
               <Responsive
                 as={Menu.Item}
