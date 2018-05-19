@@ -8,7 +8,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import axios from 'axios';
-import { VisitModal } from './index';
+import { ChatMessage } from './index';
 import {
   getVisits,
   deleteVisit,
@@ -22,32 +22,7 @@ import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { timeDisplay, dateDisplay } from './global';
 import { isNull } from 'util';
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Image,
-  List,
-  Menu,
-  Responsive,
-  Segment,
-  Sidebar,
-  Visibility,
-  Card,
-  Item,
-  Label,
-  Embed,
-  Form,
-  Input,
-  Radio,
-  Select,
-  TextArea,
-  Checkbox,
-  Feed,
-} from 'semantic-ui-react';
+import { Segment, Feed, Message, Form } from 'semantic-ui-react';
 import socket from '../socket';
 
 // const socket = io(window.location.origin)
@@ -177,7 +152,7 @@ class ChatRoom extends Component {
           // "overflowY":"scroll"
         }}
       >
-        <Segment style={{padding: 0}}>
+        <Segment style={{ padding: 0 }}>
           <Feed
             style={{
               height: '64vh',
@@ -189,21 +164,7 @@ class ChatRoom extends Component {
             }}
           >
             {this.props.messages.map(message => {
-              return (
-                <Feed.Event key={message.id}>
-                  <Feed.Label image={message.poster.imageUrl} />
-                  <Feed.Content>
-                    <Feed.Summary>
-                      <a>{message.poster.fullName}</a> posted to the group
-                      <Feed.Date>{message.timeString}</Feed.Date>
-                    </Feed.Summary>
-                    <Feed.Extra text>{message.content}</Feed.Extra>
-                    <Feed.Meta>
-                      <Feed.Like />
-                    </Feed.Meta>
-                  </Feed.Content>
-                </Feed.Event>
-              );
+              return <ChatMessage message={message} key={message.id} />;
             })}
           </Feed>
         </Segment>
