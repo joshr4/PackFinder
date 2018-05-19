@@ -68,23 +68,32 @@ export const Navbar = props => {
   return (
     <div style={{ position: 'relative' }}>
       <Menu style={styles.menu}>
-        <div style={{}}>
+        {/* <div> */}
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            paddingBottom: '1em',
+          }}
+        >
           {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
           <NavLink to="/">
-            <Header as="h1" style={styles.titleText}>
+            <h1
+              className="navbar-title"
+            >
               {' '}
               Pack Finder{' '}
-            </Header>
+            </h1>
           </NavLink>
         </div>
-        <div style={{ position: 'relative', height: '80%' }}>
+        <div style={{ position: 'relative', height: '80%', marginLeft: '8px' }}>
           <img
             style={{
               transform: 'scale(0.742, .651)',
               position: 'absolute',
-              bottom: '-25px',
-              right: '-30px',
-              width: '100%',
+              bottom: '-15px',
+              right: '-15px',
+              width: '80%',
             }}
             src="/map-2.svg"
           />
@@ -93,6 +102,7 @@ export const Navbar = props => {
             src="/dog.svg"
           />
         </div>
+        {/* </div> */}
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}

@@ -55,7 +55,21 @@ body ::-webkit-scrollbar {
   /* remove scrollbar space */
 }
 
+.navbar-title {
+  font-family: Pacifico, cursive;
+  font-size: 50px;
+  color: #55b9bf;
+  text-shadow: 2px 5px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  font-weight: 100;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
 @media only screen and (max-width: 768px) {
+  .navbar-title {
+    font-size: 40px
+  }
   body .container {
     padding-top: 1.2em;
     height: 100vh;
