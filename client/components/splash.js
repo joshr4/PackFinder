@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Parallax, Background } from 'react-parallax';
-import { Button, Imag, Transition } from 'semantic-ui-react';
+import { Button, Image, Transition } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fadeInLeftBig } from 'react-animations';
@@ -55,7 +55,7 @@ export class Splash extends Component {
       textAlign: 'center',
       fontSize: '40px',
       textShadow:
-        '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px'
+        '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
     };
     const insideStyles = {
       padding: 20,
@@ -64,34 +64,70 @@ export class Splash extends Component {
       left: '50%',
       transform: 'translate(-50%,-50%)',
       fontSize: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
     };
     const { animation, duration, visible } = this.state;
     return (
       <div style={{ paddingTop: '0vh' }} className="splash">
-        <Parallax strength={500}>
+        <Parallax strength={200} bgImage={image1}>
           <div className="splash-bg-1">
             <div className="splash-block-1">
               <Transition.Group animation="drop" duration={duration}>
                 {visible && <h1 style={styles}>Build your pack!</h1>}
               </Transition.Group>
             </div>
-            <NavLink to="/parkList">
-              <Button inverted color="teal" style={insideStyles}>
-                Get Started
-              </Button>
-            </NavLink>
           </div>
         </Parallax>
-        <Parallax strength={-100}>
-          {/* bgImage={image3} */}
+        <Parallax strength={-100} bgImage={image2}>
+          <div className="splash-bg-2">
+            <div style={insideStyles}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                <h1> Mobile and Desktop user experience</h1>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img
+                    style={{
+                      width: '19.45vw',
+                    }}
+                    src="/images/splash/mobile.png"
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img
+                    style={{
+                      width: '50vw',
+                    }}
+                    src="/images/splash/desktop.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Parallax>
+        <Parallax blur={{ min: -1, max: 3, zIndex: '0' }} bgImage={image3}>
           <div className="splash-bg-3">
-            {/* <Image verticalAlign="top" src={image3} /> */}
-            <div style={insideStyles}>More Information!</div>
-          </div>
-        </Parallax>
-        <Parallax blur={{ min: -1, max: 3 }} bgImage={image2}>
-          <div style={{ minHeight: '100vh' }}>
-            <div style={insideStyles}>What we offer...</div>
+            <div style={insideStyles}>
+              <NavLink to="/signup">
+                <Button inverted color="teal" className="splash-content-3">
+                  Get Started
+                </Button>
+              </NavLink>
+            </div>
           </div>
         </Parallax>
       </div>
