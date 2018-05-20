@@ -87,7 +87,7 @@ const DogParkItem = props => {
         </Grid.Row>
         <Grid.Row columns={1} style={{ padding: '0em 0em' }}>
           <Grid.Column width={16} style={{ padding: '0', margin: '0' }}>
-            <Grid.Row style={{ padding: '0', margin: '0' }}>
+            <Grid.Row style={{ padding: '0', margin: '0', width: '100%' }}>
               <div
                 style={{
                   overflowX: 'scroll',
