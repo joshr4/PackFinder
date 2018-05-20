@@ -57,6 +57,7 @@ export class Splash extends Component {
         color: '#54b9bf',
         letterSpacing: '2px',
         marginBottom: '0.45em',
+        fontWeight: '300',
         textShadow:
           '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
       },
