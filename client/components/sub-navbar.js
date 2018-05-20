@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu, Image, Header, Grid } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 // https://logomakr.com/4zlisz
 
 const styles = {
@@ -40,9 +40,8 @@ const styles = {
   },
 };
 
-// const SubNavbar = ({ handleClick, isLoggedIn }) => (
 class SubNavbar extends Component {
-  state = { activeItem: 'home' }
+  state = { activeItem: 'Home' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -53,8 +52,8 @@ class SubNavbar extends Component {
         <Menu.Item
           as={NavLink}
           style={styles.menuItem}
-          to="/Home"
-          name="Home"
+          to="/home"
+          name="home"
           onClick={this.handleItemClick}
         />
         <Menu.Item
@@ -68,14 +67,14 @@ class SubNavbar extends Component {
           as={NavLink}
           style={styles.menuItem}
           to="/calendar"
-          name="Events"
+          name="events"
            onClick={this.handleItemClick}
         />
         <Menu.Item
           as={NavLink}
           style={styles.menuItem}
           to="/profile"
-          name="Profile"
+          name="profile"
            onClick={this.handleItemClick}
         />
       </Menu>

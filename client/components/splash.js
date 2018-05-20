@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Parallax, Background } from 'react-parallax';
-import { Button, Image, Transition, Icon } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom';
+import { Parallax } from 'react-parallax';
+import { Button, Transition, Icon } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fadeInLeftBig } from 'react-animations';
 
 const transitions = [
   'browse',
@@ -52,20 +51,23 @@ export class Splash extends Component {
 
     const styles = {
       titleText: {
-        fontFamily: 'sans-serif',
+        fontFamily: 'Pacifico',
         textAlign: 'center',
-        color: '#fff',
-        fontSize: '48px',
+        fontSize: '6vw',
+        color: '#54b9bf',
+        letterSpacing: '2px',
+        marginBottom: '0.45em',
         textShadow:
           '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
       },
       subTitle: {
-        fontFamily: 'sans-serif',
+        fontFamily: 'Verdana',
         textAlign: 'center',
         color: '#fff',
-        fontSize: '30px',
+        fontSize: '2.5vw',
         textShadow:
           '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+        maxWidth: '20em',
       },
       arrowPosition: {
         position: 'absolute',
@@ -80,6 +82,26 @@ export class Splash extends Component {
         color: '#54b9bf',
         textShadow: '2px 5px 6px rgba(0, 0, 0, 0.2)',
       },
+      mobileDesktop: {
+        fontFamily: 'Verdana',
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: '2.9vw',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+        marginBottom: '0.5em',
+      },
+      getStarted: {
+        padding: 20,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        fontSize: '2vw',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+      },
     };
     const insideStyles = {
       padding: 20,
@@ -87,12 +109,13 @@ export class Splash extends Component {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%,-50%)',
-      fontSize: '20px',
+      fontSize: '2.9vw',
       display: 'flex',
       flexDirection: 'column',
       width: '100%',
     };
-    const { animation, duration, visible } = this.state;
+    const { duration, visible } = this.state;
+    const { isLoggedIn } = this.props;
     return (
       <div style={{ paddingTop: '0vh' }} className="splash">
         <Parallax strength={400} bgImage={image1}>
@@ -105,7 +128,7 @@ export class Splash extends Component {
                 {visible && (
                   <h3 style={styles.subTitle}>
                     We connect nearby dog owners so that they can coordinate
-                    play-dates with their furry pals!
+                    play dates with their furry pals!
                   </h3>
                 )}
               </Transition.Group>
@@ -115,7 +138,7 @@ export class Splash extends Component {
             </div>
           </div>
         </Parallax>
-        <Parallax strength={400} bgImage={image2}>
+        <Parallax strength={300} bgImage={image2}>
           <div className="splash-bg-2">
             <div style={insideStyles}>
               <div
@@ -125,7 +148,7 @@ export class Splash extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <h2 style={styles.titleText}>
+                <h2 style={styles.mobileDesktop}>
                   {' '}
                   Browse on your desktop or on the fly via mobile
                 </h2>
@@ -159,10 +182,10 @@ export class Splash extends Component {
         </Parallax>
         <Parallax strength={200} blur={{ min: -1, max: 3, zIndex: '0' }}>
           <div className="splash-bg-3">
-            <div style={insideStyles}>
-              <NavLink to="/signup">
+            <div style={styles.getStarted}>
+              <NavLink to={isLoggedIn ? '/home' : '/login'}>
                 <Button inverted color="teal" className="splash-content-3">
-                  Get Started
+                  Get Started!
                 </Button>
               </NavLink>
             </div>
@@ -173,4 +196,10 @@ export class Splash extends Component {
   }
 }
 
-export default Splash;
+const mapState = ({ user }) => {
+  return {
+    isLoggedIn: !!user.id,
+  };
+};
+
+export default withRouter(connect(mapState)(Splash));
