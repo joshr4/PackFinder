@@ -183,6 +183,20 @@ const mapState = (state, ownProps) => {
       DoW + ' ' + month + ' ' + date + ' ' + year + ' ' + timeString;
     let shortTime = month + ' ' + date + ' ' + timeString;
     shortTime = timeString;
+    const daysDiff = Math.floor(new Date().getDate() - timeObj.getDate());
+    const timeDiff = Math.abs(new Date().getTime() - timeObj.getTime()) / 36e5;
+    const timeElapsed =
+      timeDiff < 1
+        ? Math.floor(timeDiff * 60) === 0 ? 'now' : (`${Math.floor(timeDiff * 60)} min${
+            Math.floor(timeDiff * 60) > 1 ? 's' : ''
+          }  ago`)
+        : `${Math.floor(timeDiff)} hr${
+            Math.floor(timeDiff) > 1 ? 's' : ''
+          } ago`;
+    message.timeElapsed = daysDiff
+      ? `${daysDiff} day${daysDiff > 1 ? 's' : ''} ago`
+      : timeElapsed;
+    // console.log('time elapsed',new Date() - timeObj)
     if (timeObj.getDate() == new Date(Date.now()).getDate()) {
       message.timeString = shortTime;
     } else {
