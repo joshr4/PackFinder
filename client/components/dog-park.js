@@ -28,7 +28,7 @@ import {
   Checkbox,
   Tab,
   Dimmer,
-  Loader
+  Loader,
 } from 'semantic-ui-react';
 import axios from 'axios';
 var Chart = require('react-d3-core').Chart;
@@ -272,8 +272,8 @@ export class DogPark extends Component {
     }`; //Daily average route
     let fullWeekURL = `/api/parks/${parkId}/visits/data/average/weekly/average`; //Full week view
     let averageDataResponse = await axios.get(averageVisitsURL);
-    console.log('averageVisitsURL: ', averageVisitsURL);
-    console.log('averageData: ', averageDataResponse.data);
+    // console.log('averageVisitsURL: ', averageVisitsURL);
+    // console.log('averageData: ', averageDataResponse.data);
     let fullWeekResponse = await axios.get(fullWeekURL);
     this.setState({
       averageData: averageDataResponse.data,
@@ -425,10 +425,10 @@ export class DogPark extends Component {
     this.props.getData().then(() => {
       this.updateD3();
     });
-    if (this.state.loading){
+    if (this.state.loading) {
       setTimeout(() => {
-        this.setState({loading: false})
-      }, 1500)
+        this.setState({ loading: false });
+      }, 1500);
     }
   }
   addEvent = () => {
@@ -460,7 +460,7 @@ export class DogPark extends Component {
     this.props.addNewVisit(newVisitInfo).then(result => {
       this.updateD3();
     });
-    this.setState({loading:true});
+    this.setState({ loading: true });
     this.toggleModal();
   };
 
@@ -496,7 +496,7 @@ export class DogPark extends Component {
     this.updateD3();
   }
   changeweekDay(event) {
-    console.log('changing week day...');
+    // console.log('changing week day...');
     event.preventDefault();
     let weekChartVal = event.target.selectweekDay.value;
     let newChartTitle = 'All Days';
@@ -526,11 +526,11 @@ export class DogPark extends Component {
   };
   render() {
     // this.setState({loading:true});
-    if (this.state.loading){
+    if (this.state.loading) {
       setTimeout(() => {
-        this.setState({loading: false})
-      }, 1500)
-    }    
+        this.setState({ loading: false });
+      }, 1500);
+    }
     const { children } = this.props;
     const { fixed } = this.state;
     const courses = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -837,18 +837,17 @@ export class DogPark extends Component {
       },
     ];
 
-    return (      
+    return (
       <div className="container" style={{ overflowY: 'scroll' }}>
-      {this.state.loading ? (
-        <Dimmer active>
-          <Loader className="massive" content="Loading" />
-        </Dimmer>
-      ) : (
-        <Dimmer>
-          <Loader className="massive" content="Loading" />
-        </Dimmer>
-      )}    
-
+        {this.state.loading ? (
+          <Dimmer active>
+            <Loader className="massive" content="Loading" />
+          </Dimmer>
+        ) : (
+          <Dimmer>
+            <Loader className="massive" content="Loading" />
+          </Dimmer>
+        )}
         <VisitModal
           modalType={'add'}
           show={this.state.showModal}
@@ -879,10 +878,12 @@ export class DogPark extends Component {
                     park={this.state.park}
                   />
                 </Card.Content>
+                <Card.Content style={{ padding: '0' }}>
+                  {/* <Segment height="auto"> */}
+                    <Tab panes={panes} />
+                  {/* </Segment> */}
+                </Card.Content>
               </Card>
-              <Segment height="auto">
-                <Tab panes={panes} />
-              </Segment>              
             </Grid.Column>
             <Grid.Column width={7}>
               <SingleParkMap
