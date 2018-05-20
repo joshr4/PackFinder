@@ -14,18 +14,32 @@ const ChatMessage = props => {
   let styles =
     user.id === message.posterId
       ? { direction: { flexDirection: 'row-reverse' }, color: 'teal' }
-      : { direction: { flexDirection: 'row' }, color: 'red' };
+      : { direction: { flexDirection: 'row' }, color: 'brown' };
   const { direction, color } = styles;
+  console.log(message.timeElapsed);
   return (
     <Feed.Event key={message.id} style={direction}>
       <Feed.Label image={message.poster.imageUrl} />
-      <Message color={color}>
+      <Message color={color} style={{padding: '0.75em'}}>
         <Feed.Content>
           <Feed.Summary>
             {/* {message.poster.fullName} */}
-            <Message.Header>{`${message.poster.fullName} @ ${message.timeString}`}</Message.Header>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Message.Header as="h4">
+                {`${message.poster.fullName}`}{' '}
+              </Message.Header>
+              <h5 style={{ margin: 0, marginLeft: '0.25em', fontSize: '0.9em', color: 'black' }}> {`${message.timeElapsed}`}</h5>
+            </div>
           </Feed.Summary>
-          <Feed.Extra text>{message.content}</Feed.Extra>
+          <Feed.Extra text style={{ color: '#000' }}>
+            {message.content}
+          </Feed.Extra>
           <Feed.Meta>
             <Feed.Like />
           </Feed.Meta>
