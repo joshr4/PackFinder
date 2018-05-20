@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Parallax, Background } from 'react-parallax';
-import { Button, Image, Transition } from 'semantic-ui-react';
+import { Button, Image, Transition, Icon } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fadeInLeftBig } from 'react-animations';
@@ -51,11 +51,35 @@ export class Splash extends Component {
       'https://images.unsplash.com/photo-1504595403659-9088ce801e29?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d812e1079e635c6fb59ded315f72316f&auto=format&fit=crop&w=1268&q=80';
 
     const styles = {
-      fontFamily: 'sans-serif',
-      textAlign: 'center',
-      fontSize: '40px',
-      textShadow:
-        '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+      titleText: {
+        fontFamily: 'sans-serif',
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: '48px',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+      },
+      subTitle: {
+        fontFamily: 'sans-serif',
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: '30px',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+      },
+      arrowPosition: {
+        position: 'absolute',
+        top: '95%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        fontSize: '20px',
+        display: 'flex',
+      },
+      arrowStyle: {
+        fontSize: '5em',
+        color: '#54b9bf',
+        textShadow: '2px 5px 6px rgba(0, 0, 0, 0.2)',
+      },
     };
     const insideStyles = {
       padding: 20,
@@ -71,16 +95,27 @@ export class Splash extends Component {
     const { animation, duration, visible } = this.state;
     return (
       <div style={{ paddingTop: '0vh' }} className="splash">
-        <Parallax strength={200} bgImage={image1}>
+        <Parallax strength={400} bgImage={image1}>
           <div className="splash-bg-1">
             <div className="splash-block-1">
               <Transition.Group animation="drop" duration={duration}>
-                {visible && <h1 style={styles}>Build your pack!</h1>}
+                {visible && <h1 style={styles.titleText}>Build your pack!</h1>}
               </Transition.Group>
+              <Transition.Group animation="drop" duration={duration}>
+                {visible && (
+                  <h3 style={styles.subTitle}>
+                    We connect nearby dog owners so that they can coordinate
+                    play-dates with their furry pals!
+                  </h3>
+                )}
+              </Transition.Group>
+            </div>
+            <div style={styles.arrowPosition}>
+              <Icon style={styles.arrowStyle} name="arrow circle down" />
             </div>
           </div>
         </Parallax>
-        <Parallax strength={-100} bgImage={image2}>
+        <Parallax strength={400} bgImage={image2}>
           <div className="splash-bg-2">
             <div style={insideStyles}>
               <div
@@ -90,7 +125,10 @@ export class Splash extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <h1> Mobile and Desktop user experience</h1>
+                <h2 style={styles.titleText}>
+                  {' '}
+                  Browse on your desktop or on the fly via mobile
+                </h2>
               </div>
               <div
                 style={{
@@ -102,24 +140,24 @@ export class Splash extends Component {
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <img
                     style={{
-                      width: '19.45vw',
+                      width: '50vw',
                     }}
-                    src="/images/splash/mobile.png"
+                    src="/images/splash/desktop.png"
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <img
                     style={{
-                      width: '50vw',
+                      width: '19.45vw',
                     }}
-                    src="/images/splash/desktop.png"
+                    src="/images/splash/mobile.png"
                   />
                 </div>
               </div>
             </div>
           </div>
         </Parallax>
-        <Parallax blur={{ min: -1, max: 3, zIndex: '0' }} bgImage={image3}>
+        <Parallax strength={200} blur={{ min: -1, max: 3, zIndex: '0' }}>
           <div className="splash-bg-3">
             <div style={insideStyles}>
               <NavLink to="/signup">
