@@ -301,7 +301,7 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
             timeString = (hour - 12) + " PM";
         }
         let thisHour = intervalStart.getHours() + 1; //0-23 + 1
-        // let timeString = 
+        // let timeString =
         hourlyDict[thisHour - 1].count ++;
         let intervalEnd = new Date(intervalStart.getTime() + hourPartition);
         hourlyDict[thisHour - 1].startT = intervalStart;
@@ -320,7 +320,7 @@ router.get('/:id/visits/data/average/daily', async (req, res, next) => {
         let nVisits = hourlyDict[thisHour - 1].visits;
         let nCount = hourlyDict[thisHour - 1].count;
         let avg = nVisits/nCount;
-        console.log('avg for:', hourlyDict[thisHour - 1].timeString, avg, nVisits, nCount);
+        // console.log('avg for:', hourlyDict[thisHour - 1].timeString, avg, nVisits, nCount);
         hourlyDict[thisHour - 1].average = avg;
         hourlyDict[thisHour - 1].timeString = timeString;
     }

@@ -122,7 +122,7 @@ const DogParkItem = props => {
                   }}
                 />
               </div>
-              <Segment style={{margin: 0}}>
+              <Segment style={{margin: 0, border: '0px'}}>
                 {description}
               </Segment>
             </Grid.Row>
