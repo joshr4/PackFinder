@@ -74,7 +74,7 @@ class AddAttendeeModal extends Component {
                   <List.Item style={{paddingBottom:"10px"}}>
                   <Image avatar src={friend.imageUrl}/>
                   <List.Content>
-                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName + friend.id}</b></List.Header>
+                    <List.Header style={{fontSize:"13px"}}><b>{friend.fullName}</b></List.Header>
                   </List.Content>
                 </List.Item>
                 </Grid.Column>

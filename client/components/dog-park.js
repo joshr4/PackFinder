@@ -43,7 +43,7 @@ import {
   getParksAddresses,
 } from '../store';
 import { connect } from 'react-redux';
-import { VictoryChart, VictoryBar, VictoryAxis, VictoryArea } from 'victory';
+import { VictoryChart, VictoryBar, VictoryAxis, VictoryArea, VictoryTheme } from 'victory';
 
 // var LineChart = require('react-d3-basic').LineChart;
 
@@ -606,6 +606,7 @@ export class DogPark extends Component {
       victoryObj.time = elem.dateString;
       victoryData.push(victoryObj);
     });
+    console.log("victoryData: ", victoryData);
     const styles = {
       dashboardList: {
         boxShadow:
@@ -620,7 +621,7 @@ export class DogPark extends Component {
         menuItem: 'Check-Ins',
         render: () => (
           <Tab.Pane>
-            <Form onSubmit={this.changeDate} style={{ marginBottom: '5px' }}>
+            <Form onSubmit={this.changeDate} style={{ marginBottom: '35px', paddingTop:'10px' }}>
               Select specific day to view:
               <select
                 name="selectDate"
@@ -662,19 +663,23 @@ export class DogPark extends Component {
             </Form>
             <VictoryChart
               title="Visitors"
-              style={{ labels: { fontSize: '10px', color: 'red' } }}
-              height={250}
+              style={{ labels: { fontSize: '10px', color: 'red' }, marginTop:'15px' }}
+              height={275}
               // width="auto"
-              padding={{ top: 0, bottom: 50, left: 50, right: 50 }}
-              domainPadding={20}
+              padding={{ top: 20, bottom: 50, left: 50, right: 50 }}
+              // domainPadding={20}
+              // domainPadding={{ x: [20, 0] }}
+              // theme={VictoryTheme.material}
             >
               <VictoryAxis
                 // scale="time"
                 style={{
-                  tickLabels: { fontSize: '8px', padding: 10, angle: 315 },
+                  tickLabels: { fontSize: '8px', padding: 10, 
+                  angle: 315
+                 },
                   axis: { stroke: '#000000', strokeWidth: 2 },
                 }}
-                domain={[0, this.state.maxVisits]}
+                // fixLabelOverlap={true}                domain={[0, this.state.maxVisits]}
                 tickCount={this.state.dayView ? null : victoryData.length}
               />
               <VictoryAxis
@@ -686,12 +691,13 @@ export class DogPark extends Component {
                 tickFormat={x => ` ${x} visits`}
                 tickFormat={d3.format(',d')}
                 label="Visits"
+                domain={[0, this.state.maxVisits]}
               />
               <VictoryBar
                 data={victoryData}
                 // alignment={this.state.dayView ? 'start' : 'middle'}
-                barRatio={1}
-                alignment="middle"
+                barRatio={0.5}
+                alignment="start"
                 style={{
                   tickLabels: { fontSize: '10px', padding: 5 },
                   data: {
@@ -795,7 +801,9 @@ export class DogPark extends Component {
         render: () => (
           <Tab.Pane>
             <VictoryChart
-              style={{ labels: { fontSize: '10px', color: 'red' } }}
+              style={{ labels: { fontSize: '10px', color: 'red' }, 
+              'marginTop': '37px' 
+            }}
               domainPadding={20}
               padding={{ top: 30, bottom: 50, left: 50, right: 50 }}
               height={250}
