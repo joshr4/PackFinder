@@ -32,17 +32,18 @@ export class FriendsList extends Component {
       user,
     } = this.props;
 
-    if (!this.props.friendsList.friends.length &&
+    if (
+      !this.props.friendsList.friends.length &&
       !this.props.friendsList.nearbyUsers.length &&
       !this.props.friendsList.receivedRequests.length &&
-      !this.props.friendsList.sentRequests.length)
-      {
-        let loadFriendsList = [
+      !this.props.friendsList.sentRequests.length
+    ) {
+      let loadFriendsList = [
         fetchFriendsList(user.id),
         fetchReceivedRequests(user.id),
         fetchSentRequests(user.id),
-        ];
-      }
+      ];
+    }
   };
 
   state = { activeIndex: 0, loading: true };
@@ -98,7 +99,10 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Your Pack" style={styles.menuItem}>
-            Your Pack<Label style={styles.menuLabels}>{friends.length}</Label>
+            Your Pack
+            {friends.length ? (
+              <Label style={styles.menuLabels}>{friends.length}</Label>
+            ) : null}
           </Menu.Item>
         ),
         render: () => (
@@ -115,9 +119,10 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Requests" style={styles.menuItem}>
-            Requests<Label style={styles.menuLabels}>
-              {receivedRequests.length}
-            </Label>
+            Requests
+            {receivedRequests.length ? (
+              <Label style={styles.menuLabels}>{receivedRequests.length}</Label>
+            ) : null}
           </Menu.Item>
         ),
         render: () => (
@@ -136,9 +141,11 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Nearby Users" style={styles.menuItem}>
-            Nearby Users<Label style={styles.menuLabels}>
-              {filteredNearbyUsers.length}
-            </Label>
+            Nearby Users{filteredNearbyUsers.length ? (
+              <Label style={styles.menuLabels}>
+                {filteredNearbyUsers.length}
+              </Label>
+            ) : null}
           </Menu.Item>
         ),
         render: () => (
@@ -157,7 +164,10 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Sent" style={styles.menuItem}>
-            Sent<Label style={styles.menuLabels}>{sentRequests.length}</Label>
+            Sent
+            {sentRequests.length ? (
+              <Label style={styles.menuLabels} content={sentRequests.length} />
+            ) : null}
           </Menu.Item>
         ),
         render: () => (
@@ -174,7 +184,10 @@ export class FriendsList extends Component {
       {
         menuItem: (
           <Menu.Item key="Search" style={styles.menuItem}>
-            Search<Label style={styles.menuLabels}>{search.length}</Label>
+            Search
+            {search.length ? (
+              <Label style={styles.menuLabels}>{search.length}</Label>
+            ) : null}
           </Menu.Item>
         ),
         render: () => (

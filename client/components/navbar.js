@@ -6,8 +6,6 @@ import { logout, toggleSidebar } from '../store';
 import { Menu, Header, Responsive, Icon } from 'semantic-ui-react';
 import { SubNavbar } from '.';
 import history from '../history';
-import { relative } from 'path';
-// https://logomakr.com/4zlisz
 
 const styles = {
   image: {

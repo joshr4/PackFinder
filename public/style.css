@@ -67,6 +67,7 @@ body ::-webkit-scrollbar {
   color: #edfefff2 !important;
   /* color: rgb(45, 66, 80) !important; */
 }
+
 .subnav.ui.inverted.menu .active.item {
   background: rgba(255, 255, 255, .2);
   color: rgb(45, 66, 80) !important;
@@ -105,7 +106,7 @@ body ::-webkit-scrollbar {
     font-size: 40px
   }
   body .container {
-    padding-top: 1.2em;
+    padding-top: 0.1em;
     height: 100vh;
   }
   .friends-list {
@@ -180,20 +181,19 @@ form div {
 .splash-bg-1 {
   min-height: 100vh;
   height: 100vh;
-  background: url('https://images.unsplash.com/photo-1518056914555-de1d7f0b3967?ixlib=rb-0.3.5…EyMDd9&s=fd08518…&auto=format&fit=crop&w=1350&q=80');
+  /* background: url('https://images.unsplash.com/photo-1518056914555-de1d7f0b3967?ixlib=rb-0.3.5…EyMDd9&s=fd08518…&auto=format&fit=crop&w=1350&q=80'); */
   background-size: cover;
-  background-attachment: fixed;
+  /* background-attachment: fixed; */
   background-position: top;
 }
 
-.splash-block-1 {
-  padding: 20;
-  position: absolute;
-  top: 30%;
-  left: 20%;
-  color: white;
-  font-size: 40px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+.splash-bg-2 {
+  min-height: 100vh;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1490531075051-6cb1e733191f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3fef03d5066caf9f6877a063122bee66&auto=format&fit=crop&w=1032&q=80');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: top;
 }
 
 .splash-bg-3 {
@@ -202,6 +202,30 @@ form div {
   background: url('https://images.unsplash.com/photo-1504595403659-9088ce801e29?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d812e1079e635c6fb59ded315f72316f&auto=format&fit=crop&w=1268&q=80');
   background-size: cover;
   background-position: center;
+}
+
+.splash-content-3 {
+  padding: 20;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  font-size: 1.5em!important;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  transform: translate(-50%,-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.splash-block-1 {
+  padding: 20;
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  color: white;
+  font-size: 40px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Pet Visit Duration Slider below */

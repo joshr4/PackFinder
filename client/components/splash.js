@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Parallax, Background } from 'react-parallax';
-import { Button, Imag, Transition } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom';
+import { Parallax } from 'react-parallax';
+import { Button, Transition, Icon } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fadeInLeftBig } from 'react-animations';
 
 const transitions = [
   'browse',
@@ -51,11 +50,58 @@ export class Splash extends Component {
       'https://images.unsplash.com/photo-1504595403659-9088ce801e29?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d812e1079e635c6fb59ded315f72316f&auto=format&fit=crop&w=1268&q=80';
 
     const styles = {
-      fontFamily: 'sans-serif',
-      textAlign: 'center',
-      fontSize: '40px',
-      textShadow:
-        '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px'
+      titleText: {
+        fontFamily: 'Pacifico',
+        textAlign: 'center',
+        fontSize: '6vw',
+        color: '#54b9bf',
+        letterSpacing: '2px',
+        marginBottom: '0.45em',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+      },
+      subTitle: {
+        fontFamily: 'Verdana',
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: '2.5vw',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+        maxWidth: '20em',
+      },
+      arrowPosition: {
+        position: 'absolute',
+        top: '95%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        fontSize: '20px',
+        display: 'flex',
+      },
+      arrowStyle: {
+        fontSize: '5em',
+        color: '#54b9bf',
+        textShadow: '2px 5px 6px rgba(0, 0, 0, 0.2)',
+      },
+      mobileDesktop: {
+        fontFamily: 'Verdana',
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: '2.9vw',
+        textShadow:
+          '1px 1px 1px rgba(0,0,0,0.5), -1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5), 1px -1px 1px rgba(0,0,0,0.5), rgba(0, 0, 0, 0.2) 2px 5px 6px',
+        marginBottom: '0.5em',
+      },
+      getStarted: {
+        padding: 20,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        fontSize: '2vw',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+      },
     };
     const insideStyles = {
       padding: 20,
@@ -63,35 +109,86 @@ export class Splash extends Component {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%,-50%)',
-      fontSize: '20px',
+      fontSize: '2.9vw',
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
     };
-    const { animation, duration, visible } = this.state;
+    const { duration, visible } = this.state;
+    const { isLoggedIn } = this.props;
     return (
       <div style={{ paddingTop: '0vh' }} className="splash">
-        <Parallax strength={500}>
+        <Parallax strength={400} bgImage={image1}>
           <div className="splash-bg-1">
             <div className="splash-block-1">
               <Transition.Group animation="drop" duration={duration}>
-                {visible && <h1 style={styles}>Build your pack!</h1>}
+                {visible && <h1 style={styles.titleText}>Build your pack!</h1>}
+              </Transition.Group>
+              <Transition.Group animation="drop" duration={duration}>
+                {visible && (
+                  <h3 style={styles.subTitle}>
+                    We connect nearby dog owners so that they can coordinate
+                    play dates with their furry pals!
+                  </h3>
+                )}
               </Transition.Group>
             </div>
-            <NavLink to="/parkList">
-              <Button inverted color="teal" style={insideStyles}>
-                Get Started
-              </Button>
-            </NavLink>
+            <div style={styles.arrowPosition}>
+              <Icon style={styles.arrowStyle} name="arrow circle down" />
+            </div>
           </div>
         </Parallax>
-        <Parallax strength={-100}>
-          {/* bgImage={image3} */}
+        <Parallax strength={300} bgImage={image2}>
+          <div className="splash-bg-2">
+            <div style={insideStyles}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                <h2 style={styles.mobileDesktop}>
+                  {' '}
+                  Browse on your desktop or on the fly via mobile
+                </h2>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img
+                    style={{
+                      width: '50vw',
+                    }}
+                    src="/images/splash/desktop.png"
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img
+                    style={{
+                      width: '19.45vw',
+                    }}
+                    src="/images/splash/mobile.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Parallax>
+        <Parallax strength={200} blur={{ min: -1, max: 3, zIndex: '0' }}>
           <div className="splash-bg-3">
-            {/* <Image verticalAlign="top" src={image3} /> */}
-            <div style={insideStyles}>More Information!</div>
-          </div>
-        </Parallax>
-        <Parallax blur={{ min: -1, max: 3 }} bgImage={image2}>
-          <div style={{ minHeight: '100vh' }}>
-            <div style={insideStyles}>What we offer...</div>
+            <div style={styles.getStarted}>
+              <NavLink to={isLoggedIn ? '/home' : '/login'}>
+                <Button inverted color="teal" className="splash-content-3">
+                  Get Started!
+                </Button>
+              </NavLink>
+            </div>
           </div>
         </Parallax>
       </div>
@@ -99,4 +196,10 @@ export class Splash extends Component {
   }
 }
 
-export default Splash;
+const mapState = ({ user }) => {
+  return {
+    isLoggedIn: !!user.id,
+  };
+};
+
+export default withRouter(connect(mapState)(Splash));
