@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { logout } from '../store';
 import { Menu, Image, Header, Grid } from 'semantic-ui-react';
 // https://logomakr.com/4zlisz
@@ -19,13 +19,14 @@ const styles = {
     zIndex: 1,
     width: '100vw',
     background: '#54B8BF',
-    height: '6vh'
+    height: '6vh',
+    borderRadius: '0 0 4px 4px',
   },
   menuItem: {
-    color: '#fff',
+    color: '#2d4250',
     fontSize: 20,
     fontFamily: 'Veradana, sans-serif',
-    fontWeight: 500,
+    fontWeight: 900,
   },
   titleText: {
     fontFamily: 'Pacifico, cursive',
@@ -39,17 +40,48 @@ const styles = {
   },
 };
 
-const SubNavbar = ({ handleClick, isLoggedIn }) => (
-  <Menu style={styles.menu} inverted widths={4}>
-    <Menu.Item as={Link} to="/Home" name="Home" />
-    <Menu.Item as={Link} to="/parkList" name="parks" />
-    {
-      // <Menu.Item as={Link} to="/calendar" name="calendar" />
-    }
-    <Menu.Item as={Link} to="/calendar" name="Events" />
-    <Menu.Item as={Link} to="/profile" name="Profile" />
-  </Menu>
-);
+// const SubNavbar = ({ handleClick, isLoggedIn }) => (
+class SubNavbar extends Component {
+  state = { activeItem: 'home' }
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  render() {
+    const { handleClick, isLoggedIn } = this.props;
+    return (
+      <Menu className="subnav" style={styles.menu} inverted widths={4}>
+        <Menu.Item
+          as={NavLink}
+          style={styles.menuItem}
+          to="/Home"
+          name="Home"
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={NavLink}
+          style={styles.menuItem}
+          to="/parkList"
+          name="parks"
+           onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={NavLink}
+          style={styles.menuItem}
+          to="/calendar"
+          name="Events"
+           onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={NavLink}
+          style={styles.menuItem}
+          to="/profile"
+          name="Profile"
+           onClick={this.handleItemClick}
+        />
+      </Menu>
+    );
+  }
+}
 
 /**
  * CONTAINER
@@ -68,7 +100,7 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(SubNavbar);
+export default withRouter(connect(mapState, mapDispatch)(SubNavbar));
 
 /**
  * PROP TYPES

@@ -23,6 +23,7 @@ const styles = {
     width: '100vw',
     color: '#54B8BF',
     height: '12vh',
+    borderRadius: '0',
   },
   menuItem: {
     color: '#55b9bf',
@@ -54,7 +55,6 @@ const styles = {
 export const Navbar = props => {
   const path = history.location.pathname;
   const { isLoggedIn, handleClick, handleToggle, visible } = props;
-  console.log('visible in navbar', visible);
   if (path === '/') {
     styles.menu = {
       ...styles.menu,
@@ -65,6 +65,7 @@ export const Navbar = props => {
   } else {
     styles.menu = { ...styles.menu, backgroundColor: 'rgb(44, 66, 80)' };
   }
+  const onSplash = path === '/';
   return (
     <div style={{ position: 'relative' }}>
       <Menu style={styles.menu}>
@@ -78,12 +79,7 @@ export const Navbar = props => {
         >
           {/* <Image style={styles.image} src={'/images/logo.png'} /> */}
           <NavLink to="/">
-            <h1
-              className="navbar-title"
-            >
-              {' '}
-              Pack Finder{' '}
-            </h1>
+            <h1 className="navbar-title"> Pack Finder </h1>
           </NavLink>
         </div>
         <div style={{ position: 'relative', height: '80%', marginLeft: '8px' }}>
@@ -98,7 +94,12 @@ export const Navbar = props => {
             src="/map-2.svg"
           />
           <img
-            style={{ transform: 'scaleX(-1)', zIndex: '1', height: '100%', marginTop: '3px' }}
+            style={{
+              transform: 'scaleX(-1)',
+              zIndex: '1',
+              height: '100%',
+              marginTop: '3px',
+            }}
             src="/dog.svg"
           />
         </div>
@@ -106,14 +107,16 @@ export const Navbar = props => {
         {isLoggedIn ? (
           <Menu.Menu position="right" style={{ color: '#54B8BF' }}>
             {/* The navbar will show these links after you log in */}
-            <NavLink to="/home">
-              <Responsive
-                as={Menu.Item}
-                minWidth={768}
-                style={styles.menuItem}
-                name="home"
-              />
-            </NavLink>
+            {onSplash && (
+              <NavLink to="/home">
+                <Responsive
+                  as={Menu.Item}
+                  minWidth={768}
+                  style={styles.menuItem}
+                  name="home"
+                />
+              </NavLink>
+            )}
             <div>
               <Responsive
                 as={Menu.Item}
@@ -160,7 +163,7 @@ export const Navbar = props => {
           </Menu.Menu>
         )}
       </Menu>
-      {path !== '/' && isLoggedIn ? (
+      {!onSplash && isLoggedIn ? (
         <Responsive as={SubNavbar} minWidth={768} />
       ) : (
         <div />
