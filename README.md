@@ -1,5 +1,5 @@
 # PackFinder - Find your pack now!
-Intro coming soon!
+PackFinder is a
 
 Built as a group project at Fullstack Academy.
 
