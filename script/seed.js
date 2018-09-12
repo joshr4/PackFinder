@@ -27,7 +27,7 @@ const friendSeed = require('./seed/seed-friends');
 const eventsSeed = require('./seed/seed-events');
 const messagesSeed = require('./seed/seed-messages');
 
-async function seed () {
+async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
